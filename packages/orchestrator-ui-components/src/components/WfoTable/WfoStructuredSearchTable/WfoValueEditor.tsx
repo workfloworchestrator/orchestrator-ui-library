@@ -15,6 +15,7 @@ import type { WfoQueryBuilderContext } from '@/types';
 export interface EditorInputFieldProps<T = string> {
   handleOnChange: ValueEditorProps['handleOnChange'];
   value: T;
+  onInput?: () => void;
 }
 export type EditorComponent = React.ComponentType<EditorInputFieldProps<ValueEditorProps['value']>>;
 
@@ -81,11 +82,14 @@ const BooleanEditor = ({
   );
 };
 
-const TextEditor = ({ handleOnChange, value: currentValue = '' }: EditorInputFieldProps<string>) => {
+const TextEditor = ({ handleOnChange, value: currentValue = '', onInput }: EditorInputFieldProps<string>) => {
   const [value, setValue] = useState<string>(currentValue);
 
   const handleTextChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValue(e.target.value || '');
+    const nextValue = e.target.value || '';
+    setValue(nextValue);
+    handleOnChange(nextValue);
+    onInput?.();
   };
 
   const handleOnBlur = () => {
@@ -101,11 +105,16 @@ const TextEditor = ({ handleOnChange, value: currentValue = '' }: EditorInputFie
   return <EuiFieldText value={value} onChange={handleTextChange} onBlur={handleOnBlur} onKeyDown={handleOnKeyDown} />;
 };
 
-const NumberEditor = ({ handleOnChange, value: currentValue }: EditorInputFieldProps<number>) => {
+const NumberEditor = ({ handleOnChange, value: currentValue, onInput }: EditorInputFieldProps<number>) => {
   const [value, setValue] = useState<string>(currentValue?.toString() || '');
 
   const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValue(e.target.value || '');
+    const nextValue = e.target.value || '';
+    setValue(nextValue);
+    const numberValue = parseFloat(nextValue);
+    if (Number.isNaN(numberValue)) return;
+    handleOnChange(numberValue);
+    onInput?.();
   };
 
   const handleOnBlur = () => {
@@ -183,31 +192,30 @@ export const WfoValueEditor = ({
   const fieldInfo = fieldPathInfoMap && fieldPathInfoMap.has(fieldName) ? fieldPathInfoMap.get(fieldName) : undefined;
   const uiFieldType = fieldInfo?.ui_types?.[0] || UiFieldType.text;
 
+  const handleInput = () => queryBuilderContext?.onValueEditorInput();
+
   const getEditor = () => {
     const InputElement = getComponentByType();
 
     if (operator === 'between') {
-      return <WfoRangeEditor handleOnChange={handleOnChange} value={value} InputElement={InputElement} />;
+      return (
+        <WfoRangeEditor
+          handleOnChange={handleOnChange}
+          value={value}
+          InputElement={InputElement}
+          onInput={handleInput}
+        />
+      );
     }
 
-    return <InputElement handleOnChange={handleOnChange} value={value} />;
-  };
-
-  const handleWrapperKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.key !== 'Enter') return;
-    // Restrict to the editor inputs: the editors' own Enter handlers have already run
-    // (bubble phase) and committed the value via blur, so the search sees it. Enter on
-    // the boolean buttons means "select" — its click fires only after this keydown, so
-    // searching there would use the pre-toggle value.
-    if (!(event.target instanceof HTMLInputElement)) return;
-    queryBuilderContext?.onValueEditorEnter();
+    return <InputElement handleOnChange={handleOnChange} value={value} onInput={handleInput} />;
   };
 
   // react-querybuilder delivers the standard `rule-value` class via this prop; the wrapper
   // makes it queryable in the DOM (WfoFieldSelector relies on it to move focus here).
   // `display: contents` keeps the children direct participants in the rule's flex row.
   return (
-    <div className={className} style={{ display: 'contents' }} onKeyDown={handleWrapperKeyDown}>
+    <div className={className} style={{ display: 'contents' }}>
       {getEditor()}
     </div>
   );

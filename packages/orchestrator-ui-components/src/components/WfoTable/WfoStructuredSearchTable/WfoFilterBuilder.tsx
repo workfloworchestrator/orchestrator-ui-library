@@ -1,9 +1,10 @@
-import React, { type ComponentType, useEffect, useMemo, useRef, useState } from 'react';
+import React, { type ComponentType, type KeyboardEventHandler, useEffect, useMemo, useRef, useState } from 'react';
 import {
   type FieldSelectorProps,
   FullOperator,
   QueryBuilder,
   type RuleGroupType,
+  defaultPlaceholderFieldName,
   generateID,
 } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
@@ -14,7 +15,7 @@ import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/components';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
-import { useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
+import { useDebouncedCallback, useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
 import { EntityKind, OperatorDisplay } from '@/types';
 import type { FieldToOperatorMap, PathInfo, WfoQueryBuilderContext } from '@/types';
 
@@ -76,9 +77,16 @@ interface WfoFilterBuilderProps {
   useAdvancedNestedSearch?: boolean;
 }
 
+// Typing a value applies the filter once the user pauses; Enter, being deliberate, cuts ahead.
+// Enter is still deferred rather than immediate: the debounced call reads the rule group at fire
+// time, which is what lets a control that commits *after* its keydown (a button's click, an input's
+// blur) land first.
+const TYPING_DEBOUNCE_DELAY = 1000;
+const ENTER_DEBOUNCE_DELAY = 300;
+
 const initialRuleGroup: RuleGroupType = {
   id: 'root',
-  rules: [{ id: 'rule-0', field: '~', operator: '=', value: '' }],
+  rules: [{ id: 'rule-0', field: defaultPlaceholderFieldName, operator: '=', value: '' }],
   combinator: 'and',
 };
 
@@ -125,8 +133,13 @@ export const WfoFilterBuilder = ({
   const latestRuleGroupRef = useRef<RuleGroupType | undefined>(queryBuilderRuleGroup);
   latestRuleGroupRef.current = queryBuilderRuleGroup;
 
-  const handleValueEditorEnter = () => {
+  const submitSearch = useDebouncedCallback(() => {
     handleSearch({ ruleGroup: latestRuleGroupRef.current });
+  }, TYPING_DEBOUNCE_DELAY);
+
+  const handleRuleBuilderKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key !== 'Enter' || event.shiftKey) return;
+    submitSearch(ENTER_DEBOUNCE_DELAY);
   };
 
   const handleFieldSelected = (field: string, operators: string[], pathInfo?: PathInfo) => {
@@ -157,7 +170,7 @@ export const WfoFilterBuilder = ({
     onFieldSelected: handleFieldSelected,
     prefilledFieldOptions,
     fieldPathInfoMap,
-    onValueEditorEnter: handleValueEditorEnter,
+    onValueEditorInput: () => submitSearch(),
     useAdvancedNestedSearch,
   };
 
@@ -172,7 +185,7 @@ export const WfoFilterBuilder = ({
   return (
     <EuiFlexGroup css={queryBuilderContainerStyles}>
       <EuiFlexGroup direction={'column'}>
-        <EuiFlexItem>
+        <EuiFlexItem onKeyDown={handleRuleBuilderKeyDown}>
           <QueryBuilder
             query={queryBuilderRuleGroup}
             enableMountQueryChange={false}
@@ -226,7 +239,7 @@ export const WfoFilterBuilder = ({
               if (event.key !== 'Enter' || event.shiftKey) return;
               event.preventDefault();
               if (isValidFilterString) {
-                handleSearch();
+                submitSearch(ENTER_DEBOUNCE_DELAY);
               }
             }}
             isInvalid={!isValidFilterString}
