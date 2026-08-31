@@ -41,12 +41,9 @@ It abstracts away the complexity of connecting to the orchestrator engine, allow
 
 ## What's Included?
 
-The library exposes three main packages:
+The main NPM package of the library is **@orchestrator-ui/orchestrator-ui-components**.
 
-### **@orchestrator-ui/orchestrator-ui-components**
-
-The heart of the library. A collection of reusable React components and pages for building orchestrator frontends.
-Includes:
+It contains a collection of reusable React components and pages for building orchestrator frontends, such as:
 
 - Pages for managing subscriptions, workflows, and products
 - Form components for user input
@@ -55,16 +52,6 @@ Includes:
 - Authentication and permission helpers
 
 All components are prefixed with `Wfo` for easy identification.
-
-### **@orchestrator-ui/eslint-config-custom**
-
-Shared ESLint configuration for consistent code quality across projects.
-Helps enforce code standards used in the Orchestrator ecosystem.
-
-### **@orchestrator-ui/tsconfig**
-
-Shared TypeScript configuration ensuring type safety and consistency. 
-Provides a baseline configuration that can be extended for specific project needs.
 
 ## Getting Started
 
@@ -94,17 +81,6 @@ For a complete example, check out the [example-orchestrator-ui](https://github.c
 - **[Turbo](https://turbo.build)**: High-performance build system for JavaScript and TypeScript
 - **[EUI (Elastic UI)](https://eui.elastic.co)**: Flexible, accessible component library
 - **[Pydantic Forms UI](https://github.com/workfloworchestrator/pydantic-forms-ui)**: Type safe web forms generated from [Pydantic Forms](../../pydantic-forms/) JSON schema
-
-## Why Next.js and TypeScript?
-
-We chose Next.js because it provides everything needed for modern web applications — from routing to server-side rendering to API routes. TypeScript ensures that as your orchestrator grows in complexity, the codebase remains maintainable and type-safe.
-
-This means you get:
-
-- **Static type checking**: Catch errors before they reach production
-- **Excellent developer experience**: IDE autocompletion and refactoring tools
-- **Built-in optimizations**: Automatic code splitting, image optimization, and more
-- **Easy authentication**: NextAuth integration for secure user management
 
 ## Community & Support
 
