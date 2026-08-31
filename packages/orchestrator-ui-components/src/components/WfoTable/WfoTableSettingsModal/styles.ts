@@ -14,6 +14,15 @@ export const getWfoTableSettingsModalStyles = (wfoThemeHelpers: WfoThemeHelpers)
     },
   });
 
+  const formStyle = css({
+    '.euiFormRow .euiFormRow__labelWrapper': {
+      flexBasis: '50%',
+    },
+    '.euiFormRow .euiFormRow__fieldWrapper': {
+      flexBasis: '50%',
+    },
+  });
+
   const { theme } = wfoThemeHelpers;
 
   const columnsListStyle = css({
@@ -30,6 +39,7 @@ export const getWfoTableSettingsModalStyles = (wfoThemeHelpers: WfoThemeHelpers)
   });
 
   return {
+    formStyle,
     formRowStyle,
     columnsListStyle,
     selectFieldStyle: formFieldBaseStyle,
