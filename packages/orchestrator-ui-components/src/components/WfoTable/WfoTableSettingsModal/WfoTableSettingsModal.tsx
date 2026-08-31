@@ -37,7 +37,8 @@ export const TableSettingsModal = <T,>({
   extraSettings,
 }: TableSettingsModalProps<T>) => {
   const t = useTranslations('main');
-  const { formRowStyle, columnsListStyle, selectFieldStyle } = useWithOrchestratorTheme(getWfoTableSettingsModalStyles);
+  const { formStyle, formRowStyle, columnsListStyle, selectFieldStyle } =
+    useWithOrchestratorTheme(getWfoTableSettingsModalStyles);
   const scrollBarStyle = useEuiScrollBar();
 
   const [columns, setColumns] = useState(tableConfig.columns);
@@ -72,7 +73,7 @@ export const TableSettingsModal = <T,>({
         })
       }
     >
-      <EuiForm>
+      <EuiForm css={formStyle}>
         <div css={[columnsListStyle, scrollBarStyle]}>
           {columns.map(({ field, name, isVisible }) => (
             <div key={field.toString()}>
