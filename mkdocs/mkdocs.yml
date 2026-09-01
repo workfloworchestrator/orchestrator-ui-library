@@ -1,8 +1,31 @@
 # workfloworchestrator.github.io uses site_name in the URL, don't change it
 site_name: Orchestrator UI Library
 site_description: Orchestrator UI developers documentation
-repo_url: 'https://github.com/workfloworchestrator/orchestrator-ui'
-repo_name: 'orchestrator-ui'
+repo_url: 'https://github.com/workfloworchestrator/orchestrator-ui-library'
+repo_name: 'orchestrator-ui-library'
+nav:
+  - Introduction: index.md
+  - Guides:
+      - Upgrade Guides:
+          - v8.1: guides/upgrading/8.1.md
+          - v8.4: guides/upgrading/8.4.md
+  - Architecture:
+      - Security: architecture/security.md
+      - Pydantic Forms: forms/index.md
+      - Decision Records:
+          - Overview: decisions/records.md
+          - ADR 0001 - Record architecture decisions: decisions/records/0001-record-architecture-decisions.md
+          - ADR 0002 - TypeScript guidelines and rules: decisions/records/0002-typescript-rules.md
+          - ADR 0003 - Next.js: decisions/records/0003-nextjs.md
+          - ADR 0004 - Turbo Repo and dependencies: decisions/records/0004-turbo-repo-and-dependencies.md
+          - ADR 0005 - Component naming: decisions/records/0005-component-naming.md
+          - ADR 0006 - Proposal on types: decisions/records/0006-types-extended.md
+          - ADR 0007 - Proposal on component naming: decisions/records/0007-component-naming.md
+          - ADR 0008 - TypeScript conventions: decisions/records/0008-typescript-conventions.md
+  - Development:
+      - Linting: development/linting.md
+      - Monorepo: development/monorepo.md
+      - Naming conventions and TypeScript: development/naming-convention.md
 theme:
   name: material
   palette:
@@ -29,7 +52,6 @@ theme:
 plugins:
   - termynal
   - search
-  - awesome-pages
 copyright: Copyright SURF; 2023
 
 markdown_extensions:
