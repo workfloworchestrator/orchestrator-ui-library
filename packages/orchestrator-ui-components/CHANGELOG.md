@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.9.2
+
+### Patch Changes
+
+- 3a6339f: 223 Tweak spacing of columns in table settings modal
+- 2719ec4: Disables list component.
+
 ## 8.9.1
 
 ### Patch Changes
