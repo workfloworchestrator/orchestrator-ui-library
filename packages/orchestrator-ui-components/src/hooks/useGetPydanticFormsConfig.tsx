@@ -208,7 +208,8 @@ const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
         ...currentMatchers
           .filter((matcher) => matcher.id !== 'text')
           .filter((matcher) => matcher.id !== 'array')
-          .filter((matcher) => matcher.id !== 'object'),
+          .filter((matcher) => matcher.id !== 'object')
+          .filter((matcher) => matcher.id !== 'list'),
         {
           id: 'object',
           ElementMatch: {
