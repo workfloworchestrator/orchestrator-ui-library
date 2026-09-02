@@ -9,10 +9,9 @@ interface WfoRangeEditorProps {
   handleOnChange: ValueEditorProps['handleOnChange'];
   value: string;
   InputElement: EditorComponent;
-  onInput?: () => void;
 }
 
-export const WfoRangeEditor = ({ handleOnChange, InputElement, value: currentValue, onInput }: WfoRangeEditorProps) => {
+export const WfoRangeEditor = ({ handleOnChange, InputElement, value: currentValue }: WfoRangeEditorProps) => {
   const startValue = currentValue ? currentValue?.toString().split(',') : [];
   const [value, setValue] = useState<(string | undefined)[]>(startValue);
 
@@ -28,7 +27,6 @@ export const WfoRangeEditor = ({ handleOnChange, InputElement, value: currentVal
   useEffect(() => {
     if (value[0] !== undefined && value[1] !== undefined) {
       handleOnChange(`${value[0]},${value[1]}`);
-      onInput?.();
     }
     // handleOnChange comes from react-querybuilder and is not referentially stable
     // eslint-disable-next-line react-hooks/exhaustive-deps
