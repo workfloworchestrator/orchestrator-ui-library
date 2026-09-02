@@ -1,23 +1,22 @@
-import React, { type ComponentType, type KeyboardEventHandler, useEffect, useMemo, useRef, useState } from 'react';
+import React, { type ComponentType, useEffect, useMemo, useRef, useState } from 'react';
 import {
   type FieldSelectorProps,
-  FullOperator,
   QueryBuilder,
   type RuleGroupType,
   defaultPlaceholderFieldName,
-  generateID,
 } from 'react-querybuilder';
 import 'react-querybuilder/dist/query-builder.css';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
 import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/components';
+import { WfoApplyFilterButton } from '@/components/WfoTable/WfoStructuredSearchTable/WfoApplyFilterButton';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
-import { useDebouncedCallback, useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
-import { EntityKind, OperatorDisplay } from '@/types';
+import { useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
 import type { FieldToOperatorMap, PathInfo, WfoQueryBuilderContext } from '@/types';
+import { EntityKind } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 import { WfoInlineCombinator } from './WfoInlineCombinator';
@@ -27,43 +26,12 @@ import { WfoRule } from './WfoRule';
 import { WfoRuleGroup } from './WfoRuleGroup';
 import { WfoValueEditor } from './WfoValueEditor';
 import { getWfoStructuredSearchTableStyles } from './styles';
-import { collectRuleFields } from './utils';
-
-// Maps PathInfo operator names to react-querybuilder's native operator names,
-// which is what parseCEL produces and formatQuery(cel) expects.
-// has_component/not_has_component ride on notNull/null: they survive the CEL round trip
-// (`field != null` / `field == null`) and formatQuery(elasticsearch) turns them into
-// exists / must_not-exists, which the backend translates to component-presence filters.
-const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
-  eq: '=',
-  neq: '!=',
-  lt: '<',
-  lte: '<=',
-  gt: '>',
-  gte: '>=',
-  between: 'between',
-  like: 'contains',
-  not_regexp: 'doesNotContain',
-  has_component: 'notNull',
-  not_has_component: 'null',
-};
-
-// Operators without a value; marking them unary makes react-querybuilder's Rule hide the value editor.
-const RQB_UNARY_OPERATORS = ['null', 'notNull'];
-
-const OPERATOR_MAP: Record<string, OperatorDisplay> = {
-  eq: { symbol: '=', description: 'equals' },
-  neq: { symbol: '≠', description: 'not equals' },
-  lt: { symbol: '<', description: 'less than' },
-  lte: { symbol: '≤', description: 'less than or equal to' },
-  gt: { symbol: '>', description: 'greater than' },
-  gte: { symbol: '≥', description: 'greater than or equal to' },
-  between: { symbol: '⟷', description: 'between (range)' },
-  has_component: { symbol: '✓', description: 'has component' },
-  not_has_component: { symbol: '✗', description: 'does not have component' },
-  like: { symbol: '∋', description: 'contains' },
-  not_regexp: { symbol: '∌', description: 'does not contain' },
-};
+import {
+  collectRuleFields,
+  onAddGroupHandler,
+  operatorsToRQBOperatorOptionsMapper,
+  useSearchWithDebouncedCallback,
+} from './utils';
 
 interface WfoFilterBuilderProps {
   filterString?: string;
@@ -77,22 +45,10 @@ interface WfoFilterBuilderProps {
   useAdvancedNestedSearch?: boolean;
 }
 
-// Typing a value applies the filter once the user pauses; Enter, being deliberate, cuts ahead.
-// Enter is still deferred rather than immediate: the debounced call reads the rule group at fire
-// time, which is what lets a control that commits *after* its keydown (a button's click, an input's
-// blur) land first.
-const TYPING_DEBOUNCE_DELAY = 1000;
-const ENTER_DEBOUNCE_DELAY = 300;
-
 const initialRuleGroup: RuleGroupType = {
   id: 'root',
   rules: [{ id: 'rule-0', field: defaultPlaceholderFieldName, operator: '=', value: '' }],
   combinator: 'and',
-};
-
-const onAddGroupHandler = (ruleGroup: RuleGroupType): RuleGroupType => {
-  const [firstRule] = ruleGroup.rules;
-  return firstRule ? { ...ruleGroup, rules: [...ruleGroup.rules, { ...firstRule, id: generateID() }] } : ruleGroup;
 };
 
 export const WfoFilterBuilder = ({
@@ -106,24 +62,9 @@ export const WfoFilterBuilder = ({
   onToggleFilterBuilder,
   useAdvancedNestedSearch = true,
 }: WfoFilterBuilderProps) => {
-  const mapOperatorsToRQBOperatorOptions = (operators?: string[]): FullOperator[] => {
-    return (operators ?? []).map((operator) => {
-      const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
-      const rqbOperator = SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP[operator] ?? operator;
-      return {
-        name: rqbOperator,
-        label: `${symbol} ${description}`,
-        value: rqbOperator,
-        ...(RQB_UNARY_OPERATORS.includes(rqbOperator) && { arity: 'unary' }),
-      };
-    });
-  };
-
   const t = useTranslations('common');
   const { queryBuilderContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
-  // Path info per selected field, so the value editor can pick a typed editor (date picker,
-  // number input, boolean toggle or range editor)
   const [fieldPathInfoMap, setFieldPathInfoMap] = useState<Map<string, PathInfo>>(new Map());
 
   // Enter in a value editor commits its value on blur, and that state update has not
@@ -133,14 +74,11 @@ export const WfoFilterBuilder = ({
   const latestRuleGroupRef = useRef<RuleGroupType | undefined>(queryBuilderRuleGroup);
   latestRuleGroupRef.current = queryBuilderRuleGroup;
 
-  const submitSearch = useDebouncedCallback(() => {
-    handleSearch({ ruleGroup: latestRuleGroupRef.current });
-  }, TYPING_DEBOUNCE_DELAY);
-
-  const handleRuleBuilderKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.key !== 'Enter' || event.shiftKey) return;
-    submitSearch(ENTER_DEBOUNCE_DELAY);
-  };
+  const { handleSubmitSearchOnClick, pendingSearchRun, handleSubmitSearchOnEnter } = useSearchWithDebouncedCallback({
+    filterString,
+    isValidFilterString,
+    searchCallback: () => handleSearch({ ruleGroup: latestRuleGroupRef.current }),
+  });
 
   const handleFieldSelected = (field: string, operators: string[], pathInfo?: PathInfo) => {
     setFieldToOperatorMap((previousMap) => {
@@ -170,7 +108,6 @@ export const WfoFilterBuilder = ({
     onFieldSelected: handleFieldSelected,
     prefilledFieldOptions,
     fieldPathInfoMap,
-    onValueEditorInput: () => submitSearch(),
     useAdvancedNestedSearch,
   };
 
@@ -185,7 +122,7 @@ export const WfoFilterBuilder = ({
   return (
     <EuiFlexGroup css={queryBuilderContainerStyles}>
       <EuiFlexGroup direction={'column'}>
-        <EuiFlexItem onKeyDown={handleRuleBuilderKeyDown}>
+        <EuiFlexItem onKeyDown={handleSubmitSearchOnEnter}>
           <QueryBuilder
             query={queryBuilderRuleGroup}
             enableMountQueryChange={false}
@@ -196,11 +133,9 @@ export const WfoFilterBuilder = ({
             context={queryBuilderContext}
             getOperators={(field) => {
               const operators = fieldToOperatorMap.get(field);
-              return mapOperatorsToRQBOperatorOptions(operators);
+              return operatorsToRQBOperatorOptionsMapper(operators);
             }}
             controlElements={{
-              // WfoFieldSelector requires the context this QueryBuilder always provides,
-              // while react-querybuilder declares it optional — hence the cast.
               fieldSelector: WfoFieldSelector as ComponentType<FieldSelectorProps>,
               operatorSelector: WfoOperatorSelector,
               valueEditor: WfoValueEditor,
@@ -233,33 +168,17 @@ export const WfoFilterBuilder = ({
               const filterString = e.target.value;
               onUpdateFilterString(filterString);
             }}
-            onKeyDown={(event) => {
-              // Enter applies the filter like the Apply button (and like it, does nothing
-              // while the filter string is invalid); Shift+Enter inserts a newline.
-              if (event.key !== 'Enter' || event.shiftKey) return;
-              event.preventDefault();
-              if (isValidFilterString) {
-                submitSearch(ENTER_DEBOUNCE_DELAY);
-              }
-            }}
+            onKeyDown={handleSubmitSearchOnEnter}
             isInvalid={!isValidFilterString}
           />
         </EuiFlexItem>
 
         <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>
-          <EuiButton
-            onClick={() => {
-              handleSearch();
-            }}
-            id={'button-apply-filter'}
-            data-test-id={'button-apply-filter'}
-            fill
-            type="submit"
-            aria-label={t('applyFilter')}
-            disabled={!isValidFilterString}
-          >
-            {t('applyFilter')}
-          </EuiButton>
+          <WfoApplyFilterButton
+            isDisabled={!isValidFilterString}
+            pendingSearchRun={pendingSearchRun}
+            onClick={handleSubmitSearchOnClick}
+          />
           <WfoTextAnchor
             text={t('removeFilter')}
             onClick={() => {
