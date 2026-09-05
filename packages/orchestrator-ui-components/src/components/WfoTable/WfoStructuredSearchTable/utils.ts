@@ -1,6 +1,52 @@
-import type { RuleGroupType } from 'react-querybuilder';
+import { type KeyboardEventHandler, useEffect, useRef } from 'react';
+import { FullOperator, RuleGroupType, generateID } from 'react-querybuilder';
 import { prepareRuleGroup } from 'react-querybuilder';
 import { parseCEL } from 'react-querybuilder/parseCEL';
+
+import { useDebouncedCallback } from '@/hooks';
+import { OperatorDisplay } from '@/types';
+
+export const FILTER_CHANGE_DEBOUNCE_DELAY = 1000;
+
+interface SearchWithDebouncedCallbackProps {
+  filterString?: string;
+  isValidFilterString: boolean;
+  searchCallback: () => void;
+}
+
+export const useSearchWithDebouncedCallback = ({
+  filterString,
+  isValidFilterString,
+  searchCallback,
+}: SearchWithDebouncedCallbackProps) => {
+  const { trigger: triggerSearch, pendingRun: pendingSearchRun } = useDebouncedCallback(searchCallback);
+  const lastFilterStringRef = useRef(filterString);
+
+  const handleSubmitSearchOnClick = () => {
+    if (!isValidFilterString) return;
+    triggerSearch();
+    return;
+  };
+
+  useEffect(() => {
+    const hasFilterStringChanged = filterString !== lastFilterStringRef.current;
+    lastFilterStringRef.current = filterString;
+
+    if (hasFilterStringChanged && isValidFilterString) {
+      triggerSearch(FILTER_CHANGE_DEBOUNCE_DELAY);
+    }
+  }, [filterString, isValidFilterString, triggerSearch]);
+
+  // Enter applies the filter exactly like that button; Shift+Enter is left alone so it can
+  // insert a newline in a textarea.
+  const handleSubmitSearchOnEnter: KeyboardEventHandler<HTMLElement> = (event) => {
+    if (event.key !== 'Enter' || event.shiftKey) return;
+    event.preventDefault();
+    handleSubmitSearchOnClick();
+  };
+
+  return { handleSubmitSearchOnClick, pendingSearchRun, handleSubmitSearchOnEnter };
+};
 
 /** Collects the unique field names used by the rules of a rule group, including nested groups. */
 export const collectRuleFields = (ruleGroup: RuleGroupType): string[] => {
@@ -81,4 +127,58 @@ export const buildColumnFilter = <T>(
   }
 
   return { filterString, ruleGroup };
+};
+
+// Maps PathInfo operator names to react-querybuilder's native operator names,
+// which is what parseCEL produces and formatQuery(cel) expects.
+// has_component/not_has_component ride on notNull/null: they survive the CEL round trip
+// (`field != null` / `field == null`) and formatQuery(elasticsearch) turns them into
+// exists / must_not-exists, which the backend translates to component-presence filters.
+const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
+  eq: '=',
+  neq: '!=',
+  lt: '<',
+  lte: '<=',
+  gt: '>',
+  gte: '>=',
+  between: 'between',
+  like: 'contains',
+  not_regexp: 'doesNotContain',
+  has_component: 'notNull',
+  not_has_component: 'null',
+};
+
+// Operators without a value; marking them unary makes react-querybuilder's Rule hide the value editor.
+const RQB_UNARY_OPERATORS = ['null', 'notNull'];
+
+const OPERATOR_MAP: Record<string, OperatorDisplay> = {
+  eq: { symbol: '=', description: 'equals' },
+  neq: { symbol: '≠', description: 'not equals' },
+  lt: { symbol: '<', description: 'less than' },
+  lte: { symbol: '≤', description: 'less than or equal to' },
+  gt: { symbol: '>', description: 'greater than' },
+  gte: { symbol: '≥', description: 'greater than or equal to' },
+  between: { symbol: '⟷', description: 'between (range)' },
+  has_component: { symbol: '✓', description: 'has component' },
+  not_has_component: { symbol: '✗', description: 'does not have component' },
+  like: { symbol: '∋', description: 'contains' },
+  not_regexp: { symbol: '∌', description: 'does not contain' },
+};
+
+export const operatorsToRQBOperatorOptionsMapper = (operators?: string[]): FullOperator[] => {
+  return (operators ?? []).map((operator) => {
+    const { symbol, description } = OPERATOR_MAP[operator] || { symbol: operator, description: operator };
+    const rqbOperator = SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP[operator] ?? operator;
+    return {
+      name: rqbOperator,
+      label: `${symbol} ${description}`,
+      value: rqbOperator,
+      ...(RQB_UNARY_OPERATORS.includes(rqbOperator) && { arity: 'unary' }),
+    };
+  });
+};
+
+export const onAddGroupHandler = (ruleGroup: RuleGroupType): RuleGroupType => {
+  const [firstRule] = ruleGroup.rules;
+  return firstRule ? { ...ruleGroup, rules: [...ruleGroup.rules, { ...firstRule, id: generateID() }] } : ruleGroup;
 };

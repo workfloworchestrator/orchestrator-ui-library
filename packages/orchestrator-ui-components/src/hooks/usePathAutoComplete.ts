@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useLazySearchPathsQuery, useSearchDefinitionsQuery, useSearchPathsQuery } from '@/rtk/endpoints';
 import { EntityKind, PathAutocompleteResponse, PathInfo, value_schema } from '@/types';
@@ -97,35 +97,30 @@ const mapPathAutocompleteResponseToPathInfos = (
 };
 
 export const usePathAutocomplete = (prefix: string, entityType: EntityKind) => {
-  const [paths, setPaths] = useState<PathInfo[]>([]);
   const debouncedPrefix = useDebounce(prefix, 300);
   const { data: definitions = FALLBACK_DEFINITIONS, isError: defError } = useSearchDefinitionsQuery();
 
   const {
     data: pathData,
-    isLoading,
+    isFetching,
     isError,
   } = useSearchPathsQuery({ q: debouncedPrefix, entity_type: entityType }, { skip: debouncedPrefix.length < 1 });
 
-  useEffect(() => {
-    if (debouncedPrefix.length < 1) {
-      setPaths([]);
-      return;
-    }
+  const paths = useMemo(
+    () =>
+      debouncedPrefix.length < 1 || !pathData ? [] : mapPathAutocompleteResponseToPathInfos(pathData, definitions),
+    [pathData, definitions, debouncedPrefix.length],
+  );
 
-    if (!pathData) {
-      return;
-    }
-
-    setPaths(mapPathAutocompleteResponseToPathInfos(pathData, definitions));
-  }, [pathData, definitions, debouncedPrefix?.length]);
+  const isDebouncing = prefix.length >= 1 && prefix !== debouncedPrefix;
+  const loading = isDebouncing || isFetching;
 
   const errorMessage =
     isError ? 'Failed to load paths'
     : defError ? 'Failed to load definitions'
     : null;
 
-  return { paths, loading: isLoading, error: errorMessage };
+  return { paths, loading, error: errorMessage };
 };
 
 /**
