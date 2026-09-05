@@ -1,13 +1,36 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { FieldSelectorProps, defaultPlaceholderFieldName } from 'react-querybuilder';
+
+
 
 import { useTranslations } from 'next-intl';
 
+
+
 import type { EuiComboBoxOptionOption } from '@elastic/eui';
-import { EuiComboBox } from '@elastic/eui';
+import { EuiComboBox, EuiLoadingSpinner, EuiText } from '@elastic/eui';
+
+
 
 import { usePathAutocomplete } from '@/hooks';
 import { EntityKind, PathInfo, WfoQueryBuilderContext } from '@/types';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // react-querybuilder applies the `.rule` class to the rule container and `.rule-value` to
 // the value-editor cell (see `standardClassnames` in @react-querybuilder/core). We hop from
@@ -38,7 +61,9 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
   const { field } = rule;
   const { useAdvancedNestedSearch, prefilledFieldOptions, onFieldSelected } = context;
   const [autoFocus] = useState(field === defaultPlaceholderFieldName);
-  const [selectedValue, setSelectedValue] = useState<string>(field);
+  const selectedField = field === defaultPlaceholderFieldName ? '' : field;
+  const [searchTerm, setSearchTerm] = useState('');
+  const [hasFocus, setHasFocus] = useState(false);
   const [searchInput, setSearchInput] = useState<HTMLInputElement | null>(null);
   const optionsRef = useRef<EuiComboBoxOptionOption<string>[]>([]);
   const handleFieldSelectionRef = useRef<(selected: EuiComboBoxOptionOption<string>[]) => void>(() => {});
@@ -50,39 +75,50 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
 
   const isSelectablePath = (path: string) => useAdvancedNestedSearch || !path.includes('.');
 
-  const getOptionsFromPathInfo = (pathInfos: PathInfo[]): EuiComboBoxOptionOption<string>[] => {
-    const pathOptions: EuiComboBoxOptionOption<string>[] = [];
-
-    pathInfos.forEach((pathInfo) => {
-      [pathInfo.path, ...(pathInfo.availablePaths ?? [])].filter(isSelectablePath).forEach((path) => {
-        pathOptions.push(getOption(path));
-      });
-    });
-    return (
-      pathOptions.length > 0 ? pathOptions
-      : selectedValue ? [getOption(selectedValue)]
-      : []
+  const getOptionsFromPathInfo = (pathInfos: PathInfo[]): EuiComboBoxOptionOption<string>[] =>
+    pathInfos.flatMap((pathInfo) =>
+      [pathInfo.path, ...(pathInfo.availablePaths ?? [])].filter(isSelectablePath).map(getOption),
     );
-  };
 
+  const trimmedSearchTerm = searchTerm.trim();
+  const autocompletePrefix = trimmedSearchTerm || (hasFocus ? selectedField : '');
   const {
     paths,
     loading: isLoading,
     error: errorMessage,
-  } = usePathAutocomplete(selectedValue, EntityKind.SUBSCRIPTION);
+  } = usePathAutocomplete(autocompletePrefix, EntityKind.SUBSCRIPTION);
 
-  const prefilledOptions: EuiComboBoxOptionOption<string>[] = Array.from(prefilledFieldOptions.keys()).map(getOption);
-  const autocompleteOptions = getOptionsFromPathInfo(paths);
-  const placeholderOption: EuiComboBoxOptionOption<string> = {
-    label: '──────',
+  const matchesPrefix = (path: string) => path.toLowerCase().includes(autocompletePrefix.toLowerCase());
+
+  const prefilledFields = Array.from(prefilledFieldOptions.keys()).filter(matchesPrefix);
+  const autocompleteOptions = getOptionsFromPathInfo(paths).filter(
+    (option) => !prefilledFields.includes(option.value ?? ''),
+  );
+
+  const startTypingHintOption: EuiComboBoxOptionOption<string> = {
+    label: t('startTypingToLoadOptions'),
     disabled: true,
   };
-  const showPlaceholder = prefilledOptions.length > 0 && autocompleteOptions.length > 0;
-  const options: EuiComboBoxOptionOption<string>[] = [
-    ...prefilledOptions,
-    ...(showPlaceholder ? [placeholderOption] : []),
-    ...autocompleteOptions,
-  ];
+  const options: EuiComboBoxOptionOption<string>[] =
+    autocompletePrefix ? [...prefilledFields.map(getOption), ...autocompleteOptions] : [startTypingHintOption];
+
+  const renderHintOption = (option: EuiComboBoxOptionOption<string>) => (
+    <EuiText size="xs" color="default">
+      {option.label}
+    </EuiText>
+  );
+  const normalizedSearchTerm = trimmedSearchTerm.toLowerCase();
+  const hasListedOptions = autocompletePrefix !== ''
+    && options.some(
+      (option) =>
+        !option.disabled && option.value !== selectedField && option.label.toLowerCase().includes(normalizedSearchTerm),
+    );
+  const showLoadingState = isLoading && !hasListedOptions;
+  const showFieldSpinner = isLoading && hasListedOptions;
+  const fieldIconsContainer = useMemo(
+    () => searchInput?.closest('.euiFormControlLayout')?.querySelector('.euiFormControlLayoutIcons') ?? null,
+    [searchInput],
+  );
 
   const storeFieldOperators = (selectedValue: string) => {
     const matchingPath =
@@ -96,7 +132,7 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
   const handleFieldSelection = (selectedOptions: EuiComboBoxOptionOption<string>[]) => {
     const selectedOption = selectedOptions[0];
     const selectedValue = selectedOption?.value || '';
-    setSelectedValue(selectedValue);
+    setSearchTerm('');
     storeFieldOperators(selectedValue);
 
     handleOnChange(selectedValue);
@@ -144,27 +180,31 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
   }, [searchInput]);
 
   return (
-    <EuiComboBox
-      placeholder={t('searchFieldsPlaceholder')}
-      options={options}
-      fullWidth={true}
-      selectedOptions={options.filter((option) => option.value === selectedValue)}
-      onChange={(selectedOptions) => {
-        handleFieldSelection(selectedOptions);
-      }}
-      onSearchChange={(inputValue) => {
-        if (inputValue.length > 0) {
-          setSelectedValue(inputValue);
-        }
-      }}
-      inputRef={setSearchInput}
-      autoFocus={autoFocus}
-      singleSelection={{ asPlainText: true }}
-      isLoading={isLoading}
-      isClearable
-      isInvalid={!!errorMessage}
-      isDisabled={disabled}
-      rowHeight={30}
-    />
+    <>
+      {showFieldSpinner
+        && fieldIconsContainer
+        && createPortal(<EuiLoadingSpinner size="m" aria-label={t('loadingOptions')} />, fieldIconsContainer)}
+      <EuiComboBox
+        placeholder={t('searchFieldsPlaceholder')}
+        options={options}
+        renderOption={autocompletePrefix ? undefined : renderHintOption}
+        fullWidth={true}
+        selectedOptions={selectedField ? [getOption(selectedField)] : []}
+        onChange={(selectedOptions) => {
+          handleFieldSelection(selectedOptions);
+        }}
+        onSearchChange={setSearchTerm}
+        onFocus={() => setHasFocus(true)}
+        onBlur={() => setHasFocus(false)}
+        inputRef={setSearchInput}
+        autoFocus={autoFocus}
+        singleSelection={{ asPlainText: true }}
+        isLoading={showLoadingState}
+        isClearable
+        isInvalid={!!errorMessage}
+        isDisabled={disabled}
+        rowHeight={30}
+      />
+    </>
   );
 };
