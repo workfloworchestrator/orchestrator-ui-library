@@ -24,7 +24,6 @@ export const WfoRangeEditor = ({ handleOnChange, InputElement, value: currentVal
     });
   };
 
-  // Notify the parent only when both ends of the range hold a value
   useEffect(() => {
     if (value[0] !== undefined && value[1] !== undefined) {
       handleOnChange(`${value[0]},${value[1]}`);

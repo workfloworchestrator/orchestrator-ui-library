@@ -168,6 +168,12 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     padding: `${theme.base / 8}px ${theme.base / 4}px`,
   });
 
+  const applyFilterContentStyles = css({
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: theme.base / 2,
+  });
+
   const expandingRowFieldStyles = css({
     display: 'flex',
     padding: `${theme.base / 8}px ${theme.base / 4}px`,
@@ -193,6 +199,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     ruleGroupBodyGridStyles,
     hideExpandedRowStyle,
     expandingRowFieldStyles,
+    applyFilterContentStyles,
     dotStyles,
   };
 };

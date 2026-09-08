@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { FieldSelectorProps } from 'react-querybuilder';
+import { FieldSelectorProps, defaultPlaceholderFieldName } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
@@ -37,6 +37,7 @@ interface WfoFieldSelectorProps extends Omit<FieldSelectorProps, 'context'> {
 export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, disabled, rule, context }) => {
   const { field } = rule;
   const { useAdvancedNestedSearch, prefilledFieldOptions, onFieldSelected } = context;
+  const [autoFocus] = useState(field === defaultPlaceholderFieldName);
   const [selectedValue, setSelectedValue] = useState<string>(field);
   const [searchInput, setSearchInput] = useState<HTMLInputElement | null>(null);
   const optionsRef = useRef<EuiComboBoxOptionOption<string>[]>([]);
@@ -157,6 +158,7 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
         }
       }}
       inputRef={setSearchInput}
+      autoFocus={autoFocus}
       singleSelection={{ asPlainText: true }}
       isLoading={isLoading}
       isClearable

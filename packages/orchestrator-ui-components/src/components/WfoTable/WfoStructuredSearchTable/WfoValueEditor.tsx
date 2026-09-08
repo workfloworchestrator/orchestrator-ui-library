@@ -85,7 +85,9 @@ const TextEditor = ({ handleOnChange, value: currentValue = '' }: EditorInputFie
   const [value, setValue] = useState<string>(currentValue);
 
   const handleTextChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValue(e.target.value || '');
+    const nextValue = e.target.value || '';
+    setValue(nextValue);
+    handleOnChange(nextValue);
   };
 
   const handleOnBlur = () => {
@@ -105,7 +107,11 @@ const NumberEditor = ({ handleOnChange, value: currentValue }: EditorInputFieldP
   const [value, setValue] = useState<string>(currentValue?.toString() || '');
 
   const handleNumberChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValue(e.target.value || '');
+    const nextValue = e.target.value || '';
+    setValue(nextValue);
+    const numberValue = parseFloat(nextValue);
+    if (Number.isNaN(numberValue)) return;
+    handleOnChange(numberValue);
   };
 
   const handleOnBlur = () => {
@@ -193,21 +199,11 @@ export const WfoValueEditor = ({
     return <InputElement handleOnChange={handleOnChange} value={value} />;
   };
 
-  const handleWrapperKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.key !== 'Enter') return;
-    // Restrict to the editor inputs: the editors' own Enter handlers have already run
-    // (bubble phase) and committed the value via blur, so the search sees it. Enter on
-    // the boolean buttons means "select" — its click fires only after this keydown, so
-    // searching there would use the pre-toggle value.
-    if (!(event.target instanceof HTMLInputElement)) return;
-    queryBuilderContext?.onValueEditorEnter();
-  };
-
   // react-querybuilder delivers the standard `rule-value` class via this prop; the wrapper
   // makes it queryable in the DOM (WfoFieldSelector relies on it to move focus here).
   // `display: contents` keeps the children direct participants in the rule's flex row.
   return (
-    <div className={className} style={{ display: 'contents' }} onKeyDown={handleWrapperKeyDown}>
+    <div className={className} style={{ display: 'contents' }}>
       {getEditor()}
     </div>
   );
