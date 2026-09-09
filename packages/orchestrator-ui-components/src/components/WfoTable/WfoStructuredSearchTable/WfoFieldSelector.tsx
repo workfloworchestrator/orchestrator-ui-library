@@ -2,35 +2,13 @@ import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FieldSelectorProps, defaultPlaceholderFieldName } from 'react-querybuilder';
 
-
-
 import { useTranslations } from 'next-intl';
-
-
 
 import type { EuiComboBoxOptionOption } from '@elastic/eui';
 import { EuiComboBox, EuiLoadingSpinner, EuiText } from '@elastic/eui';
 
-
-
 import { usePathAutocomplete } from '@/hooks';
 import { EntityKind, PathInfo, WfoQueryBuilderContext } from '@/types';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // react-querybuilder applies the `.rule` class to the rule container and `.rule-value` to
 // the value-editor cell (see `standardClassnames` in @react-querybuilder/core). We hop from
@@ -108,7 +86,8 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
     </EuiText>
   );
   const normalizedSearchTerm = trimmedSearchTerm.toLowerCase();
-  const hasListedOptions = autocompletePrefix !== ''
+  const hasListedOptions =
+    autocompletePrefix !== ''
     && options.some(
       (option) =>
         !option.disabled && option.value !== selectedField && option.label.toLowerCase().includes(normalizedSearchTerm),
