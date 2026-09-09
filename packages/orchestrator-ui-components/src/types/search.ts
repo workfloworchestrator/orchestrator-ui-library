@@ -35,7 +35,7 @@ export type PaginatedSearchResults = {
     total_items: number;
     start_cursor: number;
     end_cursor: number;
-  };
+  } | null;
   page_info: {
     has_next_page: boolean;
     next_page_cursor: string | null;

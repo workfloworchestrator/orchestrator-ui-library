@@ -49,5 +49,8 @@ packages/pydantic-forms
 #storybook
 storybook-static
 
+#claude
+.claude/settings.json
+
 # Temporary fix for surf version
 apps/wfo-ui-surf
