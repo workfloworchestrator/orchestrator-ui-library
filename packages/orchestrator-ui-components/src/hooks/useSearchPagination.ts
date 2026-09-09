@@ -51,7 +51,7 @@ export const useSearchPagination = (
         {
           page: currentPage,
           results: results.data,
-          cursor: results.cursor.start_cursor,
+          cursor: results.cursor?.start_cursor ?? null,
         },
       ]);
 

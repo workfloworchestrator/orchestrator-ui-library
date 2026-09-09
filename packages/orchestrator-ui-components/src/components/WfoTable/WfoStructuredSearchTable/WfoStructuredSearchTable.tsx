@@ -307,12 +307,12 @@ export const WfoStructuredSearchTable = <T extends object>({
         {...tableProps}
       />
 
-      {totalItems && (
+      {(totalItems || data.length > 0) && (
         <EuiFlexGroup alignItems={'center'} justifyContent={'center'} css={{ padding: theme.base }}>
           <EuiButton onClick={() => onShowMore()} disabled={!hasNextPage || isLoading}>
             {t('loadMore')}
           </EuiButton>
-          <div>{`${data.length}/${totalItems} records`}</div>
+          <div>{totalItems ? `${data.length}/${totalItems} records` : `${data.length} records`}</div>
         </EuiFlexGroup>
       )}
 
