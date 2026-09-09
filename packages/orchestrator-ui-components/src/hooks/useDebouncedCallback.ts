@@ -9,6 +9,7 @@ export type DebouncedPendingRun = {
 
 interface DebouncedCallback {
   trigger: (delay?: number) => void;
+  cancel: () => void;
   pendingRun?: DebouncedPendingRun;
 }
 
@@ -38,5 +39,10 @@ export function useDebouncedCallback(callback: () => void): DebouncedCallback {
     }, delay);
   }, []);
 
-  return { trigger, pendingRun };
+  const cancel = useCallback(() => {
+    clearTimeout(timeoutRef.current);
+    setPendingRun(undefined);
+  }, []);
+
+  return { trigger, cancel, pendingRun };
 }

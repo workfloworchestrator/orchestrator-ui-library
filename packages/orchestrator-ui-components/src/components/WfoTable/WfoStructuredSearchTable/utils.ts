@@ -19,7 +19,11 @@ export const useSearchWithDebouncedCallback = ({
   isValidFilterString,
   searchCallback,
 }: SearchWithDebouncedCallbackProps) => {
-  const { trigger: triggerSearch, pendingRun: pendingSearchRun } = useDebouncedCallback(searchCallback);
+  const {
+    trigger: triggerSearch,
+    cancel: cancelSearch,
+    pendingRun: pendingSearchRun,
+  } = useDebouncedCallback(searchCallback);
   const lastFilterStringRef = useRef(filterString);
 
   const handleSubmitSearchOnClick = () => {
@@ -32,10 +36,14 @@ export const useSearchWithDebouncedCallback = ({
     const hasFilterStringChanged = filterString !== lastFilterStringRef.current;
     lastFilterStringRef.current = filterString;
 
-    if (hasFilterStringChanged && isValidFilterString) {
+    if (!hasFilterStringChanged) return;
+
+    if (isValidFilterString) {
       triggerSearch(FILTER_CHANGE_DEBOUNCE_DELAY);
+    } else {
+      cancelSearch();
     }
-  }, [filterString, isValidFilterString, triggerSearch]);
+  }, [filterString, isValidFilterString, triggerSearch, cancelSearch]);
 
   // Enter applies the filter exactly like that button; Shift+Enter is left alone so it can
   // insert a newline in a textarea.
