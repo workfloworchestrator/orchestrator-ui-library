@@ -1,3 +1,4 @@
+import { euiFontSizeFromScale, euiLineHeightFromBaseline } from '@elastic/eui';
 import { css } from '@emotion/react';
 
 import type { WfoThemeHelpers } from '@/hooks';
@@ -114,15 +115,23 @@ export const getCommonFormFieldStyles = ({ theme }: WfoThemeHelpers) => {
       color: theme.colors.textParagraph,
     },
     '.euiFormLabel': {
-      color: theme.colors.textParagraph,
+      fontSize: euiFontSizeFromScale('m', theme),
+      lineHeight: euiLineHeightFromBaseline('m', theme),
+      color: theme.colors.link,
       cursor: 'text',
-      '&.euiFormLabel-isFocused': {
-        color: theme.colors.textPrimary,
+      '&.euiFormLabel-isInvalid': {
+        color: theme.colors.textDanger,
       },
     },
     '.euiFormRow__labelWrapper': {
       display: 'flex',
       flexDirection: 'column',
+      '> .euiText': {
+        fontSize: euiFontSizeFromScale('s', theme),
+        lineHeight: euiLineHeightFromBaseline('s', theme),
+        fontWeight: theme.font.weight.regular,
+        color: theme.colors.textParagraph,
+      },
     },
   });
 
