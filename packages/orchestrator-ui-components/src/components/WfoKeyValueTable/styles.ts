@@ -63,8 +63,32 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     color: theme.colors.textParagraph,
     display: 'flex',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: theme.size.s,
     overflowWrap: 'anywhere',
     whiteSpace: 'pre-wrap',
+
+    '& > *': {
+      maxWidth: '100%',
+      flexGrow: 1,
+    },
+
+    '& > .euiBadge + .euiBadge': {
+      marginInlineStart: 0,
+    },
+
+    '&:has(.euiInlineEdit), & > :has(.euiInlineEdit)': {
+      flexGrow: 1,
+    },
+
+    '.euiInlineEditText .euiButtonEmpty': {
+      blockSize: 'auto',
+      whiteSpace: 'normal',
+      textAlign: 'start',
+    },
+    '.euiInlineEditText .eui-textTruncate': {
+      whiteSpace: 'pre-wrap !important',
+    },
   });
 
   const clipboardIconStyle = css({
