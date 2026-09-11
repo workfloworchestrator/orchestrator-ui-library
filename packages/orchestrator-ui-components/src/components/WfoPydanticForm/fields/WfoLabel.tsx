@@ -2,6 +2,8 @@ import React from 'react';
 
 import { PydanticFormElement } from 'pydantic-forms';
 
+import { euiFontSizeFromScale } from '@elastic/eui';
+
 import { useOrchestratorTheme } from '@/hooks';
 
 export const WfoLabel: PydanticFormElement = ({ pydanticFormField }) => {
@@ -11,7 +13,9 @@ export const WfoLabel: PydanticFormElement = ({ pydanticFormField }) => {
     <div data-testid={pydanticFormField.id}>
       <label
         css={{
-          color: theme.colors.textParagraph,
+          fontSize: euiFontSizeFromScale('m', theme),
+          fontWeight: theme.font.weight.semiBold,
+          color: theme.colors.link,
           display: 'block',
         }}
         id={pydanticFormField.id}
