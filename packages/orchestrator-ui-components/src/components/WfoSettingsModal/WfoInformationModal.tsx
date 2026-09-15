@@ -14,11 +14,12 @@ export type WfoInformationModalProps = {
   title: string;
   onClose: () => void;
   children: ReactNode;
+  maxWidth?: number;
 };
 
-export const WfoInformationModal: FC<WfoInformationModalProps> = ({ title, onClose, children }) => {
+export const WfoInformationModal: FC<WfoInformationModalProps> = ({ title, onClose, children, maxWidth }) => {
   return (
-    <EuiModal onClose={onClose}>
+    <EuiModal onClose={onClose} maxWidth={maxWidth}>
       <EuiModalHeader>
         <EuiModalHeaderTitle size="xs">{title}</EuiModalHeaderTitle>
       </EuiModalHeader>

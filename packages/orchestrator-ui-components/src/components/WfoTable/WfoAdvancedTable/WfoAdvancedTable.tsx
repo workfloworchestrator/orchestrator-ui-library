@@ -190,7 +190,11 @@ export const WfoAdvancedTable = <T extends object>({
       )}
 
       {rowDetailData && (
-        <WfoInformationModal title={detailModalTitle} onClose={() => setSelectedDataForDetailModal(undefined)}>
+        <WfoInformationModal
+          title={detailModalTitle}
+          onClose={() => setSelectedDataForDetailModal(undefined)}
+          maxWidth={theme.breakpoint.m}
+        >
           <WfoKeyValueTable keyValues={rowDetailData} showCopyToClipboardIcon />
         </WfoInformationModal>
       )}
