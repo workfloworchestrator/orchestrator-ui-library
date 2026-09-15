@@ -1,5 +1,14 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 8.9.3
+
+### Patch Changes
+
+- 6728684: 239 Fix layout issues with modal. Fix inline note edit inside modal.
+- 6dc59e1: 221 Show Load More button even if cursor is null
+- 9443cc8: 240 Update CSS of Pydantic form labels to blue font and bigger size
+- 33a8fa4: 210 Add submit with return key search page + add debouncer on input
+
 ## 8.9.2
 
 ### Patch Changes
