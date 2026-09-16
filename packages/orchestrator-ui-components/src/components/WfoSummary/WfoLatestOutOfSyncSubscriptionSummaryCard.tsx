@@ -20,8 +20,8 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
 
   const queryParams = {
     [WfoQueryParams.ACTIVE_TAB]: WfoSubscriptionListTab.ALL,
-    [WfoQueryParams.SORT_BY]: 'field-startDate_order-ASC',
-    [WfoQueryParams.QUERY_STRING]: 'status:(provisioning|active) insync:false',
+    [WfoQueryParams.FILTER_STRING]:
+      'subscription.insync == false && (subscription.status == "provisioning" || subscription.status == "active")',
   };
 
   return (
