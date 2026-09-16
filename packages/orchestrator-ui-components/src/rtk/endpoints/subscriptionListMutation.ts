@@ -1,6 +1,31 @@
-import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
 import { SubscriptionDetailResponse, SubscriptionListResponse, orchestratorApi } from '@/rtk';
-import { GraphqlQueryVariables } from '@/types';
+import { PaginatedSearchResults } from '@/types';
+
+const SEARCH_NOTE_COLUMN = 'subscription.note';
+const SEARCH_ID_COLUMN = 'subscription.subscription_id';
+
+// The note edit is rendered by both the GraphQL based lists (surf NMS pages) and the search based
+// subscriptions list, whose cached responses have a different shape. The draft is inspected
+// instead of typed per caller so the note edit needs no knowledge of the query behind it.
+const patchNoteInDraft = (
+  draft: SubscriptionListResponse | PaginatedSearchResults,
+  subscriptionId: string,
+  note: string,
+) => {
+  if ('subscriptions' in draft) {
+    const subscription = draft.subscriptions.find((item) => item.subscriptionId === subscriptionId);
+    if (subscription) {
+      subscription.note = note;
+    }
+    return;
+  }
+  const searchResult = draft.data?.find(
+    ({ response_columns }) => response_columns[SEARCH_ID_COLUMN] === subscriptionId,
+  );
+  if (searchResult) {
+    searchResult.response_columns[SEARCH_NOTE_COLUMN] = note;
+  }
+};
 
 const subscriptionListMutationApi = orchestratorApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,26 +34,18 @@ const subscriptionListMutationApi = orchestratorApi.injectEndpoints({
       {
         queryName: string;
         subscriptionId: string;
-        graphQlQueryVariables: GraphqlQueryVariables<SubscriptionListItem>;
+        queryVariables: object;
         note: string;
       }
     >({
       queryFn: async () => ({ data: { mockResponse: true } }),
-      async onQueryStarted(
-        { queryName, subscriptionId, graphQlQueryVariables, ...patch },
-        { dispatch, queryFulfilled },
-      ) {
+      async onQueryStarted({ queryName, subscriptionId, queryVariables, note }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           subscriptionListMutationApi.util.updateQueryData(
             // @ts-expect-error - queryName is a runtime string, not a known endpoint name
             queryName,
-            graphQlQueryVariables,
-            (draft: SubscriptionListResponse) => {
-              const subscription = draft.subscriptions.find((item) => item.subscriptionId === subscriptionId);
-              if (subscription) {
-                subscription.note = patch.note;
-              }
-            },
+            queryVariables,
+            (draft: SubscriptionListResponse | PaginatedSearchResults) => patchNoteInDraft(draft, subscriptionId, note),
           ),
         );
         try {
@@ -46,7 +63,7 @@ const subscriptionListMutationApi = orchestratorApi.injectEndpoints({
       async onQueryStarted({ queryName, subscriptionId, ...patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           subscriptionListMutationApi.util.updateQueryData(
-            // @ts-expect-error - Suggest ts ignore because of the type mismatch between emptyDetailQuery and queryName
+            // @ts-expect-error - queryName is a runtime string, not a known endpoint name
             queryName,
             { subscriptionId: subscriptionId },
             (draft: SubscriptionDetailResponse) => {

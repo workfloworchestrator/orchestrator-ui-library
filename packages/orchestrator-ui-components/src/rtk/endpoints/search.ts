@@ -1,6 +1,7 @@
 import { getEndpointPath } from '@/components/WfoSearchPage/utils';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
+  CacheTagType,
   EntityKind,
   Filter,
   PaginatedSearchResults,
@@ -8,6 +9,7 @@ import {
   RetrieverType,
   value_schema,
 } from '@/types';
+import { getCacheTag } from '@/utils';
 
 export interface SearchPayload {
   order_by?: {
@@ -72,6 +74,7 @@ const searchApi = orchestratorApi.injectEndpoints({
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },
+      providesTags: getCacheTag(CacheTagType.subscriptions),
     }),
     searchWithPagination: build.mutation<PaginatedSearchResults, SearchPaginationPayload>({
       query: ({ cursor, entity_type, query, filters, limit, retriever }) => ({
