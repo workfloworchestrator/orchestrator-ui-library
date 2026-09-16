@@ -551,7 +551,6 @@
     },
     "index": {
       "customerFullname": "Klant",
-      "customerId": "Klant ID",
       "customerShortcode": "Klantafkorting",
       "description": "Beschrijving",
       "endDate": "Einddatum",

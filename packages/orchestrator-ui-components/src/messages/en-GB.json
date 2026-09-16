@@ -551,7 +551,6 @@
     },
     "index": {
       "customerFullname": "Customer",
-      "customerId": "Customer ID",
       "customerShortcode": "Customer abbr",
       "description": "Description",
       "endDate": "End date",

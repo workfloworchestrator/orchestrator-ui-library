@@ -5,6 +5,7 @@ export enum WfoQueryParams {
   SORT_BY = 'sortBy',
   FILTER_BY = 'filterBy',
   QUERY_STRING = 'queryString',
+  FILTER_STRING = 'filterString',
 }
 
 export const getUrlWithQueryParams = (url: string, params: Partial<Record<WfoQueryParams, string>>) => {

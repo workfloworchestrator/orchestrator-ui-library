@@ -1,6 +1,6 @@
 /**
  * Regression test for the URL-restore render loop: a controlled QueryBuilder wired like
- * WfoSearchPocPage + WfoFilterBuilder, restoring `lldp == true` from CEL while the path
+ * WfoSubscriptionsListPage + WfoFilterBuilder, restoring `lldp == true` from CEL while the path
  * info of `lldp` resolves asynchronously (boolean ui type + operator list).
  *
  * The rule group is deliberately created with parseCEL directly — without the rule ids
@@ -80,7 +80,7 @@ const Harness = ({ initialCel = 'lldp == true' }: { initialCel?: string }) => {
       onQueryChange={(ruleGroup: RuleGroupType) => {
         queryChangeLog.push(JSON.stringify(ruleGroup));
         if (queryChangeLog.length > 20) return;
-        // Mirrors WfoSearchPocPage.onUpdateQueryBuilder
+        // Mirrors WfoSubscriptionsListPage.onUpdateQueryBuilder
         setQuery({ ...ruleGroup });
         setFilterString(formatQuery({ ...ruleGroup }, { format: 'cel', fallbackExpression: '' }));
       }}
