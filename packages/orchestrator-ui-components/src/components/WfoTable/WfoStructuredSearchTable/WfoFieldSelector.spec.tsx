@@ -56,7 +56,6 @@ const renderFieldSelector = (field: string = defaultPlaceholderFieldName) => {
   const onFieldSelected = jest.fn();
   const context: WfoQueryBuilderContext = {
     onFieldSelected,
-    prefilledFieldOptions: PREFILLED_FIELD_OPTIONS,
     fieldPathInfoMap: new Map(),
     useAdvancedNestedSearch: true,
   };

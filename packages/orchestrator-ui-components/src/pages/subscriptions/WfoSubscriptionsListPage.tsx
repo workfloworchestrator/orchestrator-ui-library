@@ -37,14 +37,7 @@ import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
-import {
-  EntityKind,
-  FieldToOperatorMap,
-  PaginatedSearchResults,
-  ResultColumToPropertyMap,
-  RetrieverType,
-  SortOrder,
-} from '@/types';
+import { EntityKind, PaginatedSearchResults, ResultColumToPropertyMap, RetrieverType, SortOrder } from '@/types';
 import { getCsvFileNameWithDate, initiateCsvFileDownload, parseDateToLocaleDateTimeString } from '@/utils';
 
 const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
@@ -124,21 +117,6 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
   ['subscription.end_date', 'endDate'],
   ['subscription.note', 'note'],
   ['subscription.metadata', 'metadata'],
-]);
-
-/* These options will be added as the first options in the field dropdown in the FieldSelector */
-const prefilledFieldOptions: FieldToOperatorMap = new Map([
-  ['subscription.subscription_id', ['eq', 'neq', 'like', 'not_regexp']],
-  ['subscription.description', ['eq', 'neq', 'like', 'not_regexp']],
-  ['subscription.status', ['eq', 'neq', 'like', 'not_regexp']],
-  ['subscription.insync', ['eq', 'neq']],
-  ['subscription.product.name', ['eq', 'neq', 'like', 'not_regexp']],
-  ['subscription.product.tag', ['eq', 'neq', 'like', 'not_regexp']],
-  ['subscription.customer_name', ['eq', 'neq', 'like', 'not_regexp']],
-  ['subscription.customer_abbreviation', ['eq', 'neq', 'like', 'not_regexp']],
-  ['subscription.start_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
-  ['subscription.end_date', ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'between']],
-  ['subscription.note', ['eq', 'neq', 'like', 'not_regexp']],
 ]);
 
 export const WfoSubscriptionsListPage = () => {
@@ -567,7 +545,6 @@ export const WfoSubscriptionsListPage = () => {
         setPageSize={onUpdatePageSize}
         totalItems={totalItems}
         hasNextPage={hasNextPage}
-        prefilledFieldOptions={prefilledFieldOptions}
         onExportData={exportData}
       />
     </>
