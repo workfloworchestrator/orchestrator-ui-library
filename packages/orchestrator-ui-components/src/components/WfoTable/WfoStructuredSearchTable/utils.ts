@@ -1,5 +1,5 @@
 import { type KeyboardEventHandler, useEffect, useRef } from 'react';
-import { FullOperator, RuleGroupType, generateID } from 'react-querybuilder';
+import { FullOperator, RuleGroupType, RuleType, generateID } from 'react-querybuilder';
 import { prepareRuleGroup } from 'react-querybuilder';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 
@@ -11,12 +11,14 @@ export const FILTER_CHANGE_DEBOUNCE_DELAY = 1000;
 interface SearchWithDebouncedCallbackProps {
   filterString?: string;
   isValidFilterString: boolean;
+  hasEmptyRuleValue?: boolean;
   searchCallback: () => void;
 }
 
 export const useSearchWithDebouncedCallback = ({
   filterString,
   isValidFilterString,
+  hasEmptyRuleValue = false,
   searchCallback,
 }: SearchWithDebouncedCallbackProps) => {
   const {
@@ -38,12 +40,12 @@ export const useSearchWithDebouncedCallback = ({
 
     if (!hasFilterStringChanged) return;
 
-    if (isValidFilterString) {
+    if (isValidFilterString && !hasEmptyRuleValue) {
       triggerSearch(FILTER_CHANGE_DEBOUNCE_DELAY);
     } else {
       cancelSearch();
     }
-  }, [filterString, isValidFilterString, triggerSearch, cancelSearch]);
+  }, [filterString, isValidFilterString, hasEmptyRuleValue, triggerSearch, cancelSearch]);
 
   // Enter applies the filter exactly like that button; Shift+Enter is left alone so it can
   // insert a newline in a textarea.
@@ -158,6 +160,28 @@ const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
 
 // Operators without a value; marking them unary makes react-querybuilder's Rule hide the value editor.
 const RQB_UNARY_OPERATORS = ['null', 'notNull'];
+
+const isEmptyValue = (rule: RuleType): boolean => {
+  const { value } = rule;
+  if (RQB_UNARY_OPERATORS.includes(rule.operator)) {
+    return false;
+  } else if (typeof value !== 'string') {
+    return value === undefined || value === null;
+  } else if (rule.operator === 'between') {
+    const rangeParts = value.split(',');
+    return rangeParts.length < 2 || rangeParts.some((rangePart) => rangePart.trim() === '');
+  }
+  return value.trim() === '';
+};
+
+/** True when any rule of the group, nested groups included, has an empty value editor. */
+export const hasNestedRuleWithEmptyValue = (ruleGroup?: RuleGroupType): boolean =>
+  !!ruleGroup?.rules.some((rule) => {
+    if (typeof rule === 'string') {
+      return false;
+    }
+    return 'rules' in rule ? hasNestedRuleWithEmptyValue(rule) : isEmptyValue(rule);
+  });
 
 const OPERATOR_MAP: Record<string, OperatorDisplay> = {
   eq: { symbol: '=', description: 'equals' },
