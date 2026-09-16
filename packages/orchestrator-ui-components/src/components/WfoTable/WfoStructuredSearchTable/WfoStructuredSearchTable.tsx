@@ -285,11 +285,12 @@ export const WfoStructuredSearchTable = <T extends object>({
             onToggleFilterBuilder={setIsFilterBuilderVisible}
             prefilledFieldOptions={prefilledFieldOptions}
             useAdvancedNestedSearch={advancedNestedSearch}
+            error={error}
           />
         </>
       )}
 
-      {error && <WfoErrorWithMessage error={error} />}
+      {error && !isFilterBuilderVisible && <WfoErrorWithMessage error={error} />}
 
       <EuiSpacer size="m" />
 

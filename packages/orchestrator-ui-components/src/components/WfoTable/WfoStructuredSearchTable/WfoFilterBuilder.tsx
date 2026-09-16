@@ -11,10 +11,11 @@ import { useTranslations } from 'next-intl';
 
 import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 
-import { SearchParams, WfoAutoExpandableTextArea, WfoTextAnchor } from '@/components';
+import { SearchParams, WfoAutoExpandableTextArea, WfoErrorWithMessage, WfoTextAnchor } from '@/components';
 import { WfoApplyFilterButton } from '@/components/WfoTable/WfoStructuredSearchTable/WfoApplyFilterButton';
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
+import type { WfoGraphqlError } from '@/rtk';
 import type { FieldToOperatorMap, PathInfo, WfoQueryBuilderContext } from '@/types';
 import { EntityKind } from '@/types';
 
@@ -43,6 +44,7 @@ interface WfoFilterBuilderProps {
   onToggleFilterBuilder: (isVisible: boolean) => void;
   prefilledFieldOptions: FieldToOperatorMap;
   useAdvancedNestedSearch?: boolean;
+  error?: WfoGraphqlError[];
 }
 
 const initialRuleGroup: RuleGroupType = {
@@ -61,6 +63,7 @@ export const WfoFilterBuilder = ({
   prefilledFieldOptions,
   onToggleFilterBuilder,
   useAdvancedNestedSearch = true,
+  error,
 }: WfoFilterBuilderProps) => {
   const t = useTranslations('common');
   const { queryBuilderContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
@@ -173,7 +176,7 @@ export const WfoFilterBuilder = ({
           />
         </EuiFlexItem>
 
-        <EuiFlexGroup direction={'rowReverse'} alignItems={'center'}>
+        <EuiFlexGroup direction={'rowReverse'} alignItems={'center'} gutterSize={'l'}>
           <WfoApplyFilterButton
             isDisabled={!isValidFilterString}
             pendingSearchRun={pendingSearchRun}
@@ -189,6 +192,7 @@ export const WfoFilterBuilder = ({
               onToggleFilterBuilder(false);
             }}
           />
+          <EuiFlexItem>{error && <WfoErrorWithMessage error={error} />}</EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlexGroup>
     </EuiFlexGroup>
