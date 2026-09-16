@@ -35,7 +35,7 @@ import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTa
 import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useStoredTableConfig } from '@/hooks';
-import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
+import { SearchPayload, mapRtkErrorToWfoError, useLazySearchQuery, useSearchQuery } from '@/rtk';
 import {
   EntityKind,
   FieldToOperatorMap,
@@ -228,7 +228,7 @@ export const WfoSearchPocPage = () => {
     };
   }, [committedQueryString, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
 
-  const { data, isFetching } = useSearchQuery(searchPayload);
+  const { data, isFetching, error } = useSearchQuery(searchPayload);
 
   const [getSubscriptionListTrigger] = useLazySearchQuery();
   const getSubscriptionListForExport = (exportLimit: number) =>
@@ -492,6 +492,8 @@ export const WfoSearchPocPage = () => {
       getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId', selectedTab)
     : { items: [] };
 
+  const searchError = isSearchBlocked ? undefined : mapRtkErrorToWfoError(error);
+
   const totalItems = !isSearchBlocked && getTotalItemsFromResponse(data);
   const hasNextPage = !isSearchBlocked && (data?.page_info?.has_next_page ?? false);
   const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
@@ -547,6 +549,7 @@ export const WfoSearchPocPage = () => {
         defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
         filterString={filterString}
         handleSearch={handleApplyFilter}
+        error={searchError}
         isLoading={isFetching}
         dataSorting={[dataSorting]}
         isValidFilterString={isValidFilterString}

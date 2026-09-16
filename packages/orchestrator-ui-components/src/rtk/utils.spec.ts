@@ -1,4 +1,4 @@
-import { stripUndefined } from '@/rtk/utils';
+import { mapRtkErrorToWfoError, stripUndefined } from '@/rtk/utils';
 
 describe('stripUndefined', () => {
   it('should remove properties with undefined values', () => {
@@ -80,5 +80,34 @@ describe('stripUndefined', () => {
     const result = stripUndefined(obj);
 
     expect(result).toEqual(obj);
+  });
+});
+
+describe('mapRtkErrorToWfoError', () => {
+  it('should return the detail of a rejected request', () => {
+    const detail =
+      '1 validation error for SelectQuery\n  Value error, Hybrid retriever requested but no query text provided.';
+
+    expect(mapRtkErrorToWfoError({ status: 422, data: { detail } })).toEqual([{ extensions: {}, message: detail }]);
+  });
+
+  it('should fall back to the status code when the response body has no detail', () => {
+    expect(mapRtkErrorToWfoError({ status: 500, data: {} })).toEqual([{ extensions: {}, message: '500' }]);
+  });
+
+  it('should fall back to the status code when the detail is not a string', () => {
+    const error = { status: 422, data: { detail: [{ loc: ['body', 'query'], msg: 'field required' }] } };
+
+    expect(mapRtkErrorToWfoError(error)).toEqual([{ extensions: {}, message: '422' }]);
+  });
+
+  it('should return the message of a serialized error', () => {
+    expect(mapRtkErrorToWfoError({ name: 'AbortError', message: 'Aborted' })).toEqual([
+      { extensions: {}, message: 'Aborted' },
+    ]);
+  });
+
+  it('should return undefined when there is no error', () => {
+    expect(mapRtkErrorToWfoError(undefined)).toBeUndefined();
   });
 });

@@ -58,10 +58,11 @@ export const mapRtkErrorToWfoError = (
       };
     });
   } else if (error && 'status' in error && error.status !== undefined) {
+    const detail = isRecord(error.data) && typeof error.data.detail === 'string' ? error.data.detail : undefined;
     return [
       {
         extensions: {},
-        message: String(error.status),
+        message: detail || String(error.status),
       },
     ];
   } else if (isSerializedError(error)) {

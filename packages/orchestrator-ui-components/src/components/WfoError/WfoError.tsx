@@ -17,7 +17,7 @@ export const WfoError = () => {
   const { theme } = useOrchestratorTheme();
   return (
     <EuiFlexGroup direction="row" alignItems="center" gutterSize="s">
-      <WfoXCircleFill color={theme.colors.danger} />
+      <WfoXCircleFill color={theme.colors.danger} width={32} height={32} />
       <h1>{t('errorMessage')}</h1>
     </EuiFlexGroup>
   );
@@ -30,7 +30,7 @@ export const WfoErrorWithMessage = ({ error }: WfoErrorWithMessageProps) => {
   return (
     <>
       <EuiFlexGroup direction="row" alignItems="center" gutterSize="s">
-        <WfoXCircleFill color={theme.colors.danger} />
+        <WfoXCircleFill color={theme.colors.danger} width={32} height={32} />
         <EuiText color={theme.colors.textDanger}>
           {t('errorMessage')} ({message})
         </EuiText>
