@@ -4,10 +4,6 @@ import { GraphqlQueryVariables } from '@/types';
 
 const subscriptionListMutationApi = orchestratorApi.injectEndpoints({
   endpoints: (builder) => ({
-    emptyQuery: builder.query<SubscriptionListResponse, GraphqlQueryVariables<SubscriptionListItem>>({
-      query: () => ({}),
-    }),
-    emptyDetailQuery: builder.query<SubscriptionDetailResponse, { subscriptionId: string }>({ query: () => ({}) }),
     updateSubscriptionNoteOptimistic: builder.mutation<
       { mockResponse: boolean },
       {
@@ -24,7 +20,7 @@ const subscriptionListMutationApi = orchestratorApi.injectEndpoints({
       ) {
         const patchResult = dispatch(
           subscriptionListMutationApi.util.updateQueryData(
-            // @ts-expect-error - Suggest ts ignore because of the type mismatch between emptyQuery and queryName
+            // @ts-expect-error - queryName is a runtime string, not a known endpoint name
             queryName,
             graphQlQueryVariables,
             (draft: SubscriptionListResponse) => {
