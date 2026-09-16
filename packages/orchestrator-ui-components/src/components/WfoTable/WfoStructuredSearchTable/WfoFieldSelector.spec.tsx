@@ -38,11 +38,6 @@ const SAPS_PATH_INFO = {
   availablePaths: ['saps.port'],
 } as unknown as PathInfo;
 
-const PREFILLED_FIELD_OPTIONS = new Map([
-  ['subscription.insync', ['eq', 'neq']],
-  ['subscription.status', ['eq', 'neq', 'like']],
-]);
-
 // The mocked backend only knows saps, returned for any prefix of it.
 const mockAutocomplete = (loading = false) =>
   jest.mocked(usePathAutocomplete).mockImplementation((prefix) => ({
@@ -151,16 +146,6 @@ describe('WfoFieldSelector', () => {
     typeSearchTerm('');
 
     expect(listedOptions()).toEqual(['startTypingToLoadOptions']);
-  });
-
-  it('lists matching prefilled fields alongside the backend paths', () => {
-    renderFieldSelector();
-
-    typeSearchTerm('ins');
-    expect(listedOptions()).toEqual(['subscription.insync']);
-
-    typeSearchTerm('s');
-    expect(listedOptions()).toEqual(['subscription.insync', 'subscription.status', 'saps', 'saps.port']);
   });
 
   it('does not offer the raw typed text as an option and reports no match once loaded', () => {

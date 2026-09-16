@@ -206,7 +206,7 @@ export const WfoSubscriptionsListPage = () => {
     };
   }, [committedQueryString, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
 
-  const { data, isFetching } = useSearchQuery(searchPayload);
+  const { data, isFetching, endpointName } = useSearchQuery(searchPayload);
 
   const [getSubscriptionListTrigger] = useLazySearchQuery();
   const getSubscriptionListForExport = (exportLimit: number) =>
@@ -298,8 +298,8 @@ export const WfoSubscriptionsListPage = () => {
         return (
           <WfoSubscriptionNoteEdit
             onlyShowOnHover={true}
-            endpointName={''}
-            queryVariables={{}}
+            endpointName={endpointName}
+            queryVariables={searchPayload}
             subscriptionId={row.subscriptionId}
             note={cellValue}
           />

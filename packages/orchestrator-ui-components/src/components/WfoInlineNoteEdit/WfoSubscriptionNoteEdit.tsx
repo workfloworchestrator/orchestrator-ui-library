@@ -8,7 +8,7 @@ import { INVISIBLE_CHARACTER } from '@/utils';
 
 interface WfoSubscriptionNoteEditProps {
   onlyShowOnHover?: boolean;
-  queryVariables: Record<string, unknown>;
+  queryVariables: object;
   endpointName: string | undefined;
   subscriptionId: string;
   note: string | null;
@@ -22,7 +22,7 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
   note,
 }) => {
   const [startProcess] = useStartProcessMutation();
-  const [updateSub] = useUpdateSubscriptionNoteOptimisticMutation();
+  const [updateSubscriptionNoteOptimistic] = useUpdateSubscriptionNoteOptimisticMutation();
 
   const triggerNoteModifyWorkflow = (note: string) => {
     const noteModifyPayload = [{ subscription_id: subscriptionId }, { note: note === INVISIBLE_CHARACTER ? '' : note }];
@@ -31,10 +31,10 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
       userInputs: noteModifyPayload,
     });
 
-    updateSub({
+    updateSubscriptionNoteOptimistic({
       queryName: endpointName ?? '',
       subscriptionId: subscriptionId,
-      graphQlQueryVariables: queryVariables,
+      queryVariables,
       note: note,
     });
   };
