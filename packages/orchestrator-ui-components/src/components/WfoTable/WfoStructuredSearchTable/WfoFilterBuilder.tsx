@@ -29,6 +29,7 @@ import { WfoValueEditor } from './WfoValueEditor';
 import { getWfoStructuredSearchTableStyles } from './styles';
 import {
   collectRuleFields,
+  hasNestedRuleWithEmptyValue,
   onAddGroupHandler,
   operatorsToRQBOperatorOptionsMapper,
   useSearchWithDebouncedCallback,
@@ -80,6 +81,7 @@ export const WfoFilterBuilder = ({
   const { handleSubmitSearchOnClick, pendingSearchRun, handleSubmitSearchOnEnter } = useSearchWithDebouncedCallback({
     filterString,
     isValidFilterString,
+    hasEmptyRuleValue: hasNestedRuleWithEmptyValue(queryBuilderRuleGroup),
     searchCallback: () => handleSearch({ ruleGroup: latestRuleGroupRef.current }),
   });
 
