@@ -30,7 +30,7 @@ import {
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
-import { FieldToOperatorMap, RetrieverType } from '@/types';
+import { RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
@@ -97,7 +97,6 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   setPageSize: (updatedPageSize: number) => void;
   totalItems: number | false;
   hasNextPage: boolean;
-  prefilledFieldOptions: FieldToOperatorMap;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -131,7 +130,6 @@ export const WfoStructuredSearchTable = <T extends object>({
   hasNextPage,
   data,
   isLoading,
-  prefilledFieldOptions,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
@@ -283,7 +281,6 @@ export const WfoStructuredSearchTable = <T extends object>({
             onUpdateQueryBuilder={onUpdateQueryBuilder}
             handleSearch={handleSearch}
             onToggleFilterBuilder={setIsFilterBuilderVisible}
-            prefilledFieldOptions={prefilledFieldOptions}
             useAdvancedNestedSearch={advancedNestedSearch}
             error={error}
           />

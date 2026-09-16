@@ -217,7 +217,6 @@ export type FieldToOperatorMap = Map<string, string[]>;
 
 export type WfoQueryBuilderContext = {
   onFieldSelected: (field: string, operators: string[], pathInfo?: PathInfo) => void;
-  prefilledFieldOptions: FieldToOperatorMap;
   fieldPathInfoMap: Map<string, PathInfo>;
   useAdvancedNestedSearch: boolean;
 };

@@ -43,7 +43,6 @@ interface WfoFilterBuilderProps {
   onUpdateQueryBuilder: (ruleGroup: RuleGroupType | false) => void;
   handleSearch: (searchParams?: SearchParams) => void;
   onToggleFilterBuilder: (isVisible: boolean) => void;
-  prefilledFieldOptions: FieldToOperatorMap;
   useAdvancedNestedSearch?: boolean;
   error?: WfoGraphqlError[];
 }
@@ -61,14 +60,13 @@ export const WfoFilterBuilder = ({
   queryBuilderRuleGroup = initialRuleGroup,
   onUpdateQueryBuilder,
   handleSearch,
-  prefilledFieldOptions,
   onToggleFilterBuilder,
   useAdvancedNestedSearch = true,
   error,
 }: WfoFilterBuilderProps) => {
   const t = useTranslations('common');
   const { queryBuilderContainerStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
-  const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(prefilledFieldOptions);
+  const [fieldToOperatorMap, setFieldToOperatorMap] = useState<FieldToOperatorMap>(new Map());
   const [fieldPathInfoMap, setFieldPathInfoMap] = useState<Map<string, PathInfo>>(new Map());
 
   // Enter in a value editor commits its value on blur, and that state update has not
@@ -111,7 +109,6 @@ export const WfoFilterBuilder = ({
 
   const queryBuilderContext: WfoQueryBuilderContext = {
     onFieldSelected: handleFieldSelected,
-    prefilledFieldOptions,
     fieldPathInfoMap,
     useAdvancedNestedSearch,
   };

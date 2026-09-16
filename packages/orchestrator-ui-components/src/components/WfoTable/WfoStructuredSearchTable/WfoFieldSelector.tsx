@@ -37,7 +37,7 @@ interface WfoFieldSelectorProps extends Omit<FieldSelectorProps, 'context'> {
 
 export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, disabled, rule, context }) => {
   const { field } = rule;
-  const { useAdvancedNestedSearch, prefilledFieldOptions, onFieldSelected } = context;
+  const { useAdvancedNestedSearch, onFieldSelected } = context;
   const [autoFocus] = useState(field === defaultPlaceholderFieldName);
   const selectedField = field === defaultPlaceholderFieldName ? '' : field;
   const [searchTerm, setSearchTerm] = useState('');
@@ -66,19 +66,13 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
     error: errorMessage,
   } = usePathAutocomplete(autocompletePrefix, EntityKind.SUBSCRIPTION);
 
-  const matchesPrefix = (path: string) => path.toLowerCase().includes(autocompletePrefix.toLowerCase());
-
-  const prefilledFields = Array.from(prefilledFieldOptions.keys()).filter(matchesPrefix);
-  const autocompleteOptions = getOptionsFromPathInfo(paths).filter(
-    (option) => !prefilledFields.includes(option.value ?? ''),
-  );
+  const autocompleteOptions = getOptionsFromPathInfo(paths);
 
   const startTypingHintOption: EuiComboBoxOptionOption<string> = {
     label: t('startTypingToLoadOptions'),
     disabled: true,
   };
-  const options: EuiComboBoxOptionOption<string>[] =
-    autocompletePrefix ? [...prefilledFields.map(getOption), ...autocompleteOptions] : [startTypingHintOption];
+  const options: EuiComboBoxOptionOption<string>[] = autocompletePrefix ? autocompleteOptions : [startTypingHintOption];
 
   const renderHintOption = (option: EuiComboBoxOptionOption<string>) => (
     <EuiText size="xs" color="default">
@@ -103,7 +97,7 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
     const matchingPath =
       paths.find((path) => path.path === selectedValue)
       ?? paths.find((path) => path.availablePaths?.includes(selectedValue));
-    const operators = matchingPath?.operators ?? prefilledFieldOptions.get(selectedValue) ?? [];
+    const operators = matchingPath?.operators ?? [];
 
     onFieldSelected(selectedValue, operators, matchingPath);
   };
