@@ -15,7 +15,6 @@ export * from './subscriptionActions';
 export * from './subscriptionDetail';
 export * from './subscriptionInUseByRelationsList';
 export * from './subscriptionList';
-export * from './subscriptionListSummary';
 export * from './forms';
 export * from './fileUpload';
 export * from './search';

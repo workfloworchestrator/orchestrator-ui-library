@@ -475,8 +475,6 @@ export type Subscription = {
   metadata: object;
 };
 
-export type SubscriptionSummary = Pick<Subscription, 'subscriptionId' | 'description' | 'startDate'>;
-
 export type SubscriptionDropdownOption = {
   description: Subscription['description'];
   subscriptionId: Subscription['subscriptionId'];
