@@ -4,8 +4,9 @@ import { useTranslations } from 'next-intl';
 
 import { PATH_SUBSCRIPTIONS, SummaryCardStatus, WfoSubscriptionListTab, WfoSummaryCard } from '@/components';
 import { mapSubscriptionSearchResultToSummaryCardListItem } from '@/pages/startPage/mappers';
-import { SearchPayload, useSearchQuery } from '@/rtk';
-import { EntityKind, Filter } from '@/types';
+import { getSubscriptionSummarySearchPayload } from '@/pages/startPage/searchPayloads';
+import { useSearchQuery } from '@/rtk';
+import { Filter } from '@/types';
 import { optionalArrayMapper } from '@/utils';
 import { WfoQueryParams, getUrlWithQueryParams } from '@/utils/getQueryParams';
 
@@ -27,14 +28,7 @@ const outOfSyncSubscriptionsFilter = {
   },
 } as unknown as Filter;
 
-const outOfSyncSubscriptionsSearchPayload: SearchPayload = {
-  entity_type: EntityKind.SUBSCRIPTION,
-  query: '',
-  filters: outOfSyncSubscriptionsFilter,
-  limit: 5,
-  order_by: { element: 'subscription.start_date', direction: 'desc' },
-  response_columns: ['subscription.subscription_id', 'subscription.description', 'subscription.start_date'],
-};
+const outOfSyncSubscriptionsSearchPayload = getSubscriptionSummarySearchPayload(outOfSyncSubscriptionsFilter);
 
 export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
   const t = useTranslations('startPage.outOfSyncSubscriptions');

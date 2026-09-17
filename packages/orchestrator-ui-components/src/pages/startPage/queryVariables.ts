@@ -13,14 +13,6 @@ const baseQueryVariables: Partial<GraphqlQueryVariables<unknown>> = {
   first: 5,
   after: 0,
 };
-const baseQueryVariablesForSubscription: Partial<GraphqlQueryVariables<Subscription>> = {
-  ...baseQueryVariables,
-  sortBy: {
-    field: 'startDate',
-    order: SortOrder.DESC,
-  },
-};
-
 const baseQueryVariablesForProcess: Partial<GraphqlQueryVariables<Process>> = {
   ...baseQueryVariables,
   sortBy: {
@@ -39,16 +31,6 @@ const getTaskFilter = (isTask: boolean): GraphqlFilter<Process> => {
     field: 'isTask',
     value: isTask ? 'true' : 'false',
   };
-};
-
-export const subscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> = {
-  ...baseQueryVariablesForSubscription,
-  filterBy: [
-    {
-      field: 'status',
-      value: 'Active',
-    },
-  ],
 };
 
 export const getMyWorkflowListSummaryQueryVariables = (username: string): GraphqlQueryVariables<Process> => ({
