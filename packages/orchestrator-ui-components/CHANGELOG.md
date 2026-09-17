@@ -1,5 +1,24 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 9.0.0
+
+### Major Changes
+
+- c175742: Introduces new search on the subscription list page. The search now offers filtering and searching with an optional embedding to support semantic search.
+
+  Breaking changes: `WfoSearchPocPage`, `PATH_SUBSCRIPTIONS_BETA`, the GraphQL based `WfoSubscriptionsList` component and the `mapGraphQlSubscriptionsResultToSubscriptionListItems`/`mapGraphQlSubscriptionsResultToPageInfo` mappers are removed. `SubscriptionListItem` no longer has a `customerId` field. Links to the subscriptions list page should use the `activeTab`, `queryString` and `filterString` (CEL) URL parameters; `sortBy`, `page` and `pageSize` are no longer read.
+
+### Minor Changes
+
+- 2013c19: `WfoLatestActiveSubscriptionsSummaryCard` and `WfoLatestOutOfSyncSubscriptionSummaryCard` now fetch their data through the search endpoint with an Elasticsearch filter instead of the GraphQL subscriptions summary query, so their counts match the subscriptions list page they link to. Adds `getSubscriptionSummarySearchPayload` and `mapSubscriptionSearchResultToSummaryCardListItem` for building similar cards.
+
+  Removed: the `useGetSubscriptionSummaryListQuery` hook with its `subscriptionListSummaryQuery` document and `SubscriptionListSummaryResponse` type, the `SubscriptionSummary` type, the `mapSubscriptionSummaryToSummaryCardListItem` mapper, and the `subscriptionsListSummaryQueryVariables` / `outOfSyncSubscriptionsListSummaryQueryVariables` query variables.
+
+### Patch Changes
+
+- f2d84a5: 210 Don't allow empty values in value editor to set the debounce timer for search page
+- 2a69be5: Show an error in search page or the filter builder in case of a backend error message
+
 ## 8.9.3
 
 ### Patch Changes
