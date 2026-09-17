@@ -32,10 +32,9 @@ export const WfoSubscriptionNoteEdit: FC<WfoSubscriptionNoteEditProps> = ({
     });
 
     updateSubscriptionNoteOptimistic({
-      queryName: endpointName ?? '',
-      subscriptionId: subscriptionId,
-      queryVariables,
-      note: note,
+      subscriptionId,
+      note,
+      listQuery: { queryName: endpointName ?? '', queryVariables },
     });
   };
 

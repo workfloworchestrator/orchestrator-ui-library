@@ -7,7 +7,7 @@ const SEARCH_ID_COLUMN = 'subscription.subscription_id';
 // The note edit is rendered by both the GraphQL based lists (surf NMS pages) and the search based
 // subscriptions list, whose cached responses have a different shape. The draft is inspected
 // instead of typed per caller so the note edit needs no knowledge of the query behind it.
-const patchNoteInDraft = (
+const patchNoteInListDraft = (
   draft: SubscriptionListResponse | PaginatedSearchResults,
   subscriptionId: string,
   note: string,
@@ -27,61 +27,67 @@ const patchNoteInDraft = (
   }
 };
 
+const SEARCH_ENDPOINT_NAME = 'search';
+
 const subscriptionListMutationApi = orchestratorApi.injectEndpoints({
   endpoints: (builder) => ({
     updateSubscriptionNoteOptimistic: builder.mutation<
       { mockResponse: boolean },
       {
-        queryName: string;
         subscriptionId: string;
-        queryVariables: object;
         note: string;
+        // Cache key of a GraphQL list query showing the note (surf NMS pages). The search based
+        // subscriptions list needs no key: every cached search result set is patched.
+        listQuery?: { queryName: string; queryVariables: object };
       }
     >({
       queryFn: async () => ({ data: { mockResponse: true } }),
-      async onQueryStarted({ queryName, subscriptionId, queryVariables, note }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          subscriptionListMutationApi.util.updateQueryData(
-            // @ts-expect-error - queryName is a runtime string, not a known endpoint name
-            queryName,
-            queryVariables,
-            (draft: SubscriptionListResponse | PaginatedSearchResults) => patchNoteInDraft(draft, subscriptionId, note),
+      // Patches the detail cache, all cached search result sets and the optional GraphQL list so
+      // the note stays consistent when navigating between pages. updateQueryData is a no-op for
+      // a cache entry that does not exist, and patching the same entry twice is harmless.
+      async onQueryStarted({ subscriptionId, note, listQuery }, { dispatch, getState, queryFulfilled }) {
+        const patchList = (queryName: string, queryVariables: object) =>
+          dispatch(
+            subscriptionListMutationApi.util.updateQueryData(
+              // @ts-expect-error - queryName is a runtime string, not a known endpoint name
+              queryName,
+              queryVariables,
+              (draft: SubscriptionListResponse | PaginatedSearchResults) =>
+                patchNoteInListDraft(draft, subscriptionId, note),
+            ),
+          );
+
+        const cachedSearchArgs = subscriptionListMutationApi.util.selectCachedArgsForQuery(
+          getState(),
+          // @ts-expect-error - search is injected by another slice, unknown to this one
+          SEARCH_ENDPOINT_NAME,
+        ) as object[];
+
+        const patchResults = [
+          dispatch(
+            subscriptionListMutationApi.util.updateQueryData(
+              // @ts-expect-error - getSubscriptionDetail is injected by another slice, unknown to this one
+              'getSubscriptionDetail',
+              { subscriptionId },
+              (draft: SubscriptionDetailResponse) => {
+                if (draft?.subscription) {
+                  draft.subscription.note = note;
+                }
+              },
+            ),
           ),
-        );
+          ...cachedSearchArgs.map((searchArgs) => patchList(SEARCH_ENDPOINT_NAME, searchArgs)),
+          ...(listQuery ? [patchList(listQuery.queryName, listQuery.queryVariables)] : []),
+        ];
+
         try {
           await queryFulfilled;
         } catch {
-          patchResult.undo();
-        }
-      },
-    }),
-    updateSubscriptionDetailNoteOptimistic: builder.mutation<
-      { mockResponse: boolean },
-      { queryName: string; subscriptionId: string; note: string }
-    >({
-      queryFn: async () => ({ data: { mockResponse: true } }),
-      async onQueryStarted({ queryName, subscriptionId, ...patch }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          subscriptionListMutationApi.util.updateQueryData(
-            // @ts-expect-error - queryName is a runtime string, not a known endpoint name
-            queryName,
-            { subscriptionId: subscriptionId },
-            (draft: SubscriptionDetailResponse) => {
-              if (draft) {
-                draft.subscription.note = patch.note;
-              }
-            },
-          ),
-        );
-        try {
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
+          patchResults.forEach((patchResult) => patchResult.undo());
         }
       },
     }),
   }),
 });
 
-export const { useUpdateSubscriptionNoteOptimisticMutation, useUpdateSubscriptionDetailNoteOptimisticMutation } =
-  subscriptionListMutationApi;
+export const { useUpdateSubscriptionNoteOptimisticMutation } = subscriptionListMutationApi;
