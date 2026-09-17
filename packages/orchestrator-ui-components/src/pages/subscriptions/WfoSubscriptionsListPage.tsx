@@ -37,6 +37,7 @@ import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
+import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import { EntityKind, PaginatedSearchResults, ResultColumToPropertyMap, RetrieverType, SortOrder } from '@/types';
 import { getCsvFileNameWithDate, initiateCsvFileDownload, parseDateToLocaleDateTimeString } from '@/utils';
 
@@ -206,7 +207,7 @@ export const WfoSubscriptionsListPage = () => {
     };
   }, [committedQueryString, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
 
-  const { data, isFetching, endpointName } = useSearchQuery(searchPayload);
+  const { data, error, isFetching, endpointName } = useSearchQuery(searchPayload);
 
   const [getSubscriptionListTrigger] = useLazySearchQuery();
   const getSubscriptionListForExport = (exportLimit: number) =>
@@ -519,6 +520,7 @@ export const WfoSubscriptionsListPage = () => {
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionListItem>
         data={subscriptionListItems}
+        error={mapRtkErrorToWfoError(error)}
         rowExpandingConfiguration={rowExpandingConfiguration}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         defaultShowMatchDetails={tableDefaults?.showMatchDetails}
