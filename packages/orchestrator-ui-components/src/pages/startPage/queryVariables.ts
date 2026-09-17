@@ -51,17 +51,6 @@ export const subscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subsc
   ],
 };
 
-export const outOfSyncSubscriptionsListSummaryQueryVariables: GraphqlQueryVariables<Subscription> = {
-  ...baseQueryVariablesForSubscription,
-  query: 'insync:false',
-  filterBy: [
-    {
-      field: 'status',
-      value: 'Active-Provisioning',
-    },
-  ],
-};
-
 export const getMyWorkflowListSummaryQueryVariables = (username: string): GraphqlQueryVariables<Process> => ({
   ...baseQueryVariablesForProcess,
   filterBy: [
