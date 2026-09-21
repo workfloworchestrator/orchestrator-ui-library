@@ -154,6 +154,8 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         </>
       )}
 
+      <span>test</span>
+
       {isAllowed(SUBSCRIPTION_RECONCILE + subscriptionId) && reconcileActionItems.length > 0 && (
         <>
           {!compactMode && <MenuBlock title={t('reconcile')} />}
