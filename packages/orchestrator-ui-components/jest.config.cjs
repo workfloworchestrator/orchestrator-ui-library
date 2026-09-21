@@ -6,13 +6,10 @@ const createJestConfig = nextJest({
   dir: './',
 });
 
-// The entry for "uuid" in the moduleNameMapper can be removed when EUI updates the dependency version to 9.0.0 or higher.
-// https://github.com/uuidjs/uuid/blob/main/CHANGELOG.md#900-2022-09-05
 const customJestConfig = {
   ...base,
   displayName: 'Wfo-UI Tests',
   moduleNameMapper: {
-    '^uuid$': 'uuid',
     // Mirrors the "@/*" path alias from tsconfig.json
     '^@/(.*)$': '<rootDir>/src/$1',
   },
