@@ -31,7 +31,10 @@
   "overrides": {
     "eslint-plugin-react": {
       "eslint": "^10.4.0"
-    }
+    },
+    "jsdom": "^30.1.0",
+    "uuid": "^11.1.0",
+    "glob": "^13.0.6"
   },
   "packageManager": "npm@10.9.0"
 }
