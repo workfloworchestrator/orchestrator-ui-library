@@ -28,5 +28,10 @@
     "apps/*",
     "packages/*"
   ],
+  "overrides": {
+    "eslint-plugin-react": {
+      "eslint": "^10.4.0"
+    }
+  },
   "packageManager": "npm@10.9.0"
 }
