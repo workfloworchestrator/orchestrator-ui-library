@@ -199,8 +199,7 @@ export const getActionItemsByTarget = (
   // uppercase. We support both for now. The lowercase keys are deliberately not part of the
   // SubscriptionActions type, so the fallback is a runtime-only check behind a cast.
   const actionsByTarget = subscriptionActions as unknown as
-    | Record<string, SubscriptionAction[] | undefined>
-    | undefined;
+    Record<string, SubscriptionAction[] | undefined> | undefined;
 
   return actionsByTarget?.[workflowTarget] ?? actionsByTarget?.[workflowTarget.toLowerCase()] ?? [];
 };
