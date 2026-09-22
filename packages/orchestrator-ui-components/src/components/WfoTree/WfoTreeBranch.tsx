@@ -33,7 +33,7 @@ export const WfoTreeBranch: FC<WfoTreeBranchProps> = ({ item, level }) => {
 
   return (
     <>
-      <EuiListGroup flush={true} color="primary" maxWidth={productBlockTreeWidth}>
+      <EuiListGroup color="primary" maxWidth={productBlockTreeWidth}>
         <WfoTreeNode item={item} hasChildren={hasChildren} level={level} />
       </EuiListGroup>
 

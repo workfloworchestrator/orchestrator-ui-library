@@ -7,7 +7,6 @@ import {
   EuiBadgeGroup,
   EuiButtonIcon,
   EuiHeader,
-  EuiHeaderLogo,
   EuiHeaderSection,
   EuiHeaderSectionItem,
   EuiToolTip,
@@ -35,7 +34,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({ navigationHeight, getApp
   const t = useTranslations('main');
   const { multiplyByBaseUnit, colorMode, theme } = useOrchestratorTheme();
   const orchestratorConfig = useGetOrchestratorConfig();
-  const { getHeaderStyle, appNameStyle } = useWithOrchestratorTheme(getWfoPageHeaderStyles);
+  const { getHeaderStyle, appLogoStyle, appNameStyle } = useWithOrchestratorTheme(getWfoPageHeaderStyles);
   const { data } = useGetVersionsQuery();
   const coreVersion = data?.version.applicationVersions[0].split(' ')[1] ?? '';
 
@@ -44,7 +43,9 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({ navigationHeight, getApp
       <EuiHeaderSection>
         <EuiToolTip content={'UI version ' + ORCHESTRATOR_UI_LIBRARY_VERSION}>
           <EuiHeaderSectionItem css={{ paddingTop: theme.size.xs }}>
-            <EuiHeaderLogo iconType={() => <WfoAppLogo />} />
+            <span css={appLogoStyle}>
+              <WfoAppLogo />
+            </span>
             <div css={appNameStyle}>{getAppLogo(navigationHeight)}</div>
           </EuiHeaderSectionItem>
         </EuiToolTip>
