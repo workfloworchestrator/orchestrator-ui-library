@@ -21,6 +21,7 @@ import { useStepDetailOverride } from './useStepDetailOverride';
 
 export interface WfoStepProps {
   stepListItem: StepListItem;
+  previousCreatedBy?: string;
   startedAt: string;
   completedAt: string;
   showHiddenKeys: boolean;
@@ -36,6 +37,7 @@ export const WfoStep = React.forwardRef(
   (
     {
       stepListItem,
+      previousCreatedBy,
       onToggleStepDetail,
       startedAt,
       completedAt,
@@ -110,6 +112,12 @@ export const WfoStep = React.forwardRef(
 
     const shouldExpand: boolean = isExpanded && hasStepContent;
 
+    const showRetriedBy = () => {
+      if (!isStartStep && step.createdBy && step.createdBy !== previousCreatedBy) {
+        return ` - retry: ${step.createdBy}`;
+      }
+    };
+
     return (
       <div ref={ref}>
         <EuiPanel>
@@ -122,6 +130,7 @@ export const WfoStep = React.forwardRef(
                   <EuiText css={stepListContentBoldTextStyle}>{step.name}</EuiText>
                   <EuiText>
                     {step.status} {step.completed && `- ${formatDate(step.completed)}`}
+                    {showRetriedBy()}
                   </EuiText>
                 </EuiFlexItem>
 

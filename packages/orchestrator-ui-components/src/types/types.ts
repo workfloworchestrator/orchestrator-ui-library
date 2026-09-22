@@ -250,6 +250,7 @@ export interface Step {
   stateDelta: StepState;
   started: string;
   completed: string;
+  createdBy: string;
 }
 
 export interface WorkflowDefinition {

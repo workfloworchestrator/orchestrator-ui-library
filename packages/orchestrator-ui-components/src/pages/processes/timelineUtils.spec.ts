@@ -18,6 +18,7 @@ const baseStep: Step = {
   },
   status: StepStatus.SUCCESS,
   stepId: 'testStepId',
+  createdBy: 'testCreatedBy',
 };
 
 describe('getMostAccurateTimelineStatus()', () => {
