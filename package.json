@@ -41,7 +41,7 @@
       "next": "^16.0.0"
     },
     "@elastic/eui": {
-      "typescript": "$typescript"
+      "typescript": "6.0.3"
     }
   },
   "packageManager": "npm@10.9.0"
