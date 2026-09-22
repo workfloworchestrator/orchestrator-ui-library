@@ -15,7 +15,7 @@
     "@storybook/addon-interactions": "^8.5.0",
     "@storybook/addon-onboarding": "^10.6.0",
     "@storybook/blocks": "^8.5.0",
-    "@storybook/experimental-nextjs-vite": "^8.5.0",
+    "@storybook/nextjs-vite": "^10.6.0",
     "@storybook/react": "^10.6.0",
     "@storybook/react-vite": "^10.6.0",
     "@storybook/test": "^8.6.18",

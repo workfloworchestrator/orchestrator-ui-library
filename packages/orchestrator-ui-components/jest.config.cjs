@@ -15,4 +15,12 @@ const customJestConfig = {
   },
 };
 
-module.exports = createJestConfig(customJestConfig);
+// next/jest only allows appending to transformIgnorePatterns, so the list from
+// the base config is restored afterwards to let ESM-only dependencies through.
+module.exports = async () => {
+  const config = await createJestConfig(customJestConfig)();
+
+  config.transformIgnorePatterns = base.transformIgnorePatterns;
+
+  return config;
+};
