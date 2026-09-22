@@ -6,7 +6,13 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 import { EuiCodeBlock, EuiFlexItem, EuiPanel, EuiSpacer, EuiTab, EuiTabs, EuiText } from '@elastic/eui';
 import { css } from '@emotion/react';
 
-import { WfoEngineStatus, WfoFlushSettings, WfoModifySettings, WfoWorkerStatus } from '@/components';
+import {
+  WfoEngineStatus,
+  WfoFlushSettings,
+  WfoModifySettings,
+  WfoRenderContentOrLoading,
+  WfoWorkerStatus,
+} from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { getStyles } from '@/components/WfoFilterTabs/styles';
 import { WfoAoStackStatus } from '@/components/WfoSettings/WfoAoStackStatus';
@@ -47,7 +53,7 @@ export const WfoActionSettings = () => {
 export const WfoEnvSettings = () => {
   const t = useTranslations('settings.page');
   const { theme } = useOrchestratorTheme();
-  const { data } = useGetEnvironmentVariablesQuery();
+  const { data, isFetching } = useGetEnvironmentVariablesQuery(undefined, { refetchOnMountOrArgChange: true });
 
   const mapToRepresentableVariables = (variables: EnvironmentVariable[]) => {
     return variables.map(({ env_name, env_value }) => `${env_name}=${env_value}`).join('\n');
@@ -107,7 +113,13 @@ export const WfoEnvSettings = () => {
     );
   };
 
-  return <div css={{ maxWidth: theme.base * 45 }}>{data?.length ? renderEnvSettings() : emptyEnvSettings()}</div>;
+  return (
+    <div css={{ maxWidth: theme.base * 45 }}>
+      <WfoRenderContentOrLoading isLoading={isFetching} size="l">
+        {data?.length ? renderEnvSettings() : emptyEnvSettings()}
+      </WfoRenderContentOrLoading>
+    </div>
+  );
 };
 
 export const settingsTabs = [

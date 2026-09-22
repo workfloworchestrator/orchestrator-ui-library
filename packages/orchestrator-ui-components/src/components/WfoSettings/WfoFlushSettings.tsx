@@ -25,15 +25,15 @@ export const WfoFlushSettings: FunctionComponent = () => {
   const onChange = (selectedOptions: EuiComboBoxOptionOption[]) => {
     setSelected(selectedOptions);
   };
-  const { data } = useGetCacheNamesQuery();
+  const { data, isFetching } = useGetCacheNamesQuery(undefined, { refetchOnMountOrArgChange: true });
 
   const options: EuiComboBoxOptionOption[] =
-    data && Object.entries(data).length > 0 ?
+    data ?
       Object.entries(data).map(([key, value]) => ({
         key,
         label: value,
       }))
-    : [{ key: 'loading', label: 'Loading...' }];
+    : [];
 
   const flushCache = () => {
     if (selectedOptions.length < 1) {
@@ -64,6 +64,7 @@ export const WfoFlushSettings: FunctionComponent = () => {
           options={options}
           selectedOptions={selectedOptions}
           onChange={onChange}
+          isLoading={isFetching}
           fullWidth
         />
         <EuiSpacer size="m" />
