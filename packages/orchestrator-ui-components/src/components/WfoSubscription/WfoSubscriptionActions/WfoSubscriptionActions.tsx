@@ -93,6 +93,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     || allowedReconcileActionItems.length > 0
     || allowedModifyActionItems.length > 0
     || allowedTerminateActionItems.length > 0
+    || (isAllowed(SET_IN_SYNC) && compactMode && subscriptionDetail)
   );
 
   const button =
