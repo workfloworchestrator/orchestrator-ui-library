@@ -7,7 +7,7 @@ import {
   StoreProvider,
   defaultOrchestratorTheme,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 
 import { TranslationsProvider } from '../translations/translationsProvider';
 
