@@ -2,9 +2,8 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText } from '@elastic/eui';
 
-import { WfoRenderContentOrLoading } from '@/components';
 import { useGetWorkerStatusQuery } from '@/rtk';
 import { WorkerTypes } from '@/types';
 
@@ -15,9 +14,12 @@ export const WfoWorkerStatus = () => {
 
   const t = useTranslations('settings.page');
 
-  if (data && executorType?.toUpperCase() !== WorkerTypes.CELERY) {
+  if (executorType?.toUpperCase() !== WorkerTypes.CELERY) {
     return null;
   }
+
+  const renderValueOrSpinner = (value: number | undefined) =>
+    isFetching ? <EuiLoadingSpinner size="s" /> : <EuiText size="s">{value || '-'}</EuiText>;
 
   return (
     <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
@@ -31,25 +33,19 @@ export const WfoWorkerStatus = () => {
           <EuiText size="s" style={{ minWidth: 200 }}>
             {t('numberOfQueuedJobs')}
           </EuiText>
-          <WfoRenderContentOrLoading isLoading={isFetching}>
-            <EuiText size="s">{numberOfQueuedJobs || '-'}</EuiText>
-          </WfoRenderContentOrLoading>
+          {renderValueOrSpinner(numberOfQueuedJobs)}
         </EuiFlexItem>
         <EuiFlexItem css={{ flexDirection: 'row' }}>
           <EuiText size="s" style={{ minWidth: 200 }}>
             {t('numberOfRunningJobs')}
           </EuiText>
-          <WfoRenderContentOrLoading isLoading={isFetching}>
-            <EuiText size="s">{numberOfRunningJobs || '-'}</EuiText>
-          </WfoRenderContentOrLoading>
+          {renderValueOrSpinner(numberOfRunningJobs)}
         </EuiFlexItem>
         <EuiFlexItem css={{ flexDirection: 'row' }}>
           <EuiText size="s" style={{ minWidth: 200 }}>
             {t('numberOfWorkersOnline')}
           </EuiText>
-          <WfoRenderContentOrLoading isLoading={isFetching}>
-            <EuiText size="s">{numberOfWorkersOnline || '-'}</EuiText>
-          </WfoRenderContentOrLoading>
+          {renderValueOrSpinner(numberOfWorkersOnline)}
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPanel>
