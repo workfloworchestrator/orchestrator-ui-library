@@ -118,7 +118,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
               </EuiFlexItem>
               <EuiFlexItem>
                 <EuiButtonIcon
-                  iconType="popout"
+                  iconType="external"
                   aria-label={t('viewDetails')}
                   onClick={(e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();

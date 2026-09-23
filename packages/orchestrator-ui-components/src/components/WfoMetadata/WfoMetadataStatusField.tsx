@@ -16,7 +16,7 @@ export const WfoMetadataStatusField: FC<WfoMetadataStatusFieldProps> = ({ onSave
   const [isPopoverOpen, setPopover] = useState<boolean>(false);
   const onButtonClick = () => setPopover(!isPopoverOpen);
   const button = (
-    <EuiButtonEmpty iconType="arrowDown" iconSide="right" onClick={onButtonClick} color={'text'}>
+    <EuiButtonEmpty iconType="chevronSingleDown" iconSide="right" onClick={onButtonClick} color={'text'}>
       <WfoProductStatusBadge status={currentStatus} />
     </EuiButtonEmpty>
   );

@@ -53,7 +53,7 @@ export const WfoPathBreadcrumb: FC<WfoPathBreadcrumbProps> = ({
           </EuiFlexItem>
           {showArrows && index < displaySegments.length - 1 && (
             <EuiFlexItem grow={false}>
-              <EuiIcon type="arrowRight" size={size} color={theme.colors.link} />
+              <EuiIcon type="chevronSingleRight" size={size} color={theme.colors.link} />
             </EuiFlexItem>
           )}
         </Fragment>

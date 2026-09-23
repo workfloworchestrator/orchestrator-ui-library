@@ -139,7 +139,7 @@ export const WfoPathChips: FC<WfoPathChipsProps> = ({ fullPath, label, fieldType
               index < pathSegments.length - 1 && (
                 <EuiIcon
                   key={`arrow-${index}`}
-                  type="arrowRight"
+                  type="chevronSingleRight"
                   size="s"
                   color={theme.colors.backgroundBaseDisabled}
                   title=""
