@@ -8,6 +8,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "ignoreDeprecations": "6.0",
     "noEmit": true
   },
   "include": ["src", "./src/**/*.ts", "./src/**/*.tsx"],
