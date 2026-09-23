@@ -43,7 +43,7 @@ jobs:
               id: app-token
               uses: actions/create-github-app-token@v2
               with:
-                  app-id: ${{ secrets.UIPM_UPDATE_APP_ID }}
+                  app-id: ${{ secrets.UI_NPM_UPDATE_APP_ID }}
                   private-key: ${{ secrets.UI_NPM_UPDATE_APP_PRIVATE_KEY }}
                   owner: workfloworchestrator
                   repositories: example-orchestrator-ui
