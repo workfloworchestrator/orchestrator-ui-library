@@ -77,7 +77,7 @@ export const WfoSubscriptionProductBlock = ({
             </div>
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiText grow={true}>
+            <EuiText size="m" grow={true}>
               <h3>{getProductBlockTitle(productBlock.productBlockInstanceValues)}</h3>
             </EuiText>
             <EuiText size="s">
@@ -111,7 +111,9 @@ export const WfoSubscriptionProductBlock = ({
                           <a href={`${subscriptionPath}/${ownerSubscriptionId}`} target="_blank">
                             {productBlock.subscription.description}
                           </a>
-                          <EuiText css={outsideSubscriptionIdTextStyle}>-</EuiText>
+                          <EuiText size="m" css={outsideSubscriptionIdTextStyle}>
+                            -
+                          </EuiText>
                           {getFirstUuidPart(ownerSubscriptionId)}
                         </>
                       }

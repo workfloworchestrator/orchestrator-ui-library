@@ -91,7 +91,7 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
     <div>
       <EuiFlexGroup gutterSize={'xs'}>
         <EuiFlexItem grow={false}>
-          <EuiText>
+          <EuiText size="m">
             <h3>{t('title')}</h3>
           </EuiText>
         </EuiFlexItem>

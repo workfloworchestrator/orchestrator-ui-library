@@ -45,9 +45,13 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
             color={iconColor}
           />
           <div css={totalSectionStyle}>
-            <EuiText color="subdued">{text}</EuiText>
+            <EuiText size="m" color="subdued">
+              {text}
+            </EuiText>
             <EuiFlexGroup gutterSize="s" alignItems="center">
-              <EuiText css={valueStyle}>{value}</EuiText>
+              <EuiText size="m" css={valueStyle}>
+                {value}
+              </EuiText>
               {isFetching && <EuiLoadingSpinner />}
             </EuiFlexGroup>
           </div>

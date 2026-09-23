@@ -183,7 +183,7 @@ export const WfoAdvancedTable = <T extends object>({
 
       {showSearchModal && (
         <WfoInformationModal title={t('searchModalTitle')} onClose={() => setShowSearchModal(false)}>
-          <EuiText>
+          <EuiText size="m">
             <p>{searchModalText}</p>
           </EuiText>
         </WfoInformationModal>

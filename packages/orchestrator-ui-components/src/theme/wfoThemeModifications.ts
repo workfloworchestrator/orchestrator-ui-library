@@ -45,6 +45,15 @@ export const wfoThemeModifications: WfoThemeModifications = {
       frame: '4px',
     },
   },
+  /*
+   * eui-theme-borealis 8 added `font.title.letterSpacing: -0.2px`, which EuiTitle (and so page
+   * headers) now applies. Up to EUI 113 titles had normal letter spacing; keep that.
+   */
+  font: {
+    title: {
+      letterSpacing: 'normal',
+    },
+  },
   breakpoint: {
     xs: 0,
     s: 575,

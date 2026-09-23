@@ -119,8 +119,10 @@ export const WfoStep = React.forwardRef(
             <EuiFlexGroup direction="column" gutterSize="none">
               <EuiFlexItem css={{ flexDirection: 'row' }}>
                 <EuiFlexItem grow={0}>
-                  <EuiText css={stepListContentBoldTextStyle}>{step.name}</EuiText>
-                  <EuiText>
+                  <EuiText size="m" css={stepListContentBoldTextStyle}>
+                    {step.name}
+                  </EuiText>
+                  <EuiText size="m">
                     {step.status} {step.completed && `- ${formatDate(step.completed)}`}
                   </EuiText>
                 </EuiFlexItem>
@@ -132,7 +134,9 @@ export const WfoStep = React.forwardRef(
                         <WfoCodeViewSelector codeView={codeView} handleCodeViewChange={handleCodeViewChange} />
                       )}
                       <EuiFlexItem grow={0} css={stepHeaderRightStyle}>
-                        <EuiText css={stepDurationStyle}>{t('duration')}</EuiText>
+                        <EuiText size="m" css={stepDurationStyle}>
+                          {t('duration')}
+                        </EuiText>
                         <EuiText size="m">{calculateTimeDifference(startedAt, completedAt)}</EuiText>
                       </EuiFlexItem>
                       <EuiFlexItem grow={0} css={getStepToggleExpandStyle(hasStepContent)}>

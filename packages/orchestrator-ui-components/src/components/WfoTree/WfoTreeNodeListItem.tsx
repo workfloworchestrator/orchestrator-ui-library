@@ -33,7 +33,7 @@ export const WfoTreeNodeListItem = ({ item, selected }: WfoTreeNodeListItemProps
       justifyContent="spaceBetween"
     >
       <EuiFlexItem>
-        <EuiText title={textLabel}>
+        <EuiText size="m" title={textLabel}>
           <EuiTextTruncate text={textLabel} />
         </EuiText>
       </EuiFlexItem>

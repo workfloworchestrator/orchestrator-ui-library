@@ -145,8 +145,10 @@ export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartPro
           <EuiFlexGroup gutterSize="none" css={getStepHeaderStyle(false)}>
             <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
             <EuiFlexItem grow={0}>
-              <EuiText css={stepListContentBoldTextStyle}>{t('userInput')}</EuiText>
-              <EuiText>{t(isTask ? 'submitTaskFormLabel' : 'submitWorkflowFormLabel')}</EuiText>
+              <EuiText size="m" css={stepListContentBoldTextStyle}>
+                {t('userInput')}
+              </EuiText>
+              <EuiText size="m">{t(isTask ? 'submitTaskFormLabel' : 'submitWorkflowFormLabel')}</EuiText>
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiHorizontalRule />

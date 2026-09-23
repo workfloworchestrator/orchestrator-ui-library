@@ -153,7 +153,7 @@ export const WfoSubscriptionDetailTree = ({
           <EuiFlexItem grow={false}>
             <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
               <EuiFlexItem>
-                <EuiText>
+                <EuiText size="m">
                   <h3>{t('productBlocks')}</h3>
                 </EuiText>
               </EuiFlexItem>
@@ -199,7 +199,7 @@ export const WfoSubscriptionDetailTree = ({
               title={t('noProductBlockSelected')}
               iconType="inspect"
             >
-              <EuiText>{t('ctaSelectProductBlock')} </EuiText>
+              <EuiText size="m">{t('ctaSelectProductBlock')} </EuiText>
             </EuiCallOut>
           )}
           {selectedIds.length !== 0

@@ -248,7 +248,7 @@ export const WfoSearch = () => {
         <>
           <EuiSpacer size="m" />
           <EuiPanel hasBorder paddingSize="m">
-            <EuiText>
+            <EuiText size="m">
               <h4>{t('structuredFilters')}</h4>
             </EuiText>
             <EuiSpacer size="s" />

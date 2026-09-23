@@ -94,9 +94,11 @@ const WfoRenderSubscriptionProcess = ({ subscriptionDetailProcess }: WfoRenderSu
       timelineAvatar={<WfoTargetTypeIcon target={subscriptionDetailProcess.workflowTarget} />}
     >
       <EuiFlexGroup alignItems="center" gutterSize="s" css={timeLineStyle}>
-        <EuiText css={workflowTargetStyle}>{upperCaseFirstChar(subscriptionDetailProcess.workflowTarget)}</EuiText>
-        <EuiText>-</EuiText>
-        <EuiText>{subscriptionDetailProcess.workflowName}</EuiText>
+        <EuiText size="m" css={workflowTargetStyle}>
+          {upperCaseFirstChar(subscriptionDetailProcess.workflowTarget)}
+        </EuiText>
+        <EuiText size="m">-</EuiText>
+        <EuiText size="m">{subscriptionDetailProcess.workflowName}</EuiText>
       </EuiFlexGroup>
 
       <WfoProcessCard subscriptionDetailProcess={subscriptionDetailProcess} />
