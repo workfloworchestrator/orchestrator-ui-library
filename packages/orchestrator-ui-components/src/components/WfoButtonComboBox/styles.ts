@@ -12,8 +12,24 @@ export const getWfoButtonComboBoxStyles = ({ theme }: WfoThemeHelpers) => {
       },
     },
 
+    /*
+     * EUI 122 dropped the EuiSelectableListItem styles in favour of the shared EuiListItemLayout,
+     * losing the divider between items and the primary coloured, underlined hover state, and
+     * rounding the hover background. This restores the EUI 113 look.
+     */
     '.euiSelectableList .euiSelectableListItem': {
-      borderColor: theme.colors.borderBaseSubdued,
+      borderRadius: 0,
+      '&:not(:last-of-type)': {
+        borderBottom: `${theme.border.width.thin} solid ${theme.colors.borderBaseSubdued}`,
+      },
+      '&:hover, &.euiSelectableListItem-isFocused': {
+        "&:not([aria-disabled='true'])": {
+          color: theme.colors.textPrimary,
+          '.euiSelectableListItem__text': {
+            textDecoration: 'underline',
+          },
+        },
+      },
     },
   });
 
