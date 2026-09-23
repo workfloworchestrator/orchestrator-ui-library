@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiFlexGroup, EuiFlexItem, EuiPanel, EuiText } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiText } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 import { WfoStatusDotIcon } from '@/icons';
@@ -11,10 +11,21 @@ import { EngineStatus } from '@/types';
 
 export const WfoEngineStatus = () => {
   const { theme } = useOrchestratorTheme();
-  const { data } = useGetEngineStatusQuery();
+  const { data, isFetching } = useGetEngineStatusQuery(undefined, { refetchOnMountOrArgChange: true });
   const { engineStatus, runningProcesses } = data || {};
   const isRunning = engineStatus === EngineStatus.RUNNING;
   const t = useTranslations('settings.page');
+
+  const renderContentOrSpinner = (content: React.ReactNode) => (isFetching ? <EuiLoadingSpinner size="s" /> : content);
+  const RunningProcessesValue = () => <EuiText size="s">{runningProcesses || '-'}</EuiText>;
+  const EngineStatusValue = () => (
+    <>
+      <WfoStatusDotIcon color={isRunning ? theme.colors.success : theme.colors.warning} />
+      <EuiText size="xs" css={{ paddingTop: theme.size.xs }}>
+        {engineStatus}
+      </EuiText>
+    </>
+  );
 
   return (
     <EuiPanel hasShadow={false} color="subdued" paddingSize="l">
@@ -28,16 +39,13 @@ export const WfoEngineStatus = () => {
           <EuiText size="s" style={{ minWidth: 200 }}>
             {t('runningProcesses')}
           </EuiText>
-          <EuiText size="s">{runningProcesses || '-'}</EuiText>
+          {renderContentOrSpinner(<RunningProcessesValue />)}
         </EuiFlexItem>
         <EuiFlexItem css={{ flexDirection: 'row' }}>
-          <EuiText size="s" style={{ minWidth: 190 }}>
+          <EuiText size="s" style={{ minWidth: isFetching ? 200 : 190 }}>
             {t('status')}
           </EuiText>
-          <WfoStatusDotIcon color={isRunning ? theme.colors.success : theme.colors.warning} />
-          <EuiText size="xs" css={{ paddingTop: theme.size.xs }}>
-            <p>{engineStatus}</p>
-          </EuiText>
+          {renderContentOrSpinner(<EngineStatusValue />)}
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPanel>

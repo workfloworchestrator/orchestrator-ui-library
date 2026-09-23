@@ -3,7 +3,16 @@ import React, { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import { EuiCodeBlock, EuiFlexItem, EuiPanel, EuiSpacer, EuiTab, EuiTabs, EuiText } from '@elastic/eui';
+import {
+  EuiCodeBlock,
+  EuiFlexItem,
+  EuiLoadingSpinner,
+  EuiPanel,
+  EuiSpacer,
+  EuiTab,
+  EuiTabs,
+  EuiText,
+} from '@elastic/eui';
 import { css } from '@emotion/react';
 
 import { WfoEngineStatus, WfoFlushSettings, WfoModifySettings, WfoWorkerStatus } from '@/components';
@@ -47,7 +56,7 @@ export const WfoActionSettings = () => {
 export const WfoEnvSettings = () => {
   const t = useTranslations('settings.page');
   const { theme } = useOrchestratorTheme();
-  const { data } = useGetEnvironmentVariablesQuery();
+  const { data, isFetching } = useGetEnvironmentVariablesQuery(undefined, { refetchOnMountOrArgChange: true });
 
   const mapToRepresentableVariables = (variables: EnvironmentVariable[]) => {
     return variables.map(({ env_name, env_value }) => `${env_name}=${env_value}`).join('\n');
@@ -107,7 +116,15 @@ export const WfoEnvSettings = () => {
     );
   };
 
-  return <div css={{ maxWidth: theme.base * 45 }}>{data?.length ? renderEnvSettings() : emptyEnvSettings()}</div>;
+  const renderContentOrSpinner = () => {
+    return (
+      isFetching ? <EuiLoadingSpinner size="l" />
+      : data?.length ? renderEnvSettings()
+      : emptyEnvSettings()
+    );
+  };
+
+  return <div css={{ maxWidth: theme.base * 45 }}>{renderContentOrSpinner()}</div>;
 };
 
 export const settingsTabs = [

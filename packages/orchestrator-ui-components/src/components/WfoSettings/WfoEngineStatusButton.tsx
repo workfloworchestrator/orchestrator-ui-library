@@ -8,7 +8,7 @@ import { useGetEngineStatusQuery, useSetEngineStatusMutation } from '@/rtk';
 import { EngineStatus } from '@/types';
 
 export const WfoEngineStatusButton = () => {
-  const { data, isLoading } = useGetEngineStatusQuery();
+  const { data, isLoading } = useGetEngineStatusQuery(undefined, { refetchOnMountOrArgChange: true });
   const { engineStatus } = data || {};
   const [setEngineStatus, { isLoading: isSettingEngineStatus }] = useSetEngineStatusMutation();
 
