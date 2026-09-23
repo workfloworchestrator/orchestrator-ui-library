@@ -12,6 +12,7 @@ export * from './WfoSearchBar';
 export * from './WfoSettingsModal';
 export * from './WfoSubscription';
 export * from './WfoTable';
+export * from './WfoTabs';
 export * from './WfoTimeline';
 export * from './WfoLoading';
 export * from './WfoToastsList';
