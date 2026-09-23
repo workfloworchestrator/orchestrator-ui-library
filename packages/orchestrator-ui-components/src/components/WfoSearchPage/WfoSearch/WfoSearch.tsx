@@ -12,7 +12,6 @@ import {
   EuiSelect,
   EuiSpacer,
   EuiTab,
-  EuiTabs,
   EuiText,
 } from '@elastic/eui';
 
@@ -22,10 +21,9 @@ import { WfoSearchResults } from '@/components';
 import { WfoSearchMetadataHeader } from '@/components';
 import { WfoSearchPaginationInfo } from '@/components';
 import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
-import { getStyles } from '@/components/WfoFilterTabs/styles';
 import { ENTITY_TABS } from '@/components/WfoSearchPage/utils';
+import { WfoTabs } from '@/components/WfoTabs';
 import { TreeProvider } from '@/contexts';
-import { useWithOrchestratorTheme } from '@/hooks';
 import { useSearchAvailability } from '@/hooks/useBackendAvailability';
 import { useDebounce } from '@/hooks/useDebounce';
 import { useSearch } from '@/hooks/useSearch';
@@ -38,7 +36,6 @@ import { DEFAULT_DEBOUNCE_DELAY, DEFAULT_PAGE_SIZE, LAYOUT_RATIOS, SMALL_RESULT_
 export const WfoSearch = () => {
   const t = useTranslations('search.page');
   const searchAvailability = useSearchAvailability();
-  const { tabsStyle } = useWithOrchestratorTheme(getStyles);
 
   const {
     urlParams,
@@ -186,13 +183,13 @@ export const WfoSearch = () => {
 
   return (
     <WfoAvailabilityCheck featureType="search" availability={searchAvailability}>
-      <EuiTabs css={tabsStyle}>
+      <WfoTabs>
         {ENTITY_TABS.map((tab) => (
           <EuiTab key={tab.id} onClick={() => handleTabChange(tab.id)} isSelected={selectedEntityTab === tab.id}>
             {tab.label}
           </EuiTab>
         ))}
-      </EuiTabs>
+      </WfoTabs>
       <EuiSpacer size="m" />
 
       <EuiFieldSearch
