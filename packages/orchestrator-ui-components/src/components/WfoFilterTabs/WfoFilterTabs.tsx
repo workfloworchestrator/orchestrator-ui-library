@@ -35,9 +35,9 @@ export const WfoFilterTabs = <TabType extends string, DataType>({
   onChangeTab,
 }: WfoFilterTabsProps<TabType, DataType>) => {
   const t = useTranslations(translationNamespace);
-  const { tabStyle } = useWithOrchestratorTheme(getStyles);
+  const { tabStyle, tabsStyle } = useWithOrchestratorTheme(getStyles);
   return (
-    <EuiTabs>
+    <EuiTabs css={tabsStyle}>
       {tabs.map(({ id, translationKey: name, prepend = '', append = '' }) => (
         <EuiTab
           css={tabStyle}

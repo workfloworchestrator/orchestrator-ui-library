@@ -143,7 +143,7 @@ export const settingsTabs = [
 export const WfoSettingsPage = () => {
   const t = useTranslations('main');
   const tabTranslations = useTranslations('settings.tabs');
-  const { tabStyle } = useWithOrchestratorTheme(getStyles);
+  const { tabStyle, tabsStyle } = useWithOrchestratorTheme(getStyles);
 
   const [selectedTabId, setSelectedTabId] = useQueryParam(
     'activeTab',
@@ -175,7 +175,7 @@ export const WfoSettingsPage = () => {
     <>
       <WfoContentHeader title={t('settings')} />
 
-      <EuiTabs>{renderTabs()}</EuiTabs>
+      <EuiTabs css={tabsStyle}>{renderTabs()}</EuiTabs>
 
       <EuiSpacer size="xxl" />
 
