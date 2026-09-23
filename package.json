@@ -37,6 +37,7 @@
     "dompurify": "^3.4.15",
     "esbuild": "^0.28.2",
     "d3-color": "^3.1.0",
+    "test-exclude": "^8.0.0",
     "next-query-params": {
       "next": "^16.0.0"
     },
