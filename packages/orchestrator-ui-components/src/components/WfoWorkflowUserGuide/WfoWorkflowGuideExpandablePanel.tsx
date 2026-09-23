@@ -64,6 +64,7 @@ const WfoWorkflowGuideToggleStrip = ({
   return (
     <EuiFlexItem grow={false} onClick={onToggle} aria-label={ariaLabel} css={containerStyle}>
       <EuiPanel
+        hasBorder={false}
         hasShadow={false}
         css={[
           toggleStripPanelStyle,
@@ -98,7 +99,12 @@ const WfoWorkflowGuideMarkdown = ({ workflowName, isBigScreen }: { workflowName:
   return (
     <div css={isBigScreen ? guideBodyStyle : guideStackedBodyStyle}>
       {(isLoading && <EuiLoadingSpinner size="m" />) || (
-        <EuiPanel paddingSize="m" hasShadow css={isBigScreen ? guidePanelStyle : guideStackedPanelStyle}>
+        <EuiPanel
+          hasBorder={false}
+          paddingSize="m"
+          hasShadow
+          css={isBigScreen ? guidePanelStyle : guideStackedPanelStyle}
+        >
           {((isError || !content) && <EuiText color="subdued">{t('noGuideAvailable')}</EuiText>) || (
             <EuiMarkdownFormat>{content}</EuiMarkdownFormat>
           )}

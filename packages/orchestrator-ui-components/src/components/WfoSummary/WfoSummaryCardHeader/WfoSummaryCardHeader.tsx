@@ -27,7 +27,12 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
 
   return (
     <EuiFlexItem grow={0}>
-      <EuiPanel hasShadow={false} css={{ backgroundColor: theme.colors.backgroundBaseSubdued }} paddingSize="l">
+      <EuiPanel
+        hasBorder={false}
+        hasShadow={false}
+        css={{ backgroundColor: theme.colors.backgroundBaseSubdued }}
+        paddingSize="l"
+      >
         <EuiFlexGroup alignItems="center">
           <EuiAvatar
             iconSize="l"

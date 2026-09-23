@@ -141,7 +141,7 @@ export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartPro
       isLoading={isLoading}
     >
       <WfoPageWithUserGuide workflowName={processName}>
-        <EuiPanel css={{ backgroundColor: theme.colors.backgroundBaseNeutral }}>
+        <EuiPanel hasBorder={false} css={{ backgroundColor: theme.colors.backgroundBaseNeutral }}>
           <EuiFlexGroup gutterSize="none" css={getStepHeaderStyle(false)}>
             <WfoStepStatusIcon stepStatus={StepStatus.FORM} />
             <EuiFlexItem grow={0}>

@@ -21,8 +21,13 @@ export const WfoPopover = ({ id, isLoading, PopoverContent, button, isPopoverOpe
       panelPaddingSize="none"
       anchorPosition="downLeft"
     >
-      <EuiContextMenuPanel>
-        <EuiPanel color="transparent" paddingSize="s">
+      {/*
+       * EUI 122 added `padding: size.s` to `.euiContextMenuPanel`, which EUI 113 did not have.
+       * Combined with the EuiPanel below it inset the content and read as a second, inner border.
+       * Reset it here so the popover keeps its previous spacing.
+       */}
+      <EuiContextMenuPanel css={{ padding: 0 }}>
+        <EuiPanel hasBorder={false} color="transparent" paddingSize="s">
           {isLoading ?
             <EuiLoadingSpinner />
           : <PopoverContent />}
