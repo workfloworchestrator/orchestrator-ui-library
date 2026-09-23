@@ -101,6 +101,9 @@ export const WfoStartButtonComboBox = ({
         className={className}
         css={selectableStyle}
         searchable
+        // EUI 122 renders a checkbox indicator for unselected options in multi-select
+        // EuiSelectables; EUI 113 rendered an `empty` icon, i.e. nothing visible.
+        listProps={{ showIcons: false }}
         options={options}
         onChange={(_, __, changedOption) => onOptionChange(changedOption)}
         height={200}
