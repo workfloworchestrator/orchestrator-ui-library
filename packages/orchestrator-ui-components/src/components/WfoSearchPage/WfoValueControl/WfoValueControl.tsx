@@ -68,7 +68,7 @@ export const ValueControl: FC<ValueControlProps> = ({ pathInfo, operator, value,
           <EuiFormHelpText>
             {hasWildcards ?
               <span>
-                <EuiIcon type="checkInCircleFilled" color="success" size="s" /> Pattern with wildcards:{' '}
+                <EuiIcon type="checkCircleFill" color="success" size="s" /> Pattern with wildcards:{' '}
                 <strong>{currentValue}</strong>
               </span>
             : <span>

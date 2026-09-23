@@ -43,7 +43,7 @@ export const WfoRadioDropdown = <T,>({ options, onUpdateOption, selectedOption }
         button={
           <EuiButtonEmpty
             size="s"
-            iconType="arrowDown"
+            iconType="chevronSingleDown"
             iconSide="right"
             onClick={() => {
               setIsOpen((isOpen) => !isOpen);
