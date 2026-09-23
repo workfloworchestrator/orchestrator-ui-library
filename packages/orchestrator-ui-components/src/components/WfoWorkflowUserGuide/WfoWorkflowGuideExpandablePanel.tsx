@@ -105,9 +105,11 @@ const WfoWorkflowGuideMarkdown = ({ workflowName, isBigScreen }: { workflowName:
           hasShadow
           css={isBigScreen ? guidePanelStyle : guideStackedPanelStyle}
         >
-          {((isError || !content) && <EuiText color="subdued">{t('noGuideAvailable')}</EuiText>) || (
-            <EuiMarkdownFormat>{content}</EuiMarkdownFormat>
-          )}
+          {((isError || !content) && (
+            <EuiText size="m" color="subdued">
+              {t('noGuideAvailable')}
+            </EuiText>
+          )) || <EuiMarkdownFormat>{content}</EuiMarkdownFormat>}
         </EuiPanel>
       )}
     </div>
