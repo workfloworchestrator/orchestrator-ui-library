@@ -12,7 +12,7 @@ git submodule init
 git submodule update
 # Optionally: to update to the latest version of the git submodule instead of the ones currently pinned to the repo run
 git submodule update --remote
-cp apps/wfo-ui/.env.example apps/wfo-iu/.env
+cp apps/wfo-ui/.env.example apps/wfo-ui/.env
 # change the values in the env file to point to your orchestrator backend
 # set auth=false or follow the directions below this sections
 npm install
