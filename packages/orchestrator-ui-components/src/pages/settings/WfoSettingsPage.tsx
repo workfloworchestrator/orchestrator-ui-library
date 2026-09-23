@@ -3,15 +3,7 @@ import React, { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import {
-  EuiSpacer,
-  EuiFlexItem,
-  EuiPanel,
-  EuiTab,
-  EuiText,
-  EuiCodeBlock,
-  EuiLoadingSpinner,
-  } from '@elastic/eui';
+import { EuiCodeBlock, EuiFlexItem, EuiPanel, EuiSpacer, EuiTab, EuiText } from '@elastic/eui';
 import { css } from '@emotion/react';
 
 import { WfoEngineStatus, WfoFlushSettings, WfoModifySettings, WfoWorkerStatus } from '@/components';
@@ -135,7 +127,7 @@ export const settingsTabs = [
 export const WfoSettingsPage = () => {
   const t = useTranslations('main');
   const tabTranslations = useTranslations('settings.tabs');
-  const { tabStyle, tabsStyle } = useWithOrchestratorTheme(getStyles);
+  const { tabStyle } = useWithOrchestratorTheme(getStyles);
 
   const [selectedTabId, setSelectedTabId] = useQueryParam(
     'activeTab',
