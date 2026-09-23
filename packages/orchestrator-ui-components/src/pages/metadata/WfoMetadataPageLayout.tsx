@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import { EuiSpacer, EuiTab, EuiTabs } from '@elastic/eui';
 
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { getStyles } from '@/components/WfoFilterTabs/styles';
+import { useWithOrchestratorTheme } from '@/hooks';
 
 interface MetadataLayoutProps {
   children: ReactNode;
@@ -56,12 +58,13 @@ export const WfoMetadataPageLayout = ({ children, tabs = metaDataTabs }: Metadat
   const router = useRouter();
   const t = useTranslations('metadata');
   const currentPath = router.pathname;
+  const { tabsStyle } = useWithOrchestratorTheme(getStyles);
 
   return (
     <>
       <WfoContentHeader title={t('title')} />
 
-      <EuiTabs>
+      <EuiTabs css={tabsStyle}>
         {tabs.map(({ id, translationKey: name, path }) => (
           <EuiTab key={id} isSelected={path === currentPath} onClick={() => router.push(path)}>
             {t(`tabs.${name}`)}
