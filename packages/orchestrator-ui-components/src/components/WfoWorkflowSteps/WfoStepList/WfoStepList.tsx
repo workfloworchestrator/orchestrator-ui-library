@@ -93,6 +93,7 @@ export const WfoStepList = React.forwardRef(
               ref={getReferenceCallbackForStepId(stepListItem.step.stepId)}
               onToggleStepDetail={() => onToggleExpandStepListItem(stepListItem)}
               stepListItem={stepListItem}
+              previousCreatedBy={stepListItems[index - 1]?.step.createdBy}
               startedAt={stepListItem.step.started}
               completedAt={stepListItem.step.completed}
               showHiddenKeys={showHiddenKeys}

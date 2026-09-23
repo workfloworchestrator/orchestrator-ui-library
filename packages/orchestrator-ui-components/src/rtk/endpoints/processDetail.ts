@@ -39,6 +39,7 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                     stateDelta
                     started
                     completed
+                    createdBy
                 }
                 customer {
                     fullname
