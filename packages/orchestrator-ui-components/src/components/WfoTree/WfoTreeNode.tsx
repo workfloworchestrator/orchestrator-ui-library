@@ -22,7 +22,7 @@ export const WfoTreeNode: FC<WfoTreeNodeProps> = ({ item, hasChildren, level }) 
   const expanded = expandedIds.includes(item.id);
   const selected = selectedIds.includes(item.id);
 
-  const expandIcon = expanded ? 'arrowDown' : 'arrowRight';
+  const expandIcon = expanded ? 'chevronSingleDown' : 'chevronSingleRight';
 
   return (
     <div style={{ paddingLeft: `${level * parseInt(theme.size.m)}px` }}>

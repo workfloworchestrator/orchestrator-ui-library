@@ -98,7 +98,7 @@ const WfoDiff: FC<WfoDiffProps> = ({ oldText, newText, syntax }) => {
         <EuiFlexItem grow={false}>
           <EuiButtonIcon
             size={'s'}
-            iconType={showSplit ? 'continuityAboveBelow' : 'continuityWithin'}
+            iconType={showSplit ? 'continuityAbove' : 'continuityWithin'}
             onClick={() => setShowSplit(!showSplit)}
             aria-label={t(showSplit ? 'continuityAboveBelow' : 'continuityWithin')}
           />
