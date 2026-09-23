@@ -59,7 +59,7 @@ export const WfoProcessListDeltaPopover: FC<WfoProcessListDeltaPopoverProps> = (
       repositionOnScroll
       panelStyle={popoverPanelStyle}
     >
-      <EuiPanel color="transparent" paddingSize="s" css={deltaContentPanelStyle}>
+      <EuiPanel hasBorder={false} color="transparent" paddingSize="s" css={deltaContentPanelStyle}>
         {isFetching ?
           <div css={loadingSpinnerStyle}>
             <EuiLoadingSpinner size="xl" />

@@ -135,7 +135,7 @@ export const FilterGroup: FC<FilterGroupProps> = ({
       {group.children.length > 0 && (
         <>
           <EuiSpacer size="m" />
-          <EuiPanel paddingSize={isRoot ? 'none' : 's'} color="transparent" hasShadow={false}>
+          <EuiPanel hasBorder={false} paddingSize={isRoot ? 'none' : 's'} color="transparent" hasShadow={false}>
             {group.children.map((child, index) => (
               <div key={index}>
                 {index > 0 && (

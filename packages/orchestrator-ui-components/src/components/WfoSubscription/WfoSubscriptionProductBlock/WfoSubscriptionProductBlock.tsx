@@ -67,6 +67,7 @@ export const WfoSubscriptionProductBlock = ({
       <EuiPanel
         color="transparent"
         hasShadow={false}
+        hasBorder={false}
         css={isOutsideCurrentSubscription ? panelStyleOutsideCurrentSubscription : panelStyle}
       >
         <EuiFlexGroup>

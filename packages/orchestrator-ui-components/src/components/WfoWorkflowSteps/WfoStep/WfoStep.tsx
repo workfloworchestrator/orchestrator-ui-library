@@ -112,7 +112,7 @@ export const WfoStep = React.forwardRef(
 
     return (
       <div ref={ref}>
-        <EuiPanel>
+        <EuiPanel hasBorder={true}>
           <EuiFlexGroup css={getStepHeaderStyle(hasStepContent)} onClick={() => hasStepContent && onToggleStepDetail()}>
             <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} />
 
