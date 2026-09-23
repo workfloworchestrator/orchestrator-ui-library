@@ -214,7 +214,7 @@ export const WfoSearch = () => {
 
       <EuiFlexGroup gutterSize="s" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiButton iconType={showFilters ? 'eyeClosed' : 'eye'} size="s" onClick={() => setShowFilters(!showFilters)}>
+          <EuiButton iconType={showFilters ? 'eyeSlash' : 'eye'} size="s" onClick={() => setShowFilters(!showFilters)}>
             {showFilters ? t('hideFilters') : t('showFilters')}
           </EuiButton>
         </EuiFlexItem>

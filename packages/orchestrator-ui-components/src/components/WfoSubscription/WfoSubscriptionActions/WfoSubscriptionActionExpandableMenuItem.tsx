@@ -48,7 +48,7 @@ export const WfoSubscriptionActionExpandableMenuItem: FC<WfoSubscriptionActionEx
         {hasRelations && (
           <EuiButtonIcon
             css={expandButtonStyle}
-            iconType={isExpanded ? 'arrowDown' : 'arrowRight'}
+            iconType={isExpanded ? 'chevronSingleDown' : 'chevronSingleRight'}
             onClick={() => setIsExpanded(!isExpanded)}
             aria-label={t('expand')}
           />

@@ -117,7 +117,7 @@ export const WfoWorkflowGuideExpandablePanel = ({ workflowName, isExpanded, onTo
 
   const CloseGuideButton = () => (
     <EuiFlexItem grow={false}>
-      <EuiIcon type={isBigScreen ? 'arrowRight' : 'arrowUp'} size="xl" color="primary" />
+      <EuiIcon type={isBigScreen ? 'chevronSingleRight' : 'chevronSingleUp'} size="xl" color="primary" />
     </EuiFlexItem>
   );
 
