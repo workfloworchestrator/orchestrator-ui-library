@@ -58,7 +58,7 @@ export const WfoSearchPaginationInfo: FC<WfoSearchPaginationInfoProps> = ({
     >
       <EuiFlexItem grow={false}>
         <EuiButtonIcon
-          iconType="arrowLeft"
+          iconType="chevronSingleLeft"
           aria-label={t('previousPage')}
           onClick={handlePrevPage}
           disabled={!hasPrevPage || isLoading}
@@ -75,7 +75,7 @@ export const WfoSearchPaginationInfo: FC<WfoSearchPaginationInfoProps> = ({
 
       <EuiFlexItem grow={false}>
         <EuiButtonIcon
-          iconType="arrowRight"
+          iconType="chevronSingleRight"
           aria-label={t('nextPage')}
           onClick={handleNextPage}
           disabled={!has_next_page || isLoading}
