@@ -50,6 +50,7 @@ const ProcessHeaderValue = ({ translationKey, value = '' }: ProcessHeaderValuePr
     >
       <EuiText size="xs">{t(translationKey)}</EuiText>
       <EuiText
+        size="m"
         css={{
           fontWeight: theme.font.weight.bold,
           fontSize: theme.size.m,
@@ -266,6 +267,7 @@ export const WfoProcessDetail = ({
                 >
                   <EuiText size="xs">{t('relatedSubscriptions')}</EuiText>
                   <EuiText
+                    size="m"
                     css={{
                       flex: 1,
                       whiteSpace: 'nowrap',

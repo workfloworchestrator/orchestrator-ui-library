@@ -18,7 +18,7 @@ export const WfoTraceback: FC<WfoTracebackProps> = ({ children }) => {
 
   return (
     <>
-      <EuiText>
+      <EuiText size="m">
         <h3>{t('traceback')}</h3>
       </EuiText>
       <EuiCodeBlock css={codeBlockStyle}>{children}</EuiCodeBlock>

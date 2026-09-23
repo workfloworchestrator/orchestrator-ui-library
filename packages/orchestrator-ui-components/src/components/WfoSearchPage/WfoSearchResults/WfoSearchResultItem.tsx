@@ -90,6 +90,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                   )}
                   <EuiFlexItem>
                     <EuiText
+                      size="m"
                       style={{
                         backgroundColor: 'transparent',
                         borderRadius: theme.border.radius.medium,
