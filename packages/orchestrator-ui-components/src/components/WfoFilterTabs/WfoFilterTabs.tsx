@@ -2,8 +2,9 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiTab, EuiTabs } from '@elastic/eui';
+import { EuiTab } from '@elastic/eui';
 
+import { WfoTabs } from '@/components/WfoTabs';
 import { useWithOrchestratorTheme } from '@/hooks';
 
 import { getStyles } from './styles';
@@ -35,9 +36,9 @@ export const WfoFilterTabs = <TabType extends string, DataType>({
   onChangeTab,
 }: WfoFilterTabsProps<TabType, DataType>) => {
   const t = useTranslations(translationNamespace);
-  const { tabStyle, tabsStyle } = useWithOrchestratorTheme(getStyles);
+  const { tabStyle } = useWithOrchestratorTheme(getStyles);
   return (
-    <EuiTabs css={tabsStyle}>
+    <WfoTabs>
       {tabs.map(({ id, translationKey: name, prepend = '', append = '' }) => (
         <EuiTab
           css={tabStyle}
@@ -50,6 +51,6 @@ export const WfoFilterTabs = <TabType extends string, DataType>({
           {t(name)}
         </EuiTab>
       ))}
-    </EuiTabs>
+    </WfoTabs>
   );
 };
