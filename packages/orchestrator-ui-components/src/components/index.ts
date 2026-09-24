@@ -13,6 +13,7 @@ export * from './WfoSettingsModal';
 export * from './WfoSubscription';
 export * from './WfoTable';
 export * from './WfoTabs';
+export * from './WfoCallOut';
 export * from './WfoTimeline';
 export * from './WfoLoading';
 export * from './WfoToastsList';

@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import {
   EuiButton,
   EuiButtonIcon,
-  EuiCallOut,
   EuiCode,
   EuiFlexGroup,
   EuiFlexItem,
@@ -15,6 +14,7 @@ import {
 } from '@elastic/eui';
 
 import { WfoToolTip } from '@/components';
+import { WfoCallOut } from '@/components/WfoCallOut';
 import { isCondition } from '@/components/WfoSearchPage/utils';
 import { useOrchestratorTheme } from '@/hooks';
 import type { Condition, EntityKind, Filter } from '@/types';
@@ -173,9 +173,9 @@ export const FilterGroup: FC<FilterGroupProps> = ({
       {group.children.length === 0 && (
         <>
           <EuiSpacer size="s" />
-          <EuiCallOut title={t('emptyGroupTitle')} color="primary" iconType="info" size="s">
+          <WfoCallOut title={t('emptyGroupTitle')} color="primary" iconType="info" size="s">
             <p>{t('emptyGroupDescription')}</p>
-          </EuiCallOut>
+          </WfoCallOut>
         </>
       )}
     </EuiPanel>
