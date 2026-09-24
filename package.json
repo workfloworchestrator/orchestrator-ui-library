@@ -16,7 +16,7 @@
     "postinstall": "husky && turbo run build --filter=./packages/*"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0",
+    "@changesets/cli": "^3.0.3",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@turbo/gen": "^2.9.14",
     "husky": "^9.0.11",
@@ -28,5 +28,22 @@
     "apps/*",
     "packages/*"
   ],
+  "overrides": {
+    "eslint-plugin-react": {
+      "eslint": "^10.4.0"
+    },
+    "uuid": "^11.1.0",
+    "prismjs": "^1.30.0",
+    "dompurify": "^3.4.15",
+    "esbuild": "^0.28.2",
+    "d3-color": "^3.1.0",
+    "test-exclude": "^8.0.0",
+    "next-query-params": {
+      "next": "^16.0.0"
+    },
+    "@elastic/eui": {
+      "typescript": "6.0.3"
+    }
+  },
   "packageManager": "npm@10.9.0"
 }

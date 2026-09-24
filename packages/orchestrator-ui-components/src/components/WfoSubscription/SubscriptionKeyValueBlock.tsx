@@ -19,7 +19,7 @@ export const SubscriptionKeyValueBlock = ({ title, keyValues }: SubscriptionKeyV
         <div style={{ marginTop: 5 }}>
           <EuiFlexGroup justifyContent="spaceBetween">
             <EuiFlexItem>
-              <EuiText grow={false} css={{ fontWeight: theme.font.weight.semiBold }}>
+              <EuiText size="m" grow={false} css={{ fontWeight: theme.font.weight.semiBold }}>
                 {title}
               </EuiText>
             </EuiFlexItem>

@@ -3,22 +3,14 @@ import React, { useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
-import {
-  EuiCodeBlock,
-  EuiFlexItem,
-  EuiLoadingSpinner,
-  EuiPanel,
-  EuiSpacer,
-  EuiTab,
-  EuiTabs,
-  EuiText,
-} from '@elastic/eui';
+import { EuiCodeBlock, EuiFlexItem, EuiPanel, EuiSpacer, EuiTab, EuiText } from '@elastic/eui';
 import { css } from '@emotion/react';
 
 import { WfoEngineStatus, WfoFlushSettings, WfoModifySettings, WfoWorkerStatus } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { getStyles } from '@/components/WfoFilterTabs/styles';
 import { WfoAoStackStatus } from '@/components/WfoSettings/WfoAoStackStatus';
+import { WfoTabs } from '@/components/WfoTabs';
 import { useGetOrchestratorConfig, useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { useGetEnvironmentVariablesQuery } from '@/rtk';
 import { EnvironmentVariable, EnvironmentVariables } from '@/types';
@@ -56,7 +48,7 @@ export const WfoActionSettings = () => {
 export const WfoEnvSettings = () => {
   const t = useTranslations('settings.page');
   const { theme } = useOrchestratorTheme();
-  const { data, isFetching } = useGetEnvironmentVariablesQuery(undefined, { refetchOnMountOrArgChange: true });
+  const { data } = useGetEnvironmentVariablesQuery();
 
   const mapToRepresentableVariables = (variables: EnvironmentVariable[]) => {
     return variables.map(({ env_name, env_value }) => `${env_name}=${env_value}`).join('\n');
@@ -116,15 +108,7 @@ export const WfoEnvSettings = () => {
     );
   };
 
-  const renderContentOrSpinner = () => {
-    return (
-      isFetching ? <EuiLoadingSpinner size="l" />
-      : data?.length ? renderEnvSettings()
-      : emptyEnvSettings()
-    );
-  };
-
-  return <div css={{ maxWidth: theme.base * 45 }}>{renderContentOrSpinner()}</div>;
+  return <div css={{ maxWidth: theme.base * 45 }}>{data?.length ? renderEnvSettings() : emptyEnvSettings()}</div>;
 };
 
 export const settingsTabs = [
@@ -175,7 +159,7 @@ export const WfoSettingsPage = () => {
     <>
       <WfoContentHeader title={t('settings')} />
 
-      <EuiTabs>{renderTabs()}</EuiTabs>
+      <WfoTabs>{renderTabs()}</WfoTabs>
 
       <EuiSpacer size="xxl" />
 

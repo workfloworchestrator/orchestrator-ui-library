@@ -4,9 +4,10 @@ import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiSpacer, EuiTab, EuiTabs } from '@elastic/eui';
+import { EuiSpacer, EuiTab } from '@elastic/eui';
 
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { WfoTabs } from '@/components/WfoTabs';
 
 interface MetadataLayoutProps {
   children: ReactNode;
@@ -61,13 +62,13 @@ export const WfoMetadataPageLayout = ({ children, tabs = metaDataTabs }: Metadat
     <>
       <WfoContentHeader title={t('title')} />
 
-      <EuiTabs>
+      <WfoTabs>
         {tabs.map(({ id, translationKey: name, path }) => (
           <EuiTab key={id} isSelected={path === currentPath} onClick={() => router.push(path)}>
             {t(`tabs.${name}`)}
           </EuiTab>
         ))}
-      </EuiTabs>
+      </WfoTabs>
       <EuiSpacer size="l" />
       {children}
     </>

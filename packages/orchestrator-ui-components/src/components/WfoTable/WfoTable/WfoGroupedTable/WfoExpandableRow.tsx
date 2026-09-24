@@ -31,7 +31,7 @@ export const WfoExpandableRow: FC<WfoExpandableRowProps> = ({
       <EuiButtonIcon
         disabled={!hasData}
         aria-label={isExpanded ? t('collapse') : t('expand')}
-        iconType={hasData && isExpanded ? 'arrowDown' : 'arrowRight'}
+        iconType={hasData && isExpanded ? 'chevronSingleDown' : 'chevronSingleRight'}
         onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
           updateExpandedRows(groupName);
           event.stopPropagation();

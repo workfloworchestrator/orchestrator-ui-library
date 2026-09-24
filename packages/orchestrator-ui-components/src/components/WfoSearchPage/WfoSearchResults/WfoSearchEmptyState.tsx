@@ -11,7 +11,7 @@ export const WfoSearchEmptyState: FC = () => {
   const { theme } = useOrchestratorTheme();
 
   return (
-    <EuiPanel paddingSize="l" color="transparent" hasShadow={false}>
+    <EuiPanel hasBorder={false} paddingSize="l" color="transparent" hasShadow={false}>
       <EuiFlexGroup justifyContent="center" alignItems="center">
         <EuiFlexItem grow={false}>
           <EuiText size="m" color={theme.colors.textSubdued}>

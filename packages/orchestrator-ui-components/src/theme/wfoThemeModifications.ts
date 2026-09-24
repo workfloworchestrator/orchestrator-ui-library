@@ -29,6 +29,31 @@ export type WfoComputedTheme = EuiThemeComputed<WfoComputedModifications>;
  */
 export const wfoThemeModifications: WfoThemeModifications = {
   base: 16,
+  /*
+   * EUI 122 (eui-theme-borealis 8) introduced semantic corner radius tokens and repointed its
+   * components at them: `control` (8px) for buttons/inputs/tabs, `panel` (12px) for panels, cards
+   * and popovers and `frame` (16px) for modals. Up to EUI 113 all of these resolved to 4px.
+   * These overrides keep the existing Workflow Orchestrator look; remove them to adopt the
+   * Borealis defaults, which also means revisiting the components that still hardcode
+   * the deprecated `border.radius.small`/`border.radius.medium` tokens.
+   */
+  border: {
+    radius: {
+      inline: '4px',
+      control: '4px',
+      panel: '4px',
+      frame: '4px',
+    },
+  },
+  /*
+   * eui-theme-borealis 8 added `font.title.letterSpacing: -0.2px`, which EuiTitle (and so page
+   * headers) now applies. Up to EUI 113 titles had normal letter spacing; keep that.
+   */
+  font: {
+    title: {
+      letterSpacing: 'normal',
+    },
+  },
   breakpoint: {
     xs: 0,
     s: 575,

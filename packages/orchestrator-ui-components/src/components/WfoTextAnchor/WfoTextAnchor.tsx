@@ -15,7 +15,7 @@ export const WfoTextAnchor = ({ text, onClick }: WfoTextAnchorProps) => {
   const { textAnchorStyle } = useWithOrchestratorTheme(getStyles);
 
   return (
-    <EuiText onClick={onClick} css={textAnchorStyle}>
+    <EuiText size="m" onClick={onClick} css={textAnchorStyle}>
       {text}
     </EuiText>
   );

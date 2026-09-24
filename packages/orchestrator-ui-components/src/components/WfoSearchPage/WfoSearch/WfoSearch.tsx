@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 
 import {
   EuiButton,
-  EuiCallOut,
   EuiFieldSearch,
   EuiFlexGroup,
   EuiFlexItem,
@@ -12,7 +11,6 @@ import {
   EuiSelect,
   EuiSpacer,
   EuiTab,
-  EuiTabs,
   EuiText,
 } from '@elastic/eui';
 
@@ -22,7 +20,9 @@ import { WfoSearchResults } from '@/components';
 import { WfoSearchMetadataHeader } from '@/components';
 import { WfoSearchPaginationInfo } from '@/components';
 import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
+import { WfoCallOut } from '@/components/WfoCallOut';
 import { ENTITY_TABS } from '@/components/WfoSearchPage/utils';
+import { WfoTabs } from '@/components/WfoTabs';
 import { TreeProvider } from '@/contexts';
 import { useSearchAvailability } from '@/hooks/useBackendAvailability';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -183,13 +183,13 @@ export const WfoSearch = () => {
 
   return (
     <WfoAvailabilityCheck featureType="search" availability={searchAvailability}>
-      <EuiTabs>
+      <WfoTabs>
         {ENTITY_TABS.map((tab) => (
           <EuiTab key={tab.id} onClick={() => handleTabChange(tab.id)} isSelected={selectedEntityTab === tab.id}>
             {tab.label}
           </EuiTab>
         ))}
-      </EuiTabs>
+      </WfoTabs>
       <EuiSpacer size="m" />
 
       <EuiFieldSearch
@@ -211,7 +211,7 @@ export const WfoSearch = () => {
 
       <EuiFlexGroup gutterSize="s" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiButton iconType={showFilters ? 'eyeClosed' : 'eye'} size="s" onClick={() => setShowFilters(!showFilters)}>
+          <EuiButton iconType={showFilters ? 'eyeSlash' : 'eye'} size="s" onClick={() => setShowFilters(!showFilters)}>
             {showFilters ? t('hideFilters') : t('showFilters')}
           </EuiButton>
         </EuiFlexItem>
@@ -248,7 +248,7 @@ export const WfoSearch = () => {
         <>
           <EuiSpacer size="m" />
           <EuiPanel hasBorder paddingSize="m">
-            <EuiText>
+            <EuiText size="m">
               <h4>{t('structuredFilters')}</h4>
             </EuiText>
             <EuiSpacer size="s" />
@@ -261,12 +261,12 @@ export const WfoSearch = () => {
 
       {error && (
         <>
-          <EuiCallOut title={t('searchError')} color="danger" iconType="alert" size="s">
+          <WfoCallOut title={t('searchError')} color="danger" iconType="alert" size="s">
             <p>{error}</p>
             <EuiButton size="s" color="danger" onClick={() => setError(null)}>
               {t('dismiss')}
             </EuiButton>
-          </EuiCallOut>
+          </WfoCallOut>
           <EuiSpacer size="m" />
         </>
       )}
@@ -274,7 +274,7 @@ export const WfoSearch = () => {
       {shouldShowNoResults && (
         <>
           <EuiSpacer size="l" />
-          <EuiCallOut title={t('noResults')} color="primary" iconType="search" size="m">
+          <WfoCallOut title={t('noResults')} color="primary" iconType="search" size="m">
             <p>
               {t('noResultsMessage', {
                 entityType: currentTab?.label.toLowerCase() || '',
@@ -284,7 +284,7 @@ export const WfoSearch = () => {
             <EuiText size="s" color="subdued">
               <p>{t('noResultsSuggestions')}</p>
             </EuiText>
-          </EuiCallOut>
+          </WfoCallOut>
           <EuiSpacer size="l" />
         </>
       )}

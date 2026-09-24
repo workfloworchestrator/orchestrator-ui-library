@@ -80,7 +80,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         aria-label="Row context menu"
         isLoading={isLoading}
       />
-    : <EuiButton iconType="arrowDown" iconSide="right" onClick={onButtonClick} isLoading={isLoading}>
+    : <EuiButton iconType="chevronSingleDown" iconSide="right" onClick={onButtonClick} isLoading={isLoading}>
         {t('actions')}
       </EuiButton>;
 

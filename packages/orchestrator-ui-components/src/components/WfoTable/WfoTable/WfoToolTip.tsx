@@ -13,7 +13,6 @@ export const WfoToolTip: FC<WfoToolTipProps> = ({ tooltipContent, children, clas
     <EuiToolTip
       className={className}
       position="bottom"
-      delay="long"
       content={tooltipContent}
       css={{ maxWidth: 'fit-content' }}
       repositionOnScroll

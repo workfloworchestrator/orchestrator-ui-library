@@ -6,16 +6,21 @@ const createJestConfig = nextJest({
   dir: './',
 });
 
-// The entry for "uuid" in the moduleNameMapper can be removed when EUI updates the dependency version to 9.0.0 or higher.
-// https://github.com/uuidjs/uuid/blob/main/CHANGELOG.md#900-2022-09-05
 const customJestConfig = {
   ...base,
   displayName: 'Wfo-UI Tests',
   moduleNameMapper: {
-    '^uuid$': 'uuid',
     // Mirrors the "@/*" path alias from tsconfig.json
     '^@/(.*)$': '<rootDir>/src/$1',
   },
 };
 
-module.exports = createJestConfig(customJestConfig);
+// next/jest only allows appending to transformIgnorePatterns, so the list from
+// the base config is restored afterwards to let ESM-only dependencies through.
+module.exports = async () => {
+  const config = await createJestConfig(customJestConfig)();
+
+  config.transformIgnorePatterns = base.transformIgnorePatterns;
+
+  return config;
+};

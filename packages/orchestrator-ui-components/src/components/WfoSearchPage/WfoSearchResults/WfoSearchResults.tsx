@@ -30,7 +30,7 @@ export const WfoSearchResults = ({
   }
 
   return (
-    <EuiPanel paddingSize="m" hasShadow={false}>
+    <EuiPanel hasBorder={false} paddingSize="m" hasShadow={false}>
       <EuiFlexGroup direction="column" gutterSize="s">
         {results.map((result, idx) => (
           <WfoSearchResultItem

@@ -90,6 +90,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                   )}
                   <EuiFlexItem>
                     <EuiText
+                      size="m"
                       style={{
                         backgroundColor: 'transparent',
                         borderRadius: theme.border.radius.medium,
@@ -118,7 +119,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
               </EuiFlexItem>
               <EuiFlexItem>
                 <EuiButtonIcon
-                  iconType="popout"
+                  iconType="external"
                   aria-label={t('viewDetails')}
                   onClick={(e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();

@@ -5,10 +5,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
-            - name: Use Node.js ${{ matrix.node-version }}
+            - name: Use Node.js 24
               uses: actions/setup-node@v3
               with:
-                  node-version: ${{ matrix.node-version }}
+                  node-version: '24'
                   cache: 'npm'
             - uses: actions/cache@v3
               with:
@@ -22,10 +22,10 @@ jobs:
         needs: cache-dependencies
         steps:
             - uses: actions/checkout@v3
-            - name: Use Node.js ${{ matrix.node-version }}
+            - name: Use Node.js 24
               uses: actions/setup-node@v3
               with:
-                  node-version: ${{ matrix.node-version }}
+                  node-version: '24'
                   cache: 'npm'
             - uses: actions/cache@v3
               with:
@@ -42,10 +42,10 @@ jobs:
         needs: cache-dependencies
         steps:
             - uses: actions/checkout@v3
-            - name: Use Node.js ${{ matrix.node-version }}
+            - name: Use Node.js 24
               uses: actions/setup-node@v3
               with:
-                  node-version: ${{ matrix.node-version }}
+                  node-version: '24'
                   cache: 'npm'
             - uses: actions/cache@v3
               with:
@@ -60,10 +60,10 @@ jobs:
         needs: cache-dependencies
         steps:
             - uses: actions/checkout@v3
-            - name: Use Node.js ${{ matrix.node-version }}
+            - name: Use Node.js 24
               uses: actions/setup-node@v3
               with:
-                  node-version: ${{ matrix.node-version }}
+                  node-version: '24'
                   cache: 'npm'
             - uses: actions/cache@v3
               with:

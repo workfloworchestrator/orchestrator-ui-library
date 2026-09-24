@@ -2,7 +2,9 @@ import React from 'react';
 
 import { PydanticFormElementProps } from 'pydantic-forms';
 
-import { EuiCallOut, EuiMarkdownFormat } from '@elastic/eui';
+import { EuiMarkdownFormat } from '@elastic/eui';
+
+import { WfoCallOut } from '@/components/WfoCallOut';
 
 import { CALLOUT_COLORS, CalloutColor } from './WfoCallout';
 
@@ -18,9 +20,9 @@ export const WfoMarkdownField = ({ pydanticFormField }: PydanticFormElementProps
 
   return (
     <div data-testid={pydanticFormField.id} css={{ marginBottom: '2rem' }}>
-      <EuiCallOut color={color}>
+      <WfoCallOut color={color}>
         <EuiMarkdownFormat>{content}</EuiMarkdownFormat>
-      </EuiCallOut>
+      </WfoCallOut>
     </div>
   );
 };

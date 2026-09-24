@@ -2,7 +2,9 @@ import React, { FC } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiCallOut, EuiCode, EuiSpacer, EuiText } from '@elastic/eui';
+import { EuiButton, EuiCode, EuiSpacer, EuiText } from '@elastic/eui';
+
+import { WfoCallOut } from '@/components/WfoCallOut';
 
 interface WfoBackendUnavailableProps {
   featureType: 'search';
@@ -29,7 +31,7 @@ export const WfoBackendUnavailable: FC<WfoBackendUnavailableProps> = ({ featureT
   };
 
   return (
-    <EuiCallOut title={t('title')} color="warning" iconType="alert" data-testid={`backend-unavailable-${featureType}`}>
+    <WfoCallOut title={t('title')} color="warning" iconType="alert" data-testid={`backend-unavailable-${featureType}`}>
       <EuiText size="s">
         <ul>
           {getInstructionSteps().map((step, index) => (
@@ -52,6 +54,6 @@ export const WfoBackendUnavailable: FC<WfoBackendUnavailableProps> = ({ featureT
           </EuiButton>
         </>
       )}
-    </EuiCallOut>
+    </WfoCallOut>
   );
 };

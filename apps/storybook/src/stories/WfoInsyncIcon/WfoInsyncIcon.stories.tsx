@@ -1,5 +1,5 @@
 import { WfoInsyncIcon } from '@orchestrator-ui/orchestrator-ui-components';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 
 const Story: Meta<typeof WfoInsyncIcon> = {
   component: WfoInsyncIcon,

@@ -5,9 +5,9 @@ import {
   ColorModes,
   OrchestratorConfigProvider,
   StoreProvider,
-  defaultOrchestratorTheme,
+  wfoThemeModifications,
 } from '@orchestrator-ui/orchestrator-ui-components';
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 
 import { TranslationsProvider } from '../translations/translationsProvider';
 
@@ -39,7 +39,7 @@ const preview: Preview = {
     (Story) => (
       <OrchestratorConfigProvider initialOrchestratorConfig={storybookConfig}>
         <StoreProvider initialOrchestratorConfig={storybookConfig}>
-          <EuiProvider colorMode={ColorModes.LIGHT} modify={defaultOrchestratorTheme}>
+          <EuiProvider colorMode={ColorModes.LIGHT} modify={wfoThemeModifications}>
             <TranslationsProvider>
               <div style={{ margin: '3em' }}>
                 <Story />
