@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSelectableOption, EuiText } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiSelectableOption, EuiText } from '@elastic/eui';
 import { EuiSelectableOptionCheckedType } from '@elastic/eui/src/components/selectable/selectable_option';
 
 import {
@@ -12,6 +12,7 @@ import {
   mapProductBlockInstancesToEuiSelectableOptions,
 } from '@/components';
 import { WfoButtonComboBox } from '@/components/WfoButtonComboBox';
+import { WfoCallOut } from '@/components/WfoCallOut';
 import { TreeContext, TreeContextType } from '@/contexts';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { ProductBlockInstance, Subscription, TreeBlock, WfoTreeNodeMap } from '@/types';
@@ -190,7 +191,7 @@ export const WfoSubscriptionDetailTree = ({
         <div>
           <div>&nbsp;</div> {/* This is a placeholder for the searchbar */}
           {selectedIds.length === 0 && (
-            <EuiCallOut
+            <WfoCallOut
               css={{
                 marginTop: theme.size.m,
                 textAlign: 'center',
@@ -200,7 +201,7 @@ export const WfoSubscriptionDetailTree = ({
               iconType="inspect"
             >
               <EuiText size="m">{t('ctaSelectProductBlock')} </EuiText>
-            </EuiCallOut>
+            </WfoCallOut>
           )}
           {selectedIds.length !== 0
             && selectedIds.sort(sortByTree).map((id) => {
