@@ -6,9 +6,11 @@ repo_name: 'orchestrator-ui-library'
 nav:
   - Introduction: index.md
   - Guides:
+      - Frontend / Backend Compatibility: guides/compatibility.md
       - Upgrade Guides:
           - v8.1: guides/upgrading/8.1.md
           - v8.4: guides/upgrading/8.4.md
+          - v9.0: guides/upgrading/9.0.md
   - Architecture:
       - Security: architecture/security.md
       - Pydantic Forms: forms/index.md

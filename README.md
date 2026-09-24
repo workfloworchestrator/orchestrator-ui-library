@@ -89,16 +89,7 @@ Just merge the `Version Packages` PR into main, and the packages will be publish
 The file `version-compatibility.json` in the root of the orchestrator-ui-library is used to define the minimum backend version that is required for a specific frontend version.
 In the UI a check is added to validate whether the UI matches a minimum release of the backend.
 
-```
-[
-    {
-        "orchestratorUiVersion": "3.4.0",
-        "minimumOrchestratorCoreVersion": "2.10.0",
-        "changes": "Endpoints in BE to modify description on metadata pages"
-    },
-    ...
-]
-```
+See the [Frontend / Backend Compatibility](https://workfloworchestrator.github.io/orchestrator-ui-library/guides/compatibility/) guide for the current compatibility table. When adding a new entry to `version-compatibility.json`, add a matching row there in the same pull request.
 
 ## Storybook
 
