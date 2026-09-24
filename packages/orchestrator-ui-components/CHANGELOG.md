@@ -1,5 +1,12 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 9.0.1
+
+### Patch Changes
+
+- 71837a2: Show retry user in step header when the user is different from before
+- 828ec0a: Reload data from the settings page when re-opening the page or changing settings tabs
+
 ## 9.0.0
 
 ### Major Changes
