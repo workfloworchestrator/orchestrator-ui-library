@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 
 import {
   EuiButton,
-  EuiCallOut,
   EuiFieldSearch,
   EuiFlexGroup,
   EuiFlexItem,
@@ -21,6 +20,7 @@ import { WfoSearchResults } from '@/components';
 import { WfoSearchMetadataHeader } from '@/components';
 import { WfoSearchPaginationInfo } from '@/components';
 import { WfoAvailabilityCheck } from '@/components/WfoAvailabilityCheck';
+import { WfoCallOut } from '@/components/WfoCallOut';
 import { ENTITY_TABS } from '@/components/WfoSearchPage/utils';
 import { WfoTabs } from '@/components/WfoTabs';
 import { TreeProvider } from '@/contexts';
@@ -261,12 +261,12 @@ export const WfoSearch = () => {
 
       {error && (
         <>
-          <EuiCallOut title={t('searchError')} color="danger" iconType="alert" size="s">
+          <WfoCallOut title={t('searchError')} color="danger" iconType="alert" size="s">
             <p>{error}</p>
             <EuiButton size="s" color="danger" onClick={() => setError(null)}>
               {t('dismiss')}
             </EuiButton>
-          </EuiCallOut>
+          </WfoCallOut>
           <EuiSpacer size="m" />
         </>
       )}
@@ -274,7 +274,7 @@ export const WfoSearch = () => {
       {shouldShowNoResults && (
         <>
           <EuiSpacer size="l" />
-          <EuiCallOut title={t('noResults')} color="primary" iconType="search" size="m">
+          <WfoCallOut title={t('noResults')} color="primary" iconType="search" size="m">
             <p>
               {t('noResultsMessage', {
                 entityType: currentTab?.label.toLowerCase() || '',
@@ -284,7 +284,7 @@ export const WfoSearch = () => {
             <EuiText size="s" color="subdued">
               <p>{t('noResultsSuggestions')}</p>
             </EuiText>
-          </EuiCallOut>
+          </WfoCallOut>
           <EuiSpacer size="l" />
         </>
       )}

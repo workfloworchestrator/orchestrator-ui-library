@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PydanticFormElementProps } from 'pydantic-forms';
 
-import { EuiCallOut } from '@elastic/eui';
+import { WfoCallOut } from '@/components/WfoCallOut';
 
 export const CALLOUT_COLORS = ['primary', 'success', 'warning', 'danger'] as const;
 export type CalloutColor = (typeof CALLOUT_COLORS)[number];
@@ -13,9 +13,9 @@ export const WfoCallout = ({ pydanticFormField }: PydanticFormElementProps) => {
 
   return (
     <div data-testid={pydanticFormField.id} css={{ marginBottom: '2rem' }}>
-      <EuiCallOut title={header} iconType={icon_type} color={color}>
+      <WfoCallOut title={header} iconType={icon_type} color={color}>
         <p>{message}</p>
-      </EuiCallOut>
+      </WfoCallOut>
     </div>
   );
 };
