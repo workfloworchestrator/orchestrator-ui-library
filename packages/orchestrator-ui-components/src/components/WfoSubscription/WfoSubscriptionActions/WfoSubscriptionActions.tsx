@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiButton, EuiButtonIcon, EuiContextMenuItem, EuiLoadingSpinner, EuiTitle } from '@elastic/eui';
+import { EuiButton, EuiButtonIcon, EuiLoadingSpinner, EuiTitle } from '@elastic/eui';
 
 import {
   PATH_START_NEW_TASK,
@@ -15,10 +15,9 @@ import {
 import { getActionItemsByTarget } from '@/components/WfoSubscription';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
 import { WfoSubscriptionActionsMenuStatusItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuStatusItem';
-import { getSubscriptionActionStyles } from '@/components/WfoSubscription/WfoSubscriptionActions/styles';
 import { useActiveProcess } from '@/components/WfoSubscription/WfoSubscriptionActions/utils';
 import { PolicyResource } from '@/configuration/policy-resources';
-import { useOrchestratorTheme, usePolicy, useWithOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useGetSubscriptionActionsQuery, useGetSubscriptionDetailQuery, useStartProcessMutation } from '@/rtk';
 import { WorkflowTarget } from '@/types';
@@ -47,7 +46,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 }) => {
   const t = useTranslations('subscriptions.detail.actions');
   const { theme } = useOrchestratorTheme();
-  const { iconStyle } = useWithOrchestratorTheme(getSubscriptionActionStyles);
 
   const [isPopoverOpen, setPopover] = useState<boolean>(false);
   const router = useRouter();
