@@ -16,7 +16,7 @@ import { WfoApplyFilterButton } from '@/components/WfoTable/WfoStructuredSearchT
 import { WfoCombinatorSelector } from '@/components/WfoTable/WfoStructuredSearchTable/WfoCombinatorSelector';
 import { useFieldsPathInfo, useWithOrchestratorTheme } from '@/hooks';
 import type { WfoGraphqlError } from '@/rtk';
-import type { FieldToOperatorMap, PathInfo, WfoQueryBuilderContext } from '@/types';
+import { FieldToOperatorMap, OperatorDescription, PathInfo, WfoQueryBuilderContext } from '@/types';
 import { EntityKind } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
@@ -49,7 +49,7 @@ interface WfoFilterBuilderProps {
 
 const initialRuleGroup: RuleGroupType = {
   id: 'root',
-  rules: [{ id: 'rule-0', field: defaultPlaceholderFieldName, operator: '=', value: '' }],
+  rules: [{ id: 'rule-0', field: defaultPlaceholderFieldName, operator: OperatorDescription.CONTAINS, value: '' }],
   combinator: 'and',
 };
 

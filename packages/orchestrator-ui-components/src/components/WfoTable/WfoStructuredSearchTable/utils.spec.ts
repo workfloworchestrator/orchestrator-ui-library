@@ -1,7 +1,18 @@
 import type { RuleGroupType, RuleType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder';
 
-import { collectRuleFields, hasNestedRuleWithEmptyValue, parseCelToRuleGroup } from './utils';
+import { renderHook } from '@testing-library/react';
+
+import { EntityKind } from '@/types';
+
+import { collectRuleFields, hasNestedRuleWithEmptyValue, parseCelToRuleGroup, useBuildColumnFilter } from './utils';
+
+const mockUseFieldsPathInfo = jest.fn();
+
+jest.mock('@/hooks', () => ({
+  ...jest.requireActual('@/hooks'),
+  useFieldsPathInfo: (...args: unknown[]) => mockUseFieldsPathInfo(...args),
+}));
 
 describe('parseCelToRuleGroup', () => {
   it('assigns ids to the parsed group and rules so rule identity stays stable', () => {
@@ -111,5 +122,87 @@ describe('hasRuleWithEmptyValue', () => {
 
   it('returns false without a rule group', () => {
     expect(hasNestedRuleWithEmptyValue(undefined)).toBe(false);
+  });
+});
+
+describe('useBuildColumnFilter', () => {
+  type Row = { description: string; insync: boolean; note: string };
+  const tableColumnConfig = { description: {}, insync: {}, note: {} };
+  const getColumnSearchFieldName = (field: keyof Row) => `subscription.${String(field)}`;
+
+  const renderBuildColumnFilter = (columnSearchFieldName?: (field: keyof Row) => string) =>
+    renderHook(() => useBuildColumnFilter<Row>(tableColumnConfig, columnSearchFieldName)).result.current
+      .buildColumnFilter;
+
+  beforeEach(() => {
+    // subscription.note has no path info: the backend does not know it, or its lookup is still pending.
+    mockUseFieldsPathInfo.mockReturnValue(
+      new Map([
+        ['subscription.description', { operators: ['eq', 'neq', 'like'] }],
+        ['subscription.insync', { operators: ['eq', 'neq'] }],
+      ]),
+    );
+  });
+
+  it("loads the path info of the columns' search fields", () => {
+    renderBuildColumnFilter(getColumnSearchFieldName);
+
+    expect(mockUseFieldsPathInfo).toHaveBeenCalledWith(
+      ['subscription.description', 'subscription.insync', 'subscription.note'],
+      EntityKind.SUBSCRIPTION,
+    );
+  });
+
+  it('adds a substring match when the field offers contains', () => {
+    const result = renderBuildColumnFilter(getColumnSearchFieldName)('description', 'node');
+
+    expect(result?.filterString).toBe('subscription.description.contains("node")');
+    expect(result?.ruleGroup.rules).toEqual([
+      expect.objectContaining({ field: 'subscription.description', operator: 'contains', value: 'node' }),
+    ]);
+  });
+
+  it('adds an exact match when the field does not offer contains', () => {
+    const result = renderBuildColumnFilter(getColumnSearchFieldName)('insync', 'true');
+
+    expect(result?.filterString).toBe('subscription.insync == "true"');
+    expect(result?.ruleGroup.rules).toEqual([
+      expect.objectContaining({ field: 'subscription.insync', operator: '=', value: 'true' }),
+    ]);
+  });
+
+  it('appends the condition to the current filter', () => {
+    const result = renderBuildColumnFilter(getColumnSearchFieldName)(
+      'description',
+      'node',
+      'subscription.insync == "true"',
+    );
+
+    expect(result?.filterString).toBe('(subscription.insync == "true") && subscription.description.contains("node")');
+  });
+
+  it('adds an exact match when the field path info is unknown', () => {
+    expect(renderBuildColumnFilter(getColumnSearchFieldName)('note', 'node')?.filterString).toBe(
+      'subscription.note == "node"',
+    );
+  });
+
+  it('falls back to the field key without a field name resolver', () => {
+    expect(renderBuildColumnFilter()('description', 'node')?.filterString).toBe('description == "node"');
+  });
+
+  it('refuses empty search text and search text with a double quote', () => {
+    const buildColumnFilter = renderBuildColumnFilter(getColumnSearchFieldName);
+
+    expect(buildColumnFilter('description', '')).toBeUndefined();
+    expect(buildColumnFilter('description', 'say "hi"')).toBeUndefined();
+  });
+
+  it('produces a substring query for the search backend', () => {
+    const result = renderBuildColumnFilter(getColumnSearchFieldName)('description', 'node');
+
+    expect(formatQuery(result!.ruleGroup, 'elasticsearch')).toEqual({
+      bool: { must: [{ regexp: { 'subscription.description': { value: '.*node.*' } } }] },
+    });
   });
 });
