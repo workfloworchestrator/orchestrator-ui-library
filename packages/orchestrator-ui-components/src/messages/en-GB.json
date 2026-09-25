@@ -463,6 +463,9 @@
         "actions": "Actions",
         "lockedBySubscriptions": "This action is locked by the following subscriptions:",
         "modify": "Modify workflow",
+        "no_modify": "No modify workflows available",
+        "no_tasks": "No tasks available",
+        "no_terminate": "No terminate workflows available",
         "reconcile": "Reconcile workflow",
         "subscription": {
           "insufficient_workflow_permissions": "Insufficient user permissions to run this workflow",
