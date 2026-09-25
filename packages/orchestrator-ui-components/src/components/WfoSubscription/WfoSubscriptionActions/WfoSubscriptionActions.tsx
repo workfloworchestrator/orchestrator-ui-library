@@ -14,6 +14,7 @@ import {
 } from '@/components';
 import { getActionItemsByTarget } from '@/components/WfoSubscription';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
+import { WfoSubscriptionActionsMenuStatusItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuStatusItem';
 import { getSubscriptionActionStyles } from '@/components/WfoSubscription/WfoSubscriptionActions/styles';
 import { useActiveProcess } from '@/components/WfoSubscription/WfoSubscriptionActions/utils';
 import { PolicyResource } from '@/configuration/policy-resources';
@@ -21,8 +22,6 @@ import { useOrchestratorTheme, usePolicy, useWithOrchestratorTheme } from '@/hoo
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useGetSubscriptionActionsQuery, useGetSubscriptionDetailQuery, useStartProcessMutation } from '@/rtk';
 import { WorkflowTarget } from '@/types';
-
-import { WfoTargetTypeIcon } from '../WfoTargetTypeIcon';
 
 type MenuBlockProps = {
   title: string;
@@ -177,18 +176,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             />
           ))}
         </>
-      : <EuiContextMenuItem
-          icon={
-            <div css={iconStyle}>
-              <WfoTargetTypeIcon target={WorkflowTarget.VALIDATE} disabled={true} />
-            </div>
-          }
-          disabled={true}
-          css={{ whiteSpace: 'nowrap' }}
-        >
-          {t('no_tasks')}
-        </EuiContextMenuItem>
-      }
+      : <WfoSubscriptionActionsMenuStatusItem message={t('no_tasks')} target={WorkflowTarget.VALIDATE} />}
 
       {allowedReconcileActionItems.length > 0 && (
         <>
@@ -241,18 +229,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             />
           ))}
         </>
-      : <EuiContextMenuItem
-          icon={
-            <div css={iconStyle}>
-              <WfoTargetTypeIcon target={WorkflowTarget.MODIFY} disabled={true} />
-            </div>
-          }
-          disabled={true}
-          css={{ whiteSpace: 'nowrap' }}
-        >
-          {t('no_modify')}
-        </EuiContextMenuItem>
-      }
+      : <WfoSubscriptionActionsMenuStatusItem message={t('no_modify')} target={WorkflowTarget.MODIFY} />}
       {compactItems}
       {allowedTerminateActionItems.length > 0 ?
         <>
@@ -270,18 +247,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             />
           ))}
         </>
-      : <EuiContextMenuItem
-          icon={
-            <div css={iconStyle}>
-              <WfoTargetTypeIcon target={WorkflowTarget.TERMINATE} disabled={true} />
-            </div>
-          }
-          disabled={true}
-          css={{ whiteSpace: 'nowrap' }}
-        >
-          {t('no_terminate')}
-        </EuiContextMenuItem>
-      }
+      : <WfoSubscriptionActionsMenuStatusItem message={t('no_terminate')} target={WorkflowTarget.TERMINATE} />}
     </>
   );
 
