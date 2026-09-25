@@ -218,6 +218,8 @@
   "pydanticForms": {
     "userInputForm": {
       "cancel": "Cancel",
+      "forbiddenFallback": "You are not allowed to perform this action.",
+      "forbiddenTitle": "Not authorized",
       "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors",
       "next": "Next",
       "preconditionFailedFallback": "A precondition for starting this task was not met.",

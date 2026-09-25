@@ -86,6 +86,18 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
                     },
                   ],
                 });
+              } else if (error.status === HttpStatus.Forbidden) {
+                const detail = typeof error.data.detail === 'string' ? error.data.detail : '';
+                showToastMessage(ToastTypes.ERROR, detail || t('forbiddenFallback'), t('forbiddenTitle'));
+                resolve({
+                  validation_errors: [
+                    {
+                      loc: ['__root__'],
+                      msg: detail || t('forbiddenFallback'),
+                      type: 'forbidden',
+                    },
+                  ],
+                });
               }
             } else if (data) {
               resolve({
