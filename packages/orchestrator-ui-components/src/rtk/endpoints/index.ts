@@ -10,6 +10,7 @@ export * from './productsSummary';
 export * from './relatedSubscriptions';
 export * from './settings';
 export * from './startOptions';
+export * from './workflowDesigner';
 export * from './streamMessages';
 export * from './subscriptionActions';
 export * from './subscriptionDetail';

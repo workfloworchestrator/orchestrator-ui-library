@@ -80,7 +80,8 @@
     "websocketConnected": "This page receives live updates from the server",
     "websocketDisconnected": "The connection to the server is lost, click the icon or refresh the page",
     "welcome": "Welcome",
-    "workflows": "Workflows"
+    "workflows": "Workflows",
+    "workflowDesigner": "Workflow designer"
   },
   "metadata": {
     "productBlocks": {
@@ -591,6 +592,103 @@
     "tabs": {
       "active": "Active",
       "completed": "Completed"
+    }
+  },
+  "workflowDesigner": {
+    "newTitle": "Design a new task",
+    "editTitle": "Design task {name}",
+    "save": "Save",
+    "startTask": "Start task",
+    "name": "Name",
+    "nameHelp": "Lowercase letters, digits and underscores; designed tasks always start with {prefix}. Cannot be changed later.",
+    "description": "Description",
+    "descriptionHelp": "Shown in the task list and as the title of the start form.",
+    "saved": "Task saved",
+    "saveFailed": "Saving the task failed",
+    "loadFailed": "Could not load the available steps",
+    "notFound": "Designed task {name} does not exist",
+    "notCompatible": "This step cannot be added here",
+    "invalidOrder": "Steps cannot be put in this order",
+    "stillNeeded": "This step provides data that a later step needs",
+    "palette": {
+      "title": "Steps",
+      "help": "Drag a step onto the workflow, or use +. Only steps whose inputs are available at the end of the workflow can be added.",
+      "search": "Search steps",
+      "allCategories": "All categories",
+      "onlyCompatible": "Only steps that fit without form changes",
+      "showSubscriptionWriters": "Show steps that change subscriptions",
+      "showUnusable": "Show steps that cannot be used",
+      "count": "Showing {shown} of {total}",
+      "showMore": "Show more",
+      "helper": "Designer helper",
+      "details": "Show details",
+      "add": "Add to the end of the workflow",
+      "writesSubscription": "Changes subscription",
+      "pauses": "Pauses",
+      "status": {
+        "ok": "Fits",
+        "warning": "Fits, unchecked types",
+        "needs_form": "Adds form field",
+        "incompatible": "Missing input",
+        "unusable": "Unusable"
+      }
+    },
+    "canvas": {
+      "title": "Workflow",
+      "help": "Steps run from top to bottom. Drag to reorder; the state each step adds is shown below it.",
+      "initialForm": "Initial form",
+      "noFormFields": "No fields; the task starts without asking anything",
+      "empty": "Drag steps here",
+      "needs": "Needs",
+      "noInputs": "Needs no input",
+      "adds": "Adds",
+      "remove": "Remove step",
+      "done": "Done"
+    },
+    "form": {
+      "title": "Initial form",
+      "help": "The fields a user fills in when starting the task. Their values are available to every step, under the field name.",
+      "name": "Field name",
+      "type": "Type",
+      "label": "Label",
+      "required": "Required",
+      "choices": "Choices",
+      "productTags": "Product tags",
+      "statuses": "Subscription statuses",
+      "addField": "Add field",
+      "remove": "Remove field"
+    },
+    "inspector": {
+      "helper": "Designer helper",
+      "unusable": "Cannot be used in a designed task: {reason}",
+      "configuration": "Configuration",
+      "inputs": "Inputs",
+      "outputs": "Outputs",
+      "optional": "optional",
+      "none": "None",
+      "unknownOutputs": "Also adds keys that cannot be determined from the code.",
+      "writesSubscription": "Changes subscription",
+      "usedIn": "Used in: {workflows}"
+    },
+    "list": {
+      "title": "Workflow designer",
+      "intro": "Compose script-like tasks from steps that already exist in the orchestrator. Designed tasks are started from the task list like any other task.",
+      "new": "Design a new task",
+      "name": "Name",
+      "description": "Description",
+      "steps": "Steps",
+      "version": "Version",
+      "processes": "Runs",
+      "actions": "Actions",
+      "start": "Start",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteQuestion": "Delete designed task {name}? Tasks that have run are archived to keep their history.",
+      "deleted": "Task deleted",
+      "archived": "Task archived",
+      "deleteFailed": "Deleting the task failed; it may have unfinished runs",
+      "loadFailed": "Could not load the designed tasks",
+      "empty": "No designed tasks yet"
     }
   }
 }

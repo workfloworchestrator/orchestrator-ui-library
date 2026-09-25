@@ -80,7 +80,8 @@
     "websocketConnected": "De pagina ontvangt live updates van de server",
     "websocketDisconnected": "De websocket verbinding is verbroken, klik op het icoon of ververs de pagina.",
     "welcome": "Welkom",
-    "workflows": "Workflows"
+    "workflows": "Workflows",
+    "workflowDesigner": "Workflow designer"
   },
   "metadata": {
     "productBlocks": {
@@ -591,6 +592,103 @@
     "tabs": {
       "active": "Actief",
       "completed": "Voltooid"
+    }
+  },
+  "workflowDesigner": {
+    "newTitle": "Nieuwe taak ontwerpen",
+    "editTitle": "Taak {name} ontwerpen",
+    "save": "Opslaan",
+    "startTask": "Taak starten",
+    "name": "Naam",
+    "nameHelp": "Kleine letters, cijfers en underscores; ontworpen taken beginnen altijd met {prefix}. Kan later niet gewijzigd worden.",
+    "description": "Omschrijving",
+    "descriptionHelp": "Wordt getoond in de takenlijst en als titel van het startformulier.",
+    "saved": "Taak opgeslagen",
+    "saveFailed": "Opslaan van de taak is mislukt",
+    "loadFailed": "Kon de beschikbare stappen niet laden",
+    "notFound": "Ontworpen taak {name} bestaat niet",
+    "notCompatible": "Deze stap kan hier niet worden toegevoegd",
+    "invalidOrder": "Stappen kunnen niet in deze volgorde",
+    "stillNeeded": "Deze stap levert gegevens die een latere stap nodig heeft",
+    "palette": {
+      "title": "Stappen",
+      "help": "Sleep een stap naar de workflow, of gebruik +. Alleen stappen waarvan de invoer aan het eind van de workflow beschikbaar is kunnen worden toegevoegd.",
+      "search": "Stappen zoeken",
+      "allCategories": "Alle categorieën",
+      "onlyCompatible": "Alleen stappen die passen zonder het formulier aan te passen",
+      "showSubscriptionWriters": "Toon stappen die subscriptions wijzigen",
+      "showUnusable": "Toon stappen die niet bruikbaar zijn",
+      "count": "{shown} van {total} getoond",
+      "showMore": "Meer tonen",
+      "helper": "Designer hulpstap",
+      "details": "Details tonen",
+      "add": "Toevoegen aan het eind van de workflow",
+      "writesSubscription": "Wijzigt subscription",
+      "pauses": "Pauzeert",
+      "status": {
+        "ok": "Past",
+        "warning": "Past, types niet gecontroleerd",
+        "needs_form": "Voegt formulierveld toe",
+        "incompatible": "Invoer ontbreekt",
+        "unusable": "Niet bruikbaar"
+      }
+    },
+    "canvas": {
+      "title": "Workflow",
+      "help": "Stappen lopen van boven naar beneden. Sleep om de volgorde te wijzigen; onder elke stap staat wat die aan de state toevoegt.",
+      "initialForm": "Startformulier",
+      "noFormFields": "Geen velden; de taak start zonder iets te vragen",
+      "empty": "Sleep stappen hierheen",
+      "needs": "Heeft nodig",
+      "noInputs": "Heeft geen invoer nodig",
+      "adds": "Voegt toe",
+      "remove": "Stap verwijderen",
+      "done": "Klaar"
+    },
+    "form": {
+      "title": "Startformulier",
+      "help": "De velden die een gebruiker invult bij het starten van de taak. De waarden zijn onder de veldnaam beschikbaar voor elke stap.",
+      "name": "Veldnaam",
+      "type": "Type",
+      "label": "Label",
+      "required": "Verplicht",
+      "choices": "Keuzes",
+      "productTags": "Product tags",
+      "statuses": "Subscription statussen",
+      "addField": "Veld toevoegen",
+      "remove": "Veld verwijderen"
+    },
+    "inspector": {
+      "helper": "Designer hulpstap",
+      "unusable": "Niet bruikbaar in een ontworpen taak: {reason}",
+      "configuration": "Configuratie",
+      "inputs": "Invoer",
+      "outputs": "Uitvoer",
+      "optional": "optioneel",
+      "none": "Geen",
+      "unknownOutputs": "Voegt ook keys toe die niet uit de code af te leiden zijn.",
+      "writesSubscription": "Wijzigt subscription",
+      "usedIn": "Gebruikt in: {workflows}"
+    },
+    "list": {
+      "title": "Workflow designer",
+      "intro": "Stel script-achtige taken samen uit stappen die al in de orchestrator bestaan. Ontworpen taken start je zoals elke andere taak vanuit de takenlijst.",
+      "new": "Nieuwe taak ontwerpen",
+      "name": "Naam",
+      "description": "Omschrijving",
+      "steps": "Stappen",
+      "version": "Versie",
+      "processes": "Runs",
+      "actions": "Acties",
+      "start": "Starten",
+      "edit": "Bewerken",
+      "delete": "Verwijderen",
+      "deleteQuestion": "Ontworpen taak {name} verwijderen? Taken die al gedraaid hebben worden gearchiveerd om hun historie te bewaren.",
+      "deleted": "Taak verwijderd",
+      "archived": "Taak gearchiveerd",
+      "deleteFailed": "Verwijderen van de taak is mislukt; mogelijk zijn er nog lopende runs",
+      "loadFailed": "Kon de ontworpen taken niet laden",
+      "empty": "Nog geen ontworpen taken"
     }
   }
 }

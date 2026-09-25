@@ -167,6 +167,7 @@ export const orchestratorApi = createApi({
     CacheTagType.subscriptions,
     CacheTagType.scheduledTasks,
     CacheTagType.metadataProducts,
+    CacheTagType.designedWorkflows,
   ],
   keepUnusedDataFor: process.env.NEXT_PUBLIC_DISABLE_CACHE === 'true' ? 0 : 60 * 60 * 1000,
 });

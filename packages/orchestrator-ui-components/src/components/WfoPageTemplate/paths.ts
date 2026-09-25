@@ -14,3 +14,4 @@ export const PATH_METADATA_SCHEDULED_TASKS = '/metadata/scheduled-tasks';
 export const PATH_METADATA_ADD_SCHEDULE_TASK_FORM = '/metadata/schedule-task-form';
 export const PATH_TASKS = '/tasks';
 export const PATH_SETTINGS = '/settings';
+export const PATH_WORKFLOW_DESIGNER = '/workflow-designer';

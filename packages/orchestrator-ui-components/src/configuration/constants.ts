@@ -11,6 +11,8 @@ export const PROCESS_RESUME_ENDPOINT = `resume`;
 export const PROCESS_ABORT_ENDPOINT = `abort`;
 
 //settings
+export const WORKFLOW_DESIGNER_ENDPOINT = 'workflow-designer';
+
 export const SETTINGS_ENDPOINT = '/settings';
 export const SETTINGS_ENGINE_STATUS_ENDPOINT = `${SETTINGS_ENDPOINT}/status`;
 export const SETTINGS_WORKER_STATUS_ENDPOINT = `${SETTINGS_ENDPOINT}/worker-status`;

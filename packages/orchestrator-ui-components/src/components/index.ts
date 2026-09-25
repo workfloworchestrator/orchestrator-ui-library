@@ -44,3 +44,4 @@ export * from './WfoMonacoCodeBlock';
 export * from './WfoLogoSpinner';
 export * from './WfoPopover';
 export * from './WfoButtonWithConfirm';
+export * from './WfoWorkflowDesigner';
