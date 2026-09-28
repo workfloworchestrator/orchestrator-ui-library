@@ -1,5 +1,10 @@
 [
   {
+    "orchestratorUiVersion": "9.0.1",
+    "minimumOrchestratorCoreVersion": "5.5.0",
+    "changes": "Workflow user guides endpoint moved from the surf app to orchestrator-core."
+  },
+  {
     "orchestratorUiVersion": "9.0.0",
     "minimumOrchestratorCoreVersion": "5.4.0",
     "changes": "Adds new structured search endpoints to the BE."
