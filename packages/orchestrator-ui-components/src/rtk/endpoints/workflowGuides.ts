@@ -8,7 +8,7 @@ const workflowGuidesApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     getWorkflowGuide: build.query<WorkflowGuideResponse, { workflowName: string }>({
       query: ({ workflowName }) => ({
-        url: `surf/workflow_user_guides/${workflowName}`,
+        url: `workflow_user_guides/${workflowName}`,
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
