@@ -16,7 +16,6 @@ export const SETTINGS_ENGINE_STATUS_ENDPOINT = `${SETTINGS_ENDPOINT}/status`;
 export const SETTINGS_WORKER_STATUS_ENDPOINT = `${SETTINGS_ENDPOINT}/worker-status`;
 export const SETTINGS_CACHE_NAMES_ENDPOINT = `${SETTINGS_ENDPOINT}/cache-names`;
 export const SETTINGS_CACHE_ENDPOINT = `${SETTINGS_ENDPOINT}/cache`;
-export const SETTINGS_SEARCH_INDEX_RESET_ENDPOINT = `${SETTINGS_ENDPOINT}/search-index/reset`;
 export const SETTINGS_OVERVIEW = `${SETTINGS_ENDPOINT}/overview`;
 //ipam
 export const IPAM_ENDPOINT = 'surf/ipam';
