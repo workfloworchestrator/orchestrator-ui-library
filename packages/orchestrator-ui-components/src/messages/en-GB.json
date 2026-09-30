@@ -411,8 +411,6 @@
       "numberOfRunningJobs": "Number of running jobs",
       "numberOfWorkersOnline": "Number of workers online",
       "pauseEngine": "Pause workflow engine",
-      "resetTextSearchIndex": "Reset text search index",
-      "resetTextSearchIndexButton": "Reset",
       "runningProcesses": "Running processes",
       "selectSettings": "Select cache",
       "settingsOverviewLink": "Settings Overview page in the documentation",

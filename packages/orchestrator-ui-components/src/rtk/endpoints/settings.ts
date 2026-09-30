@@ -3,7 +3,6 @@ import {
   SETTINGS_CACHE_NAMES_ENDPOINT,
   SETTINGS_ENGINE_STATUS_ENDPOINT,
   SETTINGS_OVERVIEW,
-  SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
   SETTINGS_WORKER_STATUS_ENDPOINT,
 } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
@@ -85,15 +84,6 @@ const statusApi = orchestratorApi.injectEndpoints({
         baseQueryType: BaseQueryTypes.fetch,
       },
     }),
-    resetTextSearchIndex: build.mutation<void, null>({
-      query: () => ({
-        url: SETTINGS_SEARCH_INDEX_RESET_ENDPOINT,
-        method: 'POST',
-      }),
-      extraOptions: {
-        baseQueryType: BaseQueryTypes.fetch,
-      },
-    }),
     setEngineStatus: build.mutation<EngineStatusReturnValue, boolean>({
       query: (globalStatus) => ({
         url: SETTINGS_ENGINE_STATUS_ENDPOINT,
@@ -123,7 +113,6 @@ export const {
   useGetEngineStatusQuery,
   useGetCacheNamesQuery,
   useClearCacheMutation,
-  useResetTextSearchIndexMutation,
   useSetEngineStatusMutation,
   useGetWorkerStatusQuery,
   useGetEnvironmentVariablesQuery,

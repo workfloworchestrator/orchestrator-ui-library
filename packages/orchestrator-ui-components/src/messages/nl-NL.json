@@ -411,8 +411,6 @@
       "numberOfRunningJobs": "Aantal running jobs",
       "numberOfWorkersOnline": "Aantal workers online",
       "pauseEngine": "Pauseer  workflow engine",
-      "resetTextSearchIndex": "Reset text search index",
-      "resetTextSearchIndexButton": "Reset",
       "runningProcesses": "Lopende processen",
       "selectSettings": "Kies cache",
       "settingsOverviewLink": "pagina Instellingenoverzicht in de documentatie",
