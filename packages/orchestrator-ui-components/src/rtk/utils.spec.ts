@@ -1,4 +1,21 @@
-import { mapRtkErrorToWfoError, stripUndefined } from '@/rtk/utils';
+import { isForbiddenError, mapRtkErrorToWfoError, stripUndefined } from '@/rtk/utils';
+
+describe('isForbiddenError', () => {
+  it('matches a 403 with a JSON body', () => {
+    expect(isForbiddenError({ status: 403, data: { detail: 'nope' } })).toBe(true);
+  });
+
+  it('matches a 403 whose body could not be parsed', () => {
+    expect(isForbiddenError({ status: 'PARSING_ERROR', originalStatus: 403, data: '', error: 'x' })).toBe(true);
+  });
+
+  it('does not match other statuses', () => {
+    expect(isForbiddenError({ status: 401, data: {} })).toBe(false);
+    expect(isForbiddenError({ status: 'PARSING_ERROR', originalStatus: 500, data: '', error: 'x' })).toBe(false);
+    expect(isForbiddenError(undefined)).toBe(false);
+    expect(isForbiddenError(new Error('x'))).toBe(false);
+  });
+});
 
 describe('stripUndefined', () => {
   it('should remove properties with undefined values', () => {

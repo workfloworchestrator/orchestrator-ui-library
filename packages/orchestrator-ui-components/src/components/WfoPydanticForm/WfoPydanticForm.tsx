@@ -11,7 +11,7 @@ import { Footer } from '@/components/WfoPydanticForm/Footer';
 import { useShowToastMessage } from '@/hooks';
 import { useGetPydanticFormsConfig } from '@/hooks/useGetPydanticFormsConfig';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
-import { HttpStatus, isFetchBaseQueryError, isRecord } from '@/rtk';
+import { HttpStatus, isFetchBaseQueryError, isForbiddenError, isRecord } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { ToastTypes } from '@/types';
 
@@ -61,7 +61,19 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
       return response
         .then(({ error, data }) => {
           return new Promise<Record<string, unknown>>((resolve) => {
-            if (isFetchBaseQueryError(error) && isRecord(error.data)) {
+            if (isForbiddenError(error)) {
+              const detail = isRecord(error.data) && typeof error.data.detail === 'string' ? error.data.detail : '';
+              showToastMessage(ToastTypes.ERROR, detail || t('forbiddenFallback'), t('forbiddenTitle'));
+              resolve({
+                validation_errors: [
+                  {
+                    loc: ['__root__'],
+                    msg: detail || t('forbiddenFallback'),
+                    type: 'forbidden',
+                  },
+                ],
+              });
+            } else if (isFetchBaseQueryError(error) && isRecord(error.data)) {
               if (error.status === HttpStatus.FormNotComplete) {
                 resolve(error.data);
               } else if (error.status === HttpStatus.BadRequest) {
@@ -83,18 +95,6 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
                       loc: ['__root__'],
                       msg: detail || t('preconditionFailedFallback'),
                       type: 'precondition_failed',
-                    },
-                  ],
-                });
-              } else if (error.status === HttpStatus.Forbidden) {
-                const detail = typeof error.data.detail === 'string' ? error.data.detail : '';
-                showToastMessage(ToastTypes.ERROR, detail || t('forbiddenFallback'), t('forbiddenTitle'));
-                resolve({
-                  validation_errors: [
-                    {
-                      loc: ['__root__'],
-                      msg: detail || t('forbiddenFallback'),
-                      type: 'forbidden',
                     },
                   ],
                 });

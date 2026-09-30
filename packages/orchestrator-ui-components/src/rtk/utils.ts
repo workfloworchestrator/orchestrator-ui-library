@@ -6,7 +6,7 @@ import { SerializedError } from '@reduxjs/toolkit';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 import type { WfoSession } from '@/hooks';
-import { WfoGraphqlError } from '@/rtk/api';
+import { HttpStatus, WfoGraphqlError } from '@/rtk/api';
 
 export function stripUndefined(obj: object): Record<string, unknown> {
   if (!isPlainObject(obj)) {
@@ -94,6 +94,16 @@ export const isFetchBaseQueryError = (
     );
   }
   return false;
+};
+
+// A 403 with a non-JSON body (proxy, WAF) reaches the caller as PARSING_ERROR with the original status.
+export const isForbiddenError = (error: unknown): error is FetchBaseQueryError => {
+  const e = error as FetchBaseQueryError | undefined;
+  return (
+    isFetchBaseQueryError(e)
+    && (e.status === HttpStatus.Forbidden
+      || (e.status === 'PARSING_ERROR' && e.originalStatus === HttpStatus.Forbidden))
+  );
 };
 
 export const getWebSocket = async (url: string) => {
