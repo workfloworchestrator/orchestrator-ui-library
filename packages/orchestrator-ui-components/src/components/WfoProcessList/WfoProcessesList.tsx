@@ -36,6 +36,7 @@ import { parseDateToLocaleDateTimeString } from '@/utils';
 import { getQueryVariablesForExport } from '@/utils';
 import { csvDownloadHandler, getCsvFileNameWithDate } from '@/utils/csvDownload';
 
+import { WfoProcessListActions } from './WfoProcessListActions';
 import { WfoProcessListDeltaPopover } from './WfoProcessListDeltaPopover';
 import {
   graphQlProcessFilterMapper,
@@ -56,6 +57,8 @@ export type ProcessListItem = Pick<
   | 'processId'
   | 'subscriptions'
   | 'note'
+  | 'userPermissions'
+  | 'isTask'
 > & {
   startedAt: Date;
   lastModifiedAt: Date;
@@ -101,6 +104,11 @@ export const WfoProcessesList = ({
       columnType: ColumnType.CONTROL,
       width: '50px',
       renderControl: (row) => <WfoProcessListDeltaPopover processListItem={row} />,
+    },
+    actions: {
+      columnType: ColumnType.CONTROL,
+      width: '36px',
+      renderControl: (row) => <WfoProcessListActions processListItem={row} />,
     },
     workflowName: {
       columnType: ColumnType.DATA,
