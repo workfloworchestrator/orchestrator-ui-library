@@ -15,7 +15,7 @@ export const WfoToolTip: FC<WfoToolTipProps> = ({ tooltipContent, children, clas
       position="bottom"
       delay="long"
       content={tooltipContent}
-      css={{ maxWidth: 'fit-content' }}
+      css={{ maxWidth: '600px' }}
       repositionOnScroll
       display="block"
     >
