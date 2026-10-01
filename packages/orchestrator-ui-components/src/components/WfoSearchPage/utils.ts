@@ -8,6 +8,7 @@ import {
   EntityKind,
   Filter,
   MatchingField,
+  OPERATOR_MAP,
   OperatorDisplay,
   PathInfo,
   RetrieverType,
@@ -81,20 +82,6 @@ const TYPE_COLOR_MAP: Record<string, keyof ThemeColors> = {
 export const getTypeColor = (type: string, theme: Theme): string => {
   const colorKey = TYPE_COLOR_MAP[type.toLowerCase()];
   return colorKey ? theme.colors[colorKey] : theme.colors.textSubdued;
-};
-
-const OPERATOR_MAP: Record<string, OperatorDisplay> = {
-  eq: { symbol: '=', description: 'equals' },
-  neq: { symbol: '≠', description: 'not equals' },
-  lt: { symbol: '<', description: 'less than' },
-  lte: { symbol: '≤', description: 'less than or equal to' },
-  gt: { symbol: '>', description: 'greater than' },
-  gte: { symbol: '≥', description: 'greater than or equal to' },
-  between: { symbol: '⟷', description: 'between (range)' },
-  has_component: { symbol: '✓', description: 'has component' },
-  not_has_component: { symbol: '✗', description: 'does not have component' },
-  like: { symbol: '∋', description: 'contains' },
-  not_regexp: { symbol: '∌', description: 'does not contain' },
 };
 
 const BOOLEAN_OPERATOR_MAP: Record<string, OperatorDisplay> = {

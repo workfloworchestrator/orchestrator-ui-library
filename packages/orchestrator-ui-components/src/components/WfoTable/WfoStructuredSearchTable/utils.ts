@@ -3,8 +3,8 @@ import { FullOperator, RuleGroupType, RuleType, generateID } from 'react-querybu
 import { prepareRuleGroup } from 'react-querybuilder';
 import { parseCEL } from 'react-querybuilder/parseCEL';
 
-import { useDebouncedCallback } from '@/hooks';
-import { OperatorDisplay } from '@/types';
+import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
+import { EntityKind, OPERATOR_MAP, OperatorDescription } from '@/types';
 
 export const FILTER_CHANGE_DEBOUNCE_DELAY = 1000;
 
@@ -109,34 +109,49 @@ export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefine
 };
 
 /**
- * Builds a CEL filter that appends a single column condition (`field == "value"`) to the current
- * filter and returns it together with its parsed rule group. The column name is resolved via
- * getColumnSearchFieldName, falling back to the field key. Returns undefined when the input can't
- * produce a valid filter (empty/quoted search text, or a filter that doesn't parse back to rules).
+ * Returns buildColumnFilter, which builds a CEL filter appending a single column condition to the
+ * current filter, together with its parsed rule group. The path info of the table's columns is loaded
+ * up front, so a column search can use contains for the fields that offer it. The column name is
+ * resolved via getColumnSearchFieldName, falling back to the field key. buildColumnFilter returns
+ * undefined when the input can't produce a valid filter (empty/quoted search text, or a filter that
+ * doesn't parse back to rules).
  */
-export const buildColumnFilter = <T>(
-  field: keyof T,
-  searchText: string,
-  currentFilter?: string,
+export const useBuildColumnFilter = <T>(
+  tableColumnConfig: object,
   getColumnSearchFieldName?: (field: keyof T) => string,
-): { filterString: string; ruleGroup: RuleGroupType } | undefined => {
-  // A double quote in the value would break the `== "..."` CEL literal and parseCEL has no escaping.
-  if (!searchText || searchText.includes('"')) {
-    return undefined;
-  }
+) => {
+  const columnsPathInfo = useFieldsPathInfo(
+    (Object.keys(tableColumnConfig) as (keyof T)[]).map((field) => getColumnSearchFieldName?.(field) ?? String(field)),
+    EntityKind.SUBSCRIPTION,
+  );
 
-  const searchFieldName = getColumnSearchFieldName?.(field) ?? String(field);
-  const columnFilterCondition = `${searchFieldName} == "${searchText}"`;
-  const trimmedCurrentFilter = currentFilter?.trim();
-  const filterString =
-    trimmedCurrentFilter ? `(${trimmedCurrentFilter}) && ${columnFilterCondition}` : columnFilterCondition;
+  const buildColumnFilter = (
+    field: keyof T,
+    searchText: string,
+    currentFilter?: string,
+  ): { filterString: string; ruleGroup: RuleGroupType } | undefined => {
+    // A double quote in the value would break the `"..."` CEL literal and parseCEL has no escaping.
+    if (!searchText || searchText.includes('"')) {
+      return undefined;
+    }
 
-  const ruleGroup = parseCelToRuleGroup(filterString);
-  if (!ruleGroup) {
-    return undefined;
-  }
+    const searchFieldName = getColumnSearchFieldName?.(field) ?? String(field);
+    const fieldHasLikeOperator = !!columnsPathInfo.get(searchFieldName)?.operators.includes('like');
+    const columnFilterCondition =
+      fieldHasLikeOperator ? `${searchFieldName}.contains("${searchText}")` : `${searchFieldName} == "${searchText}"`;
+    const trimmedCurrentFilter = currentFilter?.trim();
+    const filterString =
+      trimmedCurrentFilter ? `(${trimmedCurrentFilter}) && ${columnFilterCondition}` : columnFilterCondition;
 
-  return { filterString, ruleGroup };
+    const ruleGroup = parseCelToRuleGroup(filterString);
+    if (!ruleGroup) {
+      return undefined;
+    }
+
+    return { filterString, ruleGroup };
+  };
+
+  return { buildColumnFilter };
 };
 
 // Maps PathInfo operator names to react-querybuilder's native operator names,
@@ -152,7 +167,7 @@ const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
   gt: '>',
   gte: '>=',
   between: 'between',
-  like: 'contains',
+  like: OperatorDescription.CONTAINS,
   not_regexp: 'doesNotContain',
   has_component: 'notNull',
   not_has_component: 'null',
@@ -182,20 +197,6 @@ export const hasNestedRuleWithEmptyValue = (ruleGroup?: RuleGroupType): boolean 
     }
     return 'rules' in rule ? hasNestedRuleWithEmptyValue(rule) : isEmptyValue(rule);
   });
-
-const OPERATOR_MAP: Record<string, OperatorDisplay> = {
-  eq: { symbol: '=', description: 'equals' },
-  neq: { symbol: '≠', description: 'not equals' },
-  lt: { symbol: '<', description: 'less than' },
-  lte: { symbol: '≤', description: 'less than or equal to' },
-  gt: { symbol: '>', description: 'greater than' },
-  gte: { symbol: '≥', description: 'greater than or equal to' },
-  between: { symbol: '⟷', description: 'between (range)' },
-  has_component: { symbol: '✓', description: 'has component' },
-  not_has_component: { symbol: '✗', description: 'does not have component' },
-  like: { symbol: '∋', description: 'contains' },
-  not_regexp: { symbol: '∌', description: 'does not contain' },
-};
 
 export const operatorsToRQBOperatorOptionsMapper = (operators?: string[]): FullOperator[] => {
   return (operators ?? []).map((operator) => {

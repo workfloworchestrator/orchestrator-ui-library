@@ -4,6 +4,8 @@ import { defaultOperators } from 'react-querybuilder';
 
 import { EuiSelect } from '@elastic/eui';
 
+import { OperatorDescription } from '@/types';
+
 const isOptionGroup = (operator: FullOperator | OptionGroup<FullOperator>): operator is OptionGroup<FullOperator> =>
   'options' in operator;
 
@@ -15,10 +17,9 @@ const FALLBACK_OPERATOR_LABELS: Record<string, string> = {
   null: '✗ does not have component',
 };
 
-// null/notNull hide the value editor, so they only make a sane default when a field
-// offers nothing else; prefer the first operator that keeps the value editor visible.
+// Prefer contains, which string fields offer; otherwise the field's first operator.
 const getDefaultOperator = (options: FullOperator[]) =>
-  (options.find((option) => option.arity !== 'unary') ?? options[0]).name;
+  (options.find((option) => option.name === OperatorDescription.CONTAINS) ?? options[0]).name;
 
 export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
   const { value, handleOnChange } = props;

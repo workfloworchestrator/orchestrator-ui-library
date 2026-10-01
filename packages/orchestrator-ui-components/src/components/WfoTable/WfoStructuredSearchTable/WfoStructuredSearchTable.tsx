@@ -38,7 +38,7 @@ import { WfoFilterBuilder } from './WfoFilterBuilder';
 import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
 import { WfoSearchHelpModal } from './WfoSearchHelpModal';
 import { getWfoStructuredSearchTableStyles } from './styles';
-import { buildColumnFilter } from './utils';
+import { useBuildColumnFilter } from './utils';
 
 export type WfoStructuredSearchTableDataColumnConfigItem<
   T extends object,
@@ -142,6 +142,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   const [showMatchDetails, setShowMatchDetails] = useState(defaultShowMatchDetails);
   const [advancedNestedSearch, setAdvancedNestedSearch] = useState(defaultAdvancedNestedSearch);
   const t = useTranslations('common');
+  const { buildColumnFilter } = useBuildColumnFilter<T>(tableColumnConfig, getColumnSearchFieldName);
 
   useEffect(() => {
     if (defaultHiddenColumns) {
@@ -233,7 +234,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   };
 
   const handleColumnFilterSearch = ({ field, searchText }: WfoDataSearch<T>) => {
-    const columnFilter = buildColumnFilter(field, searchText, filterString, getColumnSearchFieldName);
+    const columnFilter = buildColumnFilter(field, searchText, filterString);
     if (!columnFilter) {
       return;
     }
