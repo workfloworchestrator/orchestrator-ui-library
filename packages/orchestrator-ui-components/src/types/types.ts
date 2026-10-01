@@ -165,6 +165,7 @@ export type Process = {
     page: Pick<Subscription, 'subscriptionId' | 'description'>[];
   };
   note: string | null;
+  userPermissions?: FormUserPermissions;
 };
 
 // These step statusses match the ones in the backend

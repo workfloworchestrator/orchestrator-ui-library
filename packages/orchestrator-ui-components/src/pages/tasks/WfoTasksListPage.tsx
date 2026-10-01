@@ -18,7 +18,7 @@ import {
   WfoStartTaskButtonComboBox,
 } from '@/components';
 import { PATH_TASKS } from '@/components';
-import { ProcessListItem, WfoProcessesList, WfoTitleWithWebsocketBadge } from '@/components';
+import { ProcessListItem, WfoProcessListActions, WfoProcessesList, WfoTitleWithWebsocketBadge } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { toSortedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
@@ -97,6 +97,11 @@ export const WfoTasksListPage = () => {
   const handleOverrideTableColumns: (
     defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
   ) => WfoAdvancedTableColumnConfig<ProcessListItem> = (defaultTableColumns) => ({
+    actions: {
+      columnType: ColumnType.CONTROL,
+      width: '50px',
+      renderControl: (row) => <WfoProcessListActions processListItem={row} />,
+    },
     workflowName: {
       columnType: ColumnType.DATA,
       label: t('taskName'),
