@@ -37,3 +37,6 @@ export const METADATA_SCHEDULES_ENDPOINT = 'schedules/';
 
 //search
 export const SEARCH_QUERY_RESULTS_ENDPOINT = 'search/queries';
+
+//workflows
+export const WORKFLOW_USER_GUIDES_ENDPOINT = 'workflow_user_guides';
