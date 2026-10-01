@@ -24,6 +24,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (processes: Process
       customer,
       isTask,
       note,
+      userPermissions,
     } = process;
 
     return {
@@ -43,6 +44,7 @@ export const mapGraphQlProcessListResultToProcessListItems = (processes: Process
       customer: customer.fullname,
       customerAbbreviation: customer.shortcode,
       note,
+      userPermissions,
     };
   });
 
