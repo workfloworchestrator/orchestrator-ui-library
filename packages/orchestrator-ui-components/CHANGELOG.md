@@ -1,5 +1,15 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 9.0.1
+
+### Patch Changes
+
+- bfc177e: 207 Fix tooltip width that caused infinite scrolling when text is too long
+- 71837a2: Show retry user in step header when the user is different from before
+- 828ec0a: Reload data from the settings page when re-opening the page or changing settings tabs
+- 286dd1e: Show messages in the Actions pulldown if there are no tasks, or no modify or terminate workflows.
+- db198fa: Update workflow guide endpoint URL to match orchestrator-core, now that the workflow user guides feature is served directly by orchestrator-core (requires orchestrator-core >= 5.5.0) instead of the surf app.
+
 ## 9.0.0
 
 ### Major Changes
