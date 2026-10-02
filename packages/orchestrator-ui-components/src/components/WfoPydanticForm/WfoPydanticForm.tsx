@@ -11,7 +11,7 @@ import { Footer } from '@/components/WfoPydanticForm/Footer';
 import { useShowToastMessage } from '@/hooks';
 import { useGetPydanticFormsConfig } from '@/hooks/useGetPydanticFormsConfig';
 import { StartWorkflowPayload } from '@/pages/processes/WfoStartProcessPage';
-import { HttpStatus, isFetchBaseQueryError, isForbiddenError, isRecord } from '@/rtk';
+import { HttpStatus, getErrorDetail, isFetchBaseForbiddenError, isFetchBaseQueryError, isRecord } from '@/rtk';
 import { useStartProcessMutation } from '@/rtk/endpoints/forms';
 import { ToastTypes } from '@/types';
 
@@ -61,18 +61,10 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
       return response
         .then(({ error, data }) => {
           return new Promise<Record<string, unknown>>((resolve) => {
-            if (isForbiddenError(error)) {
-              const detail = isRecord(error.data) && typeof error.data.detail === 'string' ? error.data.detail : '';
-              showToastMessage(ToastTypes.ERROR, detail || t('forbiddenFallback'), t('forbiddenTitle'));
-              resolve({
-                validation_errors: [
-                  {
-                    loc: ['__root__'],
-                    msg: detail || t('forbiddenFallback'),
-                    type: 'forbidden',
-                  },
-                ],
-              });
+            if (isFetchBaseForbiddenError(error)) {
+              const msg = getErrorDetail(error) || t('forbiddenFallback');
+              showToastMessage(ToastTypes.ERROR, msg, t('forbiddenTitle'));
+              resolve({ validation_errors: [{ loc: ['__root__'], msg, type: 'forbidden' }] });
             } else if (isFetchBaseQueryError(error) && isRecord(error.data)) {
               if (error.status === HttpStatus.FormNotComplete) {
                 resolve(error.data);
@@ -82,7 +74,7 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
                   status: error.status,
                 });
               } else if (error.status === HttpStatus.PreconditionFailed) {
-                const detail = typeof error.data.detail === 'string' ? error.data.detail : '';
+                const detail = getErrorDetail(error);
                 showToastMessage(
                   ToastTypes.ERROR,
                   detail || t('preconditionFailedFallback'),

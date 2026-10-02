@@ -58,7 +58,7 @@ export const mapRtkErrorToWfoError = (
       };
     });
   } else if (error && 'status' in error && error.status !== undefined) {
-    const detail = isRecord(error.data) && typeof error.data.detail === 'string' ? error.data.detail : undefined;
+    const detail = getErrorDetail(error);
     return [
       {
         extensions: {},
@@ -80,6 +80,9 @@ export const isRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 };
 
+export const getErrorDetail = (error: unknown): string | undefined =>
+  isRecord(error) && isRecord(error.data) && typeof error.data.detail === 'string' ? error.data.detail : undefined;
+
 export const isFetchBaseQueryError = (
   error: FetchBaseQueryError | GraphQLError[] | SerializedError | undefined,
 ): error is FetchBaseQueryError => {
@@ -97,7 +100,7 @@ export const isFetchBaseQueryError = (
 };
 
 // A 403 with a non-JSON body (proxy, WAF) reaches the caller as PARSING_ERROR with the original status.
-export const isForbiddenError = (error: unknown): error is FetchBaseQueryError => {
+export const isFetchBaseForbiddenError = (error: unknown): error is FetchBaseQueryError => {
   const e = error as FetchBaseQueryError | undefined;
   return (
     isFetchBaseQueryError(e)

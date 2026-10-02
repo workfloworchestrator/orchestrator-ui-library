@@ -7,7 +7,7 @@ import { EuiFlexItem } from '@elastic/eui';
 
 import { StepFormFooter } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormFooter';
 import { useGetPydanticFormsConfig, useOrchestratorTheme, useShowToastMessage } from '@/hooks';
-import { HttpStatus, isForbiddenError, isRecord } from '@/rtk';
+import { HttpStatus, getErrorDetail, isFetchBaseForbiddenError } from '@/rtk';
 import { useResumeProcessMutation } from '@/rtk/endpoints/forms';
 import { FormUserPermissions, InputForm, ToastTypes } from '@/types';
 
@@ -49,12 +49,10 @@ export const WfoStepForm = ({ userInputForm, isTask, processId, userPermissions 
                 ...error.data,
                 status: error.status,
               };
-            } else if (isForbiddenError(error)) {
-              const detail = isRecord(error.data) && typeof error.data.detail === 'string' ? error.data.detail : '';
-              showToastMessage(ToastTypes.ERROR, detail || t('forbiddenFallback'), t('forbiddenTitle'));
-              return {
-                validation_errors: [{ loc: ['__root__'], msg: detail || t('forbiddenFallback'), type: 'forbidden' }],
-              };
+            } else if (isFetchBaseForbiddenError(error)) {
+              const msg = getErrorDetail(error) || t('forbiddenFallback');
+              showToastMessage(ToastTypes.ERROR, msg, t('forbiddenTitle'));
+              return { validation_errors: [{ loc: ['__root__'], msg, type: 'forbidden' }] };
             }
             throw error;
           });
