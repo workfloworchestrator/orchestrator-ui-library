@@ -60,7 +60,7 @@ export function mapSortableAndFilterableValuesToTableColumnConfig<T extends obje
         {
           ...value,
           isSortable: sortableFieldNames.includes(key),
-          isFilterable: filterableFieldNames.includes(key),
+          isFilterable: value.isFilterable === 'toggle' ? 'toggle' : filterableFieldNames.includes(key),
         },
       ];
     }

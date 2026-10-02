@@ -252,6 +252,7 @@ export const WfoSubscriptionsListPage = () => {
       columnType: ColumnType.DATA,
       label: t('insync'),
       width: '75px',
+      isFilterable: 'toggle',
       renderData: (value) => <WfoInsyncIcon inSync={value} />,
     },
     productName: {
