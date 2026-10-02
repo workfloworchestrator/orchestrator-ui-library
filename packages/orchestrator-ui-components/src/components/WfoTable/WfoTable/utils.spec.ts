@@ -11,6 +11,7 @@ import {
 type TestObject = {
   name: string;
   age: number;
+  active?: boolean;
 };
 
 const tableColumnConfig: WfoTableColumnConfig<TestObject> = {
@@ -141,6 +142,41 @@ describe('utils', () => {
         expect(result.name.isFilterable).toEqual(false);
         expect(result.age.isSortable).toEqual(false);
         expect(result.age.isFilterable).toEqual(false);
+      } else {
+        // Preventing silently skipping above expects
+        throw Error('Some of the fields are not data fields');
+      }
+    });
+    it('keeps the toggle of a toggle filterable column that is in the filterable list, and drops it otherwise', () => {
+      // Given
+      const tableColumnConfigWithToggle: WfoTableColumnConfig<TestObject> = {
+        ...tableColumnConfig,
+        active: {
+          columnType: ColumnType.DATA,
+          label: 'testActive',
+          isFilterable: 'toggle',
+        },
+      };
+
+      // When
+      const filterableResult = mapSortableAndFilterableValuesToTableColumnConfig<TestObject>(
+        tableColumnConfigWithToggle,
+        [],
+        ['active'],
+      );
+      const notFilterableResult = mapSortableAndFilterableValuesToTableColumnConfig<TestObject>(
+        tableColumnConfigWithToggle,
+        [],
+        [],
+      );
+
+      // Then
+      if (
+        filterableResult.active?.columnType === ColumnType.DATA
+        && notFilterableResult.active?.columnType === ColumnType.DATA
+      ) {
+        expect(filterableResult.active.isFilterable).toEqual('toggle');
+        expect(notFilterableResult.active.isFilterable).toEqual(false);
       } else {
         // Preventing silently skipping above expects
         throw Error('Some of the fields are not data fields');
