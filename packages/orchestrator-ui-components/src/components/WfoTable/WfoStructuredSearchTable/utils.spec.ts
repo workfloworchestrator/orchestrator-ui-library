@@ -1,7 +1,7 @@
 import type { RuleGroupType, RuleType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder';
 
-import { collectRuleFields, hasNestedRuleWithEmptyValue, parseCelToRuleGroup } from './utils';
+import { buildColumnFilter, collectRuleFields, hasNestedRuleWithEmptyValue, parseCelToRuleGroup } from './utils';
 
 describe('parseCelToRuleGroup', () => {
   it('assigns ids to the parsed group and rules so rule identity stays stable', () => {
@@ -111,5 +111,20 @@ describe('hasRuleWithEmptyValue', () => {
 
   it('returns false without a rule group', () => {
     expect(hasNestedRuleWithEmptyValue(undefined)).toBe(false);
+  });
+});
+
+describe('buildColumnFilter', () => {
+  type Row = { status: string; insync: boolean };
+
+  it('compares a column against a quoted value, including the true/false of a toggle filter', () => {
+    expect(buildColumnFilter<Row>('status', 'active')?.filterString).toBe('status == "active"');
+    expect(buildColumnFilter<Row>('insync', 'false')?.filterString).toBe('insync == "false"');
+  });
+
+  it('appends the condition to the current filter, using the resolved search field name', () => {
+    expect(
+      buildColumnFilter<Row>('insync', 'true', 'status == "active"', (field) => `subscription.${field}`)?.filterString,
+    ).toBe('(status == "active") && subscription.insync == "true"');
   });
 });

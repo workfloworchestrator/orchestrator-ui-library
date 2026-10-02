@@ -48,7 +48,7 @@ export type WfoTableDataColumnConfigItem<
   columnType: ColumnType.DATA;
   label: string;
   isSortable?: boolean;
-  isFilterable?: boolean;
+  isFilterable?: NonNullable<T[Property]> extends boolean ? boolean | 'toggle' : boolean;
   renderData?: (cellValue: T[Property], row: T) => ReactNode;
   renderTooltip?: (cellValue: T[Property], row: T) => ReactNode;
 };

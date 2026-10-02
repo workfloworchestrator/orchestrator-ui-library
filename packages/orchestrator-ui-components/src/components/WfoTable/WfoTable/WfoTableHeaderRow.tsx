@@ -60,6 +60,7 @@ export const WfoTableHeaderRow = <T extends object>({
                 <WfoTableHeaderCell
                   fieldName={fieldName}
                   sortOrder={dataSortingConfiguration?.sortOrder}
+                  isToggleFilter={columnConfig.isFilterable === 'toggle'}
                   onSetSortOrder={
                     columnConfig.isSortable ?
                       (updatedSortOrder) =>
