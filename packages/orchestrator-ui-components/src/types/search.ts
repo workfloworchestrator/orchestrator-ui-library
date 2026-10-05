@@ -94,6 +94,34 @@ export interface OperatorDisplay {
   description: string;
 }
 
+export enum OperatorDescription {
+  EQUALS = 'equals',
+  NOT_EQUALS = 'not equals',
+  LESS_THAN = 'less than',
+  LESS_THAN_OR_EQUAL = 'less than or equal to',
+  GREATER_THAN = 'greater than',
+  GREATER_THAN_OR_EQUAL = 'greater than or equal to',
+  BETWEEN = 'between (range)',
+  HAS_COMPONENT = 'has component',
+  NOT_HAS_COMPONENT = 'does not have component',
+  CONTAINS = 'contains',
+  DOES_NOT_CONTAIN = 'does not contain',
+}
+
+export const OPERATOR_MAP: Record<string, OperatorDisplay> = {
+  eq: { symbol: '=', description: OperatorDescription.EQUALS },
+  neq: { symbol: '≠', description: OperatorDescription.NOT_EQUALS },
+  lt: { symbol: '<', description: OperatorDescription.LESS_THAN },
+  lte: { symbol: '≤', description: OperatorDescription.LESS_THAN_OR_EQUAL },
+  gt: { symbol: '>', description: OperatorDescription.GREATER_THAN },
+  gte: { symbol: '≥', description: OperatorDescription.GREATER_THAN_OR_EQUAL },
+  between: { symbol: '⟷', description: OperatorDescription.BETWEEN },
+  has_component: { symbol: '✓', description: OperatorDescription.HAS_COMPONENT },
+  not_has_component: { symbol: '✗', description: OperatorDescription.NOT_HAS_COMPONENT },
+  like: { symbol: '∋', description: OperatorDescription.CONTAINS },
+  not_regexp: { symbol: '∌', description: OperatorDescription.DOES_NOT_CONTAIN },
+};
+
 type ActionType = 'select';
 
 type BaseSearchParameters = {

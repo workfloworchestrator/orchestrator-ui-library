@@ -12,6 +12,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { WfoOperatorSelector } from './WfoOperatorSelector';
+import { collectRuleFields } from './utils';
 
 const FIELD_OPERATORS: Record<string, FullOperator[]> = {
   componentField: [
@@ -30,6 +31,13 @@ const FIELD_OPERATORS: Record<string, FullOperator[]> = {
     { name: 'null', label: '✗ does not have component', value: 'null', arity: 'unary' },
     { name: 'contains', label: '∋ contains', value: 'contains' },
   ],
+  // A string field: equals is listed first, but contains should be the default
+  stringField: [
+    { name: '=', label: '= equals', value: '=' },
+    { name: '!=', label: '≠ not equals', value: '!=' },
+    { name: 'contains', label: '∋ contains', value: 'contains' },
+    { name: 'doesNotContain', label: '∌ does not contain', value: 'doesNotContain' },
+  ],
 };
 
 const FieldSelectorStub = ({ handleOnChange, value, context }: FieldSelectorProps) => (
@@ -46,6 +54,7 @@ const FieldSelectorStub = ({ handleOnChange, value, context }: FieldSelectorProp
     <option value="textField">textField</option>
     <option value="unknownField">unknownField</option>
     <option value="mixedField">mixedField</option>
+    <option value="stringField">stringField</option>
   </select>
 );
 
@@ -58,35 +67,56 @@ const ValueEditorStub = ({ operator }: ValueEditorProps) => {
 
 const initialRuleGroup: RuleGroupType = {
   id: 'root',
-  rules: [{ id: 'rule-0', field: '~', operator: '=', value: '' }],
+  rules: [{ id: 'rule-0', field: '~', operator: 'contains', value: '' }],
   combinator: 'and',
 };
 
-const Harness = ({ onQueryChange }: { onQueryChange?: (q: RuleGroupType) => void }) => {
-  const [query, setQuery] = useState<RuleGroupType>(initialRuleGroup);
+const Harness = ({
+  onQueryChange,
+  initialQuery = initialRuleGroup,
+}: {
+  onQueryChange?: (q: RuleGroupType) => void;
+  initialQuery?: RuleGroupType;
+}) => {
+  const [query, setQuery] = useState<RuleGroupType>(initialQuery);
   const [fieldToOperatorMap, setFieldToOperatorMap] = useState<Map<string, FullOperator[]>>(new Map());
 
   return (
-    <QueryBuilder
-      query={query}
-      enableMountQueryChange={false}
-      onQueryChange={(q: RuleGroupType) => {
-        setQuery(q);
-        onQueryChange?.(q);
-      }}
-      context={{
-        onFieldSelected: (field: string) => {
-          setFieldToOperatorMap((previousMap) => new Map(previousMap).set(field, FIELD_OPERATORS[field] ?? []));
-        },
-      }}
-      getOperators={(field) => fieldToOperatorMap.get(field) ?? []}
-      controlElements={{
-        fieldSelector: FieldSelectorStub,
-        operatorSelector: WfoOperatorSelector,
-        valueEditor: ValueEditorStub,
-      }}
-      resetOnFieldChange={false}
-    />
+    <>
+      {/* Mirrors WfoFilterBuilder resolving the operators of fields restored from CEL: the
+          operator list is filled in without the rule's field changing. */}
+      <button
+        onClick={() =>
+          setFieldToOperatorMap((previousMap) => {
+            const resolvedMap = new Map(previousMap);
+            collectRuleFields(query).forEach((field) => resolvedMap.set(field, FIELD_OPERATORS[field] ?? []));
+            return resolvedMap;
+          })
+        }
+      >
+        resolve operators
+      </button>
+      <QueryBuilder
+        query={query}
+        enableMountQueryChange={false}
+        onQueryChange={(q: RuleGroupType) => {
+          setQuery(q);
+          onQueryChange?.(q);
+        }}
+        context={{
+          onFieldSelected: (field: string) => {
+            setFieldToOperatorMap((previousMap) => new Map(previousMap).set(field, FIELD_OPERATORS[field] ?? []));
+          },
+        }}
+        getOperators={(field) => fieldToOperatorMap.get(field) ?? []}
+        controlElements={{
+          fieldSelector: FieldSelectorStub,
+          operatorSelector: WfoOperatorSelector,
+          valueEditor: ValueEditorStub,
+        }}
+        resetOnFieldChange={false}
+      />
+    </>
   );
 };
 
@@ -134,10 +164,58 @@ describe('WfoOperatorSelector operator reset on field change', () => {
   it('prefers a non-unary operator as the default when the current operator is invalid', () => {
     render(<Harness />);
 
-    // The initial rule operator '=' is not in mixedField's list; the reset should skip
-    // the leading unary operators so the value editor stays visible.
+    // '=' is not in mixedField's list; the reset should skip the leading unary operators
+    // so the value editor stays visible.
+    selectField('textField');
     selectField('mixedField');
     expect(getOperatorSelect().value).toBe('contains');
     expect(screen.getByTestId('value-editor')).toBeInTheDocument();
+  });
+});
+
+describe('WfoOperatorSelector default operator', () => {
+  it('keeps contains for a picked field that offers it', () => {
+    render(<Harness />);
+
+    selectField('stringField');
+    expect(getOperatorSelect().value).toBe('contains');
+  });
+
+  it('falls back to the first operator for a picked field that does not offer contains', () => {
+    render(<Harness />);
+
+    selectField('textField');
+    expect(getOperatorSelect().value).toBe('=');
+  });
+
+  it('defaults to contains when the current operator is invalid for a field that offers it', () => {
+    render(<Harness />);
+
+    // notNull is not in stringField's list, so the rule resets to the preferred default.
+    selectField('componentField');
+    selectField('stringField');
+    expect(getOperatorSelect().value).toBe('contains');
+  });
+
+  it('keeps an operator the user chose while the field stays the same', () => {
+    render(<Harness />);
+
+    selectField('stringField');
+    fireEvent.change(getOperatorSelect(), { target: { value: '=' } });
+    expect(getOperatorSelect().value).toBe('=');
+  });
+
+  it('does not rewrite the operator of a restored rule when its operators resolve', () => {
+    // A rule restored from CEL (URL or textarea): its field is set from the start and its
+    // operator list is filled in afterwards, without the field changing.
+    const restoredQuery: RuleGroupType = {
+      id: 'root',
+      rules: [{ id: 'rule-0', field: 'stringField', operator: '=', value: 'node' }],
+      combinator: 'and',
+    };
+    render(<Harness initialQuery={restoredQuery} />);
+
+    fireEvent.click(screen.getByText('resolve operators'));
+    expect(getOperatorSelect().value).toBe('=');
   });
 });
