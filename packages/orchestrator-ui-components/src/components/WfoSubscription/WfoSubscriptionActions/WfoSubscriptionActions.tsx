@@ -14,7 +14,6 @@ import {
 } from '@/components';
 import { getActionItemsByTarget } from '@/components/WfoSubscription';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
-import { WfoSubscriptionActionsMenuStatusItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuStatusItem';
 import { useActiveProcess } from '@/components/WfoSubscription/WfoSubscriptionActions/utils';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { useOrchestratorTheme, usePolicy } from '@/hooks';
@@ -102,12 +101,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         onClick={onButtonClick}
         aria-label="Row context menu"
         isLoading={isLoading}
-      />
-    : <EuiButton iconType="chevronSingleDown" iconSide="right" onClick={onButtonClick} isLoading={isLoading}>
         disabled={noActionItems}
       />
     : <EuiButton
-        iconType="arrowDown"
+        iconType="chevronSingleDown"
         iconSide="right"
         onClick={onButtonClick}
         isLoading={isLoading}
@@ -115,9 +112,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
       >
         {t('actions')}
       </EuiButton>;
-
-  const { SUBSCRIPTION_VALIDATE, SUBSCRIPTION_RECONCILE, SUBSCRIPTION_MODIFY, SUBSCRIPTION_TERMINATE, SET_IN_SYNC } =
-    PolicyResource;
 
   const redirectToUrl = (actionName: string, isTask: boolean = false) => {
     const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
@@ -161,11 +155,6 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
       redirectToUrl(actionName, isTask);
     }
   };
-
-  const validateActionItems = getActionItemsByTarget(WorkflowTarget.VALIDATE, subscriptionActions);
-  const reconcileActionItems = getActionItemsByTarget(WorkflowTarget.RECONCILE, subscriptionActions);
-  const modifyActionItems = getActionItemsByTarget(WorkflowTarget.MODIFY, subscriptionActions);
-  const terminateActionItems = getActionItemsByTarget(WorkflowTarget.TERMINATE, subscriptionActions);
 
   const compactItems = (
     <>
