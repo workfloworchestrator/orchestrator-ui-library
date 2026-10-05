@@ -11,17 +11,11 @@ import { useCheckEngineStatus, useOrchestratorTheme, usePolicy, useWithOrchestra
 import { WfoRefresh } from '@/icons';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useRetryProcessMutation } from '@/rtk/endpoints/processDetail';
-import { ProcessStatus } from '@/types';
+import { ProcessRetryableStatuses } from '@/types';
+import { listIncludesStatus } from '@/utils';
 
 import type { ProcessListItem } from './WfoProcessesList';
 import { getProcessActionStyles } from './styles';
-
-const RETRYABLE_STATUSES = [
-  ProcessStatus.FAILED,
-  ProcessStatus.API_UNAVAILABLE,
-  ProcessStatus.INCONSISTENT_DATA,
-  ProcessStatus.WAITING,
-].map((status) => status.toUpperCase());
 
 interface WfoProcessListActionsProps {
   processListItem: ProcessListItem;
@@ -42,7 +36,7 @@ export const WfoProcessListActions: FC<WfoProcessListActionsProps> = ({ processL
   const retryIsAllowed =
     isAllowed(PolicyResource.PROCESS_RETRY)
     && userPermissions?.retryAllowed === true
-    && RETRYABLE_STATUSES.includes(lastStatus.toUpperCase());
+    && listIncludesStatus(ProcessRetryableStatuses, lastStatus);
 
   const handleRetryClick = async () => {
     setPopover(false);

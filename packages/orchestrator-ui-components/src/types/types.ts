@@ -227,6 +227,13 @@ export enum ProcessStatus {
 
 export const ProcessDoneStatuses = [ProcessStatus.COMPLETED, ProcessStatus.ABORTED];
 
+export const ProcessRetryableStatuses = [
+  ProcessStatus.FAILED,
+  ProcessStatus.API_UNAVAILABLE,
+  ProcessStatus.INCONSISTENT_DATA,
+  ProcessStatus.WAITING,
+];
+
 export interface StepState {
   [index: string]: object | boolean | string | number | [];
 }
