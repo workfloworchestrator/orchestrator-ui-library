@@ -20,6 +20,7 @@ export const emptyOrchestratorConfig: OrchestratorConfig = {
   enableAoStackStatus: false,
   aoStackStatusUrl: '',
   startWorkflowFilters: undefined,
+  pydanticFormsLegacyNullHandling: false,
 };
 
 export const OrchestratorConfigContext = createContext<OrchestratorConfig>(emptyOrchestratorConfig);

@@ -37,6 +37,7 @@ import {
   WfoTextArea,
   WfoTimestampField,
 } from '@/components/WfoPydanticForm/fields';
+import { useGetOrchestratorConfig } from '@/hooks/useGetOrchestratorConfig';
 import { useAppSelector } from '@/rtk/hooks';
 
 const useGetComponentMatcherExtender = (): ComponentMatcherExtender => {
@@ -292,6 +293,7 @@ export const useGetPydanticFormsConfig = (
   Footer: PydanticFormConfig['footerRenderer'],
 ): PydanticFormConfig => {
   const router = useRouter();
+  const { pydanticFormsLegacyNullHandling } = useGetOrchestratorConfig();
   const getLocale = () => {
     if (router.locale) {
       return router.locale as Locale;
@@ -309,5 +311,6 @@ export const useGetPydanticFormsConfig = (
     customTranslations: useGetCustomTranslations(),
     loadingComponent: <WfoLoading />,
     locale: getLocale(),
+    legacyNullHandling: pydanticFormsLegacyNullHandling ?? false,
   };
 };

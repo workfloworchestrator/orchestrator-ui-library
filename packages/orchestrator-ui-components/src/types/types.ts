@@ -593,6 +593,11 @@ export type OrchestratorConfig = {
   enableAoStackStatus: boolean;
   aoStackStatusUrl: string;
   startWorkflowFilters: string[] | undefined;
+  /**
+   * Restores the pydantic-forms behavior from before 4.x, where form properties without a value
+   * (no default, or null as default) were not submitted to the backend. Defaults to false.
+   */
+  pydanticFormsLegacyNullHandling?: boolean;
 };
 
 export enum ColorModes {
