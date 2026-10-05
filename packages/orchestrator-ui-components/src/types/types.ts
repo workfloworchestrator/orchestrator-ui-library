@@ -165,6 +165,7 @@ export type Process = {
     page: Pick<Subscription, 'subscriptionId' | 'description'>[];
   };
   note: string | null;
+  userPermissions?: FormUserPermissions;
 };
 
 // These step statusses match the ones in the backend
@@ -225,6 +226,13 @@ export enum ProcessStatus {
 }
 
 export const ProcessDoneStatuses = [ProcessStatus.COMPLETED, ProcessStatus.ABORTED];
+
+export const ProcessRetryableStatuses = [
+  ProcessStatus.FAILED,
+  ProcessStatus.API_UNAVAILABLE,
+  ProcessStatus.INCONSISTENT_DATA,
+  ProcessStatus.WAITING,
+];
 
 export interface StepState {
   [index: string]: object | boolean | string | number | [];

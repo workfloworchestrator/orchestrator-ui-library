@@ -51,6 +51,10 @@ export const processListQuery = `
                     }
                 }
                 note
+                userPermissions {
+                    retryAllowed
+                    resumeAllowed
+                }
             }
             pageInfo {
                 hasNextPage
