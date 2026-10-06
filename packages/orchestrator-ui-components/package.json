@@ -16,6 +16,13 @@
     "access": "public",
     "provenance": true
   },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE.txt",
+    "CHANGELOG.md"
+  ],
   "homepage": "https://www.workfloworchestrator.org",
   "bugs": "https://github.com/workfloworchestrator/orchestrator-ui-library/issues",
   "keywords": [
