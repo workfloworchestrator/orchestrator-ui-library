@@ -1,5 +1,11 @@
 # @orchestrator-ui/tsconfig
 
+## 1.5.1
+
+### Patch Changes
+
+- 2e593ff: Npm dependency udpates
+
 ## 1.5.0
 
 ### Minor Changes

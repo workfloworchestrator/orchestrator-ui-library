@@ -1,5 +1,11 @@
 # @orchestrator-ui/jest-config
 
+## 1.8.1
+
+### Patch Changes
+
+- 2e593ff: Npm dependency udpates
+
 ## 1.8.0
 
 ### Minor Changes
