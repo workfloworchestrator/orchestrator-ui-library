@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.0.1
+
+### Patch Changes
+
+- 3d7d0e5: Fixes broken build
+
 ## 10.0.0
 
 ### Major Changes
