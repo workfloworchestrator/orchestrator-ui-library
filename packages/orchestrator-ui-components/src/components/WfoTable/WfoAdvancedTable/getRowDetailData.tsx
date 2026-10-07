@@ -17,7 +17,8 @@ export const getRowDetailData = <T extends object>(
   ][] = Object.entries(tableColumnConfig);
 
   const dataColumnEntries = tableColumnConfigEntries.filter(
-    ([, tableColumnConfig]) => tableColumnConfig.columnType === ColumnType.DATA,
+    ([, tableColumnConfig]) =>
+      tableColumnConfig.columnType === ColumnType.DATA && !tableColumnConfig.excludeFromDetails,
   ) as [string, WfoAdvancedTableDataColumnConfigItem<T, keyof T>][];
 
   return dataColumnEntries.map(([key, value]) => {

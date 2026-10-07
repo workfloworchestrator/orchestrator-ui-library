@@ -45,6 +45,7 @@ export type WfoStructuredSearchTableDataColumnConfigItem<
   Property extends keyof T,
 > = WfoTableDataColumnConfigItem<T, Property> & {
   renderDetails?: (cellValue: T[Property], row: T) => React.ReactNode;
+  excludeFromDetails?: boolean;
   clipboardText?: (cellValue: T[Property], row: T) => string;
 };
 export type WfoStructuredSearchTableDataColumnConfig<T extends object> = {
