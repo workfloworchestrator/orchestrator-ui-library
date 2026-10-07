@@ -31,11 +31,8 @@ const BooleanEditor = ({
   handleOnChange,
   value: currentValue,
 }: EditorInputFieldProps<boolean | string | undefined>) => {
-  // A restored query (URL / filter string) delivers a real boolean; anything else —
-  // a freshly selected field ('') or a value left behind by another editor — means
-  // there is no boolean value yet and the editor starts at its default, true.
-  const initialValue = typeof currentValue === 'boolean' ? currentValue : true;
-  const [value, setValue] = useState<string>(initialValue.toString());
+  const initialValue = currentValue === false || currentValue === 'false' ? 'false' : 'true';
+  const [value, setValue] = useState<string>(initialValue);
 
   useEffect(() => {
     // Commit the default only for a rule without a value yet (a freshly selected field)
@@ -73,7 +70,7 @@ const BooleanEditor = ({
       idSelected={value}
       onChange={(id) => {
         setValue(id);
-        handleOnChange(id === 'true');
+        handleOnChange(id);
       }}
       buttonSize="m"
       color="primary"

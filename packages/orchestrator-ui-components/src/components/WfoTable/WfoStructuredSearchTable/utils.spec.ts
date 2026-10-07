@@ -171,6 +171,13 @@ describe('useBuildColumnFilter', () => {
     ]);
   });
 
+  it('compares the true/false of a toggle filter as a quoted value', () => {
+    const buildColumnFilter = renderBuildColumnFilter(getColumnSearchFieldName);
+
+    expect(buildColumnFilter('insync', 'true')?.filterString).toBe('subscription.insync == "true"');
+    expect(buildColumnFilter('insync', 'false')?.filterString).toBe('subscription.insync == "false"');
+  });
+
   it('appends the condition to the current filter', () => {
     const result = renderBuildColumnFilter(getColumnSearchFieldName)(
       'description',

@@ -15,6 +15,7 @@ export type WfoTableHeaderCellProps = {
   sortOrder?: SortOrder;
   onSetSortOrder?: (updatedSortOrder: SortOrder) => void;
   onSearch?: (searchText: string) => void;
+  isToggleFilter?: boolean;
   children: string;
 };
 
@@ -24,6 +25,7 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
   children,
   onSetSortOrder,
   onSearch,
+  isToggleFilter = false,
 }) => {
   const {
     headerCellStyle,
@@ -74,7 +76,12 @@ export const WfoTableHeaderCell: FC<WfoTableHeaderCellProps> = ({
       >
         <WfoPopoverHeader />
         <EuiHorizontalRule margin="none" />
-        <WfoPopoverContent fieldName={fieldName} onSearch={onSearch} closePopover={closePopover} />
+        <WfoPopoverContent
+          fieldName={fieldName}
+          onSearch={onSearch}
+          closePopover={closePopover}
+          isToggleFilter={isToggleFilter}
+        />
       </EuiPopover>
 
       {isSortable && (
