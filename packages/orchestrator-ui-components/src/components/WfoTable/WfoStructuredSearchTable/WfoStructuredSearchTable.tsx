@@ -328,15 +328,17 @@ export const WfoStructuredSearchTable = <T extends object>({
           onResetToDefaults={handleResetToDefaults}
           extraSettings={
             <>
-              <EuiFormRow label={t('showMatchDetails')} display="columnCompressed">
-                <EuiSwitch
-                  showLabel={false}
-                  label={t('showMatchDetails')}
-                  checked={showMatchDetails}
-                  onChange={(event) => handleToggleShowMatchDetails(event.target.checked)}
-                  compressed
-                />
-              </EuiFormRow>
+              {rowExpandingConfiguration ?
+                <EuiFormRow label={t('showMatchDetails')} display="columnCompressed">
+                  <EuiSwitch
+                    showLabel={false}
+                    label={t('showMatchDetails')}
+                    checked={showMatchDetails}
+                    onChange={(event) => handleToggleShowMatchDetails(event.target.checked)}
+                    compressed
+                  />
+                </EuiFormRow>
+              : null}
               <EuiFormRow label={t('advancedNestedSearch')} display="columnCompressed">
                 <EuiSwitch
                   showLabel={false}
