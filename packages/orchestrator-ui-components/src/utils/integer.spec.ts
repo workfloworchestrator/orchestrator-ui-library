@@ -17,4 +17,9 @@ describe('toPercentage()', () => {
   it('handles fractions greater than 1', () => {
     expect(toPercentage(1.5)).toEqual('150.0%');
   });
+  it('allows specifying the number of decimal digits', () => {
+    expect(toPercentage(0.5, 0)).toEqual('50%');
+    expect(toPercentage(0.12345, 2)).toEqual('12.35%');
+    expect(toPercentage(0.6789, 3)).toEqual('67.890%');
+  });
 });
