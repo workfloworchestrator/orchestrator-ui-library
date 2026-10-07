@@ -8,7 +8,7 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { SearchParams, addStatusFilterFromTab, removeTabStatusMatchingFields } from '@/components';
+import { SearchParams, TableColumnKeys, addStatusFilterFromTab, removeTabStatusMatchingFields } from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
   SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
@@ -512,12 +512,18 @@ export const WfoSubscriptionsListPage = () => {
     setPageCursor(undefined);
   };
 
-  const hiddenColumns = tableDefaults?.hiddenColumns;
+  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<SubscriptionListItem>>(
+    tableDefaults?.hiddenColumns || [],
+  );
 
   // don't show 'score' column when no searching/filtering is applied
-  if (hiddenColumns && committedQueryString === '' && committedFilterString === '') {
-    hiddenColumns?.push('score');
-  }
+  useEffect(() => {
+    if (committedQueryString === '' && committedFilterString === '') {
+      setHiddenColumns((prevHiddenColumns) => [...prevHiddenColumns, 'score']);
+    } else {
+      setHiddenColumns((prevHiddenColumns) => prevHiddenColumns.filter((column) => column !== 'score'));
+    }
+  }, [committedQueryString, committedFilterString]);
 
   return (
     <>
@@ -533,7 +539,7 @@ export const WfoSubscriptionsListPage = () => {
         data={subscriptionListItems}
         error={mapRtkErrorToWfoError(error)}
         rowExpandingConfiguration={undefined}
-        defaultHiddenColumns={tableDefaults?.hiddenColumns}
+        defaultHiddenColumns={hiddenColumns}
         defaultShowMatchDetails={tableDefaults?.showMatchDetails}
         defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
         filterString={filterString}
