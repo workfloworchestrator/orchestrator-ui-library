@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 
@@ -17,7 +17,6 @@ import {
   WfoContentHeader,
   WfoDataSorting,
   WfoDateTime,
-  WfoExpandingSearchRow,
   WfoFilterTabs,
   WfoFirstPartUUID,
   WfoInlineJson,
@@ -29,16 +28,24 @@ import {
   WfoSubscriptionListTab,
   WfoSubscriptionNoteEdit,
   WfoSubscriptionStatusBadge,
-  WfoTableColumnConfig,
   subscriptionListTabs,
 } from '@/components';
+import { WfoConfidenceScore } from '@/components/WfoSubscription/WfoConfidenceScore';
+import { WfoMatchingFields } from '@/components/WfoSubscription/WfoMatchingFields';
 import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
-import { ColumnType, WfoTableProps } from '@/components/WfoTable/WfoTable';
+import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useStoredTableConfig } from '@/hooks';
 import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import { EntityKind, PaginatedSearchResults, ResultColumToPropertyMap, RetrieverType, SortOrder } from '@/types';
+import {
+  EntityKind,
+  PaginatedSearchResults,
+  ResultColumToPropertyMap,
+  RetrieverType,
+  SearchResult,
+  SortOrder,
+} from '@/types';
 import { getCsvFileNameWithDate, initiateCsvFileDownload, parseDateToLocaleDateTimeString } from '@/utils';
 
 const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
@@ -48,11 +55,9 @@ const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropert
 const getDataFromResponse = <T extends object>(
   data: PaginatedSearchResults,
   resultColumToPropertyMap: ResultColumToPropertyMap<T>,
-  uniqueRowId: keyof T,
-  selectedTab: WfoSubscriptionListTab,
+  addPropertyToItem: (item: T, searchHit: SearchResult) => T = (item) => item,
 ): {
   items: T[];
-  rowExpandingConfiguration?: WfoTableProps<T>['rowExpandingConfiguration'];
 } => {
   const searchResult = data?.data;
   if (!searchResult)
@@ -60,44 +65,25 @@ const getDataFromResponse = <T extends object>(
       items: [],
     };
 
-  const responseColumns: Record<string, string | number | null>[] =
-    searchResult.map(({ response_columns }) => response_columns) || [];
-
-  const rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'] = {
-    uniqueRowId: uniqueRowId as keyof WfoTableColumnConfig<T>,
-    uniqueRowIdToExpandedRowMap: searchResult.reduce(
-      (rowMap, { response_columns, score, perfect_match, matching_fields }) => {
-        const idColumnInResponseColumn = getKeyByValueFromMap<T>(resultColumToPropertyMap, uniqueRowId);
-        const rowId = response_columns[idColumnInResponseColumn];
-        if (rowId) {
-          rowMap[rowId] = (
-            <WfoExpandingSearchRow
-              score={score}
-              matchingFields={removeTabStatusMatchingFields(matching_fields, selectedTab, EntityKind.SUBSCRIPTION)}
-              perfectMatch={perfect_match}
-            />
-          );
-        }
-        return rowMap;
-      },
-      {} as Record<string, ReactNode>,
-    ),
-  };
-
-  const items: T[] = responseColumns.map((responseColumn) => {
-    const item = Object.entries(responseColumn).reduce((acc, [key, value]) => {
+  const items: T[] = searchResult.map((searchHit) => {
+    const { response_columns: responseColumn } = searchHit;
+    let item = Object.entries(responseColumn).reduce((acc, [key, value]) => {
       const itemKey = resultColumToPropertyMap.get(key);
       if (itemKey) {
         acc[itemKey] = value as unknown as T[keyof T];
       }
       return acc;
     }, {} as T);
+
+    // Next to the columns coming from the response, we might want to add additional properties to
+    // the item (which will show up as column in the table)
+    item = addPropertyToItem(item, searchHit);
+
     return item;
   });
 
   return {
     items,
-    rowExpandingConfiguration,
   };
 };
 
@@ -235,6 +221,19 @@ export const WfoSubscriptionsListPage = () => {
       renderDetails: (value) => value,
       renderTooltip: (value) => value,
     },
+    score: {
+      columnType: ColumnType.DATA,
+      label: t('score'),
+      width: '100px',
+      excludeFromDetails: true,
+      renderData: (value) => (
+        <WfoConfidenceScore
+          score={value?.score}
+          fullyConfident={committedFilterString !== '' && committedQueryString === ''}
+        />
+      ),
+      renderTooltip: (value) => <WfoMatchingFields matchingFields={value?.matching_fields} />,
+    },
     description: {
       columnType: ColumnType.DATA,
       label: t('description'),
@@ -318,7 +317,9 @@ export const WfoSubscriptionsListPage = () => {
     },
   };
 
-  const sortableAndFilterableFieldNames = Object.keys(tableColumnConfig).filter((fieldName) => fieldName !== 'actions');
+  const sortableAndFilterableFieldNames = Object.keys(tableColumnConfig).filter(
+    (fieldName) => fieldName !== 'actions' && fieldName !== 'score',
+  );
   const isSortingAllowed = queryString === '';
   const tableColumnConfigWithSortingAndFiltering =
     mapSortableAndFilterableValuesToTableColumnConfig<SubscriptionListItem>(
@@ -467,9 +468,16 @@ export const WfoSubscriptionsListPage = () => {
   // (or a later successful commit) lifts the block.
   const isSearchBlocked = isCommitRefused && !isValidFilterString;
 
-  const { items: subscriptionListItems, rowExpandingConfiguration } =
+  const { items: subscriptionListItems } =
     data && !isSearchBlocked ?
-      getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, 'subscriptionId', selectedTab)
+      getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, (item, searchHit) => {
+        const { score, matching_fields } = searchHit;
+        item['score'] = {
+          score,
+          matching_fields: removeTabStatusMatchingFields(matching_fields, selectedTab, EntityKind.SUBSCRIPTION),
+        };
+        return item;
+      })
     : { items: [] };
 
   const totalItems = !isSearchBlocked && getTotalItemsFromResponse(data);
@@ -478,12 +486,7 @@ export const WfoSubscriptionsListPage = () => {
 
   const exportData = async () => {
     const exportResult = await getSubscriptionListForExport(totalItems || pageSize);
-    const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(
-      exportResult,
-      resultColumToPropertyMap,
-      'subscriptionId',
-      selectedTab,
-    );
+    const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(exportResult, resultColumToPropertyMap);
     if (!exportItems.length) {
       return;
     }
@@ -509,6 +512,13 @@ export const WfoSubscriptionsListPage = () => {
     setPageCursor(undefined);
   };
 
+  const hiddenColumns = tableDefaults?.hiddenColumns;
+
+  // don't show 'score' column when no searching/filtering is applied
+  if (hiddenColumns && committedQueryString === '' && committedFilterString === '') {
+    hiddenColumns?.push('score');
+  }
+
   return (
     <>
       <WfoContentHeader title={tDetail('title')} />
@@ -522,7 +532,7 @@ export const WfoSubscriptionsListPage = () => {
       <WfoStructuredSearchTable<SubscriptionListItem>
         data={subscriptionListItems}
         error={mapRtkErrorToWfoError(error)}
-        rowExpandingConfiguration={rowExpandingConfiguration}
+        rowExpandingConfiguration={undefined}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         defaultShowMatchDetails={tableDefaults?.showMatchDetails}
         defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}

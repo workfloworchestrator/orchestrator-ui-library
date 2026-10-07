@@ -562,7 +562,8 @@
       "product": "Product",
       "startDate": "Start date",
       "status": "Status",
-      "tag": "Product tag"
+      "tag": "Product tag",
+      "score": "Confidence"
     },
     "tabs": {
       "active": "Active",
