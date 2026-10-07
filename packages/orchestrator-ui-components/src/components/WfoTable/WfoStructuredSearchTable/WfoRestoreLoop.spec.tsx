@@ -116,6 +116,18 @@ describe('URL restore with async path info resolution', () => {
     expect(queryChangeLog).toEqual([]);
   });
 
+  it('settles without a render loop for a quoted boolean, as the filter string writes it', async () => {
+    queryChangeLog.length = 0;
+    render(<Harness initialCel={'lldp == "false"'} />);
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    });
+
+    expect(screen.getByRole('button', { name: 'False', pressed: true })).toBeInTheDocument();
+    expect(queryChangeLog).toEqual([]);
+  });
+
   it('does not flash a value source selector while a literal is half-typed', async () => {
     // 'fals' parses as an identifier, giving the rule valueSource 'field'; without the
     // valueSourceSelector override the default selector appears next to the editor.

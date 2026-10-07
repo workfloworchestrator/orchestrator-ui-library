@@ -1,8 +1,8 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiForm, EuiFormRow, EuiSwitch } from '@elastic/eui';
+import { EuiButton, EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiForm, EuiFormRow } from '@elastic/eui';
 
 import { getWfoBasicTableStyles } from '@/components/WfoTable/WfoTable/WfoTableHeaderCell/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -24,52 +24,64 @@ export const WfoPopoverContent: FC<WfoPopoverContentProps> = ({
   const t = useTranslations('common');
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [toggleValue, setToggleValue] = useState(true);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newValue = isToggleFilter ? String(toggleValue) : inputRef.current?.value || '';
+    const newValue = inputRef.current?.value || '';
     onSearch?.(newValue);
     if (inputRef.current) inputRef.current.value = '';
     closePopover();
   };
 
-  const ToggleFilterContent = () => {
-    return (
-      <EuiFlexGroup gutterSize="m" alignItems="center" responsive={false}>
-        <EuiFlexItem grow={false}>
-          <EuiSwitch
-            label={toggleValue ? 'True' : 'False'}
-            checked={toggleValue}
-            onChange={(e) => setToggleValue(e.target.checked)}
-            name={`toggle-${fieldName}`}
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButton type="submit" size="s" fill>
-            {t('applyFilter')}
-          </EuiButton>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-    );
+  const handleToggleFilter = (value: boolean) => {
+    onSearch?.(String(value));
+    closePopover();
   };
+
+  if (isToggleFilter) {
+    return (
+      <div css={headerCellPopoverContentStyle}>
+        <EuiFlexGroup gutterSize="s" responsive={false}>
+          <EuiFlexItem grow={false}>
+            <EuiButton
+              size="s"
+              color="primary"
+              iconType="check"
+              name={`toggle-${fieldName}-true`}
+              onClick={() => handleToggleFilter(true)}
+            >
+              True
+            </EuiButton>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButton
+              size="s"
+              color="danger"
+              iconType="cross"
+              name={`toggle-${fieldName}-false`}
+              onClick={() => handleToggleFilter(false)}
+            >
+              False
+            </EuiButton>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      </div>
+    );
+  }
 
   return (
     <div css={headerCellPopoverContentStyle}>
       <EuiForm component="form" onSubmit={handleSubmit}>
         <EuiFormRow>
-          {isToggleFilter ?
-            <ToggleFilterContent />
-          : <EuiFieldSearch
-              className={fieldName}
-              placeholder={t('search')}
-              inputRef={(input) => {
-                inputRef.current = input;
-              }}
-              isClearable={false}
-              name={`search-${fieldName}`}
-            />
-          }
+          <EuiFieldSearch
+            className={fieldName}
+            placeholder={t('search')}
+            inputRef={(input) => {
+              inputRef.current = input;
+            }}
+            isClearable={false}
+            name={`search-${fieldName}`}
+          />
         </EuiFormRow>
       </EuiForm>
     </div>

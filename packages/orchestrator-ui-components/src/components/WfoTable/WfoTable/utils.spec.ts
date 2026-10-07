@@ -147,7 +147,7 @@ describe('utils', () => {
         throw Error('Some of the fields are not data fields');
       }
     });
-    it('keeps the toggle of a toggle filterable column that is in the filterable list, and drops it otherwise', () => {
+    it('keeps the toggle of a toggle filterable column, whether or not it is in the filterable list', () => {
       // Given
       const tableColumnConfigWithToggle: WfoTableColumnConfig<TestObject> = {
         ...tableColumnConfig,
@@ -176,7 +176,7 @@ describe('utils', () => {
         && notFilterableResult.active?.columnType === ColumnType.DATA
       ) {
         expect(filterableResult.active.isFilterable).toEqual('toggle');
-        expect(notFilterableResult.active.isFilterable).toEqual(false);
+        expect(notFilterableResult.active.isFilterable).toEqual('toggle');
       } else {
         // Preventing silently skipping above expects
         throw Error('Some of the fields are not data fields');

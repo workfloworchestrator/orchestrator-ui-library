@@ -38,12 +38,19 @@ describe('WfoValueEditor boolean editor', () => {
   it('commits the default true on mount for a freshly selected field without a value', () => {
     const handleOnChange = renderBooleanValueEditor('');
 
-    expect(handleOnChange).toHaveBeenCalledWith(true);
+    expect(handleOnChange).toHaveBeenCalledWith('true');
     expect(screen.getByRole('button', { name: 'True', pressed: true })).toBeInTheDocument();
   });
 
   it('does not re-commit a restored boolean value', () => {
     const handleOnChange = renderBooleanValueEditor(false);
+
+    expect(handleOnChange).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'False', pressed: true })).toBeInTheDocument();
+  });
+
+  it('shows a quoted boolean restored from the filter string without re-committing it', () => {
+    const handleOnChange = renderBooleanValueEditor('false');
 
     expect(handleOnChange).not.toHaveBeenCalled();
     expect(screen.getByRole('button', { name: 'False', pressed: true })).toBeInTheDocument();

@@ -11,14 +11,14 @@ import { optionalArrayMapper } from '@/utils';
 import { WfoQueryParams, getUrlWithQueryParams } from '@/utils/getQueryParams';
 
 const OUT_OF_SYNC_CEL =
-  'subscription.insync == false && (subscription.status == "provisioning" || subscription.status == "active")';
+  'subscription.insync == "false" && (subscription.status == "provisioning" || subscription.status == "active")';
 
 // Elasticsearch equivalent of OUT_OF_SYNC_CEL. The list page produces the same clauses from the
 // CEL in the button link, so the count on the card matches the list.
 const outOfSyncSubscriptionsFilter = {
   bool: {
     must: [
-      { term: { 'subscription.insync': false } },
+      { term: { 'subscription.insync': 'false' } },
       {
         bool: {
           should: [{ term: { 'subscription.status': 'active' } }, { term: { 'subscription.status': 'provisioning' } }],

@@ -34,25 +34,27 @@ describe('WfoPopoverContent', () => {
     expect(closePopover).toHaveBeenCalled();
   });
 
-  it('renders a toggle instead of a text search field for a toggle filter', () => {
+  it('renders a True and a False button instead of a text search field for a toggle filter', () => {
     render(<WfoPopoverContent fieldName="insync" onSearch={jest.fn()} closePopover={jest.fn()} isToggleFilter />);
 
-    expect(screen.getByRole('switch')).toBeChecked();
+    expect(screen.getByRole('button', { name: 'True' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'False' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'applyFilter' })).not.toBeInTheDocument();
     expect(screen.queryByPlaceholderText('search')).not.toBeInTheDocument();
   });
 
-  it('submits true, or false after switching the toggle off', () => {
+  it.each([
+    ['True', 'true'],
+    ['False', 'false'],
+  ])('applies the filter and closes the popover when %s is clicked', (buttonName, expectedSearchText) => {
     const onSearch = jest.fn();
     const closePopover = jest.fn();
     render(<WfoPopoverContent fieldName="insync" onSearch={onSearch} closePopover={closePopover} isToggleFilter />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'applyFilter' }));
-    expect(onSearch).toHaveBeenLastCalledWith('true');
+    fireEvent.click(screen.getByRole('button', { name: buttonName }));
 
-    fireEvent.click(screen.getByRole('switch'));
-    expect(screen.getByRole('switch')).not.toBeChecked();
-    fireEvent.click(screen.getByRole('button', { name: 'applyFilter' }));
-    expect(onSearch).toHaveBeenLastCalledWith('false');
-    expect(closePopover).toHaveBeenCalledTimes(2);
+    expect(onSearch).toHaveBeenCalledTimes(1);
+    expect(onSearch).toHaveBeenCalledWith(expectedSearchText);
+    expect(closePopover).toHaveBeenCalledTimes(1);
   });
 });
