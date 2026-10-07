@@ -149,7 +149,10 @@ export type ProcessSearchParameters = BaseSearchParameters & {
 };
 
 export type AnySearchParameters =
-  SubscriptionSearchParameters | ProductSearchParameters | WorkflowSearchParameters | ProcessSearchParameters;
+  | SubscriptionSearchParameters
+  | ProductSearchParameters
+  | WorkflowSearchParameters
+  | ProcessSearchParameters;
 
 export type Condition = {
   path: string;

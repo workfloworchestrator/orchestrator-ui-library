@@ -1,7 +1,18 @@
 import type { RuleGroupType, RuleType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder';
 
-import { collectRuleFields, hasNestedRuleWithEmptyValue, parseCelToRuleGroup } from './utils';
+import { renderHook } from '@testing-library/react';
+
+import { EntityKind } from '@/types';
+
+import { collectRuleFields, hasNestedRuleWithEmptyValue, parseCelToRuleGroup, useBuildColumnFilter } from './utils';
+
+const mockUseFieldsPathInfo = jest.fn();
+
+jest.mock('@/hooks', () => ({
+  ...jest.requireActual('@/hooks'),
+  useFieldsPathInfo: (...args: unknown[]) => mockUseFieldsPathInfo(...args),
+}));
 
 describe('parseCelToRuleGroup', () => {
   it('assigns ids to the parsed group and rules so rule identity stays stable', () => {
@@ -114,21 +125,6 @@ describe('hasRuleWithEmptyValue', () => {
   });
 });
 
-describe('buildColumnFilter', () => {
-  type Row = { status: string; insync: boolean };
-
-  it('compares a column against a quoted value, including the true/false of a toggle filter', () => {
-    expect(buildColumnFilter<Row>('status', 'active')?.filterString).toBe('status == "active"');
-    expect(buildColumnFilter<Row>('insync', 'false')?.filterString).toBe('insync == "false"');
-  });
-
-  it('appends the condition to the current filter, using the resolved search field name', () => {
-    expect(
-      buildColumnFilter<Row>('insync', 'true', 'status == "active"', (field) => `subscription.${field}`)?.filterString,
-    ).toBe('(status == "active") && subscription.insync == "true"');
-  });
-});
-
 describe('useBuildColumnFilter', () => {
   type Row = { description: string; insync: boolean; note: string };
   const tableColumnConfig = { description: {}, insync: {}, note: {} };
@@ -173,6 +169,13 @@ describe('useBuildColumnFilter', () => {
     expect(result?.ruleGroup.rules).toEqual([
       expect.objectContaining({ field: 'subscription.insync', operator: '=', value: 'true' }),
     ]);
+  });
+
+  it('compares the true/false of a toggle filter as a quoted value', () => {
+    const buildColumnFilter = renderBuildColumnFilter(getColumnSearchFieldName);
+
+    expect(buildColumnFilter('insync', 'true')?.filterString).toBe('subscription.insync == "true"');
+    expect(buildColumnFilter('insync', 'false')?.filterString).toBe('subscription.insync == "false"');
   });
 
   it('appends the condition to the current filter', () => {
