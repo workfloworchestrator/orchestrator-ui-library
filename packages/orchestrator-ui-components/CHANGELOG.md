@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.0.3
+
+### Patch Changes
+
+- e6fe079: 230 Fix filter for insync column + add buttons for search true and false boolean value
+
 ## 10.0.2
 
 ### Patch Changes
