@@ -45,6 +45,7 @@ export type WfoStructuredSearchTableDataColumnConfigItem<
   Property extends keyof T,
 > = WfoTableDataColumnConfigItem<T, Property> & {
   renderDetails?: (cellValue: T[Property], row: T) => React.ReactNode;
+  excludeFromDetails?: boolean;
   clipboardText?: (cellValue: T[Property], row: T) => string;
 };
 export type WfoStructuredSearchTableDataColumnConfig<T extends object> = {
@@ -71,6 +72,8 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
   rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
+  additionalHiddenColumns?: TableColumnKeys<T>;
+  nonEditableColumns?: TableColumnKeys<T>;
   defaultShowMatchDetails?: boolean;
   defaultAdvancedNestedSearch?: boolean;
   queryString?: string;
@@ -102,6 +105,8 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
 export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
+  additionalHiddenColumns = [],
+  nonEditableColumns = [],
   defaultShowMatchDetails = false,
   defaultAdvancedNestedSearch = true,
   queryString,
@@ -134,7 +139,10 @@ export const WfoStructuredSearchTable = <T extends object>({
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
   const { toggleButtonStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
-  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
+  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>([
+    ...defaultHiddenColumns,
+    ...additionalHiddenColumns,
+  ]);
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(false);
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
   const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
@@ -146,9 +154,9 @@ export const WfoStructuredSearchTable = <T extends object>({
 
   useEffect(() => {
     if (defaultHiddenColumns) {
-      setHiddenColumns(defaultHiddenColumns);
+      setHiddenColumns([...defaultHiddenColumns, ...additionalHiddenColumns]);
     }
-  }, [defaultHiddenColumns]);
+  }, [defaultHiddenColumns, additionalHiddenColumns]);
 
   useEffect(() => {
     setShowMatchDetails(defaultShowMatchDetails);
@@ -181,7 +189,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     ...tableColumnConfig,
   };
 
-  const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns);
+  const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns, nonEditableColumns);
 
   const rowDetailData: WfoKeyValueTableDataType[] | undefined =
     rowDetailModalData && getRowDetailData(rowDetailModalData, tableColumnConfig);
@@ -190,7 +198,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     const updatedHiddenColumns = updatedTableConfig.columns
       .filter((column) => !column.isVisible)
       .map((hiddenColumn) => hiddenColumn.field);
-    setHiddenColumns(updatedHiddenColumns);
+    setHiddenColumns([...updatedHiddenColumns, ...additionalHiddenColumns]);
     setShowTableSettingsModal(false);
     setPageSize(updatedTableConfig.selectedPageSize);
     setTableConfigToLocalStorage(localStorageKey, {
@@ -225,7 +233,7 @@ export const WfoStructuredSearchTable = <T extends object>({
 
   const handleResetToDefaults = () => {
     const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
-    setHiddenColumns(defaultTableConfig.hiddenColumns);
+    setHiddenColumns([...defaultTableConfig.hiddenColumns, ...additionalHiddenColumns]);
     setPageSize(defaultTableConfig.selectedPageSize);
     setShowMatchDetails(defaultTableConfig.showMatchDetails ?? false);
     setAdvancedNestedSearch(defaultTableConfig.advancedNestedSearch ?? false);
@@ -327,15 +335,17 @@ export const WfoStructuredSearchTable = <T extends object>({
           onResetToDefaults={handleResetToDefaults}
           extraSettings={
             <>
-              <EuiFormRow label={t('showMatchDetails')} display="columnCompressed">
-                <EuiSwitch
-                  showLabel={false}
-                  label={t('showMatchDetails')}
-                  checked={showMatchDetails}
-                  onChange={(event) => handleToggleShowMatchDetails(event.target.checked)}
-                  compressed
-                />
-              </EuiFormRow>
+              {rowExpandingConfiguration ?
+                <EuiFormRow label={t('showMatchDetails')} display="columnCompressed">
+                  <EuiSwitch
+                    showLabel={false}
+                    label={t('showMatchDetails')}
+                    checked={showMatchDetails}
+                    onChange={(event) => handleToggleShowMatchDetails(event.target.checked)}
+                    compressed
+                  />
+                </EuiFormRow>
+              : null}
               <EuiFormRow label={t('advancedNestedSearch')} display="columnCompressed">
                 <EuiSwitch
                   showLabel={false}

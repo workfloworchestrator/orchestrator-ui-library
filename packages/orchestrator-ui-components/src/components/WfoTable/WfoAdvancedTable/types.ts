@@ -11,6 +11,7 @@ export type WfoAdvancedTableDataColumnConfigItem<
   Property extends keyof T,
 > = WfoTableDataColumnConfigItem<T, Property> & {
   renderDetails?: (cellValue: T[Property], row: T) => ReactNode;
+  excludeFromDetails?: boolean;
   clipboardText?: (cellValue: T[Property], row: T) => string;
 };
 export type WfoAdvancedTableDataColumnConfig<T extends object> = {
