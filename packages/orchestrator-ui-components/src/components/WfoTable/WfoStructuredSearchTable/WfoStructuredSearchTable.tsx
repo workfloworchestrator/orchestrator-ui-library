@@ -72,6 +72,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
   rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
+  additionalHiddenColumns?: TableColumnKeys<T>;
   defaultShowMatchDetails?: boolean;
   defaultAdvancedNestedSearch?: boolean;
   queryString?: string;
@@ -103,6 +104,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
 export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
+  additionalHiddenColumns = [],
   defaultShowMatchDetails = false,
   defaultAdvancedNestedSearch = true,
   queryString,
@@ -135,7 +137,10 @@ export const WfoStructuredSearchTable = <T extends object>({
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
   const { toggleButtonStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
-  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
+  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>([
+    ...defaultHiddenColumns,
+    ...additionalHiddenColumns,
+  ]);
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(false);
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
   const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
@@ -147,9 +152,9 @@ export const WfoStructuredSearchTable = <T extends object>({
 
   useEffect(() => {
     if (defaultHiddenColumns) {
-      setHiddenColumns(defaultHiddenColumns);
+      setHiddenColumns([...defaultHiddenColumns, ...additionalHiddenColumns]);
     }
-  }, [defaultHiddenColumns]);
+  }, [defaultHiddenColumns, additionalHiddenColumns]);
 
   useEffect(() => {
     setShowMatchDetails(defaultShowMatchDetails);
@@ -191,7 +196,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     const updatedHiddenColumns = updatedTableConfig.columns
       .filter((column) => !column.isVisible)
       .map((hiddenColumn) => hiddenColumn.field);
-    setHiddenColumns(updatedHiddenColumns);
+    setHiddenColumns([...updatedHiddenColumns, ...additionalHiddenColumns]);
     setShowTableSettingsModal(false);
     setPageSize(updatedTableConfig.selectedPageSize);
     setTableConfigToLocalStorage(localStorageKey, {
@@ -226,7 +231,7 @@ export const WfoStructuredSearchTable = <T extends object>({
 
   const handleResetToDefaults = () => {
     const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
-    setHiddenColumns(defaultTableConfig.hiddenColumns);
+    setHiddenColumns([...defaultTableConfig.hiddenColumns, ...additionalHiddenColumns]);
     setPageSize(defaultTableConfig.selectedPageSize);
     setShowMatchDetails(defaultTableConfig.showMatchDetails ?? false);
     setAdvancedNestedSearch(defaultTableConfig.advancedNestedSearch ?? false);

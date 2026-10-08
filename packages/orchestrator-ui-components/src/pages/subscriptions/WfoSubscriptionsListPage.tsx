@@ -512,18 +512,9 @@ export const WfoSubscriptionsListPage = () => {
     setPageCursor(undefined);
   };
 
-  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<SubscriptionListItem>>(
-    tableDefaults?.hiddenColumns || [],
-  );
-
-  // don't show 'score' column when no searching/filtering is applied
-  useEffect(() => {
-    if (committedQueryString === '' && committedFilterString === '') {
-      setHiddenColumns((prevHiddenColumns) => [...prevHiddenColumns, 'score']);
-    } else {
-      setHiddenColumns((prevHiddenColumns) => prevHiddenColumns.filter((column) => column !== 'score'));
-    }
-  }, [committedQueryString, committedFilterString]);
+  const additionalHiddenColumns: TableColumnKeys<SubscriptionListItem> =
+    // only show 'score' when there is an active query or filter
+    committedQueryString || committedFilterString ? [] : ['score'];
 
   return (
     <>
@@ -539,7 +530,8 @@ export const WfoSubscriptionsListPage = () => {
         data={subscriptionListItems}
         error={mapRtkErrorToWfoError(error)}
         rowExpandingConfiguration={undefined}
-        defaultHiddenColumns={hiddenColumns}
+        defaultHiddenColumns={tableDefaults?.hiddenColumns}
+        additionalHiddenColumns={additionalHiddenColumns}
         defaultShowMatchDetails={tableDefaults?.showMatchDetails}
         defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
         filterString={filterString}
