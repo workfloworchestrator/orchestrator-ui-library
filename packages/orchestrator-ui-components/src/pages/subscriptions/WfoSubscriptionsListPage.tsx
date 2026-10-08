@@ -516,6 +516,9 @@ export const WfoSubscriptionsListPage = () => {
     // only show 'score' when there is an active query or filter
     committedQueryString || committedFilterString ? [] : ['score'];
 
+  // We manually show/hide the score column and shouldn't be configurable by the user.
+  const nonEditableColumns: TableColumnKeys<SubscriptionListItem> = ['score'];
+
   return (
     <>
       <WfoContentHeader title={tDetail('title')} />
@@ -532,6 +535,7 @@ export const WfoSubscriptionsListPage = () => {
         rowExpandingConfiguration={undefined}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         additionalHiddenColumns={additionalHiddenColumns}
+        nonEditableColumns={nonEditableColumns}
         defaultShowMatchDetails={tableDefaults?.showMatchDetails}
         defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
         filterString={filterString}

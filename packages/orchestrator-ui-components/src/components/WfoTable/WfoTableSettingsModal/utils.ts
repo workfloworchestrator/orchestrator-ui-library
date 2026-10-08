@@ -3,6 +3,7 @@ import { ColumnType, TableColumnKeys, TableSettingsColumnConfig, WfoTableColumnC
 export const getTableSettingsColumns = <T extends object>(
   columnConfig: WfoTableColumnConfig<T>,
   hiddenColumns: TableColumnKeys<T>,
+  nonEditableColumns: TableColumnKeys<T> = [],
 ): TableSettingsColumnConfig<T>[] =>
   Object.entries(columnConfig)
     .filter(([, columnItemConfig]) => columnItemConfig.columnType === ColumnType.DATA)
@@ -13,5 +14,6 @@ export const getTableSettingsColumns = <T extends object>(
         field,
         name: label,
         isVisible: hiddenColumns.indexOf(field) === -1,
+        isEditable: nonEditableColumns.indexOf(field) === -1,
       };
     });

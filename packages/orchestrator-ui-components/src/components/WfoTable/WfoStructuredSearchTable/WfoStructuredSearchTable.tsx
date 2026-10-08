@@ -73,6 +73,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
   additionalHiddenColumns?: TableColumnKeys<T>;
+  nonEditableColumns?: TableColumnKeys<T>;
   defaultShowMatchDetails?: boolean;
   defaultAdvancedNestedSearch?: boolean;
   queryString?: string;
@@ -105,6 +106,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
   additionalHiddenColumns = [],
+  nonEditableColumns = [],
   defaultShowMatchDetails = false,
   defaultAdvancedNestedSearch = true,
   queryString,
@@ -187,7 +189,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     ...tableColumnConfig,
   };
 
-  const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns);
+  const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns, nonEditableColumns);
 
   const rowDetailData: WfoKeyValueTableDataType[] | undefined =
     rowDetailModalData && getRowDetailData(rowDetailModalData, tableColumnConfig);
