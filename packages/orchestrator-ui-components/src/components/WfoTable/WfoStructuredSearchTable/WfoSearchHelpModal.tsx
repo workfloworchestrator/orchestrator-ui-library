@@ -41,16 +41,19 @@ export const WfoSearchHelpModal = ({ onClose }: WfoSearchHelpModalProps) => {
         <h4>{t('help.tableSettingsTitle')}</h4>
         <ul>
           <li>
-            <strong>{tCommon('showMatchDetails')}</strong> - {t('help.showMatchDetailsDescription')}
+            <strong>{tCommon('tableSettings')}</strong> - {t('help.tableSettingsDescription')}
+          </li>
+          <li>
+            <strong>{t('help.advancedNestedSearchLabel')}</strong> - {t('help.advancedNestedSearchDescription')}
           </li>
           <li>
             <strong>{tCommon('retrieval')}</strong> - {t('help.retrievalDescription')}
           </li>
           <li>
-            <strong>{tCommon('export')}</strong> - {t('help.exportDescription')}
+            <strong>{tCommon('downloadCsv')}</strong> - {t('help.exportDescription')}
           </li>
           <li>
-            <strong>{t('help.advancedNestedSearchLabel')}</strong> - {t('help.advancedNestedSearchDescription')}
+            <strong>{tCommon('bulkEditMode')}</strong> - {t('help.bulkEditDescription')}
           </li>
         </ul>
       </EuiText>

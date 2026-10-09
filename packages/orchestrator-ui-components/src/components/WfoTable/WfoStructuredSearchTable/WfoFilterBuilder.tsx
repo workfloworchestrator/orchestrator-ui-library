@@ -61,7 +61,7 @@ export const WfoFilterBuilder = ({
   onUpdateQueryBuilder,
   handleSearch,
   onToggleFilterBuilder,
-  useAdvancedNestedSearch = true,
+  useAdvancedNestedSearch = false,
   error,
 }: WfoFilterBuilderProps) => {
   const t = useTranslations('common');

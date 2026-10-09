@@ -524,7 +524,6 @@ export const WfoSubscriptionsListPage = () => {
         error={mapRtkErrorToWfoError(error)}
         rowExpandingConfiguration={rowExpandingConfiguration}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
-        defaultShowMatchDetails={tableDefaults?.showMatchDetails}
         defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
         filterString={filterString}
         handleSearch={handleApplyFilter}
@@ -549,6 +548,7 @@ export const WfoSubscriptionsListPage = () => {
         totalItems={totalItems}
         hasNextPage={hasNextPage}
         onExportData={exportData}
+        bulkEditConfiguration={{ uniqueRowId: 'subscriptionId' }}
       />
     </>
   );

@@ -12,7 +12,6 @@ export type SearchFieldWithActionsProps = {
   onChangeQueryString: (queryString: string) => void;
   onSearchQueryString: (queryString: string) => void;
   onShowInformation: () => void;
-  onShowTableSettings: () => void;
 };
 
 // Search field with the info and table-settings actions, rendered as EuiFlexItems inside an EuiFlexGroup.
@@ -21,7 +20,6 @@ export const WfoSearchFieldWithActions = ({
   onChangeQueryString,
   onSearchQueryString,
   onShowInformation,
-  onShowTableSettings,
 }: SearchFieldWithActionsProps) => {
   const t = useTranslations('common');
   const { formFieldBaseStyle } = useWithOrchestratorTheme(getFormFieldsBaseStyle);
@@ -47,9 +45,6 @@ export const WfoSearchFieldWithActions = ({
           iconType={'info'}
           aria-label={t('searchModalTitle')}
         />
-      </EuiFlexItem>
-      <EuiFlexItem grow={false}>
-        <EuiButtonIcon onClick={onShowTableSettings} iconSize={'l'} iconType={'gear'} aria-label={t('tableSettings')} />
       </EuiFlexItem>
     </>
   );

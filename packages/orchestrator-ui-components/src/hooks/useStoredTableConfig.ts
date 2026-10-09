@@ -23,7 +23,6 @@ export const useStoredTableConfig = <T>(localeStorageKey: string) => {
       if (storedConfig) {
         tableConfig.hiddenColumns = storedConfig.hiddenColumns;
         tableConfig.selectedPageSize = storedConfig.selectedPageSize;
-        tableConfig.showMatchDetails = storedConfig.showMatchDetails;
         tableConfig.advancedNestedSearch = storedConfig.advancedNestedSearch;
       }
       return tableConfig;
