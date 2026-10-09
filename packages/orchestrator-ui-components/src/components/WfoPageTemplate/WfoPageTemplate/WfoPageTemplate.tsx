@@ -1,10 +1,10 @@
-import React, { FC, ReactElement, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 
 import type { EuiThemeColorMode } from '@elastic/eui';
 import { EuiPageTemplate, EuiSideNavItemType, EuiThemeProvider } from '@elastic/eui';
 
 import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
-import { useWithOrchestratorTheme } from '@/hooks';
+import { useColorModePreference, useWithOrchestratorTheme } from '@/hooks';
 import { wfoThemeModifications } from '@/theme';
 import { ColorModes } from '@/types';
 
@@ -21,36 +21,29 @@ export interface WfoPageTemplateProps {
 
 export const WfoPageTemplate: FC<WfoPageTemplateProps> = (props) => {
   const { colorMode, setColorMode } = props;
-  const handleColorModeSwitch = useCallback(
-    (newColorMode: EuiThemeColorMode) => {
-      setColorMode(newColorMode);
-      localStorage.setItem('colorMode', newColorMode);
-    },
-    [setColorMode],
-  );
+  const { colorModePreference, colorMode: resolvedColorMode, setColorModePreference } = useColorModePreference();
 
   useEffect(() => {
-    // Initialize theme mode from localStorage or set it to 'light' if not present
-    const storedColorMode = localStorage.getItem('colorMode');
-    if (storedColorMode !== ColorModes.LIGHT && storedColorMode !== ColorModes.DARK) {
-      handleColorModeSwitch(ColorModes.LIGHT);
-    } else {
-      handleColorModeSwitch(storedColorMode);
-    }
-  }, [handleColorModeSwitch]);
+    setColorMode(resolvedColorMode);
+  }, [resolvedColorMode, setColorMode]);
 
   return (
     <EuiThemeProvider modify={wfoThemeModifications} colorMode={colorMode}>
-      <WfoPageTemplateContent {...props} handleColorModeSwitch={handleColorModeSwitch} />
+      <WfoPageTemplateContent
+        {...props}
+        colorModePreference={colorModePreference}
+        setColorModePreference={setColorModePreference}
+      />
     </EuiThemeProvider>
   );
 };
 
 const WfoPageTemplateContent: FC<
   WfoPageTemplateProps & {
-    handleColorModeSwitch: (mode: EuiThemeColorMode) => void;
+    colorModePreference: ColorModes;
+    setColorModePreference: (mode: ColorModes) => void;
   }
-> = ({ children, getAppLogo, overrideMenuItems, handleColorModeSwitch }) => {
+> = ({ children, getAppLogo, overrideMenuItems, colorModePreference, setColorModePreference }) => {
   const { getSidebarStyle, NAVIGATION_HEIGHT } = useWithOrchestratorTheme(getPageTemplateStyles);
 
   const [isSideMenuVisible, setIsSideMenuVisible] = useState(true);
@@ -61,7 +54,11 @@ const WfoPageTemplateContent: FC<
       <WfoPageHeader
         getAppLogo={getAppLogo}
         navigationHeight={NAVIGATION_HEIGHT}
-        onColorModeSwitch={handleColorModeSwitch}
+        onColorModeSwitch={(mode) =>
+          setColorModePreference(mode === ColorModes.DARK ? ColorModes.DARK : ColorModes.LIGHT)
+        }
+        isAutoMode={colorModePreference === ColorModes.AUTO}
+        onAutoModeSelect={() => setColorModePreference(ColorModes.AUTO)}
       />
       {/* Sidebar and content area */}
       <EuiPageTemplate panelled={false} grow={false} contentBorder={false} restrictWidth={false}>

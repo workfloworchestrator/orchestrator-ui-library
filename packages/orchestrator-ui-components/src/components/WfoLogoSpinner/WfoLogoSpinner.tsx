@@ -1,9 +1,13 @@
 import React, { FC } from 'react';
 
+import { useColorModePreference } from '@/hooks/useColorModePreference';
+import { ColorModes } from '@/types';
+
 import { getWfoLogoSpinnerStyles } from './styles';
 
 export const WfoLogoSpinner: FC = () => {
-  const { spinContainerCss, spinCenteringCss, spinPathCss } = getWfoLogoSpinnerStyles();
+  const { colorMode } = useColorModePreference();
+  const { spinContainerCss, spinCenteringCss, spinPathCss } = getWfoLogoSpinnerStyles(colorMode === ColorModes.DARK);
 
   return (
     <div css={spinCenteringCss}>

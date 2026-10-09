@@ -1,4 +1,5 @@
 export * from './useCheckEngineStatus';
+export * from './useColorModePreference';
 export * from './useContentRef';
 export * from './useOrchestratorConfig';
 export * from './useOrchestratorTheme';

@@ -611,6 +611,7 @@ export type OrchestratorConfig = {
 export enum ColorModes {
   LIGHT = 'LIGHT',
   DARK = 'DARK',
+  AUTO = 'AUTO',
 }
 
 export interface SubscriptionRelation {

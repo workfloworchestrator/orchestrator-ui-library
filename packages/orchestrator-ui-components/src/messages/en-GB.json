@@ -57,6 +57,8 @@
   "main": {
     "ariaLabelCurrentPage": "Current page",
     "ariaLabelToggleSideMenu": "Show/Hide side menu",
+    "autoMode": "Auto mode (follow system)",
+    "colorMode": "Color mode",
     "darkMode": "Dark mode",
     "incompatibleVersion": "Incompatible version",
     "incompatibleVersionText": "The version of the WFO UI is incompatible with this version of orchestrator-core.",
