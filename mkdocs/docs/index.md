@@ -36,7 +36,7 @@ It abstracts away the complexity of connecting to the orchestrator engine, allow
 
 - **Modern React Components**: Built with React 18+, TypeScript, and Next.js for type-safe development
 - **Fully Composable**: Use individual components or complete pages, mix and match as needed
-- **Usability**: Designed with UX in mind, with support for light and dark modes
+- **Usability**: Designed with UX in mind, with support for light, dark, and automatic system color modes
 - **Production-Ready**: Used in production environments by WFO programme members and continuously QA tested
 
 ## What's Included?

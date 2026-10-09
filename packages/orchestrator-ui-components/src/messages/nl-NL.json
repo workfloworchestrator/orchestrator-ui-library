@@ -57,6 +57,8 @@
   "main": {
     "ariaLabelCurrentPage": "Huidige pagina",
     "ariaLabelToggleSideMenu": "Toon/Verberg menu",
+    "autoMode": "Automatische modus (volg systeem)",
+    "colorMode": "Kleurmodus",
     "darkMode": "Dark mode",
     "incompatibleVersion": "Incompatibele versie",
     "incompatibleVersionText": "De versie van de WFO UI is incompatibel met de version van orchestrator-core.",
