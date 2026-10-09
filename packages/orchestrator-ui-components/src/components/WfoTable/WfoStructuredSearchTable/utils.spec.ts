@@ -5,7 +5,14 @@ import { renderHook } from '@testing-library/react';
 
 import { EntityKind } from '@/types';
 
-import { collectRuleFields, hasNestedRuleWithEmptyValue, parseCelToRuleGroup, useBuildColumnFilter } from './utils';
+import {
+  collectRuleFields,
+  hasNestedRuleWithEmptyValue,
+  parseCelToRuleGroup,
+  toggleRowSelection,
+  toggleSelectAll,
+  useBuildColumnFilter,
+} from './utils';
 
 const mockUseFieldsPathInfo = jest.fn();
 
@@ -211,5 +218,34 @@ describe('useBuildColumnFilter', () => {
     expect(formatQuery(result!.ruleGroup, 'elasticsearch')).toEqual({
       bool: { must: [{ regexp: { 'subscription.description': { value: '.*node.*' } } }] },
     });
+  });
+});
+
+describe('toggleRowSelection', () => {
+  it('adds a row id that is not selected yet', () => {
+    expect(toggleRowSelection(new Set(['a']), 'b')).toEqual(new Set(['a', 'b']));
+  });
+
+  it('removes a row id that is selected already', () => {
+    expect(toggleRowSelection(new Set(['a', 'b']), 'a')).toEqual(new Set(['b']));
+  });
+
+  it('returns a new set and leaves the given selection untouched', () => {
+    const selectedRowIds = new Set(['a']);
+
+    const updatedSelectedRowIds = toggleRowSelection(selectedRowIds, 'b');
+
+    expect(updatedSelectedRowIds).not.toBe(selectedRowIds);
+    expect(selectedRowIds).toEqual(new Set(['a']));
+  });
+});
+
+describe('toggleSelectAll', () => {
+  it('selects all row ids when not all rows are selected', () => {
+    expect(toggleSelectAll(['a', 'b'], false)).toEqual(new Set(['a', 'b']));
+  });
+
+  it('clears the selection when all rows are selected', () => {
+    expect(toggleSelectAll(['a', 'b'], true)).toEqual(new Set());
   });
 });

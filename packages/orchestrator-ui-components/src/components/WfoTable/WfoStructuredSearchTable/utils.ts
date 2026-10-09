@@ -215,3 +215,16 @@ export const onAddGroupHandler = (ruleGroup: RuleGroupType): RuleGroupType => {
   const [firstRule] = ruleGroup.rules;
   return firstRule ? { ...ruleGroup, rules: [...ruleGroup.rules, { ...firstRule, id: generateID() }] } : ruleGroup;
 };
+
+export const toggleRowSelection = (selectedRowIds: Set<string>, rowId: string): Set<string> => {
+  const updatedSelectedRowIds = new Set(selectedRowIds);
+  if (updatedSelectedRowIds.has(rowId)) {
+    updatedSelectedRowIds.delete(rowId);
+  } else {
+    updatedSelectedRowIds.add(rowId);
+  }
+  return updatedSelectedRowIds;
+};
+
+export const toggleSelectAll = (rowIds: string[], isAllSelected: boolean): Set<string> =>
+  isAllSelected ? new Set() : new Set(rowIds);

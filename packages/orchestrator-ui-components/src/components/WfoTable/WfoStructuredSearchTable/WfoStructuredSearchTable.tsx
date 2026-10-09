@@ -39,7 +39,7 @@ import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
 import { WfoSearchHelpModal } from './WfoSearchHelpModal';
 import { WfoStructuredSearchTableOptionsMenu } from './WfoStructuredSearchTableOptionsMenu';
 import { getWfoStructuredSearchTableStyles } from './styles';
-import { useBuildColumnFilter } from './utils';
+import { toggleRowSelection, toggleSelectAll, useBuildColumnFilter } from './utils';
 
 export type WfoStructuredSearchTableDataColumnConfigItem<
   T extends object,
@@ -189,22 +189,6 @@ export const WfoStructuredSearchTable = <T extends object>({
 
   const clearSelection = () => setSelectedRowIds(new Set());
 
-  const toggleRowSelection = (rowId: string) => {
-    setSelectedRowIds((previousSelectedRowIds) => {
-      const updatedSelectedRowIds = new Set(previousSelectedRowIds);
-      if (updatedSelectedRowIds.has(rowId)) {
-        updatedSelectedRowIds.delete(rowId);
-      } else {
-        updatedSelectedRowIds.add(rowId);
-      }
-      return updatedSelectedRowIds;
-    });
-  };
-
-  const toggleSelectAll = () => {
-    setSelectedRowIds(isAllSelected ? new Set() : new Set(data.map(getRowId)));
-  };
-
   const handleToggleBulkEditMode = (enabled: boolean) => {
     setIsBulkEditMode(enabled);
     clearSelection();
@@ -220,7 +204,9 @@ export const WfoStructuredSearchTable = <T extends object>({
           <EuiCheckbox
             id={`bulk-edit-select-${rowId}`}
             checked={selectedRowIds.has(rowId)}
-            onChange={() => toggleRowSelection(rowId)}
+            onChange={() =>
+              setSelectedRowIds((previousSelectedRowIds) => toggleRowSelection(previousSelectedRowIds, rowId))
+            }
             aria-label={t('selectRow')}
           />
         );
@@ -361,7 +347,7 @@ export const WfoStructuredSearchTable = <T extends object>({
             <EuiFlexItem grow={false}>
               <EuiButton
                 size="s"
-                onClick={toggleSelectAll}
+                onClick={() => setSelectedRowIds(toggleSelectAll(data.map(getRowId), isAllSelected))}
                 iconType={isAllSelected ? 'cross' : 'grid'}
                 isDisabled={data.length === 0}
               >
