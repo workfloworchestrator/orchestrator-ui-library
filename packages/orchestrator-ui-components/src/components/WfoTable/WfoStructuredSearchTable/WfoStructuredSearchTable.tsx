@@ -3,7 +3,7 @@ import type { RuleGroupType } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiSelect, EuiSpacer, EuiSwitch } from '@elastic/eui';
+import { EuiButton, EuiButtonEmpty, EuiCheckbox, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -27,18 +27,19 @@ import {
   WfoTableControlColumnConfigItem,
   WfoTableDataColumnConfigItem,
 } from '@/components/WfoTable/WfoTable';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { useGetOrchestratorConfig, useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
-import { RetrieverType } from '@/types';
+import { Environment, RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
 import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
 import { WfoSearchHelpModal } from './WfoSearchHelpModal';
+import { WfoStructuredSearchTableOptionsMenu } from './WfoStructuredSearchTableOptionsMenu';
 import { getWfoStructuredSearchTableStyles } from './styles';
-import { useBuildColumnFilter } from './utils';
+import { toggleRowSelection, toggleSelectAll, useBuildColumnFilter } from './utils';
 
 export type WfoStructuredSearchTableDataColumnConfigItem<
   T extends object,
@@ -64,6 +65,10 @@ export type SearchParams = {
   };
 };
 
+export type WfoStructuredSearchTableBulkEditConfiguration<T extends object> = {
+  uniqueRowId: keyof T;
+};
+
 export type WfoStructuredSearchTableProps<T extends object> = Omit<
   WfoTableProps<T>,
   'columnConfig' | 'onUpdateDataSearch'
@@ -71,7 +76,6 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   tableColumnConfig: WfoStructuredSearchTableColumnConfig<T>;
   rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
-  defaultShowMatchDetails?: boolean;
   defaultAdvancedNestedSearch?: boolean;
   queryString?: string;
   localStorageKey: string;
@@ -97,13 +101,13 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   setPageSize: (updatedPageSize: number) => void;
   totalItems: number | false;
   hasNextPage: boolean;
+  bulkEditConfiguration?: WfoStructuredSearchTableBulkEditConfiguration<T>;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
-  defaultShowMatchDetails = false,
-  defaultAdvancedNestedSearch = true,
+  defaultAdvancedNestedSearch = false,
   queryString,
   localStorageKey,
   exportDataIsLoading,
@@ -128,19 +132,22 @@ export const WfoStructuredSearchTable = <T extends object>({
   rowExpandingConfiguration,
   dataSorting,
   hasNextPage,
+  bulkEditConfiguration,
   data,
   isLoading,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
   const { toggleButtonStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
+  const { environmentName } = useGetOrchestratorConfig();
   const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(false);
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
   const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
   const [showInformationModal, setShowInformationModal] = useState(false);
-  const [showMatchDetails, setShowMatchDetails] = useState(defaultShowMatchDetails);
   const [advancedNestedSearch, setAdvancedNestedSearch] = useState(defaultAdvancedNestedSearch);
+  const [isBulkEditMode, setIsBulkEditMode] = useState(false);
+  const [selectedRowIds, setSelectedRowIds] = useState<Set<string>>(new Set());
   const t = useTranslations('common');
   const { buildColumnFilter } = useBuildColumnFilter<T>(tableColumnConfig, getColumnSearchFieldName);
 
@@ -149,10 +156,6 @@ export const WfoStructuredSearchTable = <T extends object>({
       setHiddenColumns(defaultHiddenColumns);
     }
   }, [defaultHiddenColumns]);
-
-  useEffect(() => {
-    setShowMatchDetails(defaultShowMatchDetails);
-  }, [defaultShowMatchDetails]);
 
   useEffect(() => {
     setAdvancedNestedSearch(defaultAdvancedNestedSearch);
@@ -176,10 +179,55 @@ export const WfoStructuredSearchTable = <T extends object>({
     },
   };
 
-  const tableColumnsWithControlColumns: WfoStructuredSearchTableColumnConfig<T> = {
-    ...detailsIconColumn,
-    ...tableColumnConfig,
+  const isBulkEditAvailable =
+    !!bulkEditConfiguration && environmentName?.toLowerCase() === Environment.DEVELOPMENT.toLowerCase();
+
+  const getRowId = (row: T) => String(bulkEditConfiguration ? row[bulkEditConfiguration.uniqueRowId] : '');
+
+  const selectedRows = isBulkEditMode ? data.filter((row) => selectedRowIds.has(getRowId(row))) : [];
+  const isAllSelected = data.length > 0 && selectedRows.length === data.length;
+
+  const clearSelection = () => setSelectedRowIds(new Set());
+
+  const handleToggleBulkEditMode = (enabled: boolean) => {
+    setIsBulkEditMode(enabled);
+    clearSelection();
   };
+
+  const bulkEditSelectColumn: WfoStructuredSearchTableColumnConfig<T> = {
+    bulkEditSelect: {
+      columnType: ColumnType.CONTROL,
+      width: '36px',
+      renderControl: (row) => {
+        const rowId = getRowId(row);
+        return (
+          <EuiCheckbox
+            id={`bulk-edit-select-${rowId}`}
+            checked={selectedRowIds.has(rowId)}
+            onChange={() =>
+              setSelectedRowIds((previousSelectedRowIds) => toggleRowSelection(previousSelectedRowIds, rowId))
+            }
+            aria-label={t('selectRow')}
+          />
+        );
+      },
+    },
+  };
+
+  const tableColumnsWithControlColumns: WfoStructuredSearchTableColumnConfig<T> =
+    isBulkEditMode ?
+      {
+        ...bulkEditSelectColumn,
+        ...Object.fromEntries(
+          Object.entries(tableColumnConfig).filter(
+            ([, columnConfig]) => columnConfig?.columnType !== ColumnType.CONTROL,
+          ),
+        ),
+      }
+    : {
+        ...detailsIconColumn,
+        ...tableColumnConfig,
+      };
 
   const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns);
 
@@ -196,29 +244,17 @@ export const WfoStructuredSearchTable = <T extends object>({
     setTableConfigToLocalStorage(localStorageKey, {
       hiddenColumns: updatedHiddenColumns,
       selectedPageSize: updatedTableConfig.selectedPageSize,
-      showMatchDetails,
       advancedNestedSearch,
     });
   };
 
-  // The toggles apply live, so persist them immediately alongside the currently committed
+  // The toggle applies live, so persist it immediately alongside the currently committed
   // hidden columns and page size instead of waiting for the modal's "Update" action.
-  const handleToggleShowMatchDetails = (checked: boolean) => {
-    setShowMatchDetails(checked);
-    setTableConfigToLocalStorage(localStorageKey, {
-      hiddenColumns,
-      selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
-      showMatchDetails: checked,
-      advancedNestedSearch,
-    });
-  };
-
   const handleToggleAdvancedNestedSearch = (checked: boolean) => {
     setAdvancedNestedSearch(checked);
     setTableConfigToLocalStorage(localStorageKey, {
       hiddenColumns,
       selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
-      showMatchDetails,
       advancedNestedSearch: checked,
     });
   };
@@ -227,7 +263,6 @@ export const WfoStructuredSearchTable = <T extends object>({
     const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
     setHiddenColumns(defaultTableConfig.hiddenColumns);
     setPageSize(defaultTableConfig.selectedPageSize);
-    setShowMatchDetails(defaultTableConfig.showMatchDetails ?? false);
     setAdvancedNestedSearch(defaultTableConfig.advancedNestedSearch ?? false);
     setShowTableSettingsModal(false);
     clearTableConfigFromLocalStorage(localStorageKey);
@@ -267,8 +302,20 @@ export const WfoStructuredSearchTable = <T extends object>({
           onChangeQueryString={onChangeQueryString}
           onSearchQueryString={onSearchQueryString}
           onShowInformation={() => setShowInformationModal(true)}
-          onShowTableSettings={() => setShowTableSettingsModal(true)}
         />
+        <EuiFlexItem grow={false}>
+          <WfoStructuredSearchTableOptionsMenu
+            onShowTableSettings={() => setShowTableSettingsModal(true)}
+            advancedNestedSearch={advancedNestedSearch}
+            onToggleAdvancedNestedSearch={handleToggleAdvancedNestedSearch}
+            retrieverType={retrieverType}
+            onUpdateRetrieverType={onUpdateRetrieverType}
+            onExportData={onExportData}
+            exportDataIsLoading={exportDataIsLoading}
+            isBulkEditMode={isBulkEditMode}
+            onToggleBulkEditMode={isBulkEditAvailable ? handleToggleBulkEditMode : undefined}
+          />
+        </EuiFlexItem>
       </EuiFlexGroup>
 
       {isFilterBuilderVisible && (
@@ -290,13 +337,38 @@ export const WfoStructuredSearchTable = <T extends object>({
 
       {error && !isFilterBuilderVisible && <WfoErrorWithMessage error={error} />}
 
+      {isBulkEditMode && isBulkEditAvailable && (
+        <>
+          <EuiSpacer size="m" />
+          <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} wrap>
+            <EuiFlexItem grow={false}>
+              <EuiText size="s">{t('numberOfSelectedRows', { count: selectedRows.length })}</EuiText>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton
+                size="s"
+                onClick={() => setSelectedRowIds(toggleSelectAll(data.map(getRowId), isAllSelected))}
+                iconType={isAllSelected ? 'cross' : 'grid'}
+                isDisabled={data.length === 0}
+              >
+                {isAllSelected ? t('deselectAll') : t('selectAll')}
+              </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty size="s" iconType="cross" onClick={() => handleToggleBulkEditMode(false)}>
+                {t('exitBulkEditMode')}
+              </EuiButtonEmpty>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </>
+      )}
+
       <EuiSpacer size="m" />
 
       <WfoTable<T>
         columnConfig={tableColumnsWithControlColumns}
         hiddenColumns={hiddenColumns}
         rowExpandingConfiguration={rowExpandingConfiguration}
-        showExpandedRows={showMatchDetails}
         onUpdateDataSorting={onUpdateDataSorting}
         onUpdateDataSearch={handleColumnFilterSearch}
         dataSorting={dataSorting}
@@ -325,49 +397,6 @@ export const WfoStructuredSearchTable = <T extends object>({
           onClose={() => setShowTableSettingsModal(false)}
           onUpdateTableConfig={handleUpdateTableConfig}
           onResetToDefaults={handleResetToDefaults}
-          extraSettings={
-            <>
-              <EuiFormRow label={t('showMatchDetails')} display="columnCompressed">
-                <EuiSwitch
-                  showLabel={false}
-                  label={t('showMatchDetails')}
-                  checked={showMatchDetails}
-                  onChange={(event) => handleToggleShowMatchDetails(event.target.checked)}
-                  compressed
-                />
-              </EuiFormRow>
-              <EuiFormRow label={t('advancedNestedSearch')} display="columnCompressed">
-                <EuiSwitch
-                  showLabel={false}
-                  label={t('advancedNestedSearch')}
-                  checked={advancedNestedSearch}
-                  onChange={(event) => handleToggleAdvancedNestedSearch(event.target.checked)}
-                  compressed
-                />
-              </EuiFormRow>
-              <EuiFormRow label={t('retrieval')} display="columnCompressed">
-                <EuiSelect
-                  options={[
-                    { value: RetrieverType.Auto, text: t('retrieverAuto') },
-                    { value: RetrieverType.Fuzzy, text: t('retrieverFuzzy') },
-                    { value: RetrieverType.Semantic, text: t('retrieverSemantic') },
-                    { value: RetrieverType.Hybrid, text: t('retrieverHybrid') },
-                  ]}
-                  value={retrieverType}
-                  onChange={(e) => onUpdateRetrieverType(e.target.value as RetrieverType)}
-                  compressed
-                />
-              </EuiFormRow>
-              {onExportData && (
-                <>
-                  <EuiSpacer size="m" />
-                  <EuiButton isLoading={exportDataIsLoading} onClick={() => onExportData()} fullWidth>
-                    {totalItems ? t('exportRows', { numberOfRows: totalItems }) : t('export')}
-                  </EuiButton>
-                </>
-              )}
-            </>
-          }
         />
       )}
 

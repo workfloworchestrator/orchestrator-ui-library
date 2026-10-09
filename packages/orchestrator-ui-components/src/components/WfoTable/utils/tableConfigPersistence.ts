@@ -3,7 +3,6 @@ import { TableColumnKeys } from './columns';
 export type StoredTableConfig<T> = {
   hiddenColumns: TableColumnKeys<T>;
   selectedPageSize: number;
-  showMatchDetails?: boolean;
   advancedNestedSearch?: boolean;
 };
 
