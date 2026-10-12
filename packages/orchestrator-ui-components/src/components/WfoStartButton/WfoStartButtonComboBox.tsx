@@ -13,6 +13,8 @@ export type WfoStartButtonComboBoxProps = {
   buttonText: string;
   options: StartComboBoxOption[];
   onOptionChange: (selectedOption: StartComboBoxOption) => void;
+  /** Replaces the default search: receives all options and the search value, returns the options to show */
+  filterOptions?: (options: StartComboBoxOption[], searchValue: string) => StartComboBoxOption[];
   isProcess: boolean;
   className?: string;
   selectedProductStatus?: ProductLifecycleStatus;
@@ -23,6 +25,7 @@ export const WfoStartButtonComboBox = ({
   buttonText,
   options,
   onOptionChange,
+  filterOptions,
   isProcess,
   className,
   selectedProductStatus,
@@ -30,12 +33,16 @@ export const WfoStartButtonComboBox = ({
 }: WfoStartButtonComboBoxProps) => {
   const { startWorkflowFilters } = useGetOrchestratorConfig();
   const [isPopoverOpen, setPopoverOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const { theme } = useOrchestratorTheme();
   const { selectableStyle } = useWithOrchestratorTheme(getStyles);
 
   const Button = (
     <EuiButton
-      onClick={() => setPopoverOpen(!isPopoverOpen)}
+      onClick={() => {
+        setPopoverOpen(!isPopoverOpen);
+        setSearchValue('');
+      }}
       iconType={() => <WfoPlusCircleFill color={theme.colors.textGhost} />}
       fullWidth={isProcess}
       fill
@@ -94,7 +101,10 @@ export const WfoStartButtonComboBox = ({
       initialFocus={`.euiSelectable .euiFieldSearch`}
       button={Button}
       isOpen={isPopoverOpen}
-      closePopover={() => setPopoverOpen(false)}
+      closePopover={() => {
+        setPopoverOpen(false);
+        setSearchValue('');
+      }}
     >
       {startWorkflowFilters && <ProductStatePicker />}
       <EuiSelectable<StartComboBoxOption>
@@ -104,7 +114,21 @@ export const WfoStartButtonComboBox = ({
         // EUI 122 renders a checkbox indicator for unselected options in multi-select
         // EuiSelectables; EUI 113 rendered an `empty` icon, i.e. nothing visible.
         listProps={{ showIcons: false }}
-        options={options}
+        options={filterOptions ? filterOptions(options, searchValue) : options}
+        isPreFiltered={!!filterOptions}
+        searchProps={
+          filterOptions ?
+            {
+              value: searchValue,
+              onChange: (value: string) => {
+                // EuiSelectable also reports the initial value on mount, skip it to avoid a redundant update
+                if (value !== searchValue) {
+                  setSearchValue(value);
+                }
+              },
+            }
+          : undefined
+        }
         onChange={(_, __, changedOption) => onOptionChange(changedOption)}
         height={200}
       >

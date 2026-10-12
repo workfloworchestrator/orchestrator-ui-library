@@ -19,6 +19,7 @@ const workflowOptionsQuery = `
                     productType
                     productId
                     name
+                    description
                     tag
                     status
                 }
@@ -43,6 +44,7 @@ type WorkflowOption = {
   workflowName: WorkflowDefinition['name'];
   isAllowed: WorkflowDefinition['isAllowed'];
   productName: ProductDefinition['name'];
+  productDescription: ProductDefinition['description'];
   productId: ProductDefinition['productId'];
   productType: ProductDefinition['productType'];
   productTag: ProductDefinition['tag'];
@@ -53,6 +55,7 @@ type WorkflowOptionsResult = StartOptionsResult<{
   isAllowed: WorkflowDefinition['isAllowed'];
   products: {
     name: ProductDefinition['name'];
+    description: ProductDefinition['description'];
     productId: ProductDefinition['productId'];
     productType: ProductDefinition['productType'];
     tag: ProductDefinition['tag'];
@@ -86,6 +89,7 @@ const startButtonOptionsApi = orchestratorApi.injectEndpoints({
                 workflowName,
                 isAllowed: workflow.isAllowed,
                 productName: product.name,
+                productDescription: product.description,
                 productId: product.productId,
                 productType: product.productType,
                 productTag: product.tag,
