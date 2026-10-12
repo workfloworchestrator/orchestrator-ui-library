@@ -1,14 +1,15 @@
 import React, { useCallback, useMemo } from 'react';
 
+import { useTranslations } from 'next-intl';
 import { PydanticForm, PydanticFormApiProvider } from 'pydantic-forms';
 
 import { EuiFlexItem } from '@elastic/eui';
 
 import { StepFormFooter } from '@/components/WfoWorkflowSteps/WfoStep/WfoStepFormFooter';
-import { useGetPydanticFormsConfig, useOrchestratorTheme } from '@/hooks';
-import { HttpStatus } from '@/rtk';
+import { useGetPydanticFormsConfig, useOrchestratorTheme, useShowToastMessage } from '@/hooks';
+import { HttpStatus, getErrorDetail, isFetchBaseForbiddenError } from '@/rtk';
 import { useResumeProcessMutation } from '@/rtk/endpoints/forms';
-import { FormUserPermissions, InputForm } from '@/types';
+import { FormUserPermissions, InputForm, ToastTypes } from '@/types';
 
 interface WfoStepFormProps {
   userInputForm: InputForm;
@@ -19,6 +20,8 @@ interface WfoStepFormProps {
 
 export const WfoStepForm = ({ userInputForm, isTask, processId, userPermissions }: WfoStepFormProps) => {
   const { theme } = useOrchestratorTheme();
+  const t = useTranslations('pydanticForms.userInputForm');
+  const { showToastMessage } = useShowToastMessage();
 
   const [resumeProcess] = useResumeProcessMutation();
 
@@ -46,11 +49,15 @@ export const WfoStepForm = ({ userInputForm, isTask, processId, userPermissions 
                 ...error.data,
                 status: error.status,
               };
+            } else if (isFetchBaseForbiddenError(error)) {
+              const msg = getErrorDetail(error) || t('forbiddenFallback');
+              showToastMessage(ToastTypes.ERROR, msg, t('forbiddenTitle'));
+              return { validation_errors: [{ loc: ['__root__'], msg, type: 'forbidden' }] };
             }
             throw error;
           });
       },
-    [getInitialStepInput, processId, resumeProcess],
+    [getInitialStepInput, processId, resumeProcess, showToastMessage, t],
   );
 
   const Footer = () => <StepFormFooter isTask={isTask} isResumeAllowed={userPermissions.resumeAllowed} />;

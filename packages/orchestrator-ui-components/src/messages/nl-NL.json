@@ -218,6 +218,8 @@
   "pydanticForms": {
     "userInputForm": {
       "cancel": "Annuleren",
+      "forbiddenFallback": "Je hebt geen rechten om deze actie uit te voeren.",
+      "forbiddenTitle": "Geen toegang",
       "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten",
       "next": "Volgende",
       "preconditionFailedFallback": "Aan een voorwaarde voor het starten van deze workflow is niet voldaan.",
