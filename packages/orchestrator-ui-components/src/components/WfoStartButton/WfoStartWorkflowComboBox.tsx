@@ -3,17 +3,19 @@ import React from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { useCheckEngineStatus } from '@/hooks';
+import { useCheckEngineStatus, useGetOrchestratorConfig } from '@/hooks';
 import { useGetWorkflowOptionsQuery } from '@/rtk';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 
 import { PATH_START_NEW_WORKFLOW } from '../WfoPageTemplate';
 import { WfoStartButtonComboBox } from './WfoStartButtonComboBox';
+import { filterGroupedStartOptions, getStartWorkflowComboBoxOptions, hasStartWorkflowGroups } from './utils';
 
 export const WfoStartWorkflowButtonComboBox = () => {
   const router = useRouter();
   const t = useTranslations('common');
   const { isEngineRunningNow } = useCheckEngineStatus();
+  const { startWorkflowLabel, startWorkflowGroups } = useGetOrchestratorConfig();
   const [selectedProductStatus, setSelectedProductStatus] = React.useState<ProductLifecycleStatus>(
     ProductLifecycleStatus.ACTIVE,
   );
@@ -21,16 +23,12 @@ export const WfoStartWorkflowButtonComboBox = () => {
   const { data } = useGetWorkflowOptionsQuery(selectedProductStatus);
   const workflowOptions = data?.startOptions || [];
 
-  const comboBoxOptions: StartComboBoxOption[] = [...workflowOptions]
-    .sort((workflowA, workflowB) => workflowA.productName.localeCompare(workflowB.productName))
-    .map((option) => ({
-      data: {
-        workflowName: option.workflowName,
-        productId: option.productId,
-      },
-      label: option.productName || '',
-      disabled: option.isAllowed === false,
-    }));
+  const comboBoxOptions: StartComboBoxOption[] = getStartWorkflowComboBoxOptions(
+    workflowOptions,
+    startWorkflowLabel,
+    startWorkflowGroups,
+    t('newSubscriptionOtherGroup'),
+  );
 
   const handleOptionChange = async (selectedProduct: StartComboBoxOption) => {
     if (await isEngineRunningNow()) {
@@ -47,6 +45,7 @@ export const WfoStartWorkflowButtonComboBox = () => {
       buttonText={t('newSubscription')}
       options={comboBoxOptions}
       onOptionChange={handleOptionChange}
+      filterOptions={hasStartWorkflowGroups(startWorkflowGroups) ? filterGroupedStartOptions : undefined}
       isProcess
       css={{ width: '300px' }}
       selectedProductStatus={selectedProductStatus}

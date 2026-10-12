@@ -426,6 +426,10 @@ export type StartComboBoxOption = {
     productId?: string;
   };
   label: string;
+  /** Text matched by the search field instead of the label, e.g. to also find a product by its name */
+  searchableLabel?: string;
+  /** Renders the option as a non-selectable group heading */
+  isGroupLabel?: boolean;
   disabled?: boolean;
 };
 
@@ -585,6 +589,10 @@ export enum Environment {
   PRODUCTION = 'Production',
 }
 
+export type StartWorkflowLabel = 'name' | 'description';
+
+export type StartWorkflowGroups = Record<string, string[]>;
+
 export type OrchestratorConfig = {
   environmentName: Environment | string;
   orchestratorWebsocketUrl: string;
@@ -601,6 +609,14 @@ export type OrchestratorConfig = {
   enableAoStackStatus: boolean;
   aoStackStatusUrl: string;
   startWorkflowFilters: string[] | undefined;
+  /** Product field shown in the "New subscription" dropdown. Defaults to 'name'. */
+  startWorkflowLabel?: StartWorkflowLabel;
+  /**
+   * Groups the "New subscription" dropdown under headings: group heading -> product names.
+   * Groups are shown in key order, products not listed are shown in a trailing group.
+   * Defaults to a flat list.
+   */
+  startWorkflowGroups?: StartWorkflowGroups;
   /**
    * Restores the pydantic-forms behavior from before 4.x, where form properties without a value
    * (no default, or null as default) were not submitted to the backend. Defaults to false.
