@@ -65,6 +65,21 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
   const currentColorModeOption = colorModeOptions.find(({ mode }) => mode === currentColorMode) ?? colorModeOptions[0];
   const colorModeButtonLabel = `${t('colorMode')}: ${currentColorModeOption.label}`;
 
+  const ColorMenuButton = () => (
+    <EuiButtonIcon
+      aria-label={colorModeButtonLabel}
+      display="empty"
+      iconType={currentColorModeOption.iconType}
+      css={{
+        width: theme.base * 3,
+        height: theme.base * 3,
+        color: theme.colors.textGhost,
+      }}
+      title={colorModeButtonLabel}
+      onClick={() => setIsColorModeMenuOpen(!isColorModeMenuOpen)}
+    />
+  );
+
   const selectColorMode = (mode: ColorModes) => {
     setIsColorModeMenuOpen(false);
     if (mode === ColorModes.AUTO) {
@@ -105,20 +120,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
           </EuiBadgeGroup>
           {orchestratorConfig.useThemeToggle && (
             <EuiPopover
-              button={
-                <EuiButtonIcon
-                  aria-label={colorModeButtonLabel}
-                  display="empty"
-                  iconType={currentColorModeOption.iconType}
-                  css={{
-                    width: theme.base * 3,
-                    height: theme.base * 3,
-                    color: theme.colors.textGhost,
-                  }}
-                  title={colorModeButtonLabel}
-                  onClick={() => setIsColorModeMenuOpen(!isColorModeMenuOpen)}
-                />
-              }
+              button={<ColorMenuButton />}
               isOpen={isColorModeMenuOpen}
               closePopover={() => setIsColorModeMenuOpen(false)}
               panelPaddingSize="none"
