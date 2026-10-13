@@ -1,3 +1,3 @@
-export const toPercentage = (fraction: number): string => {
-  return `${(fraction * 100).toFixed(1)}%`;
+export const toPercentage = (fraction: number, digits = 1): string => {
+  return `${(fraction * 100).toFixed(digits)}%`;
 };

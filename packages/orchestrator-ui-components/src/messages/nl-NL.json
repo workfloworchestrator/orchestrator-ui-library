@@ -566,7 +566,8 @@
       "product": "Product",
       "startDate": "Startdatum",
       "status": "Status",
-      "tag": "Tag"
+      "tag": "Tag",
+      "score": "Betrouwbaarheid"
     },
     "tabs": {
       "active": "Actief",
