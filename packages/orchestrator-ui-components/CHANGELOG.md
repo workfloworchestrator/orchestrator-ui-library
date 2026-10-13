@@ -1,5 +1,17 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.1.0
+
+### Minor Changes
+
+- d9455c9: Add automatic color mode that follows the operating system, including live theme changes and loading screens. The header theme button shows the current mode and opens a menu to pick light, dark, or auto. Everyone starts on auto after upgrading; light/dark choices saved by the previous toggle are not carried over.
+- 5373838: We've updated the way we present the match results (of the submitted query / filter). Before we used to show it on hover of the row (which was kind of a nuisance from a UX-perspective), now we've added a dedicated column for it showing the score of the match, and we show which fields are matched on in a popover (which you'll see when hovering over the "score" cell).
+
+### Patch Changes
+
+- db962b5: Stop signing the user out on HTTP 403 from the REST API. A 403 is an authorization denial for a logged-in user; only 401 ends the session. The `detail` of the 403 is now shown in a toast when starting a workflow or resuming a step is not allowed. REST 403s on other requests surface as error states instead of a logout.
+- e6fe079: 230 Fix filter for insync column + add buttons for search true and false boolean value
+
 ## 10.0.2
 
 ### Patch Changes
