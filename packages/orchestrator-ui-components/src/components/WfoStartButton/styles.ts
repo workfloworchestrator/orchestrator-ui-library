@@ -32,6 +32,14 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
         },
       },
     },
+
+    /*
+     * EUI draws a top border above every group heading but the first. With the item dividers above,
+     * that doubles the line at the end of a group, so the last item's divider separates the groups.
+     */
+    '.euiSelectableList .euiSelectableList__groupLabel::before': {
+      borderTop: 'none',
+    },
   });
 
   return {
