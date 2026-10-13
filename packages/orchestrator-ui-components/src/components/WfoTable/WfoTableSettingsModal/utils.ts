@@ -14,6 +14,5 @@ export const getTableSettingsColumns = <T extends object>(
         field,
         name: label,
         isVisible: hiddenColumns.indexOf(field) === -1,
-        isEditable: nonEditableColumns.indexOf(field) === -1,
       };
     });

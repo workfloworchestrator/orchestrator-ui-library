@@ -12,7 +12,6 @@ export type TableSettingsColumnConfig<T> = {
   field: keyof T;
   name: string;
   isVisible: boolean;
-  isEditable: boolean;
 };
 
 export type TableSettingsConfig<T> = {
@@ -76,14 +75,13 @@ export const TableSettingsModal = <T,>({
     >
       <EuiForm css={formStyle}>
         <div css={[columnsListStyle, scrollBarStyle]}>
-          {columns.map(({ field, name, isVisible, isEditable }) => (
+          {columns.map(({ field, name, isVisible }) => (
             <div key={field.toString()}>
               <EuiFormRow display="columnCompressed" label={name} css={formRowStyle}>
                 <EuiSwitch
                   showLabel={false}
                   label={name}
                   checked={isVisible}
-                  disabled={!isEditable}
                   onChange={() => {
                     handleUpdateColumnVisibility(field);
                   }}
