@@ -42,4 +42,9 @@ describe('getTableSettingsColumns()', () => {
     expect(result.find((column) => column.field === 'age')?.isVisible).toBe(false);
     expect(result.find((column) => column.field === 'name')?.isVisible).toBe(true);
   });
+
+  it('excludes non-editable columns from the table settings', () => {
+    const result = getTableSettingsColumns(columnConfig, [], ['name']);
+    expect(result).toEqual([{ field: 'age', name: 'Age', isVisible: true }]);
+  });
 });
