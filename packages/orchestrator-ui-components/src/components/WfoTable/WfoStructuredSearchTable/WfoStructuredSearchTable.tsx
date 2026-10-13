@@ -139,10 +139,8 @@ export const WfoStructuredSearchTable = <T extends object>({
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
   const { toggleButtonStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
-  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>([
-    ...defaultHiddenColumns,
-    ...additionalHiddenColumns,
-  ]);
+  const [userHiddenColumns, setUserHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
+  const hiddenColumns = [...userHiddenColumns, ...additionalHiddenColumns];
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(false);
   const [showTableSettingsModal, setShowTableSettingsModal] = useState(false);
   const [rowDetailModalData, setRowDetailModalData] = useState<T | undefined>(undefined);
@@ -154,9 +152,9 @@ export const WfoStructuredSearchTable = <T extends object>({
 
   useEffect(() => {
     if (defaultHiddenColumns) {
-      setHiddenColumns([...defaultHiddenColumns, ...additionalHiddenColumns]);
+      setUserHiddenColumns(defaultHiddenColumns);
     }
-  }, [defaultHiddenColumns, additionalHiddenColumns]);
+  }, [defaultHiddenColumns]);
 
   useEffect(() => {
     setShowMatchDetails(defaultShowMatchDetails);
@@ -198,7 +196,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     const updatedHiddenColumns = updatedTableConfig.columns
       .filter((column) => !column.isVisible)
       .map((hiddenColumn) => hiddenColumn.field);
-    setHiddenColumns([...updatedHiddenColumns, ...additionalHiddenColumns]);
+    setUserHiddenColumns(updatedHiddenColumns);
     setShowTableSettingsModal(false);
     setPageSize(updatedTableConfig.selectedPageSize);
     setTableConfigToLocalStorage(localStorageKey, {
@@ -214,7 +212,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   const handleToggleShowMatchDetails = (checked: boolean) => {
     setShowMatchDetails(checked);
     setTableConfigToLocalStorage(localStorageKey, {
-      hiddenColumns,
+      hiddenColumns: userHiddenColumns,
       selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
       showMatchDetails: checked,
       advancedNestedSearch,
@@ -224,7 +222,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   const handleToggleAdvancedNestedSearch = (checked: boolean) => {
     setAdvancedNestedSearch(checked);
     setTableConfigToLocalStorage(localStorageKey, {
-      hiddenColumns,
+      hiddenColumns: userHiddenColumns,
       selectedPageSize: pageSize ?? DEFAULT_PAGE_SIZE,
       showMatchDetails,
       advancedNestedSearch: checked,
@@ -233,7 +231,7 @@ export const WfoStructuredSearchTable = <T extends object>({
 
   const handleResetToDefaults = () => {
     const defaultTableConfig = getDefaultTableConfig<T>(localStorageKey);
-    setHiddenColumns([...defaultTableConfig.hiddenColumns, ...additionalHiddenColumns]);
+    setUserHiddenColumns(defaultTableConfig.hiddenColumns);
     setPageSize(defaultTableConfig.selectedPageSize);
     setShowMatchDetails(defaultTableConfig.showMatchDetails ?? false);
     setAdvancedNestedSearch(defaultTableConfig.advancedNestedSearch ?? false);
