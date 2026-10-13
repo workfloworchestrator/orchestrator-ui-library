@@ -7,6 +7,7 @@ export const getTableSettingsColumns = <T extends object>(
 ): TableSettingsColumnConfig<T>[] =>
   Object.entries(columnConfig)
     .filter(([, columnItemConfig]) => columnItemConfig.columnType === ColumnType.DATA)
+    .filter(([key]) => !nonEditableColumns.includes(key as keyof T))
     .map(([key, { label }]): TableSettingsColumnConfig<T> => {
       const field = key as keyof T;
 
