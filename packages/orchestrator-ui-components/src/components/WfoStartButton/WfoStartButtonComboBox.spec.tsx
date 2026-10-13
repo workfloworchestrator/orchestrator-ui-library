@@ -32,7 +32,7 @@ const renderComboBox = (onOptionChange = jest.fn()) => {
       buttonText="New subscription"
       options={groupedOptions}
       onOptionChange={onOptionChange}
-      filterOptions={filterGroupedStartOptions}
+      optionsFilter={filterGroupedStartOptions}
       isProcess
     />,
   );

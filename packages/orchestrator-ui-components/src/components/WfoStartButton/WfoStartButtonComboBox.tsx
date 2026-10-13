@@ -14,7 +14,7 @@ export type WfoStartButtonComboBoxProps = {
   options: StartComboBoxOption[];
   onOptionChange: (selectedOption: StartComboBoxOption) => void;
   /** Replaces the default search: receives all options and the search value, returns the options to show */
-  filterOptions?: (options: StartComboBoxOption[], searchValue: string) => StartComboBoxOption[];
+  optionsFilter?: (options: StartComboBoxOption[], searchValue: string) => StartComboBoxOption[];
   isProcess: boolean;
   className?: string;
   selectedProductStatus?: ProductLifecycleStatus;
@@ -25,7 +25,7 @@ export const WfoStartButtonComboBox = ({
   buttonText,
   options,
   onOptionChange,
-  filterOptions,
+  optionsFilter,
   isProcess,
   className,
   selectedProductStatus,
@@ -114,10 +114,10 @@ export const WfoStartButtonComboBox = ({
         // EUI 122 renders a checkbox indicator for unselected options in multi-select
         // EuiSelectables; EUI 113 rendered an `empty` icon, i.e. nothing visible.
         listProps={{ showIcons: false }}
-        options={filterOptions ? filterOptions(options, searchValue) : options}
-        isPreFiltered={!!filterOptions}
+        options={optionsFilter ? optionsFilter(options, searchValue) : options}
+        isPreFiltered={!!optionsFilter}
         searchProps={
-          filterOptions ?
+          optionsFilter ?
             {
               value: searchValue,
               onChange: (value: string) => {
