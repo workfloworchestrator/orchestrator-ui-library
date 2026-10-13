@@ -45,7 +45,7 @@ export const WfoStartWorkflowButtonComboBox = () => {
       buttonText={t('newSubscription')}
       options={comboBoxOptions}
       onOptionChange={handleOptionChange}
-      filterOptions={hasStartWorkflowGroups(startWorkflowGroups) ? filterGroupedStartOptions : undefined}
+      optionsFilter={hasStartWorkflowGroups(startWorkflowGroups) ? filterGroupedStartOptions : undefined}
       isProcess
       css={{ width: '300px' }}
       selectedProductStatus={selectedProductStatus}
