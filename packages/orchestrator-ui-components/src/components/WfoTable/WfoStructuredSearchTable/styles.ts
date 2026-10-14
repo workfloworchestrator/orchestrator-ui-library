@@ -174,6 +174,13 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     gap: theme.base / 2,
   });
 
+  // EuiButton sets the gap between icon and label on its inner content span.
+  const optionsMenuButtonStyles = css({
+    '& > span': {
+      gap: 0,
+    },
+  });
+
   const optionsMenuSectionTitleStyles = css({
     padding: `${theme.base / 2}px ${theme.base / 2}px 0`,
   });
@@ -209,6 +216,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     expandingRowFieldStyles,
     applyFilterContentStyles,
     dotStyles,
+    optionsMenuButtonStyles,
     optionsMenuSectionTitleStyles,
     optionsMenuCheckboxStyles,
   };
