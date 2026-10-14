@@ -36,7 +36,7 @@ import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTa
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useShowToastMessage, useStoredTableConfig } from '@/hooks';
-import { SearchPayload, getErrorDetail, useLazySearchQuery, useSearchQuery } from '@/rtk';
+import { SearchPayload, useSearchExportMutation, getErrorDetail, useLazySearchQuery, useSearchQuery } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
   EntityKind,
@@ -197,9 +197,7 @@ export const WfoSubscriptionsListPage = () => {
 
   const { data, error, isFetching, endpointName } = useSearchQuery(searchPayload);
 
-  const [getSubscriptionListTrigger] = useLazySearchQuery();
-  const getSubscriptionListForExport = (exportLimit: number) =>
-    getSubscriptionListTrigger({ ...searchPayload, limit: exportLimit, cursor: undefined }).unwrap();
+  const [searchExportTrigger, { isLoading: isExporting }] = useSearchExportMutation();
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -488,7 +486,7 @@ export const WfoSubscriptionsListPage = () => {
 
   const exportData = async () => {
     try {
-      const exportResult = await getSubscriptionListForExport(totalItems || pageSize);
+      const exportResult = await searchExportTrigger(searchPayload).unwrap();
       const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(exportResult, resultColumToPropertyMap);
       if (!exportItems.length) {
         return;
@@ -567,6 +565,7 @@ export const WfoSubscriptionsListPage = () => {
         hasNextPage={hasNextPage}
         onExportData={exportData}
         bulkEditConfiguration={{ uniqueRowId: 'subscriptionId' }}
+        exportDataIsLoading={isExporting}
       />
     </>
   );
