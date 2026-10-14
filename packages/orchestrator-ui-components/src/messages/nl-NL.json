@@ -468,7 +468,7 @@
         "noModify": "Geen modify workflows beschikbaar",
         "noTasks": "Geen taken beschikbaar",
         "noTerminate": "Geen terminate workflows beschikbaar",
-        "noAllowedActions": "Geen toegestance acties beschikbaar",
+        "noAllowedActions": "Geen toegestane acties beschikbaar",
         "reconcile": "Reconcile workflow",
         "subscription": {
           "insufficient_workflow_permissions": "Onvoldoende rechten om deze actie uit te kunnen voeren",
