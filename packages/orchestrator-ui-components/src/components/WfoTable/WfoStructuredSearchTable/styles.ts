@@ -174,6 +174,14 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     gap: theme.base / 2,
   });
 
+  const optionsMenuSectionTitleStyles = css({
+    padding: `${theme.base / 2}px ${theme.base / 2}px 0`,
+  });
+
+  const optionsMenuCheckboxStyles = css({
+    padding: theme.base / 2,
+  });
+
   const expandingRowFieldStyles = css({
     display: 'flex',
     padding: `${theme.base / 8}px ${theme.base / 4}px`,
@@ -201,5 +209,7 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     expandingRowFieldStyles,
     applyFilterContentStyles,
     dotStyles,
+    optionsMenuSectionTitleStyles,
+    optionsMenuCheckboxStyles,
   };
 };
