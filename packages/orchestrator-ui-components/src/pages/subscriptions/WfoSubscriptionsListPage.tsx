@@ -35,8 +35,8 @@ import { WfoMatchingFields } from '@/components/WfoSubscription/WfoMatchingField
 import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
-import { useStoredTableConfig } from '@/hooks';
-import { SearchPayload, useLazySearchQuery, useSearchQuery } from '@/rtk';
+import { useShowToastMessage, useStoredTableConfig } from '@/hooks';
+import { SearchPayload, getErrorDetail, useLazySearchQuery, useSearchQuery } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
   EntityKind,
@@ -45,6 +45,7 @@ import {
   RetrieverType,
   SearchResult,
   SortOrder,
+  ToastTypes,
 } from '@/types';
 import { getCsvFileNameWithDate, initiateCsvFileDownload, parseDateToLocaleDateTimeString } from '@/utils';
 
@@ -109,6 +110,7 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
 export const WfoSubscriptionsListPage = () => {
   const t = useTranslations('subscriptions.index');
   const tDetail = useTranslations('subscriptions.detail');
+  const { showToastMessage } = useShowToastMessage();
   const [activeTab, setActiveTab] = useQueryParam('activeTab', withDefault(StringParam, WfoSubscriptionListTab.ACTIVE));
   const selectedTab = subscriptionListTabs.find(({ id }) => id === activeTab)?.id ?? WfoSubscriptionListTab.ACTIVE;
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY);
@@ -485,12 +487,16 @@ export const WfoSubscriptionsListPage = () => {
   const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
 
   const exportData = async () => {
-    const exportResult = await getSubscriptionListForExport(totalItems || pageSize);
-    const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(exportResult, resultColumToPropertyMap);
-    if (!exportItems.length) {
-      return;
+    try {
+      const exportResult = await getSubscriptionListForExport(totalItems || pageSize);
+      const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(exportResult, resultColumToPropertyMap);
+      if (!exportItems.length) {
+        return;
+      }
+      initiateCsvFileDownload(exportItems, Object.keys(tableColumnConfig), getCsvFileNameWithDate('Subscriptions'));
+    } catch (error) {
+      showToastMessage(ToastTypes.ERROR, getErrorDetail(error)?.toString(), 'Error');
     }
-    initiateCsvFileDownload(exportItems, Object.keys(tableColumnConfig), getCsvFileNameWithDate('Subscriptions'));
   };
 
   const onShowMore = () => {

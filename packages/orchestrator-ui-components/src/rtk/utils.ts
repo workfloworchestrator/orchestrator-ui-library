@@ -80,8 +80,22 @@ export const isRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 };
 
-export const getErrorDetail = (error: unknown): string | undefined =>
-  isRecord(error) && isRecord(error.data) && typeof error.data.detail === 'string' ? error.data.detail : undefined;
+export const getErrorDetail = (error: unknown): string | undefined => {
+  if (!isRecord(error) || !isRecord(error.data)) {
+    return undefined;
+  }
+  const { detail } = error.data;
+
+  if (typeof detail === 'string') {
+    return detail;
+  }
+  const getMessage = (value: unknown): string | undefined =>
+    isRecord(value) && typeof value.msg === 'string' ? value.msg : undefined;
+  if (Array.isArray(detail) && detail.some((item) => getMessage(item) !== undefined)) {
+    return detail.map((item) => getMessage(item) ?? JSON.stringify(item)).join('\n');
+  }
+  return getMessage(detail) ?? JSON.stringify(detail);
+};
 
 export const isFetchBaseQueryError = (
   error: FetchBaseQueryError | GraphQLError[] | SerializedError | undefined,
