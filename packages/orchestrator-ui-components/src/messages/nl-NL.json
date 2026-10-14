@@ -465,9 +465,10 @@
         "actions": "Acties",
         "lockedBySubscriptions": "Deze actie is geblokkeerd door de volgende subscriptions:",
         "modify": "Modify workflow",
-        "no_modify": "Geen modify workflows beschikbaar",
-        "no_tasks": "Geen taken beschikbaar",
-        "no_terminate": "Geen terminate workflows beschikbaar",
+        "noModify": "Geen modify workflows beschikbaar",
+        "noTasks": "Geen taken beschikbaar",
+        "noTerminate": "Geen terminate workflows beschikbaar",
+        "noAllowedActions": "Geen toegestance acties beschikbaar",
         "reconcile": "Reconcile workflow",
         "subscription": {
           "insufficient_workflow_permissions": "Onvoldoende rechten om deze actie uit te kunnen voeren",

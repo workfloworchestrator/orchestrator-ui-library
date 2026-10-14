@@ -14,7 +14,7 @@ interface MenuStatusItemProps {
 }
 
 export const WfoSubscriptionActionsMenuStatusItem: FC<MenuStatusItemProps> = ({ message, target }) => {
-  const { iconStyle } = useWithOrchestratorTheme(getSubscriptionActionStyles);
+  const { iconStyle, contextMenuItemStyle } = useWithOrchestratorTheme(getSubscriptionActionStyles);
 
   return (
     <EuiContextMenuItem
@@ -24,7 +24,7 @@ export const WfoSubscriptionActionsMenuStatusItem: FC<MenuStatusItemProps> = ({ 
         </div>
       }
       disabled={true}
-      css={{ whiteSpace: 'nowrap' }}
+      css={contextMenuItemStyle}
     >
       {message}
     </EuiContextMenuItem>

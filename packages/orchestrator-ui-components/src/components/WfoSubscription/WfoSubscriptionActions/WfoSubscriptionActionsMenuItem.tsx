@@ -30,8 +30,14 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
   isLoading = false,
   subscriptionPath,
 }) => {
-  const { linkMenuItemStyle, tooltipMenuItemStyle, disabledIconStyle, iconStyle, secondaryIconStyle } =
-    useWithOrchestratorTheme(getSubscriptionActionStyles);
+  const {
+    linkMenuItemStyle,
+    tooltipMenuItemStyle,
+    disabledIconStyle,
+    iconStyle,
+    secondaryIconStyle,
+    contextMenuItemStyle,
+  } = useWithOrchestratorTheme(getSubscriptionActionStyles);
 
   const { isEngineRunningNow } = useCheckEngineStatus();
   const t = useTranslations('subscriptions.detail.actions');
@@ -128,18 +134,7 @@ export const WfoSubscriptionActionsMenuItem: FC<MenuItemProps> = ({
   };
 
   const ActionItem = () => (
-    <EuiContextMenuItem
-      icon={getIcon()}
-      disabled={!!subscriptionActionReason}
-      css={{
-        whiteSpace: 'nowrap',
-        // EUI 122 renders EuiContextMenuItem through EuiListItemLayout, which sets its own
-        // horizontal padding (size.s) and gap. EUI 113 applied `padding: size.m` on all sides.
-        // Only restore the vertical padding; overriding the horizontal padding or the gap
-        // would double up on what the layout already provides.
-        paddingBlock: theme.size.s,
-      }}
-    >
+    <EuiContextMenuItem icon={getIcon()} disabled={!!subscriptionActionReason} css={contextMenuItemStyle}>
       {subscriptionAction.description}
     </EuiContextMenuItem>
   );
