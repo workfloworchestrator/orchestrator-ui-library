@@ -80,7 +80,7 @@ export const isRecord = (value: unknown): value is Record<string, unknown> => {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 };
 
-export const getErrorDetail = (error: unknown): string | undefined => {
+export const getErrorDetail = (error: unknown, verbose = false): string | undefined => {
   if (!isRecord(error) || !isRecord(error.data)) {
     return undefined;
   }
@@ -88,6 +88,8 @@ export const getErrorDetail = (error: unknown): string | undefined => {
 
   if (typeof detail === 'string') {
     return detail;
+  } else if (!verbose) {
+    return undefined;
   }
   const getMessage = (value: unknown): string | undefined =>
     isRecord(value) && typeof value.msg === 'string' ? value.msg : undefined;

@@ -495,7 +495,7 @@ export const WfoSubscriptionsListPage = () => {
       }
       initiateCsvFileDownload(exportItems, Object.keys(tableColumnConfig), getCsvFileNameWithDate('Subscriptions'));
     } catch (error) {
-      showToastMessage(ToastTypes.ERROR, getErrorDetail(error)?.toString(), 'Error');
+      showToastMessage(ToastTypes.ERROR, getErrorDetail(error, true)?.toString(), 'Error');
     }
   };
 
