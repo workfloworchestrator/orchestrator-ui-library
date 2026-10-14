@@ -168,5 +168,5 @@ export const orchestratorApi = createApi({
     CacheTagType.scheduledTasks,
     CacheTagType.metadataProducts,
   ],
-  keepUnusedDataFor: process.env.NEXT_PUBLIC_DISABLE_CACHE === 'true' ? 0 : 60 * 60,
+  keepUnusedDataFor: process.env.NEXT_PUBLIC_DISABLE_CACHE === 'true' ? 0 : 60 * 60 * 5,
 });
