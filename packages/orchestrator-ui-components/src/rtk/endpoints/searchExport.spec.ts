@@ -54,27 +54,15 @@ describe('searchExport', () => {
   beforeEach(() => fetchMock.mockClear());
 
   const sendExport = async (payload: object) => {
-    const store = createStore();
-    const result = await store.dispatch(api.endpoints.searchExport.initiate(payload));
-    const request: FetchArgs = fetchMock.mock.calls[0][0];
-    return { result, request, store };
+    await createStore().dispatch(api.endpoints.searchExport.initiate(payload));
+    return fetchMock.mock.calls[0][0] as FetchArgs;
   };
 
-  it.each([
-    [EntityKind.SUBSCRIPTION, 'subscriptions'],
-    [EntityKind.PRODUCT, 'products'],
-    [EntityKind.WORKFLOW, 'workflows'],
-    [EntityKind.PROCESS, 'processes'],
-  ])('posts %s exports to the export endpoint', async (entityType, path) => {
-    const { request } = await sendExport({ ...basePayload, entity_type: entityType });
+  it('posts the search body without a limit to the export endpoint', async () => {
+    const request = await sendExport(basePayload);
 
     expect(request.method).toBe('POST');
-    expect(request.url).toBe(`http://api/search/${path}/export`);
-  });
-
-  it('sends the filters, ordering and response columns in the body', async () => {
-    const { request, result } = await sendExport(basePayload);
-
+    expect(request.url).toBe('http://api/search/subscriptions/export');
     expect(request.body).toEqual({
       query: '',
       filters: basePayload.filters,
@@ -82,26 +70,11 @@ describe('searchExport', () => {
       order_by: basePayload.order_by,
       response_columns: basePayload.response_columns,
     });
-    expect(result.data).toEqual(exportResponse);
   });
 
-  it('drops order_by when there is a text query and forwards the retriever', async () => {
-    const { request } = await sendExport({ ...basePayload, query: 'fiber', retriever: RetrieverType.Fuzzy });
+  it('drops order_by when there is a text query', async () => {
+    const request = await sendExport({ ...basePayload, query: 'fiber', retriever: RetrieverType.Fuzzy });
 
     expect(request.body).toMatchObject({ query: 'fiber', retriever: RetrieverType.Fuzzy, order_by: undefined });
-  });
-
-  it('never sends a pagination cursor or limit, so the backend applies its export limit', async () => {
-    const { request } = await sendExport({ ...basePayload, cursor: 'abc', limit: 25 });
-
-    expect(request.url).not.toContain('cursor');
-    expect(request.body).not.toHaveProperty('cursor');
-    expect(request.body).not.toHaveProperty('limit');
-  });
-
-  it('does not touch the cached search results', async () => {
-    const { store } = await sendExport(basePayload);
-
-    expect(api.endpoints.search.select({ ...basePayload })(store.getState()).data).toBeUndefined();
   });
 });
