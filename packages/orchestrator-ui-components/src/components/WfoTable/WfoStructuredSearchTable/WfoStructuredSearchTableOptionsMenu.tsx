@@ -5,7 +5,8 @@ import { useTranslations } from 'next-intl';
 import type { EuiContextMenuPanelDescriptor, EuiContextMenuPanelItemDescriptor } from '@elastic/eui';
 import { EuiButton, EuiCheckbox, EuiContextMenu, EuiPopover, EuiTitle } from '@elastic/eui';
 
-import { useWithOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { WfoArrowDown, WfoChevronDown, WfoCogFill } from '@/icons';
 import { RetrieverType } from '@/types';
 import { toOptionalArrayEntries } from '@/utils/optionalArray';
 
@@ -41,10 +42,10 @@ export const WfoStructuredSearchTableOptionsMenu = ({
   bulkEdit,
 }: WfoStructuredSearchTableOptionsMenuProps) => {
   const t = useTranslations('common');
-  const { optionsMenuSectionTitleStyles, optionsMenuCheckboxStyles } = useWithOrchestratorTheme(
-    getWfoStructuredSearchTableStyles,
-  );
+  const { optionsMenuButtonStyles, optionsMenuSectionTitleStyles, optionsMenuCheckboxStyles } =
+    useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const { theme } = useOrchestratorTheme();
 
   const closePopover = () => setIsPopoverOpen(false);
   // Every menu action applies immediately, so the menu closes to reveal its effect on the table.
@@ -78,7 +79,8 @@ export const WfoStructuredSearchTableOptionsMenu = ({
     { isSeparator: true, key: 'exportSeparator' },
     {
       name: t('downloadCsv'),
-      icon: 'download',
+      icon: <WfoArrowDown />,
+      css: { padding: `0 ${theme.size.m}` },
       disabled: exportDataIsLoading,
       onClick: withClosePopover(() => onExportData?.()),
     },
@@ -99,7 +101,7 @@ export const WfoStructuredSearchTableOptionsMenu = ({
       items: [
         {
           name: t('tableSettings'),
-          icon: 'gear',
+          icon: <WfoCogFill width={16} height={16} color="currentColor" />,
           onClick: withClosePopover(onShowTableSettings),
         },
         { isSeparator: true, key: 'searchSeparator' },
@@ -145,7 +147,8 @@ export const WfoStructuredSearchTableOptionsMenu = ({
       id="structuredSearchTableOptionsMenu"
       button={
         <EuiButton
-          iconType="menu"
+          iconType={() => <WfoChevronDown color="currentColor" />}
+          css={optionsMenuButtonStyles}
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
           data-test-id="button-structured-search-options"
         >
