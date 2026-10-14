@@ -73,8 +73,18 @@ export const getSubscriptionActionStyles = ({ theme }: WfoThemeHelpers) => {
     color: theme.colors.textDisabled,
   });
 
+  const contextMenuItemStyle = css({
+    whiteSpace: 'nowrap',
+    // EUI 122 renders EuiContextMenuItem through EuiListItemLayout, which sets its own
+    // horizontal padding (size.s) and gap. EUI 113 applied `padding: size.m` on all sides.
+    // Only restore the vertical padding; overriding the horizontal padding or the gap
+    // would double up on what the layout already provides.
+    paddingBlock: theme.size.s,
+  });
+
   return {
     clickableStyle,
+    contextMenuItemStyle,
     expandableMenuItemStyle,
     expandButtonStyle,
     expandedContentStyle,

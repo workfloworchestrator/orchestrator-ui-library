@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiButton, EuiButtonIcon, EuiLoadingSpinner, EuiTitle } from '@elastic/eui';
+import { EuiButton, EuiButtonIcon, EuiLoadingSpinner, EuiTitle, EuiToolTip } from '@elastic/eui';
 
 import {
   PATH_START_NEW_TASK,
@@ -14,6 +14,7 @@ import {
 } from '@/components';
 import { getActionItemsByTarget } from '@/components/WfoSubscription';
 import { WfoSubscriptionActionsMenuItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuItem';
+import { WfoSubscriptionActionsMenuStatusItem } from '@/components/WfoSubscription/WfoSubscriptionActions/WfoSubscriptionActionsMenuStatusItem';
 import { useActiveProcess } from '@/components/WfoSubscription/WfoSubscriptionActions/utils';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { useOrchestratorTheme, usePolicy } from '@/hooks';
@@ -101,17 +102,18 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
         onClick={onButtonClick}
         aria-label="Row context menu"
         isLoading={isLoading}
-        disabled={noActionItems}
       />
-    : <EuiButton
-        iconType="chevronSingleDown"
-        iconSide="right"
-        onClick={onButtonClick}
-        isLoading={isLoading}
-        disabled={noActionItems}
-      >
-        {t('actions')}
-      </EuiButton>;
+    : <EuiToolTip position="top" content={noActionItems ? t('noAllowedActions') : undefined}>
+        <EuiButton
+          iconType="chevronSingleDown"
+          iconSide="right"
+          onClick={onButtonClick}
+          isLoading={isLoading}
+          disabled={noActionItems}
+        >
+          {t('actions')}
+        </EuiButton>
+      </EuiToolTip>;
 
   const redirectToUrl = (actionName: string, isTask: boolean = false) => {
     const path = isTask ? PATH_START_NEW_TASK : PATH_START_NEW_WORKFLOW;
@@ -158,10 +160,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
   const compactItems = (
     <>
-      {isAllowed(SUBSCRIPTION_VALIDATE + subscriptionId) && validateActionItems.length > 0 && (
+      {allowedValidateActionItems.length > 0 ?
         <>
           {!compactMode && <MenuBlock title={t('tasks')} />}
-          {validateActionItems.map((subscriptionAction, index) => (
+          {allowedValidateActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`s_${index}`}
               subscriptionAction={subscriptionAction}
@@ -173,12 +175,12 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             />
           ))}
         </>
-      )}
+      : <WfoSubscriptionActionsMenuStatusItem message={t('noTasks')} target={WorkflowTarget.VALIDATE} />}
 
-      {isAllowed(SUBSCRIPTION_RECONCILE + subscriptionId) && reconcileActionItems.length > 0 && (
+      {allowedReconcileActionItems.length > 0 && (
         <>
           {!compactMode && <MenuBlock title={t('reconcile')} />}
-          {reconcileActionItems.map((subscriptionAction, index) => (
+          {allowedReconcileActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`r_${index}`}
               subscriptionAction={
@@ -210,10 +212,10 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
 
   const fullItems = (
     <>
-      {isAllowed(SUBSCRIPTION_MODIFY + subscriptionId) && modifyActionItems.length > 0 && (
+      {allowedModifyActionItems.length > 0 ?
         <>
           <MenuBlock title={t('modify')} />
-          {modifyActionItems.map((subscriptionAction, index) => (
+          {allowedModifyActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`m_${index}`}
               subscriptionAction={subscriptionAction}
@@ -226,12 +228,12 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             />
           ))}
         </>
-      )}
+      : <WfoSubscriptionActionsMenuStatusItem message={t('noModify')} target={WorkflowTarget.MODIFY} />}
       {compactItems}
-      {isAllowed(SUBSCRIPTION_TERMINATE + subscriptionId) && terminateActionItems.length > 0 && (
+      {allowedTerminateActionItems.length > 0 ?
         <>
           <MenuBlock title={t('terminate')} />
-          {terminateActionItems.map((subscriptionAction, index) => (
+          {allowedTerminateActionItems.map((subscriptionAction, index) => (
             <WfoSubscriptionActionsMenuItem
               key={`t_${index}`}
               subscriptionAction={subscriptionAction}
@@ -244,7 +246,7 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
             />
           ))}
         </>
-      )}
+      : <WfoSubscriptionActionsMenuStatusItem message={t('noTerminate')} target={WorkflowTarget.TERMINATE} />}
     </>
   );
 
