@@ -20,7 +20,7 @@ import { PolicyResource } from '@/configuration/policy-resources';
 import { useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useGetSubscriptionActionsQuery, useGetSubscriptionDetailQuery, useStartProcessMutation } from '@/rtk';
-import { WorkflowTarget } from '@/types';
+import { SubscriptionAction, WorkflowTarget } from '@/types';
 
 type MenuBlockProps = {
   title: string;
@@ -158,43 +158,51 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
     }
   };
 
+  const renderMenuItems = (
+    actionItems: SubscriptionAction[],
+    target: WorkflowTarget,
+    onClick: (actionName: string) => void,
+    isLoading?: boolean,
+  ) =>
+    actionItems.map((subscriptionAction, index) => (
+      <WfoSubscriptionActionsMenuItem
+        key={`${target}_${index}`}
+        subscriptionAction={subscriptionAction}
+        target={target}
+        setPopover={setPopover}
+        subscriptionPath={subscriptionPath}
+        onClick={() => onClick(subscriptionAction.name)}
+        isLoading={isLoading}
+      />
+    ));
+
   const compactItems = (
     <>
       {allowedValidateActionItems.length > 0 ?
         <>
           {!compactMode && <MenuBlock title={t('tasks')} />}
-          {allowedValidateActionItems.map((subscriptionAction, index) => (
-            <WfoSubscriptionActionsMenuItem
-              key={`s_${index}`}
-              subscriptionAction={subscriptionAction}
-              target={WorkflowTarget.VALIDATE}
-              setPopover={setPopover}
-              subscriptionPath={subscriptionPath}
-              onClick={() => handleActionClick(subscriptionAction.name, compactMode, true)}
-              isLoading={buttonIsLoading}
-            />
-          ))}
+          {renderMenuItems(
+            allowedValidateActionItems,
+            WorkflowTarget.VALIDATE,
+            (actionName) => handleActionClick(actionName, compactMode, true),
+            buttonIsLoading,
+          )}
         </>
       : <WfoSubscriptionActionsMenuStatusItem message={t('noTasks')} target={WorkflowTarget.VALIDATE} />}
 
       {allowedReconcileActionItems.length > 0 && (
         <>
           {!compactMode && <MenuBlock title={t('reconcile')} />}
-          {allowedReconcileActionItems.map((subscriptionAction, index) => (
-            <WfoSubscriptionActionsMenuItem
-              key={`r_${index}`}
-              subscriptionAction={
-                buttonIsLoading && !subscriptionAction.reason ?
-                  { ...subscriptionAction, reason: 'subscription.running_process' }
-                : subscriptionAction
-              }
-              target={WorkflowTarget.RECONCILE}
-              setPopover={setPopover}
-              subscriptionPath={subscriptionPath}
-              onClick={() => handleActionClick(subscriptionAction.name, compactMode, false)}
-              isLoading={buttonIsLoading}
-            />
-          ))}
+          {renderMenuItems(
+            allowedReconcileActionItems.map((subscriptionAction) =>
+              buttonIsLoading && !subscriptionAction.reason ?
+                { ...subscriptionAction, reason: 'subscription.running_process' }
+              : subscriptionAction,
+            ),
+            WorkflowTarget.RECONCILE,
+            (actionName) => handleActionClick(actionName, compactMode, false),
+            buttonIsLoading,
+          )}
         </>
       )}
 
@@ -215,36 +223,16 @@ export const WfoSubscriptionActions: FC<WfoSubscriptionActionsProps> = ({
       {allowedModifyActionItems.length > 0 ?
         <>
           <MenuBlock title={t('modify')} />
-          {allowedModifyActionItems.map((subscriptionAction, index) => (
-            <WfoSubscriptionActionsMenuItem
-              key={`m_${index}`}
-              subscriptionAction={subscriptionAction}
-              target={WorkflowTarget.MODIFY}
-              setPopover={setPopover}
-              subscriptionPath={subscriptionPath}
-              onClick={() => {
-                redirectToUrl(subscriptionAction.name);
-              }}
-            />
-          ))}
+          {renderMenuItems(allowedModifyActionItems, WorkflowTarget.MODIFY, (actionName) => redirectToUrl(actionName))}
         </>
       : <WfoSubscriptionActionsMenuStatusItem message={t('noModify')} target={WorkflowTarget.MODIFY} />}
       {compactItems}
       {allowedTerminateActionItems.length > 0 ?
         <>
           <MenuBlock title={t('terminate')} />
-          {allowedTerminateActionItems.map((subscriptionAction, index) => (
-            <WfoSubscriptionActionsMenuItem
-              key={`t_${index}`}
-              subscriptionAction={subscriptionAction}
-              target={WorkflowTarget.TERMINATE}
-              setPopover={setPopover}
-              subscriptionPath={subscriptionPath}
-              onClick={() => {
-                redirectToUrl(subscriptionAction.name);
-              }}
-            />
-          ))}
+          {renderMenuItems(allowedTerminateActionItems, WorkflowTarget.TERMINATE, (actionName) =>
+            redirectToUrl(actionName),
+          )}
         </>
       : <WfoSubscriptionActionsMenuStatusItem message={t('noTerminate')} target={WorkflowTarget.TERMINATE} />}
     </>
