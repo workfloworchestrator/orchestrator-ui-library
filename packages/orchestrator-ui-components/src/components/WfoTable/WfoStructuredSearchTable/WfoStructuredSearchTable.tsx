@@ -191,6 +191,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   };
 
   const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns, nonEditableColumns);
+  const tableColumns = bulkEdit.withBulkEditColumns(tableColumnsWithControlColumns);
 
   const rowDetailData: WfoKeyValueTableDataType[] | undefined =
     rowDetailModalData && getRowDetailData(rowDetailModalData, tableColumnConfig);
@@ -302,7 +303,7 @@ export const WfoStructuredSearchTable = <T extends object>({
       <EuiSpacer size="m" />
 
       <WfoTable<T>
-        columnConfig={tableColumnsWithControlColumns}
+        columnConfig={tableColumns}
         hiddenColumns={hiddenColumns}
         rowExpandingConfiguration={rowExpandingConfiguration}
         onUpdateDataSorting={onUpdateDataSorting}
