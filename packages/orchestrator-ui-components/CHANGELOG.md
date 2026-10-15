@@ -1,5 +1,18 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.2.0
+
+### Minor Changes
+
+- e8c3a86: 1842 Optional `startWorkflowLabel` and `startWorkflowGroups` config to label the New subscription dropdown by product description and group it under headings
+- 97a4b7c: 260 Add options button and bulk edit mode for WfoStructuredTable
+
+### Patch Changes
+
+- 005fa95: Fixes broken action menu in compact mode
+- b517774: 262 Show error toast message on export failure, handle error message format
+- 825c206: Upgrades to latest pydantic forms version
+
 ## 10.1.0
 
 ### Minor Changes
