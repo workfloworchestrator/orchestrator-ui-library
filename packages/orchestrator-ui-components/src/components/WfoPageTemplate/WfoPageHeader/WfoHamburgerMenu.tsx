@@ -55,7 +55,7 @@ export const WfoHamburgerMenu = () => {
       },
     ];
 
-    if (data === undefined) {
+    if (!data) {
       return versionsArr;
     }
 
