@@ -32,11 +32,9 @@ jobs:
 
             - name: Create Release Pull Request or Publish
               id: changesets
-              uses: changesets/action@e0538e686673de0265c8a3e2904b8c76beaa43fd
+              uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
               with:
-                  publish: npm run packages:publish
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  publish-script: npm run packages:publish
 
             - name: Generate dispatch token
               if: steps.changesets.outputs.published == 'true'
