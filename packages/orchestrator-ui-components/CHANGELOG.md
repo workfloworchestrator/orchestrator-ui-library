@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.2.1
+
+### Patch Changes
+
+- 5c1d048: Trigger changeset generation fix
+
 ## 10.2.0
 
 ### Minor Changes
