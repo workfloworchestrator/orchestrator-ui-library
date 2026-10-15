@@ -42,6 +42,12 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
 
       const { data, errors } = await client.rawRequest(document, variables, preparedHeaders);
 
+      // With errorPolicy 'all' a response with errors does not throw. Without any data (e.g. access denied)
+      // it is an error, so queries get an error state instead of null data.
+      if (data == null && errors?.length) {
+        return { error: errors as E, meta: { errors } };
+      }
+
       return {
         data,
         meta: { errors },
