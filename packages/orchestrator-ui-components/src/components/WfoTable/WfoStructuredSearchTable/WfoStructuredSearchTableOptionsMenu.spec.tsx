@@ -9,6 +9,7 @@ import { WfoStructuredSearchTableOptionsMenu } from './WfoStructuredSearchTableO
 
 jest.mock('@/hooks', () => ({
   useWithOrchestratorTheme: () => ({}),
+  useOrchestratorTheme: () => ({ theme: { size: { m: '12px' } } }),
 }));
 
 jest.mock('next-intl', () => ({

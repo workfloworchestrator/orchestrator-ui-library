@@ -149,6 +149,7 @@ export const WfoStructuredSearchTableOptionsMenu = ({
         <EuiButton
           iconType={() => <WfoChevronDown color="currentColor" />}
           css={optionsMenuButtonStyles}
+          aria-label={t('options')}
           onClick={() => setIsPopoverOpen(!isPopoverOpen)}
           data-test-id="button-structured-search-options"
         >
