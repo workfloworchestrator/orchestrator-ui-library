@@ -21,6 +21,7 @@ import { FormUserPermissions, InputForm } from '@/types/forms';
 
 export type StepListItem = {
   step: Step;
+  stepKey: string;
   presentation: StepPresentation;
   basePresentation: StepPresentation;
   userInputForm?: InputForm;
@@ -70,8 +71,11 @@ export const WfoWorkflowStepList = React.forwardRef(
     const [showTraceback, setShowTraceback] = useState(false);
 
     const [detailLevel, setDetailLevel] = useState(StepDetailLevel.STANDARD);
-    // Presentations the user has chosen by clicking a step, keyed by stepId
+    // Presentations the user has chosen by clicking a step, keyed by getStepKey
     const [presentationOverrides, setPresentationOverrides] = useState<Record<string, StepPresentation>>({});
+
+    // Steps that have not been executed yet have no stepId, so fall back to their position to keep keys unique
+    const getStepKey = (step: Step, index: number) => step.stepId || `step-index-${index}`;
 
     // If the step is in the suspend state, we show the user input form
     const lastStepWithSuspendStatusStepId = [...steps]
@@ -88,10 +92,13 @@ export const WfoWorkflowStepList = React.forwardRef(
         !!stepUserInputForm,
       );
 
+      const stepKey = getStepKey(step, index);
+
       return {
         step,
+        stepKey,
         basePresentation,
-        presentation: presentationOverrides[step.stepId] ?? basePresentation,
+        presentation: presentationOverrides[stepKey] ?? basePresentation,
         userInputForm: stepUserInputForm,
       };
     });
@@ -99,7 +106,7 @@ export const WfoWorkflowStepList = React.forwardRef(
     const setStepPresentation = (stepListItem: StepListItem, presentation: StepPresentation) =>
       setPresentationOverrides((previousOverrides) => ({
         ...previousOverrides,
-        [stepListItem.step.stepId]: presentation,
+        [stepListItem.stepKey]: presentation,
       }));
 
     const handleChangeDetailLevel = (newDetailLevel: StepDetailLevel) => {
