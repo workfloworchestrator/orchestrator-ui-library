@@ -25,6 +25,7 @@ export interface WfoStepProps {
   startedAt: string;
   completedAt: string;
   showHiddenKeys: boolean;
+  hideMinimalStepName?: boolean;
   onToggleStepDetail: (canExpandToHigh: boolean) => void;
   isTask: boolean;
   isStartStep?: boolean;
@@ -42,6 +43,7 @@ export const WfoStep = React.forwardRef(
       startedAt,
       completedAt,
       showHiddenKeys,
+      hideMinimalStepName = false,
       isStartStep = false,
       isTask,
       processId,
@@ -133,6 +135,7 @@ export const WfoStep = React.forwardRef(
             role="button"
             tabIndex={0}
             aria-expanded={false}
+            aria-label={step.name}
             title={`${step.name} - ${step.status}`}
             onClick={() => onToggleStepDetail(hasStepContent)}
             onKeyDown={(event) => {
@@ -143,9 +146,11 @@ export const WfoStep = React.forwardRef(
             }}
           >
             <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} isMinimal />
-            <EuiText size="s" css={minimalStepNameStyle}>
-              {step.name}
-            </EuiText>
+            {!hideMinimalStepName && (
+              <EuiText size="s" css={minimalStepNameStyle}>
+                {step.name}
+              </EuiText>
+            )}
           </div>
         </div>
       );

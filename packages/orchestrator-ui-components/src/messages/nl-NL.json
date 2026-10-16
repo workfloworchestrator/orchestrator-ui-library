@@ -214,6 +214,7 @@
       "detailStandard": "Standaard",
       "duration": "Looptijd",
       "hideDelta": "Verberg subscription delta",
+      "hideMinimalStepNames": "Verberg naam minimale stap",
       "hideTraceback": "Verberg traceback",
       "showDelta": "Toon subscription delta",
       "showTraceback": "Toon traceback",

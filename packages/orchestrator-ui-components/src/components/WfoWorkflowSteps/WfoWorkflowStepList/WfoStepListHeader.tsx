@@ -23,6 +23,7 @@ export type WfoStepListHeaderProps = {
   detailLevel: StepDetailLevel;
   showDelta: boolean;
   showHiddenKeys: boolean;
+  hideMinimalStepNames: boolean;
   showRaw: boolean;
   showTraceback: boolean;
   showTracebackButton: boolean;
@@ -31,6 +32,7 @@ export type WfoStepListHeaderProps = {
   onChangeShowDelta: (showDelta: boolean) => void;
   onChangeShowRaw: (showRaw: boolean) => void;
   onChangeShowHiddenKeys: (showHiddenKeys: boolean) => void;
+  onChangeHideMinimalStepNames: (hideMinimalStepNames: boolean) => void;
   onShowTraceback: (showTraceback: boolean) => void;
   onChangeDetailLevel: (detailLevel: StepDetailLevel) => void;
 };
@@ -39,6 +41,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   detailLevel,
   showDelta,
   showHiddenKeys,
+  hideMinimalStepNames,
   showRaw,
   showTraceback,
   showTracebackButton,
@@ -47,6 +50,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   onChangeShowDelta,
   onChangeShowRaw,
   onChangeShowHiddenKeys,
+  onChangeHideMinimalStepNames,
   onShowTraceback,
   onChangeDetailLevel,
 }) => {
@@ -122,6 +126,16 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                   checked={showHiddenKeys}
                   onChange={(e) => {
                     onChangeShowHiddenKeys(e.target.checked);
+                    closeViewOption();
+                  }}
+                />
+              </EuiFormRow>
+              <EuiFormRow>
+                <EuiSwitch
+                  label={t('hideMinimalStepNames')}
+                  checked={hideMinimalStepNames}
+                  onChange={(e) => {
+                    onChangeHideMinimalStepNames(e.target.checked);
                     closeViewOption();
                   }}
                 />
