@@ -66,6 +66,7 @@ export const WfoWorkflowStepList = React.forwardRef(
     reference: Ref<WfoStepListRef>,
   ) => {
     const [showHiddenKeys, setShowHiddenKeys] = useState(false);
+    const [hideMinimalStepNames, setHideMinimalStepNames] = useState(false);
     const [showRaw, setShowRaw] = useState(false);
     const [showDelta, setShowDelta] = useState(false);
     const [showTraceback, setShowTraceback] = useState(false);
@@ -136,12 +137,14 @@ export const WfoWorkflowStepList = React.forwardRef(
       <>
         <WfoStepListHeader
           showHiddenKeys={showHiddenKeys}
+          hideMinimalStepNames={hideMinimalStepNames}
           showRaw={showRaw}
           showDelta={showDelta}
           showTracebackButton={traceBack !== null}
           showTraceback={showTraceback}
           detailLevel={detailLevel}
           onChangeShowHiddenKeys={setShowHiddenKeys}
+          onChangeHideMinimalStepNames={setHideMinimalStepNames}
           onChangeShowRaw={setShowRaw}
           onChangeShowDelta={setShowDelta}
           onChangeDetailLevel={handleChangeDetailLevel}
@@ -158,6 +161,7 @@ export const WfoWorkflowStepList = React.forwardRef(
               ref={reference}
               stepListItems={stepListItems}
               showHiddenKeys={showHiddenKeys}
+              hideMinimalStepNames={hideMinimalStepNames}
               isTask={isTask}
               onToggleExpandStepListItem={toggleExpandedStateStepListItem}
               processId={processId}

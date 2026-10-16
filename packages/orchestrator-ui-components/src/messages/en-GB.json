@@ -214,6 +214,7 @@
       "detailStandard": "Standard",
       "duration": "Duration",
       "hideDelta": "Hide subscription delta",
+      "hideMinimalStepNames": "Hide minimal step name",
       "hideTraceback": "Hide traceback",
       "showDelta": "Show subscription delta",
       "showTraceback": "Show traceback",

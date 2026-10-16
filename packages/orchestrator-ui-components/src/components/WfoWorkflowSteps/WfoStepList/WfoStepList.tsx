@@ -16,6 +16,7 @@ export type WfoStepListRef = {
 export type WfoStepListProps = {
   stepListItems: StepListItem[];
   showHiddenKeys: boolean;
+  hideMinimalStepNames?: boolean;
   onToggleExpandStepListItem: (stepListItem: StepListItem, canExpandToHigh: boolean) => void;
   onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
   isTask: boolean;
@@ -29,6 +30,7 @@ export const WfoStepList = React.forwardRef(
     {
       stepListItems,
       showHiddenKeys,
+      hideMinimalStepNames = false,
       onToggleExpandStepListItem,
       onTriggerExpandStepListItem,
       isTask,
@@ -97,6 +99,7 @@ export const WfoStepList = React.forwardRef(
               startedAt={stepListItem.step.started}
               completedAt={stepListItem.step.completed}
               showHiddenKeys={showHiddenKeys}
+              hideMinimalStepName={hideMinimalStepNames}
               isStartStep={index === 0}
               isTask={isTask}
               processId={processId}
