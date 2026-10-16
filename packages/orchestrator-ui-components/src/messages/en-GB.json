@@ -208,7 +208,7 @@
         "raw": "Raw",
         "table": "Table"
       },
-      "detailHigh": "High",
+      "detailHigh": "Verbose",
       "detailLevel": "Detail",
       "detailMinimal": "Minimal",
       "detailStandard": "Standard",

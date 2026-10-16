@@ -72,9 +72,9 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   );
 
   const detailLevelOptions = [
-    { id: StepDetailLevel.HIGH, label: t('detailHigh') },
-    { id: StepDetailLevel.STANDARD, label: t('detailStandard') },
     { id: StepDetailLevel.MINIMAL, label: t('detailMinimal') },
+    { id: StepDetailLevel.STANDARD, label: t('detailStandard') },
+    { id: StepDetailLevel.HIGH, label: t('detailHigh') },
   ];
 
   return (
