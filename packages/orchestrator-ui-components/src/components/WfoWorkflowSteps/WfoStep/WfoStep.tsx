@@ -8,7 +8,7 @@ import { WfoJsonCodeBlock, WfoMonacoCodeBlock, WfoTableCodeBlock } from '@/compo
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoChevronDown, WfoChevronUp } from '@/icons';
 import type { EmailState, FormUserPermissions } from '@/types';
-import { StepStatus } from '@/types';
+import { StepPresentation, StepStatus } from '@/types';
 import { calculateTimeDifference, formatDate } from '@/utils';
 
 import { WfoStepStatusIcon } from '../WfoStepStatusIcon';
@@ -25,7 +25,8 @@ export interface WfoStepProps {
   startedAt: string;
   completedAt: string;
   showHiddenKeys: boolean;
-  onToggleStepDetail: () => void;
+  hideMinimalStepName?: boolean;
+  onToggleStepDetail: (canExpandToHigh: boolean) => void;
   isTask: boolean;
   isStartStep?: boolean;
   processId?: string;
@@ -42,6 +43,7 @@ export const WfoStep = React.forwardRef(
       startedAt,
       completedAt,
       showHiddenKeys,
+      hideMinimalStepName = false,
       isStartStep = false,
       isTask,
       processId,
@@ -49,18 +51,22 @@ export const WfoStep = React.forwardRef(
     }: WfoStepProps,
     ref: LegacyRef<HTMLDivElement>,
   ) => {
-    const { isExpanded, step, userInputForm } = stepListItem;
+    const { presentation, step, userInputForm } = stepListItem;
+    const isExpanded = presentation === StepPresentation.HIGH;
     const [codeView, setCodeView] = useState<CodeView>(CodeView.JSON);
 
     const { theme } = useOrchestratorTheme();
     const {
       stepEmailContainerStyle,
       getStepHeaderStyle,
+      getStepPanelStyle,
       stepHeaderRightStyle,
       stepListContentBoldTextStyle,
       stepDurationStyle,
       stepRowStyle,
       getStepToggleExpandStyle,
+      minimalStepRowStyle,
+      minimalStepNameStyle,
     } = useWithOrchestratorTheme(getWorkflowStepsStyles);
     const { overrideStepDetail } = useStepDetailOverride();
     const t = useTranslations('processes.steps');
@@ -111,6 +117,9 @@ export const WfoStep = React.forwardRef(
     );
 
     const shouldExpand: boolean = isExpanded && hasStepContent;
+    // A step that was expanded from minimal can always be clicked to shrink it again
+    const canShrink = stepListItem.basePresentation === StepPresentation.MINIMAL;
+    const isClickable = hasStepContent || canShrink;
 
     const showRetriedBy = () => {
       if (!isStartStep && step.createdBy && step.createdBy !== previousCreatedBy) {
@@ -118,10 +127,43 @@ export const WfoStep = React.forwardRef(
       }
     };
 
+    if (presentation === StepPresentation.MINIMAL) {
+      return (
+        <div ref={ref}>
+          <div
+            css={minimalStepRowStyle}
+            role="button"
+            tabIndex={0}
+            aria-expanded={false}
+            aria-label={step.name}
+            title={`${step.name} - ${step.status}`}
+            onClick={() => onToggleStepDetail(hasStepContent)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                onToggleStepDetail(hasStepContent);
+              }
+            }}
+          >
+            <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} isMinimal />
+            {!hideMinimalStepName && (
+              <EuiText size="s" css={minimalStepNameStyle}>
+                {step.name}
+              </EuiText>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div ref={ref}>
-        <EuiPanel hasBorder={true}>
-          <EuiFlexGroup css={getStepHeaderStyle(hasStepContent)} onClick={() => hasStepContent && onToggleStepDetail()}>
+        <EuiPanel hasBorder={true} css={getStepPanelStyle(isClickable)}>
+          <EuiFlexGroup
+            className="wfoStepHeader"
+            css={getStepHeaderStyle(isClickable)}
+            onClick={() => isClickable && onToggleStepDetail(hasStepContent)}
+          >
             <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} />
 
             <EuiFlexGroup direction="column" gutterSize="none">

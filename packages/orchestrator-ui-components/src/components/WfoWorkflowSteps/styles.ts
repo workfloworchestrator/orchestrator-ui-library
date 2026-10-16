@@ -4,6 +4,7 @@ import { WfoThemeHelpers } from '@/hooks';
 
 export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActive }: WfoThemeHelpers) => {
   const SPACE_BETWEEN_STEPS = theme.base * 1.5;
+  const STEP_ICON_SIZE = 40;
 
   const stepSpacerStyle = css({
     borderLeft: `1px solid ${theme.colors.backgroundBaseAccent}`,
@@ -47,8 +48,8 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
   });
 
   const stepStateIcon = {
-    height: '40px',
-    width: '40px',
+    height: `${STEP_ICON_SIZE}px`,
+    width: `${STEP_ICON_SIZE}px`,
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
@@ -80,6 +81,44 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     backgroundColor: toSecondaryColor(theme.colors.danger),
   });
 
+  // Minimal steps show the status icon scaled down
+  const MINIMAL_ICON_SCALE = 0.6;
+  const MINIMAL_ICON_SIZE = STEP_ICON_SIZE * MINIMAL_ICON_SCALE;
+
+  const stepStateMinimalIconWrapperStyle = css({
+    width: `${MINIMAL_ICON_SIZE}px`,
+    height: `${MINIMAL_ICON_SIZE}px`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& > div': {
+      flexShrink: 0,
+      transform: `scale(${MINIMAL_ICON_SCALE})`,
+    },
+  });
+
+  const minimalStepRowStyle = css({
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.size.s,
+    // Aligns the scaled icon with the center of the regular step icons and the spacer line
+    paddingLeft: `${36 - MINIMAL_ICON_SIZE / 2}px`,
+    paddingRight: theme.size.s,
+    cursor: 'pointer',
+    borderRadius: theme.border.radius.small,
+    transition: `background-color ${theme.animation.fast} ease-in`,
+    '&:hover': {
+      backgroundColor: theme.colors.backgroundBaseInteractiveHover,
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${theme.colors.primary}`,
+    },
+  });
+
+  const minimalStepNameStyle = css({
+    color: theme.colors.textSubdued,
+  });
+
   const stepHeaderRightStyle = css({
     alignItems: 'center',
   });
@@ -95,6 +134,18 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
       gap: 0,
       alignItems: 'center',
       cursor: isClickable ? 'pointer' : 'default',
+    });
+
+  // Subtle highlight of clickable step cards, so it's clear which step is toggled on click
+  const getStepPanelStyle = (isClickable: boolean) =>
+    css({
+      transition: `border-color ${theme.animation.fast} ease-in, box-shadow ${theme.animation.fast} ease-in`,
+      ...(isClickable && {
+        '&:has(.wfoStepHeader:hover)': {
+          borderColor: theme.colors.borderBasePrimary,
+          boxShadow: `0 0 0 1px ${theme.colors.borderBasePrimary}`,
+        },
+      }),
     });
 
   const getStepToggleExpandStyle = (isVisible: boolean) =>
@@ -119,7 +170,11 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     stepStatePendingIconStyle,
     stepStateSuccessIconStyle,
     stepStateSuspendIconStyle,
+    stepStateMinimalIconWrapperStyle,
+    minimalStepRowStyle,
+    minimalStepNameStyle,
     getStepHeaderStyle,
+    getStepPanelStyle,
     getStepToggleExpandStyle,
   };
 };
