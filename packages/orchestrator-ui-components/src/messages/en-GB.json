@@ -208,9 +208,11 @@
         "raw": "Raw",
         "table": "Table"
       },
-      "collapseAll": "collapse all",
+      "detailHigh": "High",
+      "detailLevel": "Detail",
+      "detailMinimal": "Minimal",
+      "detailStandard": "Standard",
       "duration": "Duration",
-      "expandAll": "Expand all",
       "hideDelta": "Hide subscription delta",
       "hideTraceback": "Hide traceback",
       "showDelta": "Show subscription delta",

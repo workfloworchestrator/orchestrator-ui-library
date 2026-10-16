@@ -208,9 +208,11 @@
         "raw": "Raw",
         "table": "Table"
       },
-      "collapseAll": "klap alles in",
+      "detailHigh": "Hoog",
+      "detailLevel": "Detail",
+      "detailMinimal": "Minimaal",
+      "detailStandard": "Standaard",
       "duration": "Looptijd",
-      "expandAll": "klap alles uit",
       "hideDelta": "Verberg subscription delta",
       "hideTraceback": "Verberg traceback",
       "showDelta": "Toon subscription delta",

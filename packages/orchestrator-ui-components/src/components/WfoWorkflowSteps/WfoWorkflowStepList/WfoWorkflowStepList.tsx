@@ -1,6 +1,4 @@
-import React, { Ref, useEffect, useState } from 'react';
-
-import { useTranslations } from 'next-intl';
+import React, { Ref, useState } from 'react';
 
 import {
   WfoJsonCodeBlock,
@@ -12,13 +10,19 @@ import {
 } from '@/components';
 import WfoDiff, { getSubscriptionDiffTexts } from '@/components/WfoDiff/WfoDiff';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback/WfoTraceback';
+import {
+  applyPresentationFloor,
+  getDefaultStepPresentation,
+  getNextPresentationOnClick,
+} from '@/components/WfoWorkflowSteps/stepPresentationUtils';
 import { useGetRawProcessDetailQuery } from '@/rtk/endpoints/processDetail';
-import { ProcessStatus, Step, StepStatus } from '@/types';
+import { ProcessStatus, Step, StepDetailLevel, StepPresentation, StepStatus } from '@/types';
 import { FormUserPermissions, InputForm } from '@/types/forms';
 
 export type StepListItem = {
   step: Step;
-  isExpanded: boolean;
+  presentation: StepPresentation;
+  basePresentation: StepPresentation;
   userInputForm?: InputForm;
 };
 
@@ -65,74 +69,56 @@ export const WfoWorkflowStepList = React.forwardRef(
     const [showDelta, setShowDelta] = useState(false);
     const [showTraceback, setShowTraceback] = useState(false);
 
-    const t = useTranslations('processes.steps');
+    const [detailLevel, setDetailLevel] = useState(StepDetailLevel.STANDARD);
+    // Presentations the user has chosen by clicking a step, keyed by stepId
+    const [presentationOverrides, setPresentationOverrides] = useState<Record<string, StepPresentation>>({});
 
-    const initialStepListItems: StepListItem[] = steps.map((step) => ({
-      step,
-      isExpanded: false,
-    })); // If the step is in the suspend state, we show the user input form
+    // If the step is in the suspend state, we show the user input form
+    const lastStepWithSuspendStatusStepId = [...steps]
+      .reverse()
+      .find((step) => step.status === StepStatus.SUSPEND)?.stepId;
 
-    const [stepListItems, setStepListItems] = useState(initialStepListItems);
-
-    const persistStepListItemState = (
-      previousStepListItems: StepListItem[],
-      updatedSteps: Step[],
-      userInputForm?: InputForm,
-    ): StepListItem[] => {
-      const reversedSteps = [...updatedSteps].reverse();
-      const lastStepWithSuspendStatusStepId = reversedSteps.find((step) => step.status === StepStatus.SUSPEND)?.stepId;
-
-      return updatedSteps.map((step) => {
-        const previousStepListItem = previousStepListItems.find(
-          (previousStepListItem) => previousStepListItem.step.stepId === step.stepId,
-        );
-        return {
-          step,
-          isExpanded: previousStepListItem?.isExpanded || false,
-          userInputForm: lastStepWithSuspendStatusStepId === step.stepId && userInputForm ? userInputForm : undefined,
-        };
-      });
-    };
-
-    useEffect(() => {
-      // We want to preserve the state of stepListItems between renders
-      setStepListItems((previousStepListItems) =>
-        persistStepListItemState(previousStepListItems, steps, userInputForm),
-      );
-    }, [steps, userInputForm]);
-
-    const updateStepListItem = (
-      stepListItemToUpdate: StepListItem,
-      updateFunction: (stepListItem: StepListItem) => StepListItem,
-    ) =>
-      setStepListItems(
-        stepListItems.map((stepListItem) =>
-          stepListItem === stepListItemToUpdate ? updateFunction(stepListItem) : stepListItem,
-        ),
+    const stepListItems: StepListItem[] = steps.map((step, index) => {
+      const stepUserInputForm =
+        lastStepWithSuspendStatusStepId === step.stepId && userInputForm ? userInputForm : undefined;
+      const basePresentation = applyPresentationFloor(
+        getDefaultStepPresentation(step.importance, detailLevel),
+        step,
+        index === steps.length - 1,
+        !!stepUserInputForm,
       );
 
-    const allStepsAreExpanded = stepListItems.every((item) => item.isExpanded);
+      return {
+        step,
+        basePresentation,
+        presentation: presentationOverrides[step.stepId] ?? basePresentation,
+        userInputForm: stepUserInputForm,
+      };
+    });
 
-    const setExpandedStateStepListItems = (isExpanded: boolean) => {
-      setStepListItems(
-        stepListItems.map((item) => ({
-          ...item,
-          isExpanded,
-        })),
-      );
-    };
-
-    const toggleExpandedStateStepListItem = (stepListItem: StepListItem) =>
-      updateStepListItem(stepListItem, (item) => ({
-        ...item,
-        isExpanded: !item.isExpanded,
+    const setStepPresentation = (stepListItem: StepListItem, presentation: StepPresentation) =>
+      setPresentationOverrides((previousOverrides) => ({
+        ...previousOverrides,
+        [stepListItem.step.stepId]: presentation,
       }));
 
+    const handleChangeDetailLevel = (newDetailLevel: StepDetailLevel) => {
+      setDetailLevel(newDetailLevel);
+      setPresentationOverrides({});
+    };
+
+    const toggleExpandedStateStepListItem = (stepListItem: StepListItem, canExpandToHigh: boolean) =>
+      setStepPresentation(
+        stepListItem,
+        getNextPresentationOnClick(stepListItem.presentation, stepListItem.basePresentation, canExpandToHigh),
+      );
+
+    // Used when navigating to a step from the timeline: minimal steps become standard, others are fully expanded
     const handleExpandStepListItem = (stepListItem: StepListItem) =>
-      updateStepListItem(stepListItem, (item) => ({
-        ...item,
-        isExpanded: true,
-      }));
+      setStepPresentation(
+        stepListItem,
+        stepListItem.presentation === StepPresentation.MINIMAL ? StepPresentation.STANDARD : StepPresentation.HIGH,
+      );
 
     // The value of lastStatus is not in lowercase despite the ProcessStatus enum definition
     const isRunningWorkflow: boolean = ![ProcessStatus.FAILED, ProcessStatus.ABORTED, ProcessStatus.COMPLETED]
@@ -147,11 +133,11 @@ export const WfoWorkflowStepList = React.forwardRef(
           showDelta={showDelta}
           showTracebackButton={traceBack !== null}
           showTraceback={showTraceback}
-          allDetailToggleText={allStepsAreExpanded ? t('collapseAll') : t('expandAll')}
+          detailLevel={detailLevel}
           onChangeShowHiddenKeys={setShowHiddenKeys}
           onChangeShowRaw={setShowRaw}
           onChangeShowDelta={setShowDelta}
-          onToggleAllDetailsIsOpen={() => setExpandedStateStepListItems(!allStepsAreExpanded)}
+          onChangeDetailLevel={handleChangeDetailLevel}
           onShowTraceback={setShowTraceback}
           isTask={isTask}
           isRunningWorkflow={isRunningWorkflow}

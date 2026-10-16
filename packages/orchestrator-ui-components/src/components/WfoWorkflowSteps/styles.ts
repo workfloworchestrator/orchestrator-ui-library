@@ -4,6 +4,7 @@ import { WfoThemeHelpers } from '@/hooks';
 
 export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActive }: WfoThemeHelpers) => {
   const SPACE_BETWEEN_STEPS = theme.base * 1.5;
+  const STEP_ICON_SIZE = 40;
 
   const stepSpacerStyle = css({
     borderLeft: `1px solid ${theme.colors.backgroundBaseAccent}`,
@@ -47,8 +48,8 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
   });
 
   const stepStateIcon = {
-    height: '40px',
-    width: '40px',
+    height: `${STEP_ICON_SIZE}px`,
+    width: `${STEP_ICON_SIZE}px`,
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
@@ -78,6 +79,39 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
   const stepStateFailedIconStyle = css({
     ...stepStateIcon,
     backgroundColor: toSecondaryColor(theme.colors.danger),
+  });
+
+  // Minimal steps show the status icon scaled down
+  const MINIMAL_ICON_SCALE = 0.6;
+  const MINIMAL_ICON_SIZE = STEP_ICON_SIZE * MINIMAL_ICON_SCALE;
+
+  const stepStateMinimalIconWrapperStyle = css({
+    width: `${MINIMAL_ICON_SIZE}px`,
+    height: `${MINIMAL_ICON_SIZE}px`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& > div': {
+      flexShrink: 0,
+      transform: `scale(${MINIMAL_ICON_SCALE})`,
+    },
+  });
+
+  const minimalStepRowStyle = css({
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.size.s,
+    // Aligns the scaled icon with the center of the regular step icons and the spacer line
+    paddingLeft: `${36 - MINIMAL_ICON_SIZE / 2}px`,
+    cursor: 'pointer',
+    borderRadius: theme.border.radius.small,
+    '&:focus-visible': {
+      outline: `2px solid ${theme.colors.primary}`,
+    },
+  });
+
+  const minimalStepNameStyle = css({
+    color: theme.colors.textSubdued,
   });
 
   const stepHeaderRightStyle = css({
@@ -119,6 +153,9 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     stepStatePendingIconStyle,
     stepStateSuccessIconStyle,
     stepStateSuspendIconStyle,
+    stepStateMinimalIconWrapperStyle,
+    minimalStepRowStyle,
+    minimalStepNameStyle,
     getStepHeaderStyle,
     getStepToggleExpandStyle,
   };
