@@ -2,16 +2,25 @@ import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexGroup, EuiForm, EuiFormRow, EuiPopover, EuiSwitch, EuiText } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiButtonGroup,
+  EuiFlexGroup,
+  EuiForm,
+  EuiFormRow,
+  EuiPopover,
+  EuiSwitch,
+  EuiText,
+} from '@elastic/eui';
 
-import { WfoTextAnchor } from '@/components/WfoTextAnchor/WfoTextAnchor';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoCode, WfoEyeFill } from '@/icons';
+import { StepDetailLevel } from '@/types';
 
 import { getWorkflowStepsStyles } from '../styles';
 
 export type WfoStepListHeaderProps = {
-  allDetailToggleText: string;
+  detailLevel: StepDetailLevel;
   showDelta: boolean;
   showHiddenKeys: boolean;
   showRaw: boolean;
@@ -23,11 +32,11 @@ export type WfoStepListHeaderProps = {
   onChangeShowRaw: (showRaw: boolean) => void;
   onChangeShowHiddenKeys: (showHiddenKeys: boolean) => void;
   onShowTraceback: (showTraceback: boolean) => void;
-  onToggleAllDetailsIsOpen: () => void;
+  onChangeDetailLevel: (detailLevel: StepDetailLevel) => void;
 };
 
 export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
-  allDetailToggleText,
+  detailLevel,
   showDelta,
   showHiddenKeys,
   showRaw,
@@ -39,7 +48,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   onChangeShowRaw,
   onChangeShowHiddenKeys,
   onShowTraceback,
-  onToggleAllDetailsIsOpen,
+  onChangeDetailLevel,
 }) => {
   const t = useTranslations('processes.steps');
   const { theme } = useOrchestratorTheme();
@@ -62,14 +71,31 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     </EuiButton>
   );
 
+  const detailLevelOptions = [
+    { id: StepDetailLevel.HIGH, label: t('detailHigh') },
+    { id: StepDetailLevel.STANDARD, label: t('detailStandard') },
+    { id: StepDetailLevel.MINIMAL, label: t('detailMinimal') },
+  ];
+
   return (
     <EuiFlexGroup css={stepListHeaderStyle}>
-      {/* Left side: header and expand/collapse button */}
+      {/* Left side: header and detail level selector */}
       <EuiFlexGroup css={stepListContentStyle}>
         <EuiText size="m" css={stepListContentBoldTextStyle}>
           {t(isTask ? 'taskSteps' : 'workflowSteps')}
         </EuiText>
-        {!showRaw && <WfoTextAnchor text={allDetailToggleText} onClick={onToggleAllDetailsIsOpen} />}
+        {!showRaw && (
+          <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
+            <EuiText size="s">{t('detailLevel')}:</EuiText>
+            <EuiButtonGroup
+              legend={t('detailLevel')}
+              options={detailLevelOptions}
+              idSelected={detailLevel}
+              onChange={(id) => onChangeDetailLevel(id as StepDetailLevel)}
+              buttonSize="compressed"
+            />
+          </EuiFlexGroup>
+        )}
       </EuiFlexGroup>
       {/* Right side: view options */}
       <EuiFlexGroup justifyContent="flexEnd" direction="row" css={stepListOptionsContainerStyle} gutterSize="s">

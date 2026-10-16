@@ -18,6 +18,7 @@ import { getWorkflowStepsStyles } from '../styles';
 export interface WfoStepStatusIconProps {
   stepStatus: StepStatus;
   isStartStep?: boolean;
+  isMinimal?: boolean;
 }
 
 interface IconProps {
@@ -50,11 +51,16 @@ const MainIcon = ({ stepStatus, color = '', isStartStep }: IconProps) => {
   }
 };
 
-export const WfoStepStatusIcon = ({ stepStatus, isStartStep = false }: WfoStepStatusIconProps) => {
+export const WfoStepStatusIcon = ({ stepStatus, isStartStep = false, isMinimal = false }: WfoStepStatusIconProps) => {
   const { theme } = useOrchestratorTheme();
 
-  const { stepStateSuccessIconStyle, stepStateSuspendIconStyle, stepStatePendingIconStyle, stepStateFailedIconStyle } =
-    useWithOrchestratorTheme(getWorkflowStepsStyles);
+  const {
+    stepStateSuccessIconStyle,
+    stepStateSuspendIconStyle,
+    stepStatePendingIconStyle,
+    stepStateFailedIconStyle,
+    stepStateMinimalIconWrapperStyle,
+  } = useWithOrchestratorTheme(getWorkflowStepsStyles);
 
   const [stepStateStyle, mainIconColor, hasSubIcon = false, subIconColor = ''] = (() => {
     switch (stepStatus) {
@@ -73,6 +79,17 @@ export const WfoStepStatusIcon = ({ stepStatus, isStartStep = false }: WfoStepSt
         return [stepStateSuccessIconStyle, theme.colors.textPrimary, true, theme.colors.textSuccess];
     }
   })();
+
+  // The minimal presentation omits the sub icon to reduce noise
+  if (isMinimal) {
+    return (
+      <div css={stepStateMinimalIconWrapperStyle}>
+        <div css={stepStateStyle}>
+          <MainIcon color={mainIconColor} stepStatus={stepStatus} isStartStep={isStartStep} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <EuiFlexItem css={{ flexDirection: 'row' }} grow={0}>

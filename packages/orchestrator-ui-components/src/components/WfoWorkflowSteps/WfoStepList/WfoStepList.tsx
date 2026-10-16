@@ -16,7 +16,7 @@ export type WfoStepListRef = {
 export type WfoStepListProps = {
   stepListItems: StepListItem[];
   showHiddenKeys: boolean;
-  onToggleExpandStepListItem: (stepListItem: StepListItem) => void;
+  onToggleExpandStepListItem: (stepListItem: StepListItem, canExpandToHigh: boolean) => void;
   onTriggerExpandStepListItem: (stepListItem: StepListItem) => void;
   isTask: boolean;
   processId: string;
@@ -91,7 +91,7 @@ export const WfoStepList = React.forwardRef(
             {index !== 0 && <div css={stepSpacerStyle} />}
             <WfoStep
               ref={getReferenceCallbackForStepId(stepListItem.step.stepId)}
-              onToggleStepDetail={() => onToggleExpandStepListItem(stepListItem)}
+              onToggleStepDetail={(canExpandToHigh) => onToggleExpandStepListItem(stepListItem, canExpandToHigh)}
               stepListItem={stepListItem}
               previousCreatedBy={stepListItems[index - 1]?.step.createdBy}
               startedAt={stepListItem.step.started}
