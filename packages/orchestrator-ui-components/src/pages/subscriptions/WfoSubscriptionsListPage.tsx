@@ -36,7 +36,7 @@ import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTa
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useShowToastMessage, useStoredTableConfig } from '@/hooks';
-import { SearchPayload, getErrorDetail, useLazySearchQuery, useSearchQuery } from '@/rtk';
+import { SearchPayload, getErrorDetail, useSearchExportMutation, useSearchQuery } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
   EntityKind,
@@ -110,6 +110,7 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
 export const WfoSubscriptionsListPage = () => {
   const t = useTranslations('subscriptions.index');
   const tDetail = useTranslations('subscriptions.detail');
+  const tError = useTranslations('errors');
   const { showToastMessage } = useShowToastMessage();
   const [activeTab, setActiveTab] = useQueryParam('activeTab', withDefault(StringParam, WfoSubscriptionListTab.ACTIVE));
   const selectedTab = subscriptionListTabs.find(({ id }) => id === activeTab)?.id ?? WfoSubscriptionListTab.ACTIVE;
@@ -197,9 +198,7 @@ export const WfoSubscriptionsListPage = () => {
 
   const { data, error, isFetching, endpointName } = useSearchQuery(searchPayload);
 
-  const [getSubscriptionListTrigger] = useLazySearchQuery();
-  const getSubscriptionListForExport = (exportLimit: number) =>
-    getSubscriptionListTrigger({ ...searchPayload, limit: exportLimit, cursor: undefined }).unwrap();
+  const [searchExportTrigger, { isLoading: isExporting }] = useSearchExportMutation();
 
   useEffect(() => {
     const storedConfig = getStoredTableConfig();
@@ -488,10 +487,21 @@ export const WfoSubscriptionsListPage = () => {
 
   const exportData = async () => {
     try {
-      const exportResult = await getSubscriptionListForExport(totalItems || pageSize);
+      const exportResult = await searchExportTrigger(searchPayload).unwrap();
       const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(exportResult, resultColumToPropertyMap);
       if (!exportItems.length) {
         return;
+      }
+      // The export endpoint caps the rows at SEARCH_MAX_EXPORT_LIMIT and only signals the cut-off through has_next_page
+      if (exportResult.page_info.has_next_page) {
+        showToastMessage(
+          ToastTypes.ERROR,
+          tError('notAllResultsExported', {
+            totalResults: exportResult.cursor?.total_items ?? exportItems.length,
+            maximumExportedResults: exportItems.length,
+          }),
+          tError('notAllResultsExportedTitle'),
+        );
       }
       initiateCsvFileDownload(exportItems, Object.keys(tableColumnConfig), getCsvFileNameWithDate('Subscriptions'));
     } catch (error) {
@@ -567,6 +577,7 @@ export const WfoSubscriptionsListPage = () => {
         hasNextPage={hasNextPage}
         onExportData={exportData}
         bulkEditConfiguration={{ uniqueRowId: 'subscriptionId' }}
+        exportDataIsLoading={isExporting}
       />
     </>
   );

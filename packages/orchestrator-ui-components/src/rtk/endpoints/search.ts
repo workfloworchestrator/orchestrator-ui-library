@@ -25,6 +25,9 @@ export interface SearchPayload {
   cursor?: string;
 }
 
+// The export endpoint defaults the limit to SEARCH_MAX_EXPORT_LIMIT, so no limit is sent
+export type SearchExportPayload = Omit<SearchPayload, 'cursor' | 'limit'>;
+
 export interface SearchPaginationPayload extends Omit<SearchPayload, 'cursor'> {
   cursor: number;
 }
@@ -76,6 +79,26 @@ const searchApi = orchestratorApi.injectEndpoints({
       },
       providesTags: getCacheTag(CacheTagType.subscriptions),
     }),
+    // Exports run as a mutation so the (large) result never lands in, or overwrites, the cached table results
+    searchExport: build.mutation<PaginatedSearchResults, SearchExportPayload>({
+      query: ({ entity_type, query, filters, retriever, response_columns, order_by }) => ({
+        url: `search/${getEndpointPath(entity_type)}/export`,
+        method: 'POST',
+        body: {
+          query,
+          filters,
+          retriever,
+          order_by: order_by && !query ? order_by : undefined,
+          response_columns,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
+    }),
     searchWithPagination: build.mutation<PaginatedSearchResults, SearchPaginationPayload>({
       query: ({ cursor, entity_type, query, filters, limit, retriever }) => ({
         url: `search/${getEndpointPath(entity_type)}?cursor=${cursor}`,
@@ -113,6 +136,7 @@ const searchApi = orchestratorApi.injectEndpoints({
 export const {
   useSearchQuery,
   useLazySearchQuery,
+  useSearchExportMutation,
   useSearchWithPaginationMutation,
   useSearchPathsQuery,
   useLazySearchPathsQuery,
