@@ -103,8 +103,13 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     gap: theme.size.s,
     // Aligns the scaled icon with the center of the regular step icons and the spacer line
     paddingLeft: `${36 - MINIMAL_ICON_SIZE / 2}px`,
+    paddingRight: theme.size.s,
     cursor: 'pointer',
     borderRadius: theme.border.radius.small,
+    transition: `background-color ${theme.animation.fast} ease-in`,
+    '&:hover': {
+      backgroundColor: theme.colors.backgroundBaseInteractiveHover,
+    },
     '&:focus-visible': {
       outline: `2px solid ${theme.colors.primary}`,
     },
@@ -129,6 +134,18 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
       gap: 0,
       alignItems: 'center',
       cursor: isClickable ? 'pointer' : 'default',
+    });
+
+  // Subtle highlight of clickable step cards, so it's clear which step is toggled on click
+  const getStepPanelStyle = (isClickable: boolean) =>
+    css({
+      transition: `border-color ${theme.animation.fast} ease-in, box-shadow ${theme.animation.fast} ease-in`,
+      ...(isClickable && {
+        '&:has(.wfoStepHeader:hover)': {
+          borderColor: theme.colors.borderBasePrimary,
+          boxShadow: `0 0 0 1px ${theme.colors.borderBasePrimary}`,
+        },
+      }),
     });
 
   const getStepToggleExpandStyle = (isVisible: boolean) =>
@@ -157,6 +174,7 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     minimalStepRowStyle,
     minimalStepNameStyle,
     getStepHeaderStyle,
+    getStepPanelStyle,
     getStepToggleExpandStyle,
   };
 };
