@@ -85,16 +85,14 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
           {t(isTask ? 'taskSteps' : 'workflowSteps')}
         </EuiText>
         {!showRaw && (
-          <EuiFlexGroup gutterSize="s" alignItems="center" responsive={false}>
-            <EuiText size="s">{t('detailLevel')}:</EuiText>
-            <EuiButtonGroup
-              legend={t('detailLevel')}
-              options={detailLevelOptions}
-              idSelected={detailLevel}
-              onChange={(id) => onChangeDetailLevel(id as StepDetailLevel)}
-              buttonSize="compressed"
-            />
-          </EuiFlexGroup>
+          <EuiButtonGroup
+            legend={t('detailLevel')}
+            options={detailLevelOptions}
+            idSelected={detailLevel}
+            onChange={(id) => onChangeDetailLevel(id as StepDetailLevel)}
+            buttonSize="s"
+            color="primary"
+          />
         )}
       </EuiFlexGroup>
       {/* Right side: view options */}
