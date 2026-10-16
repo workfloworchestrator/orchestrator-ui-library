@@ -58,8 +58,9 @@ describe('searchExport', () => {
     return fetchMock.mock.calls[0][0] as FetchArgs;
   };
 
-  it('posts the search body without a limit to the export endpoint', async () => {
-    const request = await sendExport(basePayload);
+  it('posts the search body without a limit or cursor to the export endpoint', async () => {
+    // The subscriptions page passes its page-sized limit and current cursor along with the search payload
+    const request = await sendExport({ ...basePayload, limit: 30, cursor: 'next-page-cursor' });
 
     expect(request.method).toBe('POST');
     expect(request.url).toBe('http://api/search/subscriptions/export');
@@ -70,6 +71,8 @@ describe('searchExport', () => {
       order_by: basePayload.order_by,
       response_columns: basePayload.response_columns,
     });
+    expect(request.body).not.toHaveProperty('limit');
+    expect(request.body).not.toHaveProperty('cursor');
   });
 
   it('drops order_by when there is a text query', async () => {
