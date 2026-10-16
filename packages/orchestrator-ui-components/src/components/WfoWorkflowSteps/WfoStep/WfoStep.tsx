@@ -57,6 +57,7 @@ export const WfoStep = React.forwardRef(
     const {
       stepEmailContainerStyle,
       getStepHeaderStyle,
+      getStepPanelStyle,
       stepHeaderRightStyle,
       stepListContentBoldTextStyle,
       stepDurationStyle,
@@ -116,6 +117,7 @@ export const WfoStep = React.forwardRef(
     const shouldExpand: boolean = isExpanded && hasStepContent;
     // A step that was expanded from minimal can always be clicked to shrink it again
     const canShrink = stepListItem.basePresentation === StepPresentation.MINIMAL;
+    const isClickable = hasStepContent || canShrink;
 
     const showRetriedBy = () => {
       if (!isStartStep && step.createdBy && step.createdBy !== previousCreatedBy) {
@@ -151,10 +153,11 @@ export const WfoStep = React.forwardRef(
 
     return (
       <div ref={ref}>
-        <EuiPanel hasBorder={true}>
+        <EuiPanel hasBorder={true} css={getStepPanelStyle(isClickable)}>
           <EuiFlexGroup
-            css={getStepHeaderStyle(hasStepContent || canShrink)}
-            onClick={() => (hasStepContent || canShrink) && onToggleStepDetail(hasStepContent)}
+            className="wfoStepHeader"
+            css={getStepHeaderStyle(isClickable)}
+            onClick={() => isClickable && onToggleStepDetail(hasStepContent)}
           >
             <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} />
 
