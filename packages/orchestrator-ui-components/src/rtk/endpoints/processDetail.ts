@@ -11,7 +11,6 @@ import {
   ProcessDetailResultRaw,
   ProcessPatchParams,
   ProcessesDetailResult,
-  StepImportance,
 } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
 
@@ -41,7 +40,7 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                     started
                     completed
                     createdBy
-                    # TEMP-STUB: re-add importance once the backend exposes it
+                    importance
                 }
                 customer {
                     fullname
@@ -71,15 +70,7 @@ const processDetailApi = orchestratorApi.injectEndpoints({
         variables,
       }),
       transformResponse: (response: ProcessesDetailResult): ProcessDetailResponse => {
-        // TEMP-STUB: assign a fake importance per step to test the step presentations. Remove before merging.
-        const stubImportances = [StepImportance.LOW, StepImportance.DEFAULT, StepImportance.LOW, StepImportance.HIGH];
-        const processes = (response.processes.page || []).map((process) => ({
-          ...process,
-          steps: process.steps.map((step, index) => ({
-            ...step,
-            importance: step.importance ?? stubImportances[index % stubImportances.length],
-          })),
-        }));
+        const processes = response.processes.page || [];
 
         return {
           processes,
