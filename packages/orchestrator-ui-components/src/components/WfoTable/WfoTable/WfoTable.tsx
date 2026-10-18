@@ -197,7 +197,7 @@ export const WfoTable = <T extends object>({
   const virtualTrHeight = virtualItems[0]?.start ?? 0;
   const bottomSpacerHeight = totalSize - lastVirtualItemEnd;
 
-  const WfoTableBody = () => {
+  const renderTableBody = () => {
     if (showLoadingSkeleton) {
       return (
         <tbody css={bodyLoadingStyle} aria-busy={true}>
@@ -290,7 +290,7 @@ export const WfoTable = <T extends object>({
               />
             </thead>
           }
-          {<WfoTableBody />}
+          {renderTableBody()}
         </table>
       </div>
       {pagination && (
