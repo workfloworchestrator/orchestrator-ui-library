@@ -68,6 +68,8 @@ export const WfoStep = React.forwardRef(
       minimalStepRowStyle,
       minimalStepNameStyle,
       minimalStepHiddenNameStyle,
+      minimalStepDurationStyle,
+      minimalStepDurationLabelStyle,
     } = useWithOrchestratorTheme(getWorkflowStepsStyles);
     const { overrideStepDetail } = useStepDetailOverride();
     const t = useTranslations('processes.steps');
@@ -150,10 +152,29 @@ export const WfoStep = React.forwardRef(
             <EuiText
               size="s"
               className="wfoMinimalStepName"
+              data-text={step.name}
               css={[minimalStepNameStyle, hideMinimalStepName && minimalStepHiddenNameStyle]}
             >
               {step.name}
             </EuiText>
+            {/* Same right-hand layout as the step card header, so the durations line up */}
+            <EuiFlexGroup css={stepRowStyle}>
+              {step.completed && (
+                <>
+                  <EuiFlexItem grow={0} css={stepHeaderRightStyle} title={t('duration')}>
+                    <EuiText size="m" css={[stepDurationStyle, minimalStepDurationLabelStyle]} aria-hidden>
+                      {t('duration')}
+                    </EuiText>
+                    <EuiText size="s" css={minimalStepDurationStyle}>
+                      {calculateTimeDifference(startedAt, completedAt)}
+                    </EuiText>
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={0} css={getStepToggleExpandStyle(false)} aria-hidden>
+                    <WfoChevronDown color={theme.colors.textParagraph} />
+                  </EuiFlexItem>
+                </>
+              )}
+            </EuiFlexGroup>
           </div>
         </div>
       );
