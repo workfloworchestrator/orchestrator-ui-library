@@ -84,9 +84,11 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
   // Minimal steps show the status icon scaled down
   const MINIMAL_ICON_SCALE = 0.6;
   const MINIMAL_ICON_SIZE = STEP_ICON_SIZE * MINIMAL_ICON_SCALE;
-  // Scales used while a minimal step is hovered or focused. Transforms don't affect layout, so nothing shifts
+  // Icon scale while a minimal step is hovered or focused. Transforms don't affect layout, so nothing shifts
   const MINIMAL_ICON_HOVER_SCALE = 0.8;
-  const MINIMAL_ROW_HOVER_SCALE = 1.03;
+  // How far the hover background grows above, below and to the left of the row. It never grows to the right,
+  // so its right edge stays aligned with the step cards
+  const MINIMAL_ROW_HOVER_GROWTH = theme.size.xs;
 
   const stepStateMinimalIconWrapperStyle = css({
     width: `${MINIMAL_ICON_SIZE}px`,
@@ -107,39 +109,78 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     gap: theme.size.s,
     // Aligns the scaled icon with the center of the regular step icons and the spacer line
     paddingLeft: `${36 - MINIMAL_ICON_SIZE / 2}px`,
-    paddingRight: theme.size.s,
+    // Matches the padding and border of the step cards (EuiPanel), so right-aligned content lines up
+    paddingRight: `calc(${theme.size.base} + ${theme.border.width.thin})`,
+    position: 'relative',
+    // Keeps the hover layer (z-index -1) behind the row's content but in front of the page background
+    isolation: 'isolate',
     cursor: 'pointer',
     borderRadius: theme.border.radius.small,
-    // Grow from the icon center so the icon stays on the spacer line
-    transformOrigin: '36px center',
-    transition: `background-color ${theme.animation.fast} ease-in, transform ${theme.animation.fast} ease-in`,
+    // The hover background is a separate layer, so it can grow without moving the row's content
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      zIndex: -1,
+      borderRadius: 'inherit',
+      backgroundColor: 'transparent',
+      transition: `background-color ${theme.animation.fast} ease-in, inset ${theme.animation.fast} ease-in`,
+    },
     '&:hover, &:focus-visible': {
-      backgroundColor: theme.colors.backgroundBaseInteractiveHover,
-      transform: `scale(${MINIMAL_ROW_HOVER_SCALE})`,
+      '&::before': {
+        backgroundColor: theme.colors.backgroundBaseInteractiveHover,
+        inset: `calc(-1 * ${MINIMAL_ROW_HOVER_GROWTH}) 0 calc(-1 * ${MINIMAL_ROW_HOVER_GROWTH}) calc(-1 * ${MINIMAL_ROW_HOVER_GROWTH})`,
+      },
       '.wfoMinimalStepIcon > div': {
         transform: `scale(${MINIMAL_ICON_HOVER_SCALE})`,
       },
       '.wfoMinimalStepName': {
-        display: 'block',
+        display: 'flex',
+        fontWeight: theme.font.weight.bold,
       },
     },
     '&:focus-visible': {
       outline: `2px solid ${theme.colors.primary}`,
     },
     '@media (prefers-reduced-motion: reduce)': {
-      '&, .wfoMinimalStepIcon > div': {
+      '&::before, .wfoMinimalStepIcon > div': {
         transition: 'none',
       },
     },
   });
 
   const minimalStepNameStyle = css({
+    display: 'flex',
+    flexDirection: 'column',
     color: theme.colors.textSubdued,
+    // Reserves the width of the bold name, so the name doesn't shift when it turns bold on hover
+    '&::after': {
+      content: 'attr(data-text)',
+      fontWeight: theme.font.weight.bold,
+      height: 0,
+      visibility: 'hidden',
+      overflow: 'hidden',
+      userSelect: 'none',
+      pointerEvents: 'none',
+    },
   });
 
   // Used with the "Hide minimal step name" option: the name only appears while the step is hovered or focused
   const minimalStepHiddenNameStyle = css({
     display: 'none',
+  });
+
+  const minimalStepDurationStyle = css({
+    color: theme.colors.textSubdued,
+    fontVariantNumeric: 'tabular-nums',
+  });
+
+  // The "Duration" label is kept invisible and without height, so the duration column gets the same width
+  // as on the step cards and its value is centered at the same position
+  const minimalStepDurationLabelStyle = css({
+    visibility: 'hidden',
+    height: 0,
+    overflow: 'hidden',
   });
 
   const stepHeaderRightStyle = css({
@@ -197,6 +238,8 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     minimalStepRowStyle,
     minimalStepNameStyle,
     minimalStepHiddenNameStyle,
+    minimalStepDurationStyle,
+    minimalStepDurationLabelStyle,
     getStepHeaderStyle,
     getStepPanelStyle,
     getStepToggleExpandStyle,
