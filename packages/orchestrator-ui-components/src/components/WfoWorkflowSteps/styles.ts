@@ -34,6 +34,12 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     fontWeight: theme.font.weight.bold,
   });
 
+  // Title above the step list ("Workflow steps" / "Task steps")
+  const stepListTitleStyle = css({
+    fontSize: theme.size.l,
+    fontWeight: theme.font.weight.bold,
+  });
+
   const stepListContentAnchorStyle = css({
     marginTop: 2,
     marginLeft: 0,
@@ -225,6 +231,7 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     stepHeaderRightStyle,
     stepListContentAnchorStyle,
     stepListContentBoldTextStyle,
+    stepListTitleStyle,
     stepListContentStyle,
     stepListHeaderStyle,
     stepListOptionsContainerStyle,
