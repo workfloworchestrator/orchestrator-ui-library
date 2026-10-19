@@ -84,6 +84,9 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
   // Minimal steps show the status icon scaled down
   const MINIMAL_ICON_SCALE = 0.6;
   const MINIMAL_ICON_SIZE = STEP_ICON_SIZE * MINIMAL_ICON_SCALE;
+  // Scales used while a minimal step is hovered or focused. Transforms don't affect layout, so nothing shifts
+  const MINIMAL_ICON_HOVER_SCALE = 0.8;
+  const MINIMAL_ROW_HOVER_SCALE = 1.03;
 
   const stepStateMinimalIconWrapperStyle = css({
     width: `${MINIMAL_ICON_SIZE}px`,
@@ -94,6 +97,7 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     '& > div': {
       flexShrink: 0,
       transform: `scale(${MINIMAL_ICON_SCALE})`,
+      transition: `transform ${theme.animation.fast} ease-in`,
     },
   });
 
@@ -106,17 +110,36 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     paddingRight: theme.size.s,
     cursor: 'pointer',
     borderRadius: theme.border.radius.small,
-    transition: `background-color ${theme.animation.fast} ease-in`,
-    '&:hover': {
+    // Grow from the icon center so the icon stays on the spacer line
+    transformOrigin: '36px center',
+    transition: `background-color ${theme.animation.fast} ease-in, transform ${theme.animation.fast} ease-in`,
+    '&:hover, &:focus-visible': {
       backgroundColor: theme.colors.backgroundBaseInteractiveHover,
+      transform: `scale(${MINIMAL_ROW_HOVER_SCALE})`,
+      '.wfoMinimalStepIcon > div': {
+        transform: `scale(${MINIMAL_ICON_HOVER_SCALE})`,
+      },
+      '.wfoMinimalStepName': {
+        display: 'block',
+      },
     },
     '&:focus-visible': {
       outline: `2px solid ${theme.colors.primary}`,
+    },
+    '@media (prefers-reduced-motion: reduce)': {
+      '&, .wfoMinimalStepIcon > div': {
+        transition: 'none',
+      },
     },
   });
 
   const minimalStepNameStyle = css({
     color: theme.colors.textSubdued,
+  });
+
+  // Used with the "Hide minimal step name" option: the name only appears while the step is hovered or focused
+  const minimalStepHiddenNameStyle = css({
+    display: 'none',
   });
 
   const stepHeaderRightStyle = css({
@@ -173,6 +196,7 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     stepStateMinimalIconWrapperStyle,
     minimalStepRowStyle,
     minimalStepNameStyle,
+    minimalStepHiddenNameStyle,
     getStepHeaderStyle,
     getStepPanelStyle,
     getStepToggleExpandStyle,
