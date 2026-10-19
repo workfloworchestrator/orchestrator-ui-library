@@ -83,7 +83,7 @@ export const WfoStepStatusIcon = ({ stepStatus, isStartStep = false, isMinimal =
   // The minimal presentation omits the sub icon to reduce noise
   if (isMinimal) {
     return (
-      <div css={stepStateMinimalIconWrapperStyle}>
+      <div className="wfoMinimalStepIcon" css={stepStateMinimalIconWrapperStyle}>
         <div css={stepStateStyle}>
           <MainIcon color={mainIconColor} stepStatus={stepStatus} isStartStep={isStartStep} />
         </div>

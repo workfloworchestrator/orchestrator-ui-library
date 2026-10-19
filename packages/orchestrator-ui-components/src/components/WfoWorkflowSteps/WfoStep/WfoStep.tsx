@@ -67,6 +67,7 @@ export const WfoStep = React.forwardRef(
       getStepToggleExpandStyle,
       minimalStepRowStyle,
       minimalStepNameStyle,
+      minimalStepHiddenNameStyle,
     } = useWithOrchestratorTheme(getWorkflowStepsStyles);
     const { overrideStepDetail } = useStepDetailOverride();
     const t = useTranslations('processes.steps');
@@ -146,11 +147,13 @@ export const WfoStep = React.forwardRef(
             }}
           >
             <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} isMinimal />
-            {!hideMinimalStepName && (
-              <EuiText size="s" css={minimalStepNameStyle}>
-                {step.name}
-              </EuiText>
-            )}
+            <EuiText
+              size="s"
+              className="wfoMinimalStepName"
+              css={[minimalStepNameStyle, hideMinimalStepName && minimalStepHiddenNameStyle]}
+            >
+              {step.name}
+            </EuiText>
           </div>
         </div>
       );
