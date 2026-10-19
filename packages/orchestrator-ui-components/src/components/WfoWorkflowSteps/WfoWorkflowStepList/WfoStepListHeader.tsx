@@ -56,7 +56,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
 }) => {
   const t = useTranslations('processes.steps');
   const { theme } = useOrchestratorTheme();
-  const { stepListHeaderStyle, stepListContentStyle, stepListContentBoldTextStyle, stepListOptionsContainerStyle } =
+  const { stepListHeaderStyle, stepListContentStyle, stepListTitleStyle, stepListOptionsContainerStyle } =
     useWithOrchestratorTheme(getWorkflowStepsStyles);
 
   const [isViewOptionOpen, setIsViewOptionOpen] = useState(false);
@@ -85,7 +85,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     <EuiFlexGroup css={stepListHeaderStyle}>
       {/* Left side: header and detail level selector */}
       <EuiFlexGroup css={stepListContentStyle}>
-        <EuiText size="m" css={stepListContentBoldTextStyle}>
+        <EuiText size="m" css={stepListTitleStyle}>
           {t(isTask ? 'taskSteps' : 'workflowSteps')}
         </EuiText>
         {!showRaw && (
