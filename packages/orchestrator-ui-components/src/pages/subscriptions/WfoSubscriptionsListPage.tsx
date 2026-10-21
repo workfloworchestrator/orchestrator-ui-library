@@ -47,7 +47,12 @@ import {
   SortOrder,
   ToastTypes,
 } from '@/types';
-import { getCsvFileNameWithDate, initiateCsvFileDownload, parseDateToLocaleDateTimeString } from '@/utils';
+import {
+  getCsvFileNameWithDate,
+  getSearchExportTruncation,
+  initiateCsvFileDownload,
+  parseDateToLocaleDateTimeString,
+} from '@/utils';
 
 const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
   return [...resultColumToPropertyMap.entries()].find(([, v]) => v === field)?.[0] || '';
@@ -492,14 +497,11 @@ export const WfoSubscriptionsListPage = () => {
       if (!exportItems.length) {
         return;
       }
-      // The export endpoint caps the rows at SEARCH_MAX_EXPORT_LIMIT and only signals the cut-off through has_next_page
-      if (exportResult.page_info.has_next_page) {
+      const truncation = getSearchExportTruncation(exportResult, exportItems.length);
+      if (truncation) {
         showToastMessage(
           ToastTypes.ERROR,
-          tError('notAllResultsExported', {
-            totalResults: exportResult.cursor?.total_items ?? exportItems.length,
-            maximumExportedResults: exportItems.length,
-          }),
+          tError('notAllResultsExported', truncation),
           tError('notAllResultsExportedTitle'),
         );
       }
