@@ -2,18 +2,28 @@ import React, { FC, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiFlexGroup, EuiForm, EuiFormRow, EuiPopover, EuiSwitch, EuiText } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiButtonGroup,
+  EuiFlexGroup,
+  EuiForm,
+  EuiFormRow,
+  EuiPopover,
+  EuiSwitch,
+  EuiText,
+} from '@elastic/eui';
 
-import { WfoTextAnchor } from '@/components/WfoTextAnchor/WfoTextAnchor';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoCode, WfoEyeFill } from '@/icons';
+import { StepDetailLevel } from '@/types';
 
 import { getWorkflowStepsStyles } from '../styles';
 
 export type WfoStepListHeaderProps = {
-  allDetailToggleText: string;
+  detailLevel: StepDetailLevel;
   showDelta: boolean;
   showHiddenKeys: boolean;
+  hideMinimalStepNames: boolean;
   showRaw: boolean;
   showTraceback: boolean;
   showTracebackButton: boolean;
@@ -22,14 +32,16 @@ export type WfoStepListHeaderProps = {
   onChangeShowDelta: (showDelta: boolean) => void;
   onChangeShowRaw: (showRaw: boolean) => void;
   onChangeShowHiddenKeys: (showHiddenKeys: boolean) => void;
+  onChangeHideMinimalStepNames: (hideMinimalStepNames: boolean) => void;
   onShowTraceback: (showTraceback: boolean) => void;
-  onToggleAllDetailsIsOpen: () => void;
+  onChangeDetailLevel: (detailLevel: StepDetailLevel) => void;
 };
 
 export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
-  allDetailToggleText,
+  detailLevel,
   showDelta,
   showHiddenKeys,
+  hideMinimalStepNames,
   showRaw,
   showTraceback,
   showTracebackButton,
@@ -38,12 +50,13 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   onChangeShowDelta,
   onChangeShowRaw,
   onChangeShowHiddenKeys,
+  onChangeHideMinimalStepNames,
   onShowTraceback,
-  onToggleAllDetailsIsOpen,
+  onChangeDetailLevel,
 }) => {
   const t = useTranslations('processes.steps');
   const { theme } = useOrchestratorTheme();
-  const { stepListHeaderStyle, stepListContentStyle, stepListContentBoldTextStyle, stepListOptionsContainerStyle } =
+  const { stepListHeaderStyle, stepListContentStyle, stepListTitleStyle, stepListOptionsContainerStyle } =
     useWithOrchestratorTheme(getWorkflowStepsStyles);
 
   const [isViewOptionOpen, setIsViewOptionOpen] = useState(false);
@@ -62,14 +75,29 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     </EuiButton>
   );
 
+  const detailLevelOptions = [
+    { id: StepDetailLevel.MINIMAL, label: t('detailMinimal') },
+    { id: StepDetailLevel.STANDARD, label: t('detailStandard') },
+    { id: StepDetailLevel.HIGH, label: t('detailHigh') },
+  ];
+
   return (
     <EuiFlexGroup css={stepListHeaderStyle}>
-      {/* Left side: header and expand/collapse button */}
+      {/* Left side: header and detail level selector */}
       <EuiFlexGroup css={stepListContentStyle}>
-        <EuiText size="m" css={stepListContentBoldTextStyle}>
+        <EuiText size="m" css={stepListTitleStyle}>
           {t(isTask ? 'taskSteps' : 'workflowSteps')}
         </EuiText>
-        {!showRaw && <WfoTextAnchor text={allDetailToggleText} onClick={onToggleAllDetailsIsOpen} />}
+        {!showRaw && (
+          <EuiButtonGroup
+            legend={t('detailLevel')}
+            options={detailLevelOptions}
+            idSelected={detailLevel}
+            onChange={(id) => onChangeDetailLevel(id as StepDetailLevel)}
+            buttonSize="s"
+            color="primary"
+          />
+        )}
       </EuiFlexGroup>
       {/* Right side: view options */}
       <EuiFlexGroup justifyContent="flexEnd" direction="row" css={stepListOptionsContainerStyle} gutterSize="s">
@@ -98,6 +126,16 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
                   checked={showHiddenKeys}
                   onChange={(e) => {
                     onChangeShowHiddenKeys(e.target.checked);
+                    closeViewOption();
+                  }}
+                />
+              </EuiFormRow>
+              <EuiFormRow>
+                <EuiSwitch
+                  label={t('hideMinimalStepNames')}
+                  checked={hideMinimalStepNames}
+                  onChange={(e) => {
+                    onChangeHideMinimalStepNames(e.target.checked);
                     closeViewOption();
                   }}
                 />
