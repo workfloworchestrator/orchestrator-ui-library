@@ -1,5 +1,10 @@
 [
   {
+    "orchestratorUiVersion": "10.3.0",
+    "minimumOrchestratorCoreVersion": "5.6.0",
+    "changes": "Process steps expose an importance value, used to show steps as minimal, standard or verbose."
+  },
+  {
     "orchestratorUiVersion": "9.0.1",
     "minimumOrchestratorCoreVersion": "5.5.0",
     "changes": "Workflow user guides endpoint moved from the surf app to orchestrator-core."
