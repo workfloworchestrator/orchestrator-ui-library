@@ -38,6 +38,7 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
 
   const tableStyle = css({
     width: '100%',
+    position: 'relative',
   });
 
   const headerStyle = css({
@@ -53,9 +54,6 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
   });
 
   const bodyLoadingStyle = css({
-    position: 'relative',
-    overflow: 'hidden',
-
     '&::before': {
       position: 'absolute',
       content: '""',
@@ -134,7 +132,8 @@ export const getWfoTableStyles = ({ theme, isDarkModeActive }: WfoThemeHelpers) 
     cursor: 'col-resize',
     borderRadius: theme.border.radius.small,
     position: 'absolute',
-    height: '100%',
+    top: 0,
+    height: TABLE_ROW_HEIGHT,
     zIndex: theme.levels.menu,
     '&:active, &:focus': {
       transition: 'background-color 0.15s',
