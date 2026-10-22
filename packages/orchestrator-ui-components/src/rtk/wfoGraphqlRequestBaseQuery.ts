@@ -29,6 +29,12 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
 
   const requestHeaders: RequestHeaders = options.requestHeaders ?? {};
 
+  const toErrorResult = (clientError: ClientError) => {
+    const customErrors = options.customErrors ?? ((error) => error.response.errors);
+    const { request, response } = clientError;
+    return { error: customErrors(clientError) as E, meta: { request, response } };
+  };
+
   return async ({ document, variables }, { getState, endpoint, forced, type, extra }) => {
     try {
       const prepareHeaders: PrepareHeaders = options.prepareHeaders ?? ((x) => x);
@@ -43,7 +49,13 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
         extra,
       });
 
-      const { data, errors } = await client.rawRequest(document, variables, preparedHeaders);
+      const {
+        data,
+        errors,
+        extensions,
+        headers: responseHeaders,
+        status,
+      } = await client.rawRequest(document, variables, preparedHeaders);
 
       // orchestrator-core reports a missing or invalid token with HTTP 200, which does not throw with errorPolicy 'all'
       if (authActive && isNotAuthenticated(errors)) {
@@ -51,9 +63,15 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
       }
 
       // With errorPolicy 'all' a response with errors does not throw. Without any data (e.g. access denied)
-      // it is an error, so queries get an error state instead of null data.
+      // it is an error, so queries get an error state instead of null data. It goes through customErrors as a
+      // ClientError, like a non-2xx response, so callers get the same error shape regardless of the HTTP status.
       if (data == null && errors?.length) {
-        return { error: errors as E, meta: { errors } };
+        return toErrorResult(
+          new ClientError(
+            { data, errors, extensions, headers: responseHeaders, status, body: '' },
+            { query: document, variables },
+          ),
+        );
       }
 
       return {
@@ -62,17 +80,11 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
       };
     } catch (error) {
       if (error instanceof ClientError) {
-        const { request, response } = error;
-        const errors = response.errors;
-
-        if (authActive && isNotAuthenticated(errors)) {
+        if (authActive && isNotAuthenticated(error.response.errors)) {
           signOut();
         }
 
-        const customErrors = options.customErrors ?? ((error) => error.response.errors);
-
-        const customizedErrors = customErrors(error) as E;
-        return { error: customizedErrors, meta: { request, response } };
+        return toErrorResult(error);
       }
       throw error;
     }
