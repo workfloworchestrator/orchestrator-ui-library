@@ -10,17 +10,27 @@ jest.mock('next-auth/react', () => ({ signOut: jest.fn() }));
 const notAuthorized = { message: 'Not authorized', extensions: { error_type: 'not_authorized' } };
 const notAuthenticated = { message: 'User is not authenticated', extensions: { error_type: 'not_authenticated' } };
 
-const queryWith = (rawRequest: jest.Mock, authActive: boolean) =>
+const document = '{ version { applicationVersions } }';
+
+const toErrorList = (error: ClientError): unknown => error.response?.errors;
+
+const queryWith = (rawRequest: jest.Mock, authActive: boolean, customErrors: (error: ClientError) => unknown) =>
   wfoGraphqlRequestBaseQuery(
     {
       client: { rawRequest } as unknown as GraphQLClient,
-      customErrors: (error: ClientError) => error.response?.errors,
+      customErrors,
     },
     authActive,
   );
 
-const run = (rawRequest: jest.Mock, authActive = true) =>
-  queryWith(rawRequest, authActive)({ document: '{ version { applicationVersions } }' }, {} as BaseQueryApi, {});
+const run = (rawRequest: jest.Mock, authActive = true, customErrors = toErrorList) =>
+  queryWith(rawRequest, authActive, customErrors)({ document }, {} as BaseQueryApi, {});
+
+const clientErrorWith = (status: number, errors: unknown[]) =>
+  new ClientError(
+    { status, headers: new Headers(), body: '', errors } as unknown as ConstructorParameters<typeof ClientError>[0],
+    { query: document },
+  );
 
 describe('wfoGraphqlRequestBaseQuery', () => {
   it('returns the data of a successful response', async () => {
@@ -35,10 +45,28 @@ describe('wfoGraphqlRequestBaseQuery', () => {
   it('returns the errors as an error when the response has errors and no data', async () => {
     const errors = [notAuthorized];
 
-    await expect(run(jest.fn().mockResolvedValue({ data: null, errors }))).resolves.toEqual({
+    await expect(run(jest.fn().mockResolvedValue({ data: null, errors }))).resolves.toMatchObject({
       error: errors,
-      meta: { errors },
+      meta: { request: { query: document }, response: { data: null, errors } },
     });
+  });
+
+  // The configured customErrors shape must not depend on the HTTP status the errors came with
+  it('converts the errors with customErrors for a response without data, as for a non-2xx response', async () => {
+    const toDetail = (error: ClientError) => ({
+      status: error.response.status,
+      data: { detail: error.response.errors?.[0]?.message },
+    });
+
+    const resolved = await run(
+      jest.fn().mockResolvedValue({ data: null, errors: [notAuthorized], status: 200 }),
+      true,
+      toDetail,
+    );
+    const rejected = await run(jest.fn().mockRejectedValue(clientErrorWith(403, [notAuthorized])), true, toDetail);
+
+    expect(resolved).toMatchObject({ error: { status: 200, data: { detail: 'Not authorized' } } });
+    expect(rejected).toMatchObject({ error: { status: 403, data: { detail: 'Not authorized' } } });
   });
 
   it('keeps the data of a partial response with errors', async () => {
@@ -52,12 +80,7 @@ describe('wfoGraphqlRequestBaseQuery', () => {
   });
 
   it('signs out when a non-2xx response reports the user as not authenticated', async () => {
-    const response = { status: 401, headers: new Headers(), body: '', errors: [notAuthenticated] };
-    const clientError = new ClientError(response as unknown as ConstructorParameters<typeof ClientError>[0], {
-      query: '',
-    });
-
-    const result = await run(jest.fn().mockRejectedValue(clientError));
+    const result = await run(jest.fn().mockRejectedValue(clientErrorWith(401, [notAuthenticated])));
 
     expect(result).toMatchObject({ error: [notAuthenticated] });
     expect(signOut).toHaveBeenCalledTimes(1);
@@ -67,10 +90,7 @@ describe('wfoGraphqlRequestBaseQuery', () => {
   it('signs out when a resolved response reports the user as not authenticated', async () => {
     const errors = [notAuthenticated];
 
-    await expect(run(jest.fn().mockResolvedValue({ data: null, errors }))).resolves.toEqual({
-      error: errors,
-      meta: { errors },
-    });
+    await expect(run(jest.fn().mockResolvedValue({ data: null, errors }))).resolves.toMatchObject({ error: errors });
     expect(signOut).toHaveBeenCalledTimes(1);
   });
 
