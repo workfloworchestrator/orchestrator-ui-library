@@ -1,5 +1,16 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.3.0
+
+### Minor Changes
+
+- 686dd28: Export the subscriptions list through the new `POST /search/{entity}/export` endpoint, so exports are no longer limited to the 100 results of a normal search. The backend caps the export at `SEARCH_MAX_EXPORT_LIMIT` (default 1000), and a toast shows when not all results were exported. Requires orchestrator-core 5.6.0 or later.
+
+### Patch Changes
+
+- dc929e5: Fix various bugs with safari browser
+- 4e6d55a: Bump minimal version of pydantic-forms package
+
 ## 10.2.1
 
 ### Patch Changes
