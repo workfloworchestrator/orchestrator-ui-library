@@ -13,6 +13,9 @@ import {
 import { stripUndefined } from '@/rtk/utils';
 import { GraphqlQueryVariables } from '@/types';
 
+const isNotAuthenticated = (errors?: readonly GraphQLError[]) =>
+  !!errors?.some((error) => error.extensions?.error_type === 'not_authenticated');
+
 export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
   options: GraphqlRequestBaseQueryArgs<E>,
   authActive: boolean,
@@ -42,6 +45,11 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
 
       const { data, errors } = await client.rawRequest(document, variables, preparedHeaders);
 
+      // orchestrator-core reports a missing or invalid token with HTTP 200, which does not throw with errorPolicy 'all'
+      if (authActive && isNotAuthenticated(errors)) {
+        signOut();
+      }
+
       // With errorPolicy 'all' a response with errors does not throw. Without any data (e.g. access denied)
       // it is an error, so queries get an error state instead of null data.
       if (data == null && errors?.length) {
@@ -57,7 +65,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
         const { request, response } = error;
         const errors = response.errors;
 
-        if (authActive && errors?.some((error: GraphQLError) => error.extensions?.error_type === 'not_authenticated')) {
+        if (authActive && isNotAuthenticated(errors)) {
           signOut();
         }
 
