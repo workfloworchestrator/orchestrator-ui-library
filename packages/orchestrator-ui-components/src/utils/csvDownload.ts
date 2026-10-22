@@ -1,8 +1,10 @@
 import { TranslationValues } from 'next-intl';
 
 import { MAXIMUM_ITEMS_FOR_BULK_FETCHING } from '@/configuration';
-import { GraphQLPageInfo, ToastTypes } from '@/types';
-import { toObjectWithSerializedValues, toObjectWithSortedKeys } from '@/utils';
+import { GraphQLPageInfo, PaginatedSearchResults, ToastTypes } from '@/types';
+
+import { toObjectWithSerializedValues } from './toObjectWithSerializedValues';
+import { toObjectWithSortedKeys } from './toObjectWithSortedKeys';
 
 function toCsvFileContent<T extends object>(data: T[]): string {
   const headers = Object.keys(data[0]).join(';');
@@ -50,6 +52,13 @@ export const getCsvFileNameWithDate = (fileNameWithoutExtension: string) => {
 
   return `${fileNameWithoutExtension}_${year}-${month}-${day}-${hour}${minute}${second}.csv`;
 };
+
+// The search export endpoint caps the rows at SEARCH_MAX_EXPORT_LIMIT and only signals the cut-off through
+// has_next_page. Returns the values for the notAllResultsExported toast, or undefined when nothing was cut off.
+export const getSearchExportTruncation = (exportResult: PaginatedSearchResults, exportedCount: number) =>
+  exportResult.page_info.has_next_page ?
+    { totalResults: exportResult.cursor?.total_items ?? exportedCount, maximumExportedResults: exportedCount }
+  : undefined;
 
 // This async function should be used when the exported data needs to be fetched from somewhere else
 export const csvDownloadHandler =
