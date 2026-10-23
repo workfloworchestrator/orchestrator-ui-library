@@ -109,7 +109,12 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
 
 export const getCommonFormFieldStyles = ({ theme }: WfoThemeHelpers) => {
   const formRowStyle = css({
-    marginBottom: theme.base * 2,
+    height: '100%',
+    boxSizing: 'border-box',
+    paddingBottom: theme.base * 2,
+    '.euiFormRow__fieldWrapper': {
+      marginTop: 'auto',
+    },
 
     '.euiText': {
       color: theme.colors.textParagraph,
