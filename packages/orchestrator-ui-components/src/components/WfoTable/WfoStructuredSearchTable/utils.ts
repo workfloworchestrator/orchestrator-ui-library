@@ -1,7 +1,16 @@
 import { type KeyboardEventHandler, useEffect, useRef } from 'react';
 import { FullOperator, RuleGroupType, RuleType, generateID } from 'react-querybuilder';
 import { prepareRuleGroup } from 'react-querybuilder';
-import { parseCEL } from 'react-querybuilder/parseCEL';
+import {
+  type CELExpression,
+  type CELMember,
+  evalCELLiteralValue,
+  isCELIdentifier,
+  isCELMember,
+  isCELNegatedIdentifier,
+  isCELStringLiteral,
+  parseCEL,
+} from 'react-querybuilder/parseCEL';
 
 import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
 import { EntityKind, OPERATOR_MAP, OperatorDescription } from '@/types';
@@ -93,12 +102,70 @@ const dropFieldValueSources = (ruleGroup: RuleGroupType): RuleGroupType => ({
   }),
 });
 
+const LIKE_OPERATORS_TO_NEGATED_OPERATORS_MAP = new Map([
+  ['contains', 'doesNotContain'],
+  ['startsWith', 'doesNotBeginWith'],
+  ['endsWith', 'doesNotEndWith'],
+]);
+
+//Example: a.b.c.contains("test") -> contains 1 argument; a.b.c.contains("test", "test2") -> contains 2 arguments
+const containsSingleFilterArgument = (celExpression: CELExpression): celExpression is Required<CELMember> =>
+  isCELMember(celExpression) && !!celExpression.left && !!celExpression.right && celExpression.list?.value.length === 1;
+
+const extractNegatedFieldPath = (celExpression: CELExpression): string | undefined => {
+  if (isCELNegatedIdentifier(celExpression) && celExpression.negations === 1) {
+    return celExpression.value.value;
+  }
+  if (!isCELMember(celExpression)) return undefined;
+
+  // The parts of a Member node, for example `!a.b.c` (parsed as `((!a).b).c`):
+  // left  - everything before the last dot: `!a.b`
+  // right - the name after the last dot: `c`
+  // list  - the arguments, only present on a method call like `c("x")`
+  // value - not set by parseCEL for a dot access, checked the same way the library's own chain check does
+  const { left, right, list, value } = celExpression;
+  const isPropertyAccess = !!left && !!right && isCELIdentifier(right) && !list && !value;
+
+  if (!isPropertyAccess) return undefined;
+
+  const field = extractNegatedFieldPath(left);
+  return field && `${field}.${right.value}`;
+};
+
+// parseCEL only recognizes a maximum of 2 levels deep for negated like:
+// !a.b.c.contains("x")` parses as `((!a).b).c.contains("x")
+const parseDeepNegatedLikeExpression = (celExpression: CELExpression): RuleType | null => {
+  if (!containsSingleFilterArgument(celExpression)) return null;
+
+  const field = extractNegatedFieldPath(celExpression.left);
+  const negatedOperator = LIKE_OPERATORS_TO_NEGATED_OPERATORS_MAP.get(celExpression.right.value);
+  // The method call's only argument: the text searched for, `"x"` in `a.contains("x")`.
+  const [searchValueExpression] = celExpression.list.value;
+  const isNegatedLikeExpression =
+    !!field
+    && !!negatedOperator
+    && (isCELStringLiteral(searchValueExpression) || isCELIdentifier(searchValueExpression));
+
+  if (!isNegatedLikeExpression) return null;
+
+  const searchValue =
+    isCELStringLiteral(searchValueExpression) ?
+      evalCELLiteralValue(searchValueExpression)
+    : searchValueExpression.value;
+
+  return {
+    field,
+    operator: negatedOperator,
+    value: searchValue,
+  };
+};
+
 export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefined => {
   if (!celString) {
     return undefined;
   }
   try {
-    const ruleGroup = parseCEL(celString);
+    const ruleGroup = parseCEL(celString, { customExpressionHandler: parseDeepNegatedLikeExpression });
     // prepareRuleGroup assigns the rule ids parseCEL leaves out. Without stable ids the
     // QueryBuilder regenerates them on every query prop change, remounting all rules —
     // which loses editor state and can loop with editors that commit a value on mount.
