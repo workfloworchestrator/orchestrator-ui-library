@@ -16,6 +16,7 @@ import type { StepListItem } from '../WfoWorkflowStepList';
 import { getStepContent } from '../stepListUtils';
 import { getWorkflowStepsStyles } from '../styles';
 import { CodeView, WfoCodeViewSelector } from './WfoCodeViewSelector';
+import { WfoMinimalStep } from './WfoMinimalStep';
 import { WfoStepForm } from './WfoStepForm';
 import { useStepDetailOverride } from './useStepDetailOverride';
 
@@ -65,11 +66,6 @@ export const WfoStep = React.forwardRef(
       stepDurationStyle,
       stepRowStyle,
       getStepToggleExpandStyle,
-      minimalStepRowStyle,
-      minimalStepNameStyle,
-      minimalStepHiddenNameStyle,
-      minimalStepDurationStyle,
-      minimalStepDurationLabelStyle,
     } = useWithOrchestratorTheme(getWorkflowStepsStyles);
     const { overrideStepDetail } = useStepDetailOverride();
     const t = useTranslations('processes.steps');
@@ -133,49 +129,14 @@ export const WfoStep = React.forwardRef(
     if (presentation === StepPresentation.MINIMAL) {
       return (
         <div ref={ref}>
-          <div
-            css={minimalStepRowStyle}
-            role="button"
-            tabIndex={0}
-            aria-expanded={false}
-            aria-label={step.name}
-            title={`${step.name} - ${step.status}`}
-            onClick={() => onToggleStepDetail(hasStepContent)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                onToggleStepDetail(hasStepContent);
-              }
-            }}
-          >
-            <WfoStepStatusIcon stepStatus={step.status} isStartStep={isStartStep} isMinimal />
-            <EuiText
-              size="s"
-              className="wfoMinimalStepName"
-              data-text={step.name}
-              css={[minimalStepNameStyle, hideMinimalStepName && minimalStepHiddenNameStyle]}
-            >
-              {step.name}
-            </EuiText>
-            {/* Same right-hand layout as the step card header, so the durations line up */}
-            <EuiFlexGroup css={stepRowStyle}>
-              {step.completed && (
-                <>
-                  <EuiFlexItem grow={0} css={stepHeaderRightStyle} title={t('duration')}>
-                    <EuiText size="m" css={[stepDurationStyle, minimalStepDurationLabelStyle]} aria-hidden>
-                      {t('duration')}
-                    </EuiText>
-                    <EuiText size="s" css={minimalStepDurationStyle}>
-                      {calculateTimeDifference(startedAt, completedAt)}
-                    </EuiText>
-                  </EuiFlexItem>
-                  <EuiFlexItem grow={0} css={getStepToggleExpandStyle(false)} aria-hidden>
-                    <WfoChevronDown color={theme.colors.textParagraph} />
-                  </EuiFlexItem>
-                </>
-              )}
-            </EuiFlexGroup>
-          </div>
+          <WfoMinimalStep
+            step={step}
+            startedAt={startedAt}
+            completedAt={completedAt}
+            isStartStep={isStartStep}
+            hideStepName={hideMinimalStepName}
+            onToggle={() => onToggleStepDetail(hasStepContent)}
+          />
         </div>
       );
     }
