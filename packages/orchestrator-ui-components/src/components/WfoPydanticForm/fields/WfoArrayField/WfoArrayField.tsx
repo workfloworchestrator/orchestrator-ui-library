@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useFieldArray } from 'react-hook-form';
 
+import { useTranslations } from 'next-intl';
 import {
   PydanticFormElementProps,
   RenderFields,
@@ -11,7 +12,7 @@ import {
   useGetForm,
 } from 'pydantic-forms';
 
-import { EuiIcon } from '@elastic/eui';
+import { EuiIcon, EuiText, EuiTextColor } from '@elastic/eui';
 
 import { useOrchestratorTheme } from '@/hooks';
 
@@ -57,6 +58,7 @@ export const WfoArrayField = ({ pydanticFormField }: PydanticFormElementProps) =
   const { minItems, maxItems } = pydanticFormField.validations;
   const { theme } = useOrchestratorTheme();
   const { container, fieldWrapper } = getWfoArrayFieldStyles(theme);
+  const t = useTranslations('pydanticForms.widgets.arrayField');
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -77,7 +79,8 @@ export const WfoArrayField = ({ pydanticFormField }: PydanticFormElementProps) =
   }, [minItems, append, remove, arrayItem, arrayName, fields, appendDefault]);
 
   const showMinus = (!minItems || fields.length > minItems) && !disabled;
-  const showPlus = (!maxItems || fields.length < maxItems) && !disabled;
+  const showPlus = (maxItems === undefined || fields.length < maxItems) && !disabled;
+  const showNoItemsAvailable = fields.length === 0 && maxItems === 0;
 
   if (!arrayItem) return null;
 
@@ -107,6 +110,11 @@ export const WfoArrayField = ({ pydanticFormField }: PydanticFormElementProps) =
 
   return (
     <div data-testid={arrayName} css={container}>
+      {showNoItemsAvailable && (
+        <EuiText size="s">
+          <EuiTextColor color="subdued">{t('noItemsAvailable')}</EuiTextColor>
+        </EuiText>
+      )}
       {fields.map(renderField)}
 
       {showPlus && <PlusButton onClick={appendDefault} testId={`${arrayName}-plus-button`} />}
