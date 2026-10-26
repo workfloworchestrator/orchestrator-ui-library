@@ -204,6 +204,11 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
       gap: 0,
       alignItems: 'center',
       cursor: isClickable ? 'pointer' : 'default',
+      borderRadius: theme.border.radius.small,
+      '&:focus-visible': {
+        outline: `2px solid ${theme.colors.primary}`,
+        outlineOffset: theme.size.xs,
+      },
     });
 
   // Subtle highlight of clickable step cards, so it's clear which step is toggled on click
@@ -211,7 +216,7 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     css({
       transition: `border-color ${theme.animation.fast} ease-in, box-shadow ${theme.animation.fast} ease-in`,
       ...(isClickable && {
-        '&:has(.wfoStepHeader:hover)': {
+        '&:has(.wfoStepHeader:hover), &:has(.wfoStepHeader:focus-visible)': {
           borderColor: theme.colors.borderBasePrimary,
           boxShadow: `0 0 0 1px ${theme.colors.borderBasePrimary}`,
         },
