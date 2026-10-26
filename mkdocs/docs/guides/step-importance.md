@@ -6,8 +6,8 @@ it. How a step author sets the importance is documented in the
 [Orchestrator Core workflow steps docs](https://workfloworchestrator.org/orchestrator-core/reference-docs/workflows/workflow-steps/#step-importance).
 
 The orchestrator UI uses importance to decide how much of each step to show in the process detail page. This page
-describes that mapping. It requires Orchestrator Core 5.6 or newer; with an older backend every step is treated as
-`default`.
+describes that mapping. It requires Orchestrator Core 5.6 or newer; older backends do not support the process
+detail query, see the [Frontend / Backend Compatibility](compatibility.md) guide.
 
 ## Presentations
 
