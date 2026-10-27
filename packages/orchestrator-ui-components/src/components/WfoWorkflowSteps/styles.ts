@@ -5,11 +5,13 @@ import { WfoThemeHelpers } from '@/hooks';
 export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActive }: WfoThemeHelpers) => {
   const SPACE_BETWEEN_STEPS = theme.base * 1.5;
   const STEP_ICON_SIZE = 40;
+  // Horizontal position of the spacer line, which runs through the center of the step icons
+  const STEP_SPACER_LINE_OFFSET = 36;
 
   const stepSpacerStyle = css({
     borderLeft: `1px solid ${theme.colors.backgroundBaseAccent}`,
     height: `${SPACE_BETWEEN_STEPS}px`,
-    marginLeft: '36px',
+    marginLeft: `${STEP_SPACER_LINE_OFFSET}px`,
   });
 
   const stepRowStyle = css({
@@ -114,7 +116,7 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     alignItems: 'center',
     gap: theme.size.s,
     // Aligns the scaled icon with the center of the regular step icons and the spacer line
-    paddingLeft: `${36 - MINIMAL_ICON_SIZE / 2}px`,
+    paddingLeft: `${STEP_SPACER_LINE_OFFSET - MINIMAL_ICON_SIZE / 2}px`,
     // Matches the padding and border of the step cards (EuiPanel), so right-aligned content lines up
     paddingRight: `calc(${theme.size.base} + ${theme.border.width.thin})`,
     position: 'relative',
