@@ -46,6 +46,45 @@ describe('parseCelToRuleGroup', () => {
     expect((ruleGroup?.rules[0] as RuleType).valueSource).toBeUndefined();
     expect(formatQuery(ruleGroup as RuleGroupType, { format: 'cel', fallbackExpression: '' })).toBe('lldp == "fals"');
   });
+
+  it.each([
+    ['!subscription.product.description.contains("asd")', 'doesNotContain'],
+    ['!subscription.product.description.startsWith("asd")', 'doesNotBeginWith'],
+    ['!subscription.product.description.endsWith("asd")', 'doesNotEndWith'],
+  ])('parses the negated like expression %s on a field nested three levels deep', (cel, operator) => {
+    const ruleGroup = parseCelToRuleGroup(cel);
+
+    expect(ruleGroup?.rules).toEqual([
+      expect.objectContaining({ field: 'subscription.product.description', operator, value: 'asd' }),
+    ]);
+  });
+
+  it('does not turn other negated functions on a deeply nested field into rules', () => {
+    expect(parseCelToRuleGroup('!subscription.product.description.matches("asd")')).toBeUndefined();
+    expect(parseCelToRuleGroup('!subscription.product.description.toString("asd")')).toBeUndefined();
+  });
+
+  it('round trips a doesNotContain rule on a deeply nested field through formatQuery', () => {
+    const ruleGroup: RuleGroupType = {
+      combinator: 'and',
+      rules: [
+        { field: 'subscription.status', operator: '=', value: 'active' },
+        { field: 'subscription.product.fixed_inputs.speed', operator: 'doesNotContain', value: '10' },
+      ],
+    };
+    const celQuery = formatQuery(ruleGroup, { format: 'cel', fallbackExpression: '' });
+
+    const parsedRuleGroup = parseCelToRuleGroup(celQuery);
+
+    expect(parsedRuleGroup?.rules).toEqual([
+      expect.objectContaining({ field: 'subscription.status', operator: '=', value: 'active' }),
+      expect.objectContaining({
+        field: 'subscription.product.fixed_inputs.speed',
+        operator: 'doesNotContain',
+        value: '10',
+      }),
+    ]);
+  });
 });
 
 describe('collectRuleFields', () => {
