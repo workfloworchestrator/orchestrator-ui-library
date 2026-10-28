@@ -137,10 +137,11 @@ const extractNegatedFieldPath = (celExpression: CELExpression): string | undefin
 const parseDeepNegatedLikeExpression = (celExpression: CELExpression): RuleType | null => {
   if (!containsSingleFilterArgument(celExpression)) return null;
 
-  const field = extractNegatedFieldPath(celExpression.left);
-  const negatedOperator = LIKE_OPERATORS_TO_NEGATED_OPERATORS_MAP.get(celExpression.right.value);
+  const { left, right, list } = celExpression;
+  const field = extractNegatedFieldPath(left);
+  const negatedOperator = LIKE_OPERATORS_TO_NEGATED_OPERATORS_MAP.get(right.value);
   // The method call's only argument: the text searched for, `"x"` in `a.contains("x")`.
-  const [searchValueExpression] = celExpression.list.value;
+  const [searchValueExpression] = list.value;
   const isNegatedLikeExpression =
     !!field
     && !!negatedOperator
