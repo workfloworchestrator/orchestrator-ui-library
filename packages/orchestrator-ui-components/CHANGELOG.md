@@ -1,5 +1,23 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.3.0
+
+### Minor Changes
+
+- 31a5c66: Align pydantic form inputs on the same layout row.
+  - Inputs are pushed to the bottom of their row, and error messages are shown in a reserved space below the input so they no longer move it.
+  - Errors are truncated to one line, with the full text on hover.
+  - The integer field is now full width when the field has a `layout`.
+- 686dd28: Export the subscriptions list through the new `POST /search/{entity}/export` endpoint, so exports are no longer limited to the 100 results of a normal search. The backend caps the export at `SEARCH_MAX_EXPORT_LIMIT` (default 1000), and a toast shows when not all results were exported. Requires orchestrator-core 5.6.0 or later.
+- 5e3c2a2: 1707 Show process steps as minimal, standard or verbose based on the step importance from the backend. Replaces the "Expand all" toggle with a Minimal | Standard | Verbose selector.
+
+### Patch Changes
+
+- 4e6d55a: Bump minimal version of pydantic-forms package
+- 0de5bc0: Show the values of label fields rendered inside an array field, and for empty array fields with maxItems 0 show "No items available" and hide the plus button
+- b1029e7: Fix "does not contain" errors on nested properties. ParseCEL originally only recognizes 2 level deep properties.
+  This change adds support nested negated like expressions that are more than two levels deep such as `!subscription.product.description.contains("SURF")`
+
 ## 10.2.1
 
 ### Patch Changes
