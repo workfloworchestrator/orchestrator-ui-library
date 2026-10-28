@@ -12,9 +12,9 @@ interface WfoFormWithUserGuideProps {
 }
 
 export const WfoPageWithUserGuide = ({ workflowName, children }: WfoFormWithUserGuideProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
   const isBigScreen = useIsWithinBreakpoints(['xl', 'xxl']);
-  const { showWorkflowUserGuide } = useGetOrchestratorConfig();
+  const { showWorkflowUserGuide, expandWorkflowUserGuideOnStart } = useGetOrchestratorConfig();
+  const [isExpanded, setIsExpanded] = useState(expandWorkflowUserGuideOnStart);
 
   if (!workflowName || !showWorkflowUserGuide) {
     return <>{children}</>;
