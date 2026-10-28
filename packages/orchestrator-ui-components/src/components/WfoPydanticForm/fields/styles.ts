@@ -109,7 +109,24 @@ export const getWfoCronFieldStyles = ({ theme }: WfoThemeHelpers) => {
 
 export const getCommonFormFieldStyles = ({ theme }: WfoThemeHelpers) => {
   const formRowStyle = css({
-    marginBottom: theme.base * 2,
+    position: 'relative',
+    height: '100%',
+    boxSizing: 'border-box',
+    paddingBottom: theme.base * 2,
+    '.euiFormRow__fieldWrapper': {
+      marginTop: 'auto',
+    },
+    // Errors sit in the bottom padding so they don't shift the input
+    '.euiFormErrorText': {
+      position: 'absolute',
+      insetInline: 0,
+      bottom: 0,
+      height: theme.base * 2,
+      boxSizing: 'border-box',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
 
     '.euiText': {
       color: theme.colors.textParagraph,
