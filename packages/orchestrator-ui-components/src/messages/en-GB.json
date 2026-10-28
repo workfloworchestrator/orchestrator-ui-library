@@ -244,6 +244,9 @@
       "startWorkflow": "Start workflow"
     },
     "widgets": {
+      "arrayField": {
+        "noItemsAvailable": "No items available"
+      },
       "contactPersonName": {
         "placeholder": "Search and add contact persons..."
       },

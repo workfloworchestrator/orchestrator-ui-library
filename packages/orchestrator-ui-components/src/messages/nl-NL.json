@@ -244,6 +244,9 @@
       "startWorkflow": "Start workflow"
     },
     "widgets": {
+      "arrayField": {
+        "noItemsAvailable": "Geen items beschikbaar"
+      },
       "contactPersonName": {
         "placeholder": "Zoek en voeg contactpersonen toe..."
       },
