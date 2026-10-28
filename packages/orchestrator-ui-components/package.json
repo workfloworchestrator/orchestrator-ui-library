@@ -67,7 +67,7 @@
     "scroll-into-view": "^1.16.2",
     "unidiff": "^1.0.4",
     "use-query-params": "^2.2.2",
-    "zod": "^4.4.3"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@elastic/eui": "^122.1.0",
