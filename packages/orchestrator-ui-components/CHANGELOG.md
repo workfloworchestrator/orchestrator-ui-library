@@ -1,5 +1,11 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.4.0
+
+### Minor Changes
+
+- 4015a59: Add a UI feature toggle to configure the initial expanded state of the workflow user-guide.
+
 ## 10.3.0
 
 ### Minor Changes
