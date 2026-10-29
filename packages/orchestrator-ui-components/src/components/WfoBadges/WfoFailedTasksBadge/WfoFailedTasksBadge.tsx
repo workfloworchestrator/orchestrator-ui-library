@@ -44,7 +44,7 @@ const WfoTasksLink = ({ children }: { children: ReactNode }) => (
 );
 
 export const WfoFailedTasksBadge = () => {
-  const t = useTranslations('common');
+  const t = useTranslations();
   const { theme } = useOrchestratorTheme();
   const { failedTaskBadgeStyle } = useWithOrchestratorTheme(getTasksBadgeStyles);
   const { data: processStatusCounts } = useProcessStatusCountsQuery();
@@ -66,11 +66,11 @@ export const WfoFailedTasksBadge = () => {
         <WfoTasksLink>
           <WfoHeaderBadge
             css={failedTaskBadgeStyle}
-            color={theme.colors.backgroundBaseNeutral}
-            textColor={theme.colors.textParagraph}
+            color={'#00000000'}
+            textColor={theme.colors.textGhost}
             iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
           >
-            {taskCountsSummary.total}
+            {t('main.processStatusBadge', { count: taskCountsSummary.total, type: 'task' })}
           </WfoHeaderBadge>
         </WfoTasksLink>
       </EuiToolTip>
@@ -78,15 +78,15 @@ export const WfoFailedTasksBadge = () => {
   }
 
   return (
-    <EuiToolTip position="bottom" content={<div>{t('noFailedTasks')}</div>}>
+    <EuiToolTip position="bottom" content={<div>{t('common.noFailedTasks')}</div>}>
       <WfoTasksLink>
         <WfoHeaderBadge
           css={failedTaskBadgeStyle}
-          color={theme.colors.backgroundBaseNeutral}
-          textColor={theme.colors.textParagraph}
+          color={'#ffffff00'}
+          textColor={theme.colors.textGhost}
           iconType={() => <WfoCheckmarkCircleFill color={theme.colors.success} />}
         >
-          0
+          {t('main.processStatusBadge', { count: 0, type: 'task' })}
         </WfoHeaderBadge>
       </WfoTasksLink>
     </EuiToolTip>

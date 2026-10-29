@@ -27,8 +27,8 @@ export const WfoEngineStatusBadge = () => {
 
   return (
     <WfoHeaderBadge
-      color={theme.colors.backgroundBaseNeutral}
-      textColor={theme.colors.textParagraph}
+      color={'#00000000'}
+      textColor={theme.colors.textGhost}
       iconType={() => <WfoStatusDotIcon color={engineColor} />}
     >
       {engineStatusText}
