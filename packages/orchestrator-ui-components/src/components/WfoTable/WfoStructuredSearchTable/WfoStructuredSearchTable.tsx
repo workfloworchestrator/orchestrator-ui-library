@@ -80,6 +80,8 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   rowExpandingConfiguration: WfoTableProps<T>['rowExpandingConfiguration'];
   defaultHiddenColumns?: TableColumnKeys<T>;
   additionalHiddenColumns?: TableColumnKeys<T>;
+  // Called with the columns the user has hidden, e.g. to only request the visible columns from the backend
+  onHiddenColumnsChange?: (hiddenColumns: TableColumnKeys<T>) => void;
   nonEditableColumns?: TableColumnKeys<T>;
   defaultAdvancedNestedSearch?: boolean;
   queryString?: string;
@@ -113,6 +115,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   tableColumnConfig,
   defaultHiddenColumns = [],
   additionalHiddenColumns = [],
+  onHiddenColumnsChange,
   nonEditableColumns = [],
   defaultAdvancedNestedSearch = false,
   queryString,
@@ -156,6 +159,10 @@ export const WfoStructuredSearchTable = <T extends object>({
   const t = useTranslations('common');
   const { buildColumnFilter } = useBuildColumnFilter<T>(tableColumnConfig, getColumnSearchFieldName);
   const bulkEdit = useBulkEdit<T>(data, bulkEditConfiguration);
+
+  useEffect(() => {
+    onHiddenColumnsChange?.(userHiddenColumns);
+  }, [userHiddenColumns, onHiddenColumnsChange]);
 
   useEffect(() => {
     if (defaultHiddenColumns) {

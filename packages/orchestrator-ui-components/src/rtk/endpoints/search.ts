@@ -7,6 +7,7 @@ import {
   PaginatedSearchResults,
   PathAutocompleteResponse,
   RetrieverType,
+  SearchResult,
   value_schema,
 } from '@/types';
 import { getCacheTag } from '@/utils';
@@ -39,6 +40,22 @@ export interface SearchDefinitionsResponse {
   };
 }
 
+type RestMatchingField = { text: string; path: string; highlight_indices: [number, number][] };
+type RestSearchResult = Omit<SearchResult, 'matchingFields'> & { matching_fields?: RestMatchingField[] | null };
+type RestPaginatedSearchResults = Omit<PaginatedSearchResults, 'data'> & { data: RestSearchResult[] };
+
+// The REST search API responds in snake_case, the UI uses camelCase for matching fields
+const mapSearchResults = ({ data, ...rest }: RestPaginatedSearchResults): PaginatedSearchResults => ({
+  ...rest,
+  data: data.map(({ matching_fields, ...result }) => ({
+    ...result,
+    matchingFields: matching_fields?.map(({ highlight_indices, ...field }) => ({
+      ...field,
+      highlightIndices: highlight_indices,
+    })),
+  })),
+});
+
 const searchApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
     search: build.query<PaginatedSearchResults, SearchPayload>({
@@ -57,6 +74,7 @@ const searchApi = orchestratorApi.injectEndpoints({
           'Content-Type': 'application/json',
         },
       }),
+      transformResponse: mapSearchResults,
       serializeQueryArgs: ({ queryArgs, endpointName }) => {
         // Strip cursor so every page of the same base search shares one cache entry.
         const rest = { ...queryArgs };
@@ -95,6 +113,7 @@ const searchApi = orchestratorApi.injectEndpoints({
           'Content-Type': 'application/json',
         },
       }),
+      transformResponse: mapSearchResults,
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },
@@ -108,6 +127,7 @@ const searchApi = orchestratorApi.injectEndpoints({
           'Content-Type': 'application/json',
         },
       }),
+      transformResponse: mapSearchResults,
       extraOptions: {
         baseQueryType: BaseQueryTypes.fetch,
       },

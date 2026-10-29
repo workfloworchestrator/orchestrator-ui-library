@@ -29,7 +29,7 @@ export const WfoExpandingSearchRow = ({ score, matchingFields }: WfoExpandingSea
                 <div key={`${field.path}:${field.text}`} css={expandingRowFieldStyles}>
                   <div>
                     <span css={dotStyles}>•</span>
-                    {field.path}: <WfoHighlightedText text={field.text} highlight_indices={field.highlight_indices} />
+                    {field.path}: <WfoHighlightedText text={field.text} highlightIndices={field.highlightIndices} />
                   </div>
                 </div>
               );
