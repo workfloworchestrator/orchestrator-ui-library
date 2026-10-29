@@ -80,6 +80,7 @@
     "minimumOrchestratorCoreVersion": "Minimum orchestrator-core version",
     "mobileTitle": "Main menu",
     "numberOfRows": "Number of rows",
+    "processStatusBadge": "{count, plural, one {# {type}} other {# {type}s}}",
     "resetToDefault": "Reset to default",
     "savePreferences": "Save preferences",
     "settings": "Settings",
