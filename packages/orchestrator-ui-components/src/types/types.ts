@@ -626,6 +626,7 @@ export type OrchestratorConfig = {
   useThemeToggle: boolean;
   showWorkflowInformationLink: boolean;
   showWorkflowUserGuide: boolean;
+  expandWorkflowUserGuideOnStart: boolean;
   enableSupportMenuItem: boolean;
   supportMenuItemUrl: string;
   enableAoStackStatus: boolean;
