@@ -4,6 +4,7 @@ export * from './WfoSubscriptionSyncStatusBadge';
 export * from './WfoProductBlockBadge';
 export * from './WfoProcessStatusBadge';
 export * from './WfoFailedTasksBadge';
+export * from './WfoFailedWorkflowsBadge';
 export * from './WfoEnvironmentBadge';
 export * from './WfoEngineStatusBadge';
 export * from './WfoHeaderBadge';

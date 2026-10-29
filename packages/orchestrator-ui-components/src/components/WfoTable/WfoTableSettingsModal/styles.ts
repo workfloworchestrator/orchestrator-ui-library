@@ -30,7 +30,7 @@ export const getWfoTableSettingsModalStyles = (wfoThemeHelpers: WfoThemeHelpers)
     overflowY: 'auto',
     paddingLeft: theme.base / 4,
     marginBottom: theme.base / 2,
-    backgroundImage: `linear-gradient(to top, ${theme.colors.textGhost} ${theme.base}px, transparent),
+    backgroundImage: `linear-gradient(to top, ${theme.colors.backgroundBasePlain} ${theme.base}px, transparent),
       radial-gradient(farthest-side at 50% 100%, ${transparentize(theme.colors.shadow, 0.24)}, transparent)`,
     backgroundPosition: `center bottom, center bottom -${theme.base / 2}px`,
     backgroundSize: `100% ${theme.base * 2}px, 100% ${theme.base}px`,

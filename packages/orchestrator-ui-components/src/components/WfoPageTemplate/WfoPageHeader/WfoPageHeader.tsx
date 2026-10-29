@@ -17,7 +17,13 @@ import {
   EuiToolTip,
 } from '@elastic/eui';
 
-import { WfoEngineStatusBadge, WfoEnvironmentBadge, WfoFailedTasksBadge, WfoWebsocketStatusBadge } from '@/components';
+import {
+  WfoEngineStatusBadge,
+  WfoEnvironmentBadge,
+  WfoFailedTasksBadge,
+  WfoFailedWorkflowsBadge,
+  WfoWebsocketStatusBadge,
+} from '@/components';
 import { WfoVersionIncompatibleBadge } from '@/components/WfoBadges/WfoVersionIncompatibleBadge/WfoVersionIncompatibleBadge';
 import { WfoAppLogo } from '@/components/WfoPageTemplate/WfoPageHeader/WfoAppLogo';
 import { getWfoPageHeaderStyles } from '@/components/WfoPageTemplate/WfoPageHeader/styles';
@@ -116,6 +122,7 @@ export const WfoPageHeader: FC<WfoPageHeaderProps> = ({
           <EuiBadgeGroup css={{ marginRight: multiplyByBaseUnit(1) }}>
             <WfoWebsocketStatusBadge hideWhenConnected={true} />
             <WfoEngineStatusBadge />
+            <WfoFailedWorkflowsBadge />
             <WfoFailedTasksBadge />
           </EuiBadgeGroup>
           {orchestratorConfig.useThemeToggle && (
