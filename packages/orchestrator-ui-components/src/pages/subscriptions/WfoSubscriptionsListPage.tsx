@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 
+import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
@@ -36,7 +37,9 @@ import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTa
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useShowToastMessage, useStoredTableConfig } from '@/hooks';
-import { SearchPayload, getErrorDetail, useSearchExportMutation, useSearchQuery } from '@/rtk';
+import { getErrorDetail, useGetSubscriptionListSearchQuery, useSearchExportMutation } from '@/rtk';
+import { getGraphqlField } from '@/rtk/endpoints/subscriptionList';
+import type { SubscriptionListSearchPayload, SubscriptionListSearchResponse } from '@/rtk/endpoints/subscriptionList';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import {
   EntityKind,
@@ -51,6 +54,7 @@ import {
   getCsvFileNameWithDate,
   getSearchExportTruncation,
   initiateCsvFileDownload,
+  parseDate,
   parseDateToLocaleDateTimeString,
 } from '@/utils';
 
@@ -93,10 +97,6 @@ const getDataFromResponse = <T extends object>(
   };
 };
 
-const getTotalItemsFromResponse = (data: PaginatedSearchResults | undefined): number | false => {
-  return data?.cursor?.total_items || false;
-};
-
 const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> = new Map([
   ['subscription.subscription_id', 'subscriptionId'],
   ['subscription.description', 'description'],
@@ -111,6 +111,29 @@ const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> =
   ['subscription.note', 'note'],
   ['subscription.metadata', 'metadata'],
 ]);
+
+// Fills each list item property from the GraphQL field of its column. Columns the user hid are not
+// requested, so they are absent from the node and stay undefined (as in the REST response).
+const getItemsFromGraphqlResponse = (
+  data: SubscriptionListSearchResponse,
+  selectedTab: WfoSubscriptionListTab,
+): SubscriptionListItem[] =>
+  data.searchEdges.map(({ score, matchingFields, node }) => {
+    const item = Object.fromEntries(
+      [...resultColumToPropertyMap].map(([searchPath, property]) => [property, get(node, getGraphqlField(searchPath))]),
+    );
+
+    return {
+      ...item,
+      startDate: parseDate(item.startDate),
+      endDate: parseDate(item.endDate),
+      metadata: item.metadata && Object.keys(item.metadata).length > 0 ? item.metadata : null,
+      score: {
+        score,
+        matchingFields: removeTabStatusMatchingFields(matchingFields, selectedTab, EntityKind.SUBSCRIPTION),
+      },
+    } as SubscriptionListItem;
+  });
 
 export const WfoSubscriptionsListPage = () => {
   const t = useTranslations('subscriptions.index');
@@ -156,6 +179,8 @@ export const WfoSubscriptionsListPage = () => {
   // Set when a commit attempt (Apply filter, or enter in the search bar) is refused because the
   // filter draft is invalid; used to hide the search results — see isSearchBlocked below.
   const [isCommitRefused, setIsCommitRefused] = useState<boolean>(false);
+  // Columns the user hid in the table; only the visible columns are requested from the backend
+  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<SubscriptionListItem>>([]);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [pageCursor, setPageCursor] = useState<{ cursor: string; searchKey: string } | undefined>(undefined);
@@ -174,6 +199,7 @@ export const WfoSubscriptionsListPage = () => {
     selectedTab,
     retrieverType,
     dataSorting,
+    hiddenColumns,
   ]);
   const cursor = pageCursor?.searchKey === committedSearchKey ? pageCursor.cursor : undefined;
 
@@ -183,25 +209,37 @@ export const WfoSubscriptionsListPage = () => {
   // the search automatically. No imperative trigger or effect (and no eslint-disable) is needed.
   // Cursor is stripped from the RTK cache key, so a cursor change appends to the accumulated
   // result set instead of creating a new cache entry — see search endpoint's merge() logic.
-  const searchPayload: SearchPayload = useMemo(() => {
+  const searchPayload: SubscriptionListSearchPayload = useMemo(() => {
     const filters = addStatusFilterFromTab(committedRuleGroup, selectedTab);
     const order_by = {
       element: getKeyByValueFromMap(resultColumToPropertyMap, dataSorting.field),
       direction: dataSorting.sortOrder.toLowerCase(),
     };
+    // Only fetch the visible columns; subscriptionId identifies the row, so it is always requested
+    const visibleSearchPaths = [...resultColumToPropertyMap]
+      .filter(([, property]) => property === 'subscriptionId' || !hiddenColumns.includes(property))
+      .map(([searchPath]) => searchPath);
     return {
       query: committedQueryString,
       limit: pageSize,
-      entity_type: EntityKind.SUBSCRIPTION,
-      response_columns: Array.from(resultColumToPropertyMap.keys()),
+      columns: visibleSearchPaths,
       order_by,
       ...(retrieverType !== RetrieverType.Auto && { retriever: retrieverType }),
       ...(filters && { filters }),
       ...(cursor && { cursor }),
     };
-  }, [committedQueryString, committedRuleGroup, selectedTab, retrieverType, pageSize, dataSorting, cursor]);
+  }, [
+    committedQueryString,
+    committedRuleGroup,
+    selectedTab,
+    retrieverType,
+    pageSize,
+    dataSorting,
+    cursor,
+    hiddenColumns,
+  ]);
 
-  const { data, error, isFetching, endpointName } = useSearchQuery(searchPayload);
+  const { data, error, isFetching, endpointName } = useGetSubscriptionListSearchQuery(searchPayload);
 
   const [searchExportTrigger, { isLoading: isExporting }] = useSearchExportMutation();
 
@@ -238,7 +276,7 @@ export const WfoSubscriptionsListPage = () => {
           fullyConfident={committedFilterString !== '' && committedQueryString === ''}
         />
       ),
-      renderTooltip: (value) => <WfoMatchingFields matchingFields={value?.matching_fields} />,
+      renderTooltip: (value) => <WfoMatchingFields matchingFields={value?.matchingFields} />,
     },
     description: {
       columnType: ColumnType.DATA,
@@ -474,25 +512,19 @@ export const WfoSubscriptionsListPage = () => {
   // (or a later successful commit) lifts the block.
   const isSearchBlocked = isCommitRefused && !isValidFilterString;
 
-  const { items: subscriptionListItems } =
-    data && !isSearchBlocked ?
-      getDataFromResponse<SubscriptionListItem>(data, resultColumToPropertyMap, (item, searchHit) => {
-        const { score, matching_fields } = searchHit;
-        item['score'] = {
-          score,
-          matching_fields: removeTabStatusMatchingFields(matching_fields, selectedTab, EntityKind.SUBSCRIPTION),
-        };
-        return item;
-      })
-    : { items: [] };
+  const subscriptionListItems = data && !isSearchBlocked ? getItemsFromGraphqlResponse(data, selectedTab) : [];
 
-  const totalItems = !isSearchBlocked && getTotalItemsFromResponse(data);
-  const hasNextPage = !isSearchBlocked && (data?.page_info?.has_next_page ?? false);
-  const nextPageCursor = data?.page_info?.next_page_cursor ?? undefined;
+  const totalItems = !isSearchBlocked && (data?.pageInfo?.totalItems || false);
+  const hasNextPage = !isSearchBlocked && (data?.pageInfo?.hasNextPage ?? false);
+  const nextPageCursor = data?.nextPageCursor ?? undefined;
 
   const exportData = async () => {
     try {
-      const exportResult = await searchExportTrigger(searchPayload).unwrap();
+      const exportResult = await searchExportTrigger({
+        ...searchPayload,
+        entity_type: EntityKind.SUBSCRIPTION,
+        response_columns: Array.from(resultColumToPropertyMap.keys()),
+      }).unwrap();
       const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(exportResult, resultColumToPropertyMap);
       if (!exportItems.length) {
         return;
@@ -553,6 +585,7 @@ export const WfoSubscriptionsListPage = () => {
         rowExpandingConfiguration={undefined}
         defaultHiddenColumns={tableDefaults?.hiddenColumns}
         additionalHiddenColumns={additionalHiddenColumns}
+        onHiddenColumnsChange={setHiddenColumns}
         nonEditableColumns={nonEditableColumns}
         defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
         filterString={filterString}
