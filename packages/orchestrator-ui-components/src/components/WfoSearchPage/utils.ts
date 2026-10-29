@@ -197,7 +197,7 @@ const STATUS_FIELD_PATHS: Record<EntityKind, string> = {
 
 /**
  * The tab implicitly adds a status filter to the search (see addStatusFilterFromTab). The backend
- * reports every matched filter in matching_fields, so those implicit matches are removed here to
+ * reports every matched filter in matchingFields, so those implicit matches are removed here to
  * only show the user matches for filters they provided themselves. Matching on path AND value:
  * a status match that cannot come from the tab filter is kept.
  */

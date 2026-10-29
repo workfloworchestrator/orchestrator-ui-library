@@ -11,5 +11,5 @@ export type SubscriptionListItem = Pick<
   customerFullname: string;
   customerShortcode: string;
   metadata: object | null;
-  score: Pick<SearchResult, 'score' | 'matching_fields'> | null;
+  score: Pick<SearchResult, 'score' | 'matchingFields'> | null;
 };

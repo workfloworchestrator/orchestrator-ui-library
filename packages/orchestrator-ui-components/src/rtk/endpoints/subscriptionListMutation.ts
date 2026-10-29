@@ -1,4 +1,9 @@
-import { SubscriptionDetailResponse, SubscriptionListResponse, orchestratorApi } from '@/rtk';
+import {
+  SubscriptionDetailResponse,
+  SubscriptionListResponse,
+  SubscriptionListSearchResponse,
+  orchestratorApi,
+} from '@/rtk';
 import { PaginatedSearchResults } from '@/types';
 
 const SEARCH_NOTE_COLUMN = 'subscription.note';
@@ -8,10 +13,17 @@ const SEARCH_ID_COLUMN = 'subscription.subscription_id';
 // subscriptions list, whose cached responses have a different shape. The draft is inspected
 // instead of typed per caller so the note edit needs no knowledge of the query behind it.
 const patchNoteInListDraft = (
-  draft: SubscriptionListResponse | PaginatedSearchResults,
+  draft: SubscriptionListResponse | SubscriptionListSearchResponse | PaginatedSearchResults,
   subscriptionId: string,
   note: string,
 ) => {
+  if ('searchEdges' in draft) {
+    const edge = draft.searchEdges.find(({ node }) => node.subscriptionId === subscriptionId);
+    if (edge) {
+      edge.node.note = note;
+    }
+    return;
+  }
   if ('subscriptions' in draft) {
     const subscription = draft.subscriptions.find((item) => item.subscriptionId === subscriptionId);
     if (subscription) {
@@ -52,7 +64,7 @@ const subscriptionListMutationApi = orchestratorApi.injectEndpoints({
               // @ts-expect-error - queryName is a runtime string, not a known endpoint name
               queryName,
               queryVariables,
-              (draft: SubscriptionListResponse | PaginatedSearchResults) =>
+              (draft: SubscriptionListResponse | SubscriptionListSearchResponse | PaginatedSearchResults) =>
                 patchNoteInListDraft(draft, subscriptionId, note),
             ),
           );
