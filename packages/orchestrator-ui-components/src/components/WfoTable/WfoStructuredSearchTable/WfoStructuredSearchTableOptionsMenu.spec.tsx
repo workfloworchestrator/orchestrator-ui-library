@@ -3,6 +3,7 @@ import React, { type ComponentProps } from 'react';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
+import { useEmbeddingEnabled } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { RetrieverType } from '@/types';
 
 import { WfoStructuredSearchTableOptionsMenu } from './WfoStructuredSearchTableOptionsMenu';
@@ -10,6 +11,10 @@ import { WfoStructuredSearchTableOptionsMenu } from './WfoStructuredSearchTableO
 jest.mock('@/hooks', () => ({
   useWithOrchestratorTheme: () => ({}),
   useOrchestratorTheme: () => ({ theme: { size: { m: '12px' } } }),
+}));
+
+jest.mock('@/hooks/useEmbeddingEnabled', () => ({
+  useEmbeddingEnabled: jest.fn(() => true),
 }));
 
 jest.mock('next-intl', () => ({
@@ -31,6 +36,40 @@ const renderOptionsMenu = (props: Partial<ComponentProps<typeof WfoStructuredSea
 };
 
 describe('WfoStructuredSearchTableOptionsMenu', () => {
+  beforeEach(() => {
+    jest.mocked(useEmbeddingEnabled).mockReturnValue(true);
+  });
+
+  it.each([RetrieverType.Auto, RetrieverType.Fuzzy, RetrieverType.Semantic, RetrieverType.Hybrid])(
+    'shows Fuzzy in both menus when embeddings are disabled and the stored selection is %s',
+    async (retrieverType) => {
+      jest.mocked(useEmbeddingEnabled).mockReturnValue(false);
+      const { onUpdateRetrieverType } = renderOptionsMenu({ retrieverType });
+
+      expect(screen.queryByText('retrieval: auto')).not.toBeInTheDocument();
+      fireEvent.click(screen.getByText('retrieval: retrieverFuzzy'));
+
+      expect(await screen.findByText('retrieverFuzzy')).toBeInTheDocument();
+      expect(screen.queryByText('retrieverAuto')).not.toBeInTheDocument();
+      expect(screen.queryByText('retrieverSemantic')).not.toBeInTheDocument();
+      expect(screen.queryByText('retrieverHybrid')).not.toBeInTheDocument();
+
+      fireEvent.click(screen.getByText('retrieverFuzzy'));
+      expect(onUpdateRetrieverType).toHaveBeenCalledWith(RetrieverType.Fuzzy);
+    },
+  );
+
+  it('offers all retrievers when the backend enables embedding support', async () => {
+    renderOptionsMenu();
+
+    fireEvent.click(screen.getByText('retrieval: retrieverAuto'));
+
+    expect(await screen.findByText('retrieverAuto')).toBeInTheDocument();
+    expect(screen.getByText('retrieverFuzzy')).toBeInTheDocument();
+    expect(screen.getByText('retrieverSemantic')).toBeInTheDocument();
+    expect(screen.getByText('retrieverHybrid')).toBeInTheDocument();
+  });
+
   it('opens the table settings', () => {
     const { onShowTableSettings } = renderOptionsMenu();
 
