@@ -6,6 +6,7 @@ import { EuiButton, EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiForm, EuiFormR
 
 import { getWfoBasicTableStyles } from '@/components/WfoTable/WfoTable/WfoTableHeaderCell/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
+import { stripQuotes } from '@/utils/strings';
 
 interface WfoPopoverContentProps {
   onSearch?: (searchText: string) => void;
@@ -27,7 +28,7 @@ export const WfoPopoverContent: FC<WfoPopoverContentProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newValue = inputRef.current?.value || '';
+    const newValue = stripQuotes(inputRef.current?.value || '');
     onSearch?.(newValue);
     if (inputRef.current) inputRef.current.value = '';
     closePopover();
