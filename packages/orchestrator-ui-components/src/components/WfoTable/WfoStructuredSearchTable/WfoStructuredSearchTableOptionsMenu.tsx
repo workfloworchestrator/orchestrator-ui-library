@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import type { EuiContextMenuPanelDescriptor, EuiContextMenuPanelItemDescriptor } from '@elastic/eui';
 import { EuiButton, EuiCheckbox, EuiContextMenu, EuiPopover, EuiTitle } from '@elastic/eui';
 
+import { useEmbeddingEnabled } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowDown, WfoChevronDown, WfoCogFill } from '@/icons';
 import { RetrieverType } from '@/types';
@@ -42,6 +43,7 @@ export const WfoStructuredSearchTableOptionsMenu = ({
   bulkEdit,
 }: WfoStructuredSearchTableOptionsMenuProps) => {
   const t = useTranslations('common');
+  const isEmbeddingEnabled = useEmbeddingEnabled();
   const { optionsMenuButtonStyles, optionsMenuSectionTitleStyles, optionsMenuCheckboxStyles } =
     useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -73,7 +75,11 @@ export const WfoStructuredSearchTableOptionsMenu = ({
     { value: RetrieverType.Semantic, label: t('retrieverSemantic') },
     { value: RetrieverType.Hybrid, label: t('retrieverHybrid') },
   ];
-  const selectedRetrieverLabel = retrieverOptions.find(({ value }) => value === retrieverType)?.label ?? retrieverType;
+  const disabledEmbeddingOptions = [{ value: RetrieverType.Fuzzy, label: t('retrieverFuzzy') }];
+
+  const availableRetrieverOptions = isEmbeddingEnabled ? retrieverOptions : disabledEmbeddingOptions;
+  const selectedRetrieverOption =
+    availableRetrieverOptions.find(({ value }) => value === retrieverType) ?? availableRetrieverOptions[0];
 
   const exportItems: EuiContextMenuPanelItemDescriptor[] = [
     { isSeparator: true, key: 'exportSeparator' },
@@ -123,7 +129,7 @@ export const WfoStructuredSearchTableOptionsMenu = ({
           ),
         },
         {
-          name: `${t('retrieval')}: ${selectedRetrieverLabel}`,
+          name: `${t('retrieval')}: ${selectedRetrieverOption.label}`,
           icon: 'empty',
           panel: RETRIEVAL_PANEL_ID,
         },
@@ -134,9 +140,9 @@ export const WfoStructuredSearchTableOptionsMenu = ({
     {
       id: RETRIEVAL_PANEL_ID,
       title: t('retrieval'),
-      items: retrieverOptions.map(({ value, label }) => ({
+      items: availableRetrieverOptions.map(({ value, label }) => ({
         name: label,
-        icon: getCheckedIcon(value === retrieverType),
+        icon: getCheckedIcon(value === selectedRetrieverOption.value),
         onClick: withClosePopover(() => onUpdateRetrieverType(value)),
       })),
     },
