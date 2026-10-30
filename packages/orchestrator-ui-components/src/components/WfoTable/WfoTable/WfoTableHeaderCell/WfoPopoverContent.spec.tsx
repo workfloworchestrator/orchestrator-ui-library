@@ -34,6 +34,23 @@ describe('WfoPopoverContent', () => {
     expect(closePopover).toHaveBeenCalled();
   });
 
+  it.each([
+    ['"tag"', 'tag'],
+    ["'tag'", 'tag'],
+    [`it's "quoted"`, 'its quoted'],
+  ])('keeps quotes visible and strips them only on submission: %s', (input, expectedValue) => {
+    const onSearch = jest.fn();
+    render(<WfoPopoverContent fieldName="description" onSearch={onSearch} closePopover={jest.fn()} />);
+
+    const searchField = screen.getByPlaceholderText('search');
+    fireEvent.change(searchField, { target: { value: input } });
+
+    expect(searchField).toHaveValue(input);
+    expect(onSearch).not.toHaveBeenCalled();
+    fireEvent.submit(searchField);
+    expect(onSearch).toHaveBeenCalledWith(expectedValue);
+  });
+
   it('renders a True and a False button instead of a text search field for a toggle filter', () => {
     render(<WfoPopoverContent fieldName="insync" onSearch={jest.fn()} closePopover={jest.fn()} isToggleFilter />);
 
