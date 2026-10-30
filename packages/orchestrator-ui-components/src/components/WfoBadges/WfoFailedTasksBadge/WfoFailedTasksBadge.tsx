@@ -82,7 +82,7 @@ export const WfoFailedTasksBadge = () => {
       <WfoTasksLink>
         <WfoHeaderBadge
           css={failedTaskBadgeStyle}
-          color={'#ffffff00'}
+          color={'#00000000'}
           textColor={theme.colors.textGhost}
           iconType={() => <WfoCheckmarkCircleFill color={theme.colors.success} />}
         >
