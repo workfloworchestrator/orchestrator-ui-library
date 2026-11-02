@@ -11,6 +11,7 @@ import {
   SubscriptionsResult,
 } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
+import { snakeToCamel } from '@/utils/strings';
 
 export const subscriptionListQuery = `query SubscriptionsList(
         $first: Int!
@@ -78,11 +79,7 @@ export const getGraphqlField = (searchPath: string): string => {
 
   // The first part is the entity ('subscription'), which the node selection is already scoped to
   const [, ...fieldParts] = searchPath.split('.');
-  const camelCasedParts = fieldParts.map((part) =>
-    part.replace(/_(\w)/g, (_, character: string) => character.toUpperCase()),
-  );
-
-  return camelCasedParts.join('.');
+  return fieldParts.map(snakeToCamel).join('.');
 };
 
 // 'product.name' -> 'product { name }'

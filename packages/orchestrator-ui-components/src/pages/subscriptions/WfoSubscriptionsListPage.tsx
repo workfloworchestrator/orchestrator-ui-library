@@ -119,15 +119,16 @@ const getItemsFromGraphqlResponse = (
   selectedTab: WfoSubscriptionListTab,
 ): SubscriptionListItem[] =>
   data.searchEdges.map(({ score, matchingFields, node }) => {
-    const item = Object.fromEntries(
+    const edge = Object.fromEntries(
       [...resultColumToPropertyMap].map(([searchPath, property]) => [property, get(node, getGraphqlField(searchPath))]),
     );
 
+    const metadata = edge.metadata && Object.keys(edge.metadata).length > 0 ? edge.metadata : null;
     return {
-      ...item,
-      startDate: parseDate(item.startDate),
-      endDate: parseDate(item.endDate),
-      metadata: item.metadata && Object.keys(item.metadata).length > 0 ? item.metadata : null,
+      ...edge,
+      startDate: parseDate(edge.startDate),
+      endDate: parseDate(edge.endDate),
+      metadata,
       score: {
         score,
         matchingFields: removeTabStatusMatchingFields(matchingFields, selectedTab, EntityKind.SUBSCRIPTION),
