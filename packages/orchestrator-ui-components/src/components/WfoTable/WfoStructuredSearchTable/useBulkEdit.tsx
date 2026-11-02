@@ -52,6 +52,13 @@ export const useBulkEdit = <T extends object>(
     setSelectedRowIds(new Set());
   };
 
+  const rowIds = JSON.stringify(data.map(getRowId));
+  const [previousRowIds, setPreviousRowIds] = useState(rowIds);
+  if (rowIds !== previousRowIds) {
+    setPreviousRowIds(rowIds);
+    setSelectedRowIds(new Set());
+  }
+
   const handleToggleSelectAll = () => setSelectedRowIds(toggleSelectAll(data.map(getRowId), isAllSelected));
 
   const selectColumn: WfoStructuredSearchTableColumnConfig<T> = {
