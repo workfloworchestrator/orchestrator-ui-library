@@ -3,7 +3,7 @@ import React, { FC, ReactElement, ReactNode, useEffect, useRef, useState } from 
 import type { EuiThemeColorMode } from '@elastic/eui';
 import { EuiPageTemplate, EuiSideNavItemType, EuiThemeProvider } from '@elastic/eui';
 
-import { WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
+import { WfoAgentChat, WfoBreadcrumbs, WfoPageHeader, WfoSidebar } from '@/components';
 import { useColorModePreference, useWithOrchestratorTheme } from '@/hooks';
 import { wfoThemeModifications } from '@/theme';
 import { ColorModes } from '@/types';
@@ -79,6 +79,7 @@ const WfoPageTemplateContent: FC<
           </EuiPageTemplate.Section>
         </ContentContextProvider>
       </EuiPageTemplate>
+      <WfoAgentChat />
     </>
   );
 };
