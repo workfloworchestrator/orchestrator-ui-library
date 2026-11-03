@@ -39,7 +39,7 @@ const openVersions = () => {
 describe('WfoHamburgerMenu', () => {
   it('lists the library and the orchestrator versions', async () => {
     mockVersionsQuery({
-      data: { version: { applicationVersions: ['orchestrator-core 5.4.0'] } },
+      data: { version: { applicationVersions: ['orchestrator-core TEST-VERSION'] } },
       isFetching: false,
       error: undefined,
     });
@@ -48,7 +48,7 @@ describe('WfoHamburgerMenu', () => {
     openVersions();
 
     expect(await screen.findByText(libraryVersion)).toBeInTheDocument();
-    expect(screen.getByText('orchestrator-core 5.4.0')).toBeInTheDocument();
+    expect(screen.getByText('orchestrator-core TEST-VERSION')).toBeInTheDocument();
   });
 
   it('lists the library version when the versions query returns no data', async () => {

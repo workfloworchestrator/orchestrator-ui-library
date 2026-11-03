@@ -65,7 +65,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
       // With errorPolicy 'all' a response with errors does not throw. Without any data (e.g. access denied)
       // it is an error, so queries get an error state instead of null data. It goes through customErrors as a
       // ClientError, like a non-2xx response, so callers get the same error shape regardless of the HTTP status.
-      if (data == null && errors?.length) {
+      if ((data === null || data === undefined) && errors?.length) {
         return toErrorResult(
           new ClientError(
             { data, errors, extensions, headers: responseHeaders, status, body: '' },

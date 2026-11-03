@@ -34,7 +34,7 @@ const clientErrorWith = (status: number, errors: unknown[]) =>
 
 describe('wfoGraphqlRequestBaseQuery', () => {
   it('returns the data of a successful response', async () => {
-    const data = { version: { applicationVersions: ['orchestrator-core 5.4.0'] } };
+    const data = { version: { applicationVersions: ['orchestrator-core TEST-VERSION'] } };
 
     await expect(run(jest.fn().mockResolvedValue({ data }))).resolves.toEqual({
       data,
