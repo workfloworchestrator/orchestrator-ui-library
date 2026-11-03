@@ -28,7 +28,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
   index,
 }) => {
   const t = useTranslations('search.page');
-  const matchingFields = result.matching_fields;
+  const matchingFields = result.matchingFields;
   const matchingField = matchingFields?.[0];
   const { theme } = useOrchestratorTheme();
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
@@ -97,10 +97,7 @@ export const WfoSearchResultItem: FC<WfoSearchResultItemProps> = ({
                         fontSize: theme.size.base,
                       }}
                     >
-                      <WfoHighlightedText
-                        text={matchingField.text}
-                        highlight_indices={matchingField.highlight_indices}
-                      />
+                      <WfoHighlightedText text={matchingField.text} highlightIndices={matchingField.highlightIndices} />
                     </EuiText>
                   </EuiFlexItem>
 

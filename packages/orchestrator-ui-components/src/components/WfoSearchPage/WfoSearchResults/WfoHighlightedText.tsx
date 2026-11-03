@@ -6,10 +6,10 @@ import { useOrchestratorTheme } from '@/hooks';
 
 interface WfoHighlightedTextProps {
   text: string;
-  highlight_indices: [number, number][];
+  highlightIndices: [number, number][];
 }
 
-export const WfoHighlightedText: FC<WfoHighlightedTextProps> = ({ text, highlight_indices }) => {
+export const WfoHighlightedText: FC<WfoHighlightedTextProps> = ({ text, highlightIndices }) => {
   const { theme } = useOrchestratorTheme();
 
   const highlightStyles = css`
@@ -22,11 +22,11 @@ export const WfoHighlightedText: FC<WfoHighlightedTextProps> = ({ text, highligh
   `;
 
   const highlightedParts = useMemo(() => {
-    if (!highlight_indices || highlight_indices.length === 0) {
+    if (!highlightIndices || highlightIndices.length === 0) {
       return text;
     }
 
-    const sorted = [...highlight_indices].sort((a, b) => a[0] - b[0]);
+    const sorted = [...highlightIndices].sort((a, b) => a[0] - b[0]);
     const parts: React.ReactNode[] = [];
     let lastIndex = 0;
 
@@ -50,7 +50,7 @@ export const WfoHighlightedText: FC<WfoHighlightedTextProps> = ({ text, highligh
     }
 
     return parts;
-  }, [text, highlight_indices, highlightStyles]);
+  }, [text, highlightIndices, highlightStyles]);
 
   return <>{highlightedParts}</>;
 };

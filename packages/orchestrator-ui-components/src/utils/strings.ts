@@ -23,6 +23,10 @@ export const snakeToKebab = (value: string): string => {
   return value.replace(/_/g, '-');
 };
 
+export const snakeToCamel = (value: string): string => {
+  return value.replace(/_(\w)/g, (_, character: string) => character.toUpperCase());
+};
+
 export const isAllUpperCase = (str: string) => str === str.toUpperCase();
 
 export const isNullOrEmpty = (str: string | null | undefined): boolean => {
