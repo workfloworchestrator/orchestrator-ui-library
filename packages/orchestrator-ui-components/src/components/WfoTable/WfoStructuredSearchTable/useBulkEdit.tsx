@@ -52,6 +52,13 @@ export const useBulkEdit = <T extends object>(
     setSelectedRowIds(new Set());
   };
 
+  const dataSignature = JSON.stringify(data.map(getRowId));
+  const [previousDataSignature, setPreviousDataSignature] = useState(dataSignature);
+  if (dataSignature !== previousDataSignature) {
+    setPreviousDataSignature(dataSignature);
+    setSelectedRowIds(new Set());
+  }
+
   const handleToggleSelectAll = () => setSelectedRowIds(toggleSelectAll(data.map(getRowId), isAllSelected));
 
   const selectColumn: WfoStructuredSearchTableColumnConfig<T> = {
