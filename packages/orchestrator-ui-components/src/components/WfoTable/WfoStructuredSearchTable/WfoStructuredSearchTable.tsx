@@ -30,7 +30,7 @@ import {
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
-import { RetrieverType } from '@/types';
+import { EntityKind, RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
@@ -49,6 +49,9 @@ export type WfoStructuredSearchTableDataColumnConfigItem<
 > = WfoTableDataColumnConfigItem<T, Property> & {
   renderDetails?: (cellValue: T[Property], row: T) => React.ReactNode;
   excludeFromDetails?: boolean;
+  // Path of the column in the search API (e.g. 'process.workflow_name'). Used by lists that request
+  // only the visible columns; columns without a path (e.g. score) are not requested.
+  searchPath?: string;
   clipboardText?: (cellValue: T[Property], row: T) => string;
 };
 export type WfoStructuredSearchTableDataColumnConfig<T extends object> = {
@@ -109,6 +112,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   totalItems: number | false;
   hasNextPage: boolean;
   bulkEditConfiguration?: WfoStructuredSearchTableBulkEditConfiguration<T>;
+  entityKind: EntityKind;
 };
 
 export const WfoStructuredSearchTable = <T extends object>({
@@ -143,6 +147,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   dataSorting,
   hasNextPage,
   bulkEditConfiguration,
+  entityKind,
   data,
   isLoading,
   ...tableProps
@@ -157,7 +162,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   const [showInformationModal, setShowInformationModal] = useState(false);
   const [advancedNestedSearch, setAdvancedNestedSearch] = useState(defaultAdvancedNestedSearch);
   const t = useTranslations('common');
-  const { buildColumnFilter } = useBuildColumnFilter<T>(tableColumnConfig, getColumnSearchFieldName);
+  const { buildColumnFilter } = useBuildColumnFilter<T>(tableColumnConfig, entityKind, getColumnSearchFieldName);
   const bulkEdit = useBulkEdit<T>(data, bulkEditConfiguration);
 
   useEffect(() => {
@@ -298,6 +303,7 @@ export const WfoStructuredSearchTable = <T extends object>({
             handleSearch={handleSearch}
             onToggleFilterBuilder={setIsFilterBuilderVisible}
             useAdvancedNestedSearch={advancedNestedSearch}
+            entityKind={entityKind}
             error={error}
           />
         </>

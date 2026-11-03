@@ -244,4 +244,5 @@ export type WfoQueryBuilderContext = {
   onFieldSelected: (field: string, operators: string[], pathInfo?: PathInfo) => void;
   fieldPathInfoMap: Map<string, PathInfo>;
   useAdvancedNestedSearch: boolean;
+  entityKind: EntityKind;
 };
