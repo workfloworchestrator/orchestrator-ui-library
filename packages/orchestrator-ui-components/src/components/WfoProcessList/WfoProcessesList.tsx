@@ -154,6 +154,7 @@ export const WfoProcessesList = ({
     onUpdateFilterString,
     onUpdateDataSorting,
     onUpdatePageSize,
+    resetPageCursor,
     showNextPage,
   } = useStructuredSearchState<ProcessListItem>({
     defaultSorting: { field: 'lastModifiedAt', sortOrder: SortOrder.DESC },
@@ -337,10 +338,15 @@ export const WfoProcessesList = ({
     }
   }, [getStoredTableConfig, initPageSize]);
 
-  // The columns that have a search path can be sorted and filtered
-  const sortableAndFilterableFieldNames = [...searchPathToProperty.values()].map(String);
+  // A tab starts on its first page
+  useEffect(() => {
+    resetPageCursor();
+  }, [isTask, statuses, resetPageCursor]);
+
   const tableColumns =
     overrideDefaultTableColumns ? overrideDefaultTableColumns(defaultTableColumns) : defaultTableColumns;
+
+  const sortableAndFilterableFieldNames = [...searchPathToProperty.values()].map(String);
   const isSortingAllowed = queryString === '';
   const tableConfig = mapSortableAndFilterableValuesToTableColumnConfig<ProcessListItem>(
     tableColumns,

@@ -6,7 +6,12 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { TableColumnKeys, WfoTitleWithWebsocketBadge, addStatusFilterFromTab, removeTabStatusMatchingFields } from '@/components';
+import {
+  TableColumnKeys,
+  WfoTitleWithWebsocketBadge,
+  addStatusFilterFromTab,
+  removeTabStatusMatchingFields,
+} from '@/components';
 import {
   SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
   StoredTableConfig,
@@ -95,6 +100,7 @@ export const WfoSubscriptionsListPage = () => {
     onUpdateFilterString,
     onUpdateDataSorting,
     onUpdatePageSize,
+    resetPageCursor,
     showNextPage,
   } = useStructuredSearchState<SubscriptionSearchListItem>({
     defaultSorting: { field: 'startDate', sortOrder: SortOrder.DESC },
@@ -251,7 +257,6 @@ export const WfoSubscriptionsListPage = () => {
     }
   }, [getStoredTableConfig, initPageSize]);
 
-  // The columns that have a search path can be sorted and filtered
   const sortableAndFilterableFieldNames = [...searchPathToProperty.values()].map(String);
   const isSortingAllowed = queryString === '';
   const tableColumnConfigWithSortingAndFiltering =
@@ -260,6 +265,11 @@ export const WfoSubscriptionsListPage = () => {
       isSortingAllowed ? sortableAndFilterableFieldNames : [],
       sortableAndFilterableFieldNames,
     );
+
+  const handleChangeTab = (updatedTab: WfoSubscriptionListTab) => {
+    setActiveTab(updatedTab);
+    resetPageCursor();
+  };
 
   const subscriptionListItems = data && !isSearchBlocked ? getItemsFromGraphqlResponse(data, selectedTab) : [];
 
@@ -295,7 +305,7 @@ export const WfoSubscriptionsListPage = () => {
         tabs={subscriptionListTabs}
         selectedTab={selectedTab}
         translationNamespace="subscriptions.tabs"
-        onChangeTab={setActiveTab}
+        onChangeTab={handleChangeTab}
       />
       <EuiSpacer size="l" />
       <WfoStructuredSearchTable<SubscriptionSearchListItem>
