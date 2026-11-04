@@ -14,9 +14,8 @@ import {
 
 import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
 import { useGetEnvironmentVariablesQuery } from '@/rtk/endpoints/settings';
-import { EntityKind, OPERATOR_MAP, OperatorDescription } from '@/types';
-import { stripQuotes } from '@/utils/strings';
 import { EntityKind, OPERATOR_MAP, OperatorDescription, ResultColumToPropertyMap } from '@/types';
+import { stripQuotes } from '@/utils/strings';
 
 export const FILTER_CHANGE_DEBOUNCE_DELAY = 1000;
 

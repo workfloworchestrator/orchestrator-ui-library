@@ -222,6 +222,8 @@ export const useStructuredSearchState = <T extends object>({
     setPageCursor(undefined);
   };
 
+  const resetPageCursor = useCallback(() => setPageCursor(undefined), []);
+
   const showNextPage = (nextPageCursor: string | undefined) => {
     if (nextPageCursor) {
       setPageCursor({ cursor: nextPageCursor, searchKey: committedSearchKey });
@@ -260,6 +262,7 @@ export const useStructuredSearchState = <T extends object>({
     onUpdateFilterString,
     onUpdateDataSorting,
     onUpdatePageSize,
+    resetPageCursor,
     showNextPage,
   };
 };

@@ -20,21 +20,20 @@ const getItemsFromExportResponse = <T extends object>(
     ),
   ) as T[];
 
-type UseSearchExportOptions<T> = {
+type UseSearchExportOptions<T, Column> = {
   entityKind: EntityKind;
   searchPathToProperty: ResultColumToPropertyMap<T>;
-  tableColumnConfig: Partial<Record<keyof T, object>>;
+  tableColumnConfig: Partial<Record<keyof T, Column>>;
   fileName: string;
 };
 
-export const useSearchExport = <T extends object>({
+export const useSearchExport = <T extends object, Column extends { label?: string } = object>({
   entityKind,
   searchPathToProperty,
   tableColumnConfig,
   fileName,
-}: UseSearchExportOptions<T>) => {
-  const columns = tableColumnConfig as Record<string, { label?: string }>;
-  const getCsvColumnName = (key: string) => columns[key]?.label ?? key;
+}: UseSearchExportOptions<T, Column>) => {
+  const getCsvColumnName = (key: keyof T) => tableColumnConfig[key]?.label ?? (key as string);
 
   const tError = useTranslations('errors');
   const { showToastMessage } = useShowToastMessage();
@@ -60,11 +59,11 @@ export const useSearchExport = <T extends object>({
         );
       }
       const csvItems = exportItems.map((item) =>
-        Object.fromEntries(Object.entries(item).map(([key, value]) => [getCsvColumnName(key), value])),
+        Object.fromEntries(Object.entries(item).map(([key, value]) => [getCsvColumnName(key as keyof T), value])),
       );
       initiateCsvFileDownload(
         csvItems,
-        [...searchPathToProperty.values()].map(String).map(getCsvColumnName),
+        [...searchPathToProperty.values()].map(getCsvColumnName),
         getCsvFileNameWithDate(fileName),
       );
     } catch (error) {
