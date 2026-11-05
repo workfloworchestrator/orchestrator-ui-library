@@ -128,11 +128,14 @@ export const WfoStructuredSearchTableOptionsMenu = ({
             onToggleAdvancedNestedSearch,
           ),
         },
-        {
-          name: `${t('retrieval')}: ${selectedRetrieverOption.label}`,
-          icon: 'empty',
-          panel: RETRIEVAL_PANEL_ID,
-        },
+        ...toOptionalArrayEntries(
+          {
+            name: `${t('retrieval')}: ${selectedRetrieverOption.label}`,
+            icon: 'empty',
+            panel: RETRIEVAL_PANEL_ID,
+          },
+          isEmbeddingEnabled,
+        ),
         ...toOptionalArrayEntries(exportItems, !!onExportData),
         ...toOptionalArrayEntries(bulkEditItems, !!bulkEdit?.isBulkEditAvailable),
       ],
