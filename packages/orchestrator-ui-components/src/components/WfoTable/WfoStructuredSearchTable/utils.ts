@@ -13,6 +13,7 @@ import {
 } from 'react-querybuilder/parseCEL';
 
 import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
+import { useGetEnvironmentVariablesQuery } from '@/rtk/endpoints/settings';
 import { EntityKind, OPERATOR_MAP, OperatorDescription } from '@/types';
 import { stripQuotes } from '@/utils/strings';
 
@@ -298,3 +299,17 @@ export const toggleRowSelection = (selectedRowIds: Set<string>, rowId: string): 
 
 export const toggleSelectAll = (rowIds: string[], isAllSelected: boolean): Set<string> =>
   isAllSelected ? new Set() : new Set(rowIds);
+
+export const useEmbeddingEnabled = (): boolean => {
+  const { data } = useGetEnvironmentVariablesQuery();
+  const embeddingSetting = data
+    ?.find(({ name }) => name === 'search_settings')
+    ?.variables.find(({ env_name }) => env_name === 'EMBEDDING_API_ENABLED');
+
+  // Older backends may not expose this setting. Keep their existing retrieval options.
+  if (!embeddingSetting) {
+    return true;
+  }
+
+  return embeddingSetting.env_value === true;
+};
