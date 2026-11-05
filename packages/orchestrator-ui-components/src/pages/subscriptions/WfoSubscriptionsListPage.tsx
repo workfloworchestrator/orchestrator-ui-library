@@ -9,7 +9,13 @@ import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { SearchParams, TableColumnKeys, addStatusFilterFromTab, removeTabStatusMatchingFields } from '@/components';
+import {
+  SearchParams,
+  TableColumnKeys,
+  WfoTitleWithWebsocketBadge,
+  addStatusFilterFromTab,
+  removeTabStatusMatchingFields,
+} from '@/components';
 import {
   DEFAULT_PAGE_SIZE,
   SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
@@ -572,7 +578,8 @@ export const WfoSubscriptionsListPage = () => {
 
   return (
     <>
-      <WfoContentHeader title={tDetail('title')} />
+      <WfoContentHeader title={<WfoTitleWithWebsocketBadge title={tDetail('title')} />} />
+
       <WfoFilterTabs
         tabs={subscriptionListTabs}
         selectedTab={selectedTab}
