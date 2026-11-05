@@ -259,6 +259,28 @@ export interface Step {
   started: string;
   completed: string;
   createdBy: string;
+  importance?: StepImportance;
+}
+
+// Importance of a step as defined in the backend @step decorator
+export enum StepImportance {
+  HIGH = 'high',
+  DEFAULT = 'default',
+  LOW = 'low',
+}
+
+// The global detail level selected in the step list header
+export enum StepDetailLevel {
+  HIGH = 'high',
+  STANDARD = 'standard',
+  MINIMAL = 'minimal',
+}
+
+// How a single step card is presented in the step list
+export enum StepPresentation {
+  HIGH = 'high',
+  STANDARD = 'standard',
+  MINIMAL = 'minimal',
 }
 
 export interface WorkflowDefinition {
@@ -604,6 +626,7 @@ export type OrchestratorConfig = {
   useThemeToggle: boolean;
   showWorkflowInformationLink: boolean;
   showWorkflowUserGuide: boolean;
+  expandWorkflowUserGuideOnStart: boolean;
   enableSupportMenuItem: boolean;
   supportMenuItemUrl: string;
   enableAoStackStatus: boolean;

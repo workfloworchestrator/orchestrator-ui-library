@@ -5,6 +5,7 @@ import {
   removeSuffix,
   snakeToHuman,
   snakeToKebab,
+  stripQuotes,
   upperCaseFirstChar,
 } from './strings';
 
@@ -157,5 +158,31 @@ describe('isNullOrEmpty', () => {
 
   it('should return false for a string with spaces and text', () => {
     expect(isNullOrEmpty('  Hello  ')).toBe(false);
+  });
+});
+
+describe('stripQuotes', () => {
+  it.each([
+    ['"tag"', 'tag'],
+    ["'tag'", 'tag'],
+    ['say "hi"', 'say hi'],
+    ["it's a tag", 'its a tag'],
+    [`it's "quoted"`, 'its quoted'],
+    [`"'"`, ''],
+    ['""', ''],
+  ])('removes single and double quotes from %s', (input, expected) => {
+    expect(stripQuotes(input)).toBe(expected);
+  });
+
+  it('leaves a value without quotes untouched', () => {
+    expect(stripQuotes('plain value')).toBe('plain value');
+  });
+
+  it('keeps other punctuation and whitespace', () => {
+    expect(stripQuotes(' a-b_c.d (e) ')).toBe(' a-b_c.d (e) ');
+  });
+
+  it('returns an empty string for an empty input', () => {
+    expect(stripQuotes('')).toBe('');
   });
 });

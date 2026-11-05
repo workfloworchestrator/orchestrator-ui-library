@@ -61,6 +61,7 @@ export const WfoInteger: PydanticFormControlledElement = ({ pydanticFormField, o
       onChange={handleOnChange}
       value={userInput}
       disabled={disabled}
+      fullWidth={!!pydanticFormField.layout}
     />
   );
 };

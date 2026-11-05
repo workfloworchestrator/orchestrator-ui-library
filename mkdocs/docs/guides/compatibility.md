@@ -11,7 +11,7 @@ the connected backend is too old.
 
 | Orchestrator UI version | Minimum Orchestrator Core version | Why                                                                                                                         |
 | ------------------------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| 10.3.0                    | 5.6.0                               | Subscriptions export uses the new `POST /search/{entity}/export` endpoint in the backend.                                  |
+| 10.3.0                    | 5.6.0                               | Subscriptions export uses the new `POST /search/{entity}/export` endpoint in the backend and Process steps expose an importance value, used to show steps as minimal, standard or verbose. |
 | 9.0.1                     | 5.5.0                               | Workflow user guides endpoint moved from the surf app to orchestrator-core.                                                |
 | 9.0.0                     | 5.4.0                               | Adds new structured search endpoints to the backend.                                                                       |
 | 8.1.0                     | 5.0.0                               | Endpoints in the backend to modify the lifecycle status of a product.                                                      |

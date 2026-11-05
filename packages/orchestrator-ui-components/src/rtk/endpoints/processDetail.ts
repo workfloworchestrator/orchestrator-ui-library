@@ -40,6 +40,7 @@ export const processDetailQuery = `query ProcessDetail($processId: String!) {
                     started
                     completed
                     createdBy
+                    importance
                 }
                 customer {
                     fullname

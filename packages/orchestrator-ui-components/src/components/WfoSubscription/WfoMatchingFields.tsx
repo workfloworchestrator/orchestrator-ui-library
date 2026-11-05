@@ -11,7 +11,7 @@ export const WfoMatchingFields = ({ matchingFields }: { matchingFields?: Matchin
     <ul>
       {matchingFields.map((field, index) => (
         <li key={index}>
-          {field.path}: <WfoHighlightedText text={field.text} highlight_indices={field.highlight_indices} />
+          {field.path}: <WfoHighlightedText text={field.text} highlightIndices={field.highlightIndices} />
         </li>
       ))}
     </ul>

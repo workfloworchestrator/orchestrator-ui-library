@@ -7,6 +7,7 @@ nav:
   - Introduction: index.md
   - Guides:
       - Frontend / Backend Compatibility: guides/compatibility.md
+      - Step Importance and Detail Levels: guides/step-importance.md
       - Upgrade Guides:
           - v8.1: guides/upgrading/8.1.md
           - v8.4: guides/upgrading/8.4.md

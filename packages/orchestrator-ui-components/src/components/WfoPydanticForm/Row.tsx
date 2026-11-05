@@ -26,7 +26,7 @@ export const Row: RowRenderComponent = ({ title, description, error, isInvalid, 
       css={formRowStyle}
       label={<Label />}
       labelAppend={<EuiText size="m">{description}</EuiText>}
-      error={error}
+      error={error && <span title={error}>{error}</span>}
       isInvalid={isInvalid}
       fullWidth
     >

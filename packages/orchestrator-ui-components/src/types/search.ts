@@ -15,7 +15,7 @@ export enum RetrieverType {
 export interface MatchingField {
   text: string;
   path: string;
-  highlight_indices: [number, number][];
+  highlightIndices: [number, number][];
 }
 
 export interface SearchResult {
@@ -24,7 +24,7 @@ export interface SearchResult {
   entity_title: string;
   score: number;
   perfect_match: number;
-  matching_fields?: MatchingField[] | null;
+  matchingFields?: MatchingField[] | null;
   response_columns: Record<string, string | number | null>;
 }
 

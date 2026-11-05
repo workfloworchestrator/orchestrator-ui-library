@@ -2,7 +2,7 @@
   {
     "orchestratorUiVersion": "10.3.0",
     "minimumOrchestratorCoreVersion": "5.6.0",
-    "changes": "Subscriptions export uses the new search export endpoint in the BE."
+    "changes": "Subscriptions export uses the new search export endpoint in the BE and process steps expose an importance value, used to show steps as minimal, standard or verbose."
   },
   {
     "orchestratorUiVersion": "9.0.1",
