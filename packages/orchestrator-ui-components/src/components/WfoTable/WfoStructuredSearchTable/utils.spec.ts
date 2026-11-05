@@ -232,6 +232,10 @@ describe('useBuildColumnFilter', () => {
     );
 
     expect(result?.filterString).toBe('(subscription.insync == "true") && subscription.description.contains("node")');
+    expect(result?.ruleGroup.rules).toEqual([
+      expect.objectContaining({ rules: [expect.objectContaining({ field: 'subscription.insync', value: 'true' })] }),
+      expect.objectContaining({ field: 'subscription.description', operator: 'contains', value: 'node' }),
+    ]);
   });
 
   it('adds an exact match when the field path info is unknown', () => {
@@ -275,19 +279,6 @@ describe('useBuildColumnFilter', () => {
     expect(formatQuery(containsResult!.ruleGroup, 'elasticsearch')).toEqual({
       bool: { must: [{ regexp: { 'subscription.description': { value: `.*${expectedValue}.*` } } }] },
     });
-  });
-
-  it('appends a sanitized value to an existing filter', () => {
-    const result = renderBuildColumnFilter(getColumnSearchFieldName)(
-      'description',
-      '"tag"',
-      'subscription.insync == "true"',
-    );
-
-    expect(result?.ruleGroup.rules).toEqual([
-      expect.objectContaining({ rules: [expect.objectContaining({ field: 'subscription.insync', value: 'true' })] }),
-      expect.objectContaining({ field: 'subscription.description', operator: 'contains', value: 'tag' }),
-    ]);
   });
 
   it('produces a substring query for the search backend', () => {
