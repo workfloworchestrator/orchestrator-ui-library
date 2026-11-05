@@ -7,18 +7,30 @@ import { WfoAgentChat } from './WfoAgentChat';
 
 const config: { orchestratorAgentUrl?: string } = {};
 const session: { accessToken?: string } | null = { accessToken: 'token-1' };
+const theme = { colors: { primary: '#0077c8', textPrimary: '#0067ac', header: '#04385f' } };
+let isDarkModeActive = false;
 
 jest.mock('@/hooks', () => ({
   useGetOrchestratorConfig: () => config,
   useWfoSession: () => ({ session }),
+  useOrchestratorTheme: () => ({ theme, isDarkModeActive }),
 }));
 
 // The popup itself is the package's; here it is a marker that shows what it was given.
 jest.mock('next/dynamic', () => ({
   __esModule: true,
-  default: () => (props: { agentUrl: string; token?: string }) => (
-    <div data-testid="wfo-chat" data-agent-url={props.agentUrl} data-token={props.token} />
-  ),
+  default:
+    () =>
+    (props: { agentUrl: string; token?: string; theme?: string; colors?: { accent?: string; mark?: string } }) => (
+      <div
+        data-testid="wfo-chat"
+        data-agent-url={props.agentUrl}
+        data-token={props.token}
+        data-theme={props.theme}
+        data-accent={props.colors?.accent}
+        data-mark={props.colors?.mark}
+      />
+    ),
 }));
 
 describe('WfoAgentChat', () => {
@@ -34,5 +46,15 @@ describe('WfoAgentChat', () => {
     const popup = screen.getByTestId('wfo-chat');
     expect(popup).toHaveAttribute('data-agent-url', '/agui/');
     expect(popup).toHaveAttribute('data-token', 'token-1');
+  });
+
+  it("hands the popup the theme's colours and the current mode", () => {
+    config.orchestratorAgentUrl = '/agui/';
+    isDarkModeActive = true;
+    render(<WfoAgentChat />);
+    const popup = screen.getByTestId('wfo-chat');
+    expect(popup).toHaveAttribute('data-theme', 'dark');
+    expect(popup).toHaveAttribute('data-accent', '#0077c8');
+    expect(popup).toHaveAttribute('data-mark', '#04385f');
   });
 });
