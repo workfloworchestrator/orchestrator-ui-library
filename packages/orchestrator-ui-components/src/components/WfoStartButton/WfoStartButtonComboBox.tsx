@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
 
-import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiPopover, EuiSelectable, EuiSpacer } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
+
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiFlexGroup,
+  EuiHighlight,
+  EuiPopover,
+  EuiSelectable,
+  EuiSpacer,
+  EuiToolTip,
+} from '@elastic/eui';
 
 import { useGetOrchestratorConfig, useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
-import { WfoChevronDown, WfoPlusCircleFill } from '@/icons';
+import { WfoChevronDown, WfoLockFilled, WfoPlusCircleFill } from '@/icons';
 import { ProductLifecycleStatus, StartComboBoxOption } from '@/types';
 import { getProductLifecycleStatus } from '@/utils';
 
@@ -31,11 +42,31 @@ export const WfoStartButtonComboBox = ({
   selectedProductStatus,
   setSelectedProductStatus,
 }: WfoStartButtonComboBoxProps) => {
+  const t = useTranslations('common');
   const { startWorkflowFilters } = useGetOrchestratorConfig();
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const { theme } = useOrchestratorTheme();
   const { selectableStyle } = useWithOrchestratorTheme(getStyles);
+
+  //EUI puts a native browser title on every option, set to the label.
+  const hideBrowserTooltip = (option: StartComboBoxOption): StartComboBoxOption =>
+    option.disabled && !option.isGroupLabel ? { ...option, title: '' } : option;
+
+  const renderComboBoxOption = (option: StartComboBoxOption, search: string) => {
+    const label = <EuiHighlight search={search}>{option.label}</EuiHighlight>;
+    if (!option.disabled || option.isGroupLabel) {
+      return label;
+    }
+    return (
+      <EuiToolTip content={t('disabledInsufficientRights')} display="block">
+        <span style={{ display: 'flex', alignItems: 'center', gap: theme.size.xxs }}>
+          <WfoLockFilled />
+          {label}
+        </span>
+      </EuiToolTip>
+    );
+  };
 
   const Button = (
     <EuiButton
@@ -114,7 +145,8 @@ export const WfoStartButtonComboBox = ({
         // EUI 122 renders a checkbox indicator for unselected options in multi-select
         // EuiSelectables; EUI 113 rendered an `empty` icon, i.e. nothing visible.
         listProps={{ showIcons: false }}
-        options={optionsFilter ? optionsFilter(options, searchValue) : options}
+        options={(optionsFilter ? optionsFilter(options, searchValue) : options).map(hideBrowserTooltip)}
+        renderOption={renderComboBoxOption}
         isPreFiltered={!!optionsFilter}
         searchProps={
           optionsFilter ?
