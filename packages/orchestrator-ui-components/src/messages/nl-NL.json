@@ -6,6 +6,7 @@
     "createFilter": "Filter",
     "deselect": "Deselecteer",
     "deselectAll": "Deselecteer alles",
+    "disabledInsufficientRights": "Actie uitgeschakeld vanwege onvoldoende rechten",
     "downloadCsv": "Download tabel als CSV",
     "editColumns": "Wijzig kolommen",
     "errorMessage": "Er is een fout opgetreden",

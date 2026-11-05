@@ -12,6 +12,10 @@ jest.mock('@/hooks', () => ({
   useWithOrchestratorTheme: () => ({}),
 }));
 
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 // The @/utils barrel imports the whole component tree, which hits a circular import in Jest
 jest.mock('@/utils', () => jest.requireActual('@/utils/getProductLifecycleStatus'));
 
