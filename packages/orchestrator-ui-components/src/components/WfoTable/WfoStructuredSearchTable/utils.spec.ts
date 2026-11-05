@@ -232,6 +232,10 @@ describe('useBuildColumnFilter', () => {
     );
 
     expect(result?.filterString).toBe('(subscription.insync == "true") && subscription.description.contains("node")');
+    expect(result?.ruleGroup.rules).toEqual([
+      expect.objectContaining({ rules: [expect.objectContaining({ field: 'subscription.insync', value: 'true' })] }),
+      expect.objectContaining({ field: 'subscription.description', operator: 'contains', value: 'node' }),
+    ]);
   });
 
   it('adds an exact match when the field path info is unknown', () => {
@@ -244,11 +248,37 @@ describe('useBuildColumnFilter', () => {
     expect(renderBuildColumnFilter()('description', 'node')?.filterString).toBe('description == "node"');
   });
 
-  it('refuses empty search text and search text with a double quote', () => {
+  it('refuses empty search text and text containing only quotes', () => {
     const buildColumnFilter = renderBuildColumnFilter(getColumnSearchFieldName);
 
     expect(buildColumnFilter('description', '')).toBeUndefined();
-    expect(buildColumnFilter('description', 'say "hi"')).toBeUndefined();
+    expect(buildColumnFilter('description', `"'"`)).toBeUndefined();
+  });
+
+  it.each([
+    ['"tag"', 'tag'],
+    ["'tag'", 'tag'],
+    ['say "hi"', 'say hi'],
+    ["it's a tag", 'its a tag'],
+    [`it's "quoted"`, 'its quoted'],
+  ])('strips quotes from the column search value %s', (searchText, expectedValue) => {
+    const buildColumnFilter = renderBuildColumnFilter(getColumnSearchFieldName);
+    const containsResult = buildColumnFilter('description', searchText);
+    const exactResult = buildColumnFilter('note', searchText);
+
+    expect(containsResult?.ruleGroup.rules).toEqual([
+      expect.objectContaining({ field: 'subscription.description', operator: 'contains', value: expectedValue }),
+    ]);
+    expect(exactResult?.ruleGroup.rules).toEqual([
+      expect.objectContaining({ field: 'subscription.note', operator: '=', value: expectedValue }),
+    ]);
+    // The stored CEL must also restore the same value when the page reads it again.
+    expect(parseCelToRuleGroup(containsResult!.filterString)?.rules).toEqual([
+      expect.objectContaining({ value: expectedValue }),
+    ]);
+    expect(formatQuery(containsResult!.ruleGroup, 'elasticsearch')).toEqual({
+      bool: { must: [{ regexp: { 'subscription.description': { value: `.*${expectedValue}.*` } } }] },
+    });
   });
 
   it('produces a substring query for the search backend', () => {

@@ -34,3 +34,7 @@ export const isNullOrEmpty = (str: string | null | undefined): boolean => {
 };
 
 export const INVISIBLE_CHARACTER = '‎';
+
+export const stripQuotes = (value: string): string => {
+  return value.replace(/["']/g, '');
+};

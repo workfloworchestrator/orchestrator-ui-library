@@ -14,6 +14,7 @@ import {
 
 import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
 import { EntityKind, OPERATOR_MAP, OperatorDescription } from '@/types';
+import { stripQuotes } from '@/utils/strings';
 
 export const FILTER_CHANGE_DEBOUNCE_DELAY = 1000;
 
@@ -181,7 +182,7 @@ export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefine
  * current filter, together with its parsed rule group. The path info of the table's columns is loaded
  * up front, so a column search can use contains for the fields that offer it. The column name is
  * resolved via getColumnSearchFieldName, falling back to the field key. buildColumnFilter returns
- * undefined when the input can't produce a valid filter (empty/quoted search text, or a filter that
+ * undefined when the input can't produce a valid filter (empty search text, or a filter that
  * doesn't parse back to rules).
  */
 export const useBuildColumnFilter = <T>(
@@ -198,15 +199,16 @@ export const useBuildColumnFilter = <T>(
     searchText: string,
     currentFilter?: string,
   ): { filterString: string; ruleGroup: RuleGroupType } | undefined => {
-    // A double quote in the value would break the `"..."` CEL literal and parseCEL has no escaping.
-    if (!searchText || searchText.includes('"')) {
+    const sanitizedSearchText = stripQuotes(searchText);
+    if (!sanitizedSearchText) {
       return undefined;
     }
 
+    const searchValue = `"${sanitizedSearchText}"`;
     const searchFieldName = getColumnSearchFieldName?.(field) ?? String(field);
     const fieldHasLikeOperator = !!columnsPathInfo.get(searchFieldName)?.operators.includes('like');
     const columnFilterCondition =
-      fieldHasLikeOperator ? `${searchFieldName}.contains("${searchText}")` : `${searchFieldName} == "${searchText}"`;
+      fieldHasLikeOperator ? `${searchFieldName}.contains(${searchValue})` : `${searchFieldName} == ${searchValue}`;
     const trimmedCurrentFilter = currentFilter?.trim();
     const filterString =
       trimmedCurrentFilter ? `(${trimmedCurrentFilter}) && ${columnFilterCondition}` : columnFilterCondition;
