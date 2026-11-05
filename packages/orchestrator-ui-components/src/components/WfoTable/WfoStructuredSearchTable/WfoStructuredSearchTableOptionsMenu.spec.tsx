@@ -13,7 +13,7 @@ jest.mock('@/hooks', () => ({
   useOrchestratorTheme: () => ({ theme: { size: { m: '12px' } } }),
 }));
 
-jest.mock('@/hooks/useEmbeddingEnabled', () => ({
+jest.mock('@/components/WfoTable/WfoStructuredSearchTable/utils', () => ({
   useEmbeddingEnabled: jest.fn(() => true),
 }));
 
@@ -41,21 +41,13 @@ describe('WfoStructuredSearchTableOptionsMenu', () => {
   });
 
   it.each([RetrieverType.Auto, RetrieverType.Fuzzy, RetrieverType.Semantic, RetrieverType.Hybrid])(
-    'shows Fuzzy in both menus when embeddings are disabled and the stored selection is %s',
-    async (retrieverType) => {
+    'hides the retrieval menu entry when embeddings are disabled and the stored selection is %s',
+    (retrieverType) => {
       jest.mocked(useEmbeddingEnabled).mockReturnValue(false);
-      const { onUpdateRetrieverType } = renderOptionsMenu({ retrieverType });
+      renderOptionsMenu({ retrieverType });
 
-      expect(screen.queryByText('retrieval: auto')).not.toBeInTheDocument();
-      fireEvent.click(screen.getByText('retrieval: retrieverFuzzy'));
-
-      expect(await screen.findByText('retrieverFuzzy')).toBeInTheDocument();
-      expect(screen.queryByText('retrieverAuto')).not.toBeInTheDocument();
-      expect(screen.queryByText('retrieverSemantic')).not.toBeInTheDocument();
-      expect(screen.queryByText('retrieverHybrid')).not.toBeInTheDocument();
-
-      fireEvent.click(screen.getByText('retrieverFuzzy'));
-      expect(onUpdateRetrieverType).toHaveBeenCalledWith(RetrieverType.Fuzzy);
+      expect(screen.getByText('tableSettings')).toBeInTheDocument();
+      expect(screen.queryByText(/^retrieval:/)).not.toBeInTheDocument();
     },
   );
 
