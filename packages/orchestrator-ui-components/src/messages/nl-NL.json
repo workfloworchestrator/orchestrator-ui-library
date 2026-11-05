@@ -80,6 +80,7 @@
     "minimumOrchestratorCoreVersion": "Minimale versie van orchestrator-core",
     "mobileTitle": "Hoofdmenu",
     "numberOfRows": "Aantal rijen",
+    "processStatusBadge": "{count, plural, one {# {type}} other {# {type}s}}",
     "resetToDefault": "Reset naar standaard",
     "savePreferences": "Voorkeuren opslaan",
     "settings": "Settings",
