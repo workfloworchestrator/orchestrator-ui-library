@@ -1,5 +1,22 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 10.5.0
+
+### Minor Changes
+
+- 44ed197: The subscriptions list page now uses the GraphQL `subscriptions` search instead of the REST search endpoint.
+  
+  - Only the visible columns are requested.
+  - The optimistic note edit patches the new cache shape.
+  - camelCase highlight_indices and matching_fields.
+- 0ef2cf0: Add the Websocket badge to the header of the Subscriptions list page
+
+### Patch Changes
+
+- e28ac7d: Reset the bulk edit selection whenever the data changes (e.g. after a filter's been applied)
+- 0047052: 281 Show only Fuzzy retrieval type when embedding setting is false
+- f46e514: Rename the "Scheduled tasks" metadata tab and menu item to "Schedules"
+
 ## 10.4.0
 
 ### Minor Changes
