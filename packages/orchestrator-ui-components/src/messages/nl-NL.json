@@ -74,7 +74,7 @@
     "metadataProductblocks": "Product blocks",
     "metadataProducts": "Products",
     "metadataResourceTypes": "Resource types",
-    "metadataScheduledTasks": "Geplande taken",
+    "metadataScheduledTasks": "Schedules",
     "metadataTasks": "Taken",
     "metadataWorkflows": "Workflows",
     "minimumOrchestratorCoreVersion": "Minimale versie van orchestrator-core",
@@ -134,7 +134,7 @@
       "productBlocks": "Product blocks",
       "products": "Producten",
       "resourceTypes": "Resource types",
-      "scheduledTasks": "Scheduled tasks",
+      "scheduledTasks": "Schedules",
       "tasks": "Taken",
       "workflows": "Workflows"
     },
