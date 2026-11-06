@@ -40,6 +40,7 @@ export const isCondition = (item: Filter | Condition): item is Condition => {
 const ENDPOINT_PATHS: Record<EntityKind, string> = {
   PROCESS: 'processes',
   PRODUCT: 'products',
+  PRODUCT_BLOCK: 'product_blocks',
   WORKFLOW: 'workflows',
   SUBSCRIPTION: 'subscriptions',
 };
@@ -193,6 +194,7 @@ const STATUS_FIELD_PATHS: Record<EntityKind, string> = {
   [EntityKind.SUBSCRIPTION]: 'subscription.status',
   [EntityKind.PROCESS]: 'process.last_status',
   [EntityKind.PRODUCT]: 'product.status',
+  [EntityKind.PRODUCT_BLOCK]: 'product_block.status',
   [EntityKind.WORKFLOW]: 'workflow.status',
 };
 
