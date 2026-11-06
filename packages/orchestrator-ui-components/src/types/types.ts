@@ -645,6 +645,11 @@ export type OrchestratorConfig = {
    * (no default, or null as default) were not submitted to the backend. Defaults to false.
    */
   pydanticFormsLegacyNullHandling?: boolean;
+  /**
+   * The WFO agent's AG-UI route as the browser reaches it (`https://agent.example/agui/`, or `/agui/` behind
+   * a proxy on the page's origin). When set, the agent's chat popup is shown on every page.
+   */
+  orchestratorAgentUrl?: string;
 };
 
 export enum ColorModes {
