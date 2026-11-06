@@ -112,6 +112,7 @@
       "name": "Product",
       "productBlocks": "Product blocks",
       "productType": "Type",
+      "score": "Confidence",
       "status": "Status",
       "tag": "Tag"
     },
