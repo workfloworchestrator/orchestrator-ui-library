@@ -185,6 +185,7 @@
       "status": "Status"
     },
     "index": {
+      "score": "Confidence",
       "assignee": "Assignee",
       "createdBy": "Created by",
       "customer": "Customer",

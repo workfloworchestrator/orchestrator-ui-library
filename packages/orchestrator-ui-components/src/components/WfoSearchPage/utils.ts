@@ -145,7 +145,7 @@ export const buildSearchParams = (
   };
 };
 
-const parseRuleGroupToFilters = (ruleGroup?: RuleGroupType) => {
+export const parseRuleGroupToFilters = (ruleGroup?: RuleGroupType) => {
   const elasticQuery =
     ruleGroup ? formatQuery(ruleGroup, { format: 'elasticsearch', fallbackExpression: '' }) : undefined;
   return elasticQuery as unknown as Filter;
