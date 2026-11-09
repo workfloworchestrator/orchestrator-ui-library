@@ -78,7 +78,6 @@ For a complete example, check out the [example-orchestrator-ui](https://github.c
 - **[React](https://react.dev)**: A JavaScript library for building user interfaces
 - **[Next.js](https://nextjs.org)**:  The React framework for production
 - **[TypeScript](https://www.typescriptlang.org)**: JavaScript with syntax for types
-- **[Turbo](https://turbo.build)**: High-performance build system for JavaScript and TypeScript
 - **[EUI (Elastic UI)](https://eui.elastic.co)**: Flexible, accessible component library
 - **[Pydantic Forms UI](https://github.com/workfloworchestrator/pydantic-forms-ui)**: Type safe web forms generated from [Pydantic Forms](../../pydantic-forms/) JSON schema
 
@@ -86,5 +85,5 @@ For a complete example, check out the [example-orchestrator-ui](https://github.c
 
 - 💬 **Questions?** Join us on [Discord](https://discord.gg/fQkQn5ajFR)
 - 🐛 **Found a bug?** [Open an issue](https://github.com/workfloworchestrator/orchestrator-ui-library/issues)
-- 🤝 **Want to contribute?** [Read our contributing guide](development/monorepo.md)
+- 🤝 **Want to contribute?** [Read our contributing guide](development/setup.md)
 - 📖 **Architecture decisions?** Check out our [ADRs](decisions/records.md)

@@ -28,7 +28,7 @@ nav:
           - ADR 0008 - TypeScript conventions: decisions/records/0008-typescript-conventions.md
   - Development:
       - Linting: development/linting.md
-      - Monorepo: development/monorepo.md
+      - Development setup: development/setup.md
       - Naming conventions and TypeScript: development/naming-convention.md
 theme:
   name: material
