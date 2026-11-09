@@ -81,6 +81,7 @@ jest.mock('@/components', () => ({
     return <WfoPageHeader {...props} />;
   },
   WfoSidebar: () => null,
+  WfoAgentChat: () => null,
   WfoBreadcrumbs: () => null,
   WfoEnvironmentBadge: () => null,
   WfoWebsocketStatusBadge: () => null,
