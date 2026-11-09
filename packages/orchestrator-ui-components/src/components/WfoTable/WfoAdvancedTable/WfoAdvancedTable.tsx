@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText } from '@elastic/eui';
+import { EuiButton, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -64,7 +64,6 @@ export const WfoAdvancedTable = <T extends object>({
   const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [selectedDataForDetailModal, setSelectedDataForDetailModal] = useState<T | undefined>(undefined);
-  const [showSearchModal, setShowSearchModal] = useState(false);
   const t = useTranslations('common');
 
   useEffect(() => {
@@ -124,30 +123,11 @@ export const WfoAdvancedTable = <T extends object>({
     pagination?.onChangePage?.(0);
   };
 
-  const searchModalText = t.rich('searchModalText', {
-    br: () => <br />,
-    p: (chunks) => <p>{chunks}</p>,
-    ul: (chunks) => <ul>{chunks}</ul>,
-    li: (chunks) => <li>{chunks}</li>,
-    span: (chunks) => <span>{chunks}</span>,
-    b: (chunks) => <b>{chunks}</b>,
-  });
-
   return (
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
           {!disableSearch && <WfoSearchField queryString={queryString} onUpdateQueryString={onUpdateQueryString} />}
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          {!disableSearch && (
-            <EuiButtonIcon
-              onClick={() => setShowSearchModal(true)}
-              iconSize={'l'}
-              iconType={'info'}
-              aria-label={t('searchModalTitle')}
-            />
-          )}
         </EuiFlexItem>
         <EuiButton onClick={() => setShowSettingsModal(true)}>{t('editColumns')}</EuiButton>
         {onExportData && (
@@ -179,14 +159,6 @@ export const WfoAdvancedTable = <T extends object>({
           onUpdateTableConfig={handleUpdateTableConfig}
           onResetToDefaults={handleResetToDefaults}
         />
-      )}
-
-      {showSearchModal && (
-        <WfoInformationModal title={t('searchModalTitle')} onClose={() => setShowSearchModal(false)}>
-          <EuiText size="m">
-            <p>{searchModalText}</p>
-          </EuiText>
-        </WfoInformationModal>
       )}
 
       {rowDetailData && (
