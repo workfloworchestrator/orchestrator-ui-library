@@ -46,9 +46,6 @@ npm-debug.log*
 packages/orchestrator-ui-components/src/configuration/version.ts
 packages/pydantic-forms
 
-#storybook
-storybook-static
-
 #claude
 .claude/settings.json
 
