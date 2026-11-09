@@ -1,9 +1,18 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
-import { EuiButton, EuiFlexGroup, EuiPanel, EuiSpacer, EuiText } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiDescriptionList,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiPanel,
+  EuiSpacer,
+  EuiText,
+} from '@elastic/eui';
 
 import {
   PATH_TASKS,
@@ -11,6 +20,7 @@ import {
   TimelineItem,
   WfoIsAllowedToRender,
   WfoLoading,
+  WfoProcessStatusBadge,
   WfoTimeline,
   WfoTitleWithWebsocketBadge,
 } from '@/components';
@@ -28,6 +38,7 @@ import {
 import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
+import { WfoWorkflowHelpFlyout } from './WfoStartProcessPageV2';
 import { getIndexOfCurrentStep } from './timelineUtils';
 
 interface ProcessHeaderValueProps {
@@ -74,6 +85,8 @@ interface ProcessDetailProps {
   onTimelineItemClick?: (id: string) => void;
   isLoading?: boolean;
   hasError?: boolean;
+  /** 'new': sticky header with actions + help, details panel on the right, no timeline */
+  layout?: 'current' | 'new';
 }
 
 function useHasPreviousRoute() {
@@ -98,8 +111,11 @@ export const WfoProcessDetail = ({
   onTimelineItemClick,
   isLoading = false,
   hasError = false,
+  layout = 'current',
 }: ProcessDetailProps) => {
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const t = useTranslations('processes.detail');
+  const tForm = useTranslations('pydanticForms.userInputForm');
   const { theme } = useOrchestratorTheme();
   const { showConfirmDialog } = useContext(ConfirmationDialogContext);
   const [retryProcess] = useRetryProcessMutation();
@@ -172,6 +188,140 @@ export const WfoProcessDetail = ({
       },
     });
 
+  const actionButtons = (
+    <>
+      <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
+        <EuiButton
+          onClick={handleActionButtonClick(retryAction)}
+          iconType={() => <WfoRefresh color={retryButtonIsDisabled ? theme.colors.textSubdued : theme.colors.link} />}
+          isDisabled={retryButtonIsDisabled}
+        >
+          {t('retry')}
+        </EuiButton>
+      </WfoIsAllowedToRender>
+      <WfoIsAllowedToRender resource={PolicyResource.PROCESS_ABORT}>
+        <EuiButton
+          onClick={handleActionButtonClick(abortAction)}
+          iconType={() => (
+            <WfoXCircleFill color={abortButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
+          )}
+          color="danger"
+          isDisabled={abortButtonIsDisabled}
+        >
+          {t('abort')}
+        </EuiButton>
+      </WfoIsAllowedToRender>
+      <>
+        {processDetail && processIsTask && (
+          <WfoIsAllowedToRender resource={PolicyResource.PROCESS_DELETE}>
+            <EuiButton
+              onClick={handleActionButtonClick(deleteAction)}
+              iconType={() => (
+                <WfoXCircleFill color={deleteButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
+              )}
+              color="danger"
+              isDisabled={deleteButtonIsDisabled}
+            >
+              {t('delete')}
+            </EuiButton>
+          </WfoIsAllowedToRender>
+        )}
+      </>
+    </>
+  );
+
+  const relatedSubscriptions =
+    processDetail?.subscriptions?.page.map((subscription) => ({
+      subscriptionId: subscription.subscriptionId,
+      description: subscription.description,
+    })) ?? [];
+
+  if (layout === 'new') {
+    const formatDate = (date?: string) => (date ? parseIsoString(parseDateRelativeToToday)(date) : '-');
+    const details = [
+      { title: t('status'), description: processDetail?.lastStatus ?? '-' },
+      { title: t('lastStep'), description: processDetail?.lastStep ?? '-' },
+      ...(processDetail?.customer ? [{ title: t('customer'), description: processDetail.customer.fullname }] : []),
+      { title: t('startedBy'), description: processDetail?.createdBy ?? '-' },
+      { title: t('startedOn'), description: formatDate(processDetail?.startedAt) },
+      { title: t('lastUpdate'), description: formatDate(processDetail?.lastModifiedAt) },
+      ...(isAllowed(PolicyResource.PROCESS_RELATED_SUBSCRIPTIONS) && relatedSubscriptions.length ?
+        [
+          {
+            title: t('relatedSubscriptions'),
+            description: (
+              <WfoProcessListSubscriptionsCell
+                subscriptions={relatedSubscriptions}
+                renderDirection={RenderDirection.VERTICAL}
+              />
+            ),
+          },
+        ]
+      : []),
+    ];
+
+    return (
+      <>
+        <div
+          css={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 3,
+            background: theme.colors.backgroundBasePlain,
+            borderBottom: `1px solid ${theme.colors.borderBaseSubdued}`,
+            padding: `${theme.size.s} 0`,
+            marginBottom: theme.size.l,
+          }}
+        >
+          <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" gutterSize="m" wrap responsive={false}>
+            <EuiFlexItem css={{ minWidth: 0 }}>
+              <WfoTitleWithWebsocketBadge
+                title={pageTitle}
+                extraElement={
+                  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false}>
+                    {processDetail?.lastStatus && <WfoProcessStatusBadge processStatus={processDetail.lastStatus} />}
+                    {productNames && (
+                      <EuiText size="s" color="subdued">
+                        {productNames}
+                      </EuiText>
+                    )}
+                  </EuiFlexGroup>
+                }
+              />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiFlexGroup gutterSize="s" wrap responsive={false}>
+                {actionButtons}
+                <EuiButtonEmpty iconType="question" onClick={() => setIsHelpOpen(true)}>
+                  {tForm('help')}
+                </EuiButtonEmpty>
+              </EuiFlexGroup>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </div>
+
+        <EuiFlexGroup gutterSize="xl" alignItems="flexStart">
+          <EuiFlexItem css={{ minWidth: 0 }}>{children}</EuiFlexItem>
+          <EuiFlexItem grow={false} css={{ width: 300, '@media (max-width: 767px)': { width: '100%', order: -1 } }}>
+            <EuiPanel hasBorder hasShadow={false} paddingSize="m">
+              {(isLoading && !hasError && <WfoLoading />) || (
+                <EuiDescriptionList type="row" compressed listItems={details} />
+              )}
+            </EuiPanel>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+
+        {isHelpOpen && (
+          <WfoWorkflowHelpFlyout
+            workflowName={processDetail?.workflowName ?? ''}
+            title={pageTitle}
+            onClose={() => setIsHelpOpen(false)}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <WfoContentHeader
@@ -187,43 +337,7 @@ export const WfoProcessDetail = ({
           />
         }
       >
-        <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
-          <EuiButton
-            onClick={handleActionButtonClick(retryAction)}
-            iconType={() => <WfoRefresh color={retryButtonIsDisabled ? theme.colors.textSubdued : theme.colors.link} />}
-            isDisabled={retryButtonIsDisabled}
-          >
-            {t('retry')}
-          </EuiButton>
-        </WfoIsAllowedToRender>
-        <WfoIsAllowedToRender resource={PolicyResource.PROCESS_ABORT}>
-          <EuiButton
-            onClick={handleActionButtonClick(abortAction)}
-            iconType={() => (
-              <WfoXCircleFill color={abortButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
-            )}
-            color="danger"
-            isDisabled={abortButtonIsDisabled}
-          >
-            {t('abort')}
-          </EuiButton>
-        </WfoIsAllowedToRender>
-        <>
-          {processDetail && processIsTask && (
-            <WfoIsAllowedToRender resource={PolicyResource.PROCESS_DELETE}>
-              <EuiButton
-                onClick={handleActionButtonClick(deleteAction)}
-                iconType={() => (
-                  <WfoXCircleFill color={deleteButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
-                )}
-                color="danger"
-                isDisabled={deleteButtonIsDisabled}
-              >
-                {t('delete')}
-              </EuiButton>
-            </WfoIsAllowedToRender>
-          )}
-        </>
+        {actionButtons}
       </WfoContentHeader>
 
       <EuiPanel hasShadow={false} hasBorder={false} color="subdued" element="div">

@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import type { PydanticFormApiProvider } from 'pydantic-forms';
+import type { PydanticFormApiProvider, PydanticFormConfig } from 'pydantic-forms';
 import { PydanticForm } from 'pydantic-forms';
 
 import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
@@ -19,13 +19,15 @@ interface WfoPydanticFormProps {
   processName: string;
   startProcessPayload?: StartWorkflowPayload;
   isTask?: boolean;
+  /** Replaces the default header, row and/or footer renderers */
+  renderers?: Pick<PydanticFormConfig, 'headerRenderer' | 'rowRenderer' | 'footerRenderer'>;
 }
 
 interface StartProcessResponse {
   id: string;
 }
 
-export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: WfoPydanticFormProps) => {
+export const WfoPydanticForm = ({ processName, startProcessPayload, isTask, renderers }: WfoPydanticFormProps) => {
   const generateFormId = useMemo(() => {
     return `${JSON.stringify(startProcessPayload)}`;
   }, [startProcessPayload]);
@@ -127,7 +129,7 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
       formId={generateFormId}
       onSuccess={onSuccess}
       onCancel={handleCancel}
-      config={config}
+      config={{ ...config, ...renderers }}
     />
   );
 };

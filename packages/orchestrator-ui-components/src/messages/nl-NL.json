@@ -212,6 +212,7 @@
       "detailLevel": "Detail",
       "detailMinimal": "Minimaal",
       "detailStandard": "Standaard",
+      "display": "Weergave",
       "duration": "Looptijd",
       "hideDelta": "Verberg subscription delta",
       "hideMinimalStepNames": "Verberg naam minimale stap",
@@ -229,9 +230,11 @@
   },
   "pydanticForms": {
     "userInputForm": {
+      "back": "Terug",
       "cancel": "Annuleren",
       "forbiddenFallback": "Je hebt geen rechten om deze actie uit te voeren.",
       "forbiddenTitle": "Geen toegang",
+      "help": "Hulp",
       "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten",
       "next": "Volgende",
       "preconditionFailedFallback": "Aan een voorwaarde voor het starten van deze workflow is niet voldaan.",
@@ -241,7 +244,8 @@
       "resumeTask": "Hervat taak",
       "resumeWorkflow": "Hervat workflow",
       "startTask": "Start taak",
-      "startWorkflow": "Start workflow"
+      "startWorkflow": "Start workflow",
+      "stepNumber": "Stap {number}"
     },
     "widgets": {
       "arrayField": {
