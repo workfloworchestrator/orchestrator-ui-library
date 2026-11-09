@@ -90,13 +90,3 @@ The file `version-compatibility.json` in the root of the orchestrator-ui-library
 In the UI a check is added to validate whether the UI matches a minimum release of the backend.
 
 See the [Frontend / Backend Compatibility](https://workfloworchestrator.github.io/orchestrator-ui-library/guides/compatibility/) guide for the current compatibility table. When adding a new entry to `version-compatibility.json`, add a matching row there in the same pull request.
-
-## Storybook
-
-The storybook can be run from the packages/orchestrator-ui-components/ folder, run:
-
-```bash
-npx storybook dev
-```
-
-Story book can be inspected on [http://localhost:61834/](http://localhost:61834/).

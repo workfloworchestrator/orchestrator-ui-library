@@ -7,9 +7,7 @@ We use prettier for linting; you can run:
 npm prettier-fix
 ```
 
-## Utility libraries
+## Configuration
 
-The orchestrator-ui library exposes the following packages regarding development or coding standards:
-
-- **@orchestrator-ui/eslint-config-custom**: ESLint configuration to enforce code standards
-- **@orchestrator-ui/tsconfig**: TypeScript configuration to ensure type safety and consistency
+The ESLint, Jest and TypeScript configuration live inside the `packages/orchestrator-ui-components` package
+(`eslint.config.js`, `jest.config.cjs` and `tsconfig.base.json`).
