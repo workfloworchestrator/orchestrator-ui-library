@@ -64,6 +64,19 @@ Setup auth with keycloak in docker
 
 Each PR, which typically addresses an existing ticket from the issue list, should have a reference to the issue (eg use the issue number in the branch name). Furthermore the PR should include a changeset describing the changes of the PR, which will become part of the changelog in NPM.
 
+## Pull requests
+
+Open every pull request as a **draft** (`gh pr create --draft`, or *Create draft pull request* in the GitHub UI). CI runs on drafts as usual, so you can share the diff and iterate freely.
+
+Click *Ready for review* once the PR is complete and the other CI checks pass. Automated [Greptile](https://www.greptile.com) reviews are billed per review, so they are rationed:
+
+- If you have write access to the repository, marking the PR ready triggers one Greptile review. Later pushes are not reviewed automatically.
+- To request another review after addressing feedback, add the `greptile-review` label. Each PR has a limited number of reviews; once it is spent, a repository admin can still force another one with the same label.
+- PRs from contributors without write access are not reviewed automatically; a maintainer adds `greptile-review` when a review is useful.
+- For complex or risky changes, a repository admin can add the `greptile-review-trex` label to trigger an in-depth review.
+
+Please don't trigger reviews by commenting `@greptileai`, as that bypasses the per-PR limit.
+
 # Release and publish
 
 ## Preparing the release
