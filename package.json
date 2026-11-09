@@ -44,7 +44,7 @@
     "prettier-fix": "prettier --write \"{**/*,*}.{ts,tsx,json,js,md}\"",
     "changeset": "changeset",
     "release": "pnpm run build && pnpm run lint && pnpm run test && changeset publish",
-    "prepare": "husky"
+    "prepare": "husky && pnpm run generate-version"
   },
   "dependencies": {
     "@emotion/css": "^11.11.2",
@@ -90,6 +90,7 @@
     "@types/invariant": "^2.2.33",
     "@types/jest": "^30.0.0",
     "@types/json-schema": "^7.0.15",
+    "@types/lodash": "^4.17.27",
     "@types/object-hash": "^3.0.6",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
