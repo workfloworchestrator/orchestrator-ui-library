@@ -1,74 +1,46 @@
 name: Lint, test and build
 on: [push]
 jobs:
-    cache-dependencies:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Use Node.js 24
-              uses: actions/setup-node@v3
-              with:
-                  node-version: '24'
-                  cache: 'npm'
-            - uses: actions/cache@v3
-              with:
-                  path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
-            - name: Installing dependencies
-              run: npm ci
-
     linting-and-prettier:
         runs-on: ubuntu-latest
-        needs: cache-dependencies
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
             - name: Use Node.js 24
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: '24'
-                  cache: 'npm'
-            - uses: actions/cache@v3
-              with:
-                  path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
+                  cache: 'pnpm'
             - name: Installing dependencies
-              run: npm ci
-            - run: npm run tsc
-            - run: npm run lint
-            - run: npm run prettier
+              run: pnpm install --frozen-lockfile
+            - run: pnpm run tsc
+            - run: pnpm run lint
+            - run: pnpm run prettier
 
     unit-tests:
         runs-on: ubuntu-latest
-        needs: cache-dependencies
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
             - name: Use Node.js 24
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: '24'
-                  cache: 'npm'
-            - uses: actions/cache@v3
-              with:
-                  path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
+                  cache: 'pnpm'
             - name: Installing dependencies
-              run: npm ci
-            - run: npm run test
+              run: pnpm install --frozen-lockfile
+            - run: pnpm run test
 
     build:
         runs-on: ubuntu-latest
-        needs: cache-dependencies
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
             - name: Use Node.js 24
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: '24'
-                  cache: 'npm'
-            - uses: actions/cache@v3
-              with:
-                  path: '**/node_modules'
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/package.json') }}
+                  cache: 'pnpm'
             - name: Installing dependencies
-              run: npm ci
-            - run: npm run build
+              run: pnpm install --frozen-lockfile
+            - run: pnpm run build

@@ -2,7 +2,7 @@
 
 /**/__generated__
 /**/dist
-packages/*/CHANGELOG.md
+/CHANGELOG.md
 /coverage
 /mkdocs
 
@@ -14,7 +14,3 @@ packages/*/CHANGELOG.md
 
 .next
 node_modules
-
-storybook-static
-
-.turbo
