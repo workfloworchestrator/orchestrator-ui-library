@@ -15,8 +15,12 @@ const esmDependencies = [
   '@apidevtools/json-schema-ref-parser',
 ];
 
+// Matches both a flat layout (node_modules/@scope/name/) and the pnpm store layout
+// (node_modules/.pnpm/@scope+name@version/), where the scope slash becomes a "+".
+const esmDependencyPattern = esmDependencies.map((name) => name.replace('/', '[+/]')).join('|');
+
 const transformIgnorePatterns = [
-  `/node_modules/(?!(${esmDependencies.join('|')})/)`,
+  `/node_modules/(?!(\\.pnpm/)?(${esmDependencyPattern})[@/])`,
   '^.+\\.module\\.(css|sass|scss)$',
 ];
 
