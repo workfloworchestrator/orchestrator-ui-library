@@ -1,8 +1,6 @@
 export * from './WfoAutoExpandableTextArea';
 export * from './WfoAgentChat';
 export * from './WfoBadges';
-export * from './WfoBackendUnavailable';
-export * from './WfoAvailabilityCheck';
 export * from './WfoContentHeader';
 export * from './WfoExpandableField';
 export * from './WfoPageTemplate/WfoBreadcrumbs';
@@ -41,7 +39,7 @@ export * from './WfoInlineNoteEdit';
 export * from './WfoTableCodeBlock';
 export * from './WfoInlineEdit';
 export * from './WfoPydanticForm';
-export * from './WfoSearchPage';
+export * from './WfoHighlightedText';
 export * from './WfoWorkflowUserGuide';
 export * from './WfoMonacoCodeBlock';
 export * from './WfoLogoSpinner';

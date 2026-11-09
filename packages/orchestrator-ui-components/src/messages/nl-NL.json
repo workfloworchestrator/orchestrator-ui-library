@@ -326,38 +326,9 @@
     }
   },
   "search": {
-    "availability": {
-      "unavailable": {
-        "documentation": "Raadpleeg de orchestrator documentatie voor gedetailleerde installatie-instructies.",
-        "instructions": {
-          "checkDockerConfig": "Zorg er bij gebruik van Docker voor dat de environment variable is ingesteld in docker-compose.yml",
-          "checkVersion": "Controleer of je orchestrator-core versie search-functionaliteit ondersteunt",
-          "restartService": "Herstart je service",
-          "setEnvironmentVariable": {
-            "after": " in de environment variables van je service",
-            "before": "Zet "
-          }
-        },
-        "retryButton": "Opnieuw verbinden",
-        "title": "Search service niet beschikbaar"
-      }
-    },
     "page": {
       "addGroup": "Groep toevoegen",
-      "addNestedGroup": "Geneste groep toevoegen",
       "addRule": "Regel toevoegen",
-      "anyPathOption": "Elk pad",
-      "componentsGroupLabel": "Componenten",
-      "dismiss": "Sluiten",
-      "emptyGroupDescription": "Voeg condities of geneste groepen toe om je filter op te bouwen.",
-      "emptyGroupTitle": "Lege groep",
-      "enterNumber": "Voer een getal in",
-      "enterValue": "Voer een waarde in",
-      "fieldLabel": "Veld",
-      "fieldsGroupLabel": "Velden",
-      "fromDate": "Vanaf datum",
-      "fromNumber": "Van",
-      "groupLabel": "Groep",
       "help": {
         "addGroupDescription": "voegt een nieuwe groep toe met daarin twee regels. Een groep heeft een eigen AND/OR-keuze.",
         "addRuleDescription": "voegt een nieuwe regel toe aan de huidige groep. Een regel bestaat uit een veld, een operator en een waarde.",
@@ -378,44 +349,17 @@
         "tableSettingsTitle": "Optiemenu",
         "title": "Hoe zoeken werkt"
       },
-      "hideFilters": "Verberg filters",
-      "loadingSearchResults": "Zoekresultaten laden...",
-      "maxNestingDepth": "Maximale nesting-diepte bereikt",
-      "nextPage": "Volgende pagina",
-      "noResults": "Geen resultaten",
-      "noResultsFound": "Geen resultaten gevonden voor je zoekopdracht.",
-      "noResultsMessage": "Geen {entityType} gevonden die voldoen aan je zoekcriteria.",
-      "noResultsSuggestions": "Probeer je zoektermen aan te passen, filters te verwijderen of op andere trefwoorden te zoeken.",
-      "operatorLabel": "Operator",
-      "page": "Pagina",
-      "pathsCount": "{count} paden",
-      "previousPage": "Vorige pagina",
-      "removeConditionAriaLabel": "Conditie verwijderen",
       "removeGroup": "Groep verwijderen",
       "loadingOptions": "Opties laden",
       "removeRule": "Regel verwijderen",
-      "resultsOnPage": "{resultCount} resulta(a)t(en) op deze pagina",
       "retrieval": "Retrieval",
       "retrieverAuto": "Auto",
       "retrieverFuzzy": "Fuzzy",
       "retrieverHybrid": "Hybride",
       "retrieverSemantic": "Semantic",
-      "searchError": "Fout",
       "searchFieldsPlaceholder": "Typ om velden te selecteren",
-      "searchPlaceholder": "Zoek naar {entityType}…",
-      "searchResultsPagination": "Paginering zoekresultaten",
       "selectDateAndTime": "Selecteer datum",
-      "selectFieldFirst": "Selecteer eerst een veld",
-      "selectOrEnterValue": "Selecteer of typ een waarde",
-      "selectSpecificPathPlaceholder": "Selecteer een specifiek pad...",
-      "showFilters": "Toon filters",
-      "startTypingToLoadOptions": "Begin met typen om opties te laden",
-      "structuredFilters": "Gestructureerde filters",
-      "toDate": "Tot datum",
-      "toNumber": "Tot",
-      "valueControlTo": "tot",
-      "valueLabel": "Waarde",
-      "viewDetails": "Bekijk details"
+      "startTypingToLoadOptions": "Begin met typen om opties te laden"
     }
   },
   "settings": {

@@ -1,4 +1,3 @@
-import { getEndpointPath } from '@/components/WfoSearchPage/utils';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
   CacheTagType,
@@ -29,16 +28,21 @@ export interface SearchPayload {
 // The export endpoint defaults the limit to SEARCH_MAX_EXPORT_LIMIT, so no limit is sent
 export type SearchExportPayload = Omit<SearchPayload, 'cursor' | 'limit'>;
 
-export interface SearchPaginationPayload extends Omit<SearchPayload, 'cursor'> {
-  cursor: number;
-}
-
 export interface SearchDefinitionsResponse {
   [key: string]: {
     operators: string[];
     value_schema: Record<string, value_schema>;
   };
 }
+
+const ENDPOINT_PATHS: Record<EntityKind, string> = {
+  PROCESS: 'processes',
+  PRODUCT: 'products',
+  WORKFLOW: 'workflows',
+  SUBSCRIPTION: 'subscriptions',
+};
+
+const getEndpointPath = (entityType: EntityKind): string => ENDPOINT_PATHS[entityType] || ENDPOINT_PATHS.SUBSCRIPTION;
 
 type RestMatchingField = { text: string; path: string; highlight_indices: [number, number][] };
 type RestSearchResult = Omit<SearchResult, 'matchingFields'> & { matching_fields?: RestMatchingField[] | null };
@@ -118,20 +122,6 @@ const searchApi = orchestratorApi.injectEndpoints({
         baseQueryType: BaseQueryTypes.fetch,
       },
     }),
-    searchWithPagination: build.mutation<PaginatedSearchResults, SearchPaginationPayload>({
-      query: ({ cursor, entity_type, query, filters, limit, retriever }) => ({
-        url: `search/${getEndpointPath(entity_type)}?cursor=${cursor}`,
-        method: 'POST',
-        body: { query, filters, limit, retriever },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }),
-      transformResponse: mapSearchResults,
-      extraOptions: {
-        baseQueryType: BaseQueryTypes.fetch,
-      },
-    }),
     searchPaths: build.query<PathAutocompleteResponse, { q: string; entity_type: EntityKind }>({
       query: ({ q, entity_type }) => ({
         url: `search/paths?q=${encodeURIComponent(q)}&entity_type=${entity_type}`,
@@ -155,9 +145,7 @@ const searchApi = orchestratorApi.injectEndpoints({
 
 export const {
   useSearchQuery,
-  useLazySearchQuery,
   useSearchExportMutation,
-  useSearchWithPaginationMutation,
   useSearchPathsQuery,
   useLazySearchPathsQuery,
   useSearchDefinitionsQuery,

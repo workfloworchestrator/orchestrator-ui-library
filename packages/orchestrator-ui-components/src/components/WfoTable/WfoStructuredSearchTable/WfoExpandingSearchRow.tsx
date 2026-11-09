@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { WfoHighlightedText } from '@/components/WfoSearchPage/WfoSearchResults/WfoHighlightedText';
+import { WfoHighlightedText } from '@/components/WfoHighlightedText';
 import { useWithOrchestratorTheme } from '@/hooks';
 import type { MatchingField } from '@/types';
 import { toPercentage } from '@/utils';

@@ -326,38 +326,9 @@
     }
   },
   "search": {
-    "availability": {
-      "unavailable": {
-        "documentation": "Please refer to the orchestrator documentation for detailed setup instructions.",
-        "instructions": {
-          "checkDockerConfig": "If using Docker, make sure the environment variable is set in docker-compose.yml",
-          "checkVersion": "Ensure your orchestrator-core version supports search functionality",
-          "restartService": "Restart your service",
-          "setEnvironmentVariable": {
-            "after": " in your service environment variables",
-            "before": "Set "
-          }
-        },
-        "retryButton": "Retry Connection",
-        "title": "Search Service Not Available"
-      }
-    },
     "page": {
       "addGroup": "Add group",
-      "addNestedGroup": "Add nested group",
       "addRule": "Add rule",
-      "anyPathOption": "Any path",
-      "componentsGroupLabel": "Components",
-      "dismiss": "Dismiss",
-      "emptyGroupDescription": "Add conditions or nested groups to build your filter.",
-      "emptyGroupTitle": "Empty group",
-      "enterNumber": "Enter number",
-      "enterValue": "Enter value",
-      "fieldLabel": "Field",
-      "fieldsGroupLabel": "Fields",
-      "fromDate": "From date",
-      "fromNumber": "From",
-      "groupLabel": "Group",
       "help": {
         "addGroupDescription": "adds a new group with two rules inside. A group has its own AND/OR choice.",
         "addRuleDescription": "adds a new rule to the current group. A rule consists of a field, an operator and a value.",
@@ -378,44 +349,17 @@
         "tableSettingsTitle": "Options menu",
         "title": "How search works"
       },
-      "hideFilters": "Hide filters",
-      "loadingSearchResults": "Loading search results...",
-      "maxNestingDepth": "Maximum nesting depth reached",
-      "nextPage": "Next page",
-      "noResults": "No Results",
-      "noResultsFound": "No results found for your search.",
-      "noResultsMessage": "No {entityType} found matching your search criteria.",
-      "noResultsSuggestions": "Try adjusting your search terms, removing filters, or searching for different keywords.",
-      "operatorLabel": "Operator",
-      "page": "Page",
-      "pathsCount": "{count} paths",
-      "previousPage": "Previous page",
-      "removeConditionAriaLabel": "Remove condition",
       "removeGroup": "Remove group",
       "loadingOptions": "Loading options",
       "removeRule": "Remove rule",
-      "resultsOnPage": "{resultCount} result(s) on this page",
       "retrieval": "Retrieval",
       "retrieverAuto": "Auto",
       "retrieverFuzzy": "Fuzzy",
       "retrieverHybrid": "Hybrid",
       "retrieverSemantic": "Semantic",
-      "searchError": "Error",
       "searchFieldsPlaceholder": "Type to select fields",
-      "searchPlaceholder": "Search for {entityType}…",
-      "searchResultsPagination": "Search results pagination",
       "selectDateAndTime": "Select date",
-      "selectFieldFirst": "Select a field first",
-      "selectOrEnterValue": "Select or type value",
-      "selectSpecificPathPlaceholder": "Select a specific path...",
-      "showFilters": "Show filters",
-      "startTypingToLoadOptions": "Start typing to load options",
-      "structuredFilters": "Structured filters",
-      "toDate": "To date",
-      "toNumber": "To",
-      "valueControlTo": "to",
-      "valueLabel": "Value",
-      "viewDetails": "View details"
+      "startTypingToLoadOptions": "Start typing to load options"
     }
   },
   "settings": {
