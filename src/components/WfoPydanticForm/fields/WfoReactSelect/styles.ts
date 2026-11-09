@@ -8,7 +8,7 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
   const { theme } = wfoTheme;
 
   const reactSelectInnerComponentStyles = {
-    option: (baseStyles: object, state: { isSelected: boolean; isDisabled: boolean }) => ({
+    option: (baseStyles: object, state: { isSelected: boolean; isDisabled: boolean }): CSSObjectWithLabel => ({
       ...baseStyles,
       borderBottom: theme.border.thin,
       borderColor: theme.colors.borderBaseSubdued,
@@ -48,11 +48,11 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
       ...baseStyles,
       backgroundColor: theme.colors.backgroundBasePlain,
     }),
-    dropdownIndicator: (base: CSSObjectWithLabel, state: { isDisabled: boolean }) => ({
+    dropdownIndicator: (base: CSSObjectWithLabel, state: { isDisabled: boolean }): CSSObjectWithLabel => ({
       ...base,
       color: state.isDisabled ? theme.colors.borderBaseSubdued : theme.colors.textDisabled,
     }),
-    indicatorSeparator: (base: CSSObjectWithLabel, state: { isDisabled: boolean }) => ({
+    indicatorSeparator: (base: CSSObjectWithLabel, state: { isDisabled: boolean }): CSSObjectWithLabel => ({
       ...base,
       backgroundColor: state.isDisabled ? theme.colors.borderBaseSubdued : theme.colors.textDisabled,
     }),

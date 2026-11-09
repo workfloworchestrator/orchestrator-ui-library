@@ -64,11 +64,11 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     borderRadius: '24px',
   };
 
-  const stepDurationStyle = {
+  const stepDurationStyle = css({
     fontSize: theme.size.m,
     color: theme.colors.textSubdued,
     fontWeight: theme.font.weight.semiBold,
-  };
+  });
 
   const stepStateSuccessIconStyle = css({
     ...stepStateIcon,

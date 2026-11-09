@@ -25,12 +25,12 @@ git clone git@github.com:workfloworchestrator/orchestrator-ui-library.git orches
 Make sure the app ignores the cloned folder in its own `.gitignore`. Inside the library folder:
 
 ```bash
-npm install
-npm run dev      # rebuild dist/ on every change
-npm run test
-npm run lint
-npm run tsc
-npm run prettier
+pnpm install
+pnpm run dev      # rebuild dist/ on every change
+pnpm run test
+pnpm run lint
+pnpm run tsc
+pnpm run prettier
 ```
 
 ## Contributing
@@ -42,7 +42,7 @@ Each PR, which typically addresses an existing ticket from the issue list, shoul
 ### Preparing the release
 
 ```bash
-npm run changeset
+pnpm run changeset
 ```
 
 - Include the changes made by this command in pull requests to the main branch

@@ -1,0 +1,25 @@
+# Only install package versions published more than 2 days ago (value in minutes).
+# Gives the ecosystem time to detect malicious or compromised releases.
+minimumReleaseAge: 2880
+# Our own packages can be used as soon as they are published.
+minimumReleaseAgeExclude:
+  - '@orchestrator-ui/*'
+
+# Force transitive dependencies onto specific versions.
+overrides:
+  eslint-plugin-react>eslint: ^10.4.0
+  uuid: ^11.1.0
+  prismjs: ^1.30.0
+  dompurify: ^3.4.15
+  esbuild: ^0.28.2
+  d3-color: ^3.1.0
+  test-exclude: ^8.0.0
+  next-query-params>next: ^16.0.0
+  '@elastic/eui>typescript': 6.0.3
+
+# Dependencies allowed to run install scripts (pnpm blocks them by default).
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  unrs-resolver: true
