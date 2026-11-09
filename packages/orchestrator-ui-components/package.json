@@ -72,8 +72,7 @@
   },
   "devDependencies": {
     "@elastic/eui": "^122.1.0",
-    "@orchestrator-ui/eslint-config-custom": "*",
-    "@orchestrator-ui/jest-config": "*",
+    "@eslint/js": "^10.0.1",
     "@reduxjs/toolkit": "^2.12.0",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.0.1",
@@ -83,11 +82,17 @@
     "@types/object-hash": "^3.0.6",
     "@types/scroll-into-view": "^1.16.3",
     "babel-jest": "^30.4.1",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.6.0",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "jest-watch-typeahead": "^3.0.1",
     "tsup": "^8.5.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3"
   },
   "peerDependencies": {
     "@elastic/eui": "^122.1.0",
