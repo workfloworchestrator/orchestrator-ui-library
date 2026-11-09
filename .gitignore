@@ -31,8 +31,8 @@ npm-debug.log*
 .env.test.local
 .env.production.local
 
-# turbo
-.turbo
+# swc cache (next/jest)
+.swc
 
 # vercel
 .vercel
@@ -43,11 +43,7 @@ npm-debug.log*
 .vscode
 
 # ignore generated ui version file
-packages/orchestrator-ui-components/src/configuration/version.ts
-packages/pydantic-forms
+src/configuration/version.ts
 
 #claude
 .claude/settings.json
-
-# Temporary fix for surf version
-apps/wfo-ui-surf

@@ -1,32 +1,119 @@
 {
-  "private": true,
+  "name": "@orchestrator-ui/orchestrator-ui-components",
+  "version": "10.4.0",
+  "license": "Apache-2.0",
+  "description": "Library of UI Components used to display the workflow orchestrator frontend",
+  "author": {
+    "name": "Workflow Orchestrator Programme",
+    "email": "workfloworchestrator.board@commonsconservancy.org",
+    "url": "https://www.workfloworchestrator.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workfloworchestrator/orchestrator-ui-library.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE.txt",
+    "CHANGELOG.md",
+    "version-compatibility.json"
+  ],
+  "homepage": "https://www.workfloworchestrator.org",
+  "bugs": "https://github.com/workfloworchestrator/orchestrator-ui-library/issues",
+  "keywords": [
+    "orchestrator",
+    "workflow",
+    "workflow orchestrator",
+    "network",
+    "automation"
+  ],
   "scripts": {
-    "dev": "turbo run dev --filter=wfo-ui...",
-    "dev:surf": "turbo run dev --filter=wfo-ui-surf...",
-    "dev:all": "turbo run dev",
-    "test": "turbo run test",
-    "tsc": "turbo run tsc",
-    "lint": "turbo run lint",
+    "test": "jest",
+    "generate-version": "node -p \"'export const ORCHESTRATOR_UI_LIBRARY_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/configuration/version.ts && prettier --write src/configuration/version.ts",
+    "build": "npm run generate-version && tsup src/index.ts",
+    "tsc": "tsc --noEmit",
+    "lint": "eslint",
+    "dev": "tsup --watch",
     "prettier": "prettier -c \"{**/*,*}.{ts,tsx,json,js,md}\"",
     "prettier-fix": "prettier --write \"{**/*,*}.{ts,tsx,json,js,md}\"",
-    "build": "turbo run build",
-    "packages:changeset": "changeset",
-    "packages:publish": "turbo run build lint test && changeset publish",
-    "postinstall": "husky && turbo run build --filter=./packages/*"
+    "changeset": "changeset",
+    "release": "npm run build && npm run lint && npm run test && changeset publish",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@emotion/css": "^11.11.2",
+    "@emotion/react": "^11.11.4",
+    "@monaco-editor/react": "^4.7.0",
+    "@orchestrator-ui/orchestrator-agent-chat": "^0.2.2",
+    "@rtk-query/graphql-request-base-query": "^2.3.1",
+    "@tanstack/react-virtual": "^3.13.24",
+    "cron-parser": "^5.6.2",
+    "cronstrue": "^3.24.0",
+    "graphql-request": "^7.4.0",
+    "invariant": "^2.2.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.6.0",
+    "next-auth": "^4.24.5",
+    "next-intl": "^4.14.5",
+    "next-query-params": "^5.0.0",
+    "object-hash": "^3.0.0",
+    "prism-themes": "^1.9.0",
+    "pydantic-forms": "^4.6.0",
+    "react-diff-view": "^3.2.0",
+    "react-draggable": "^4.4.6",
+    "react-querybuilder": "^8.18.0",
+    "react-redux": "^9.3.0",
+    "react-select": "^5.8.0",
+    "scroll-into-view": "^1.16.2",
+    "unidiff": "^1.0.4",
+    "use-query-params": "^2.2.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
+    "@elastic/eui": "^122.1.0",
+    "@eslint/js": "^10.0.1",
+    "@reduxjs/toolkit": "^2.12.0",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-    "@turbo/gen": "^2.9.14",
+    "@types/invariant": "^2.2.33",
+    "@types/jest": "^30.0.0",
+    "@types/object-hash": "^3.0.6",
+    "@types/scroll-into-view": "^1.16.3",
+    "babel-jest": "^30.4.1",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.6.0",
     "husky": "^9.0.11",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "jest-watch-typeahead": "^3.0.1",
     "prettier": "^3.8.1",
-    "turbo": "^2.9.14"
+    "tsup": "^8.5.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3"
   },
-  "name": "orchestrator-core-ui",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "peerDependencies": {
+    "@elastic/eui": "^122.1.0",
+    "next": "^16.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "browser": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "overrides": {
     "eslint-plugin-react": {
       "eslint": "^10.4.0"

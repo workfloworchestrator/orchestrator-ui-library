@@ -9,7 +9,7 @@ import { useOrchestratorTheme } from '@/hooks';
 import { MappedVersion } from '@/types';
 import { getOrchestratorCoreVersionIfNotCompatible } from '@/utils/compareVersions';
 
-import versionCompatibility from '../../../../../../version-compatibility.json';
+import versionCompatibility from '../../../../version-compatibility.json';
 
 interface WfoVersionIncompatibleBadgeProps {
   orchestratorUiVersion: string;
