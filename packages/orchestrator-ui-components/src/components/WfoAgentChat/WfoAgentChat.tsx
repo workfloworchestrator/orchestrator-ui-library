@@ -2,13 +2,13 @@ import React, { FC, useMemo } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import type { WfoChatColors } from '@workfloworchestrator/wfo-chat';
+import type { WfoChatColors } from '@orchestrator-ui/orchestrator-agent-chat';
 
 import { useGetOrchestratorConfig, useOrchestratorTheme, useWfoSession } from '@/hooks';
 import type { WfoComputedTheme } from '@/theme';
 
 // The popup keeps its thread in session storage and renders in a shadow root: client only.
-const WfoChat = dynamic(() => import('@workfloworchestrator/wfo-chat').then((module) => module.WfoChat), {
+const WfoChat = dynamic(() => import('@orchestrator-ui/orchestrator-agent-chat').then((module) => module.WfoChat), {
   ssr: false,
 });
 
