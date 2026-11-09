@@ -17,16 +17,16 @@ git clone git@github.com:workfloworchestrator/orchestrator-ui-library.git orches
 Inside the library folder:
 
 ```bash
-npm install
-npm run dev      # rebuild dist/ on every change
-npm run test
-npm run lint
-npm run tsc
-npm run prettier
+pnpm install
+pnpm run dev      # rebuild dist/ on every change
+pnpm run test
+pnpm run lint
+pnpm run tsc
+pnpm run prettier
 ```
 
 ## Releasing
 
 Releases are managed with [changesets](https://github.com/changesets/changesets). Add a changeset to each PR with
-`npm run changeset`. After merging to main, the Changesets bot opens a `Version Packages` PR; merging that PR publishes
+`pnpm run changeset`. After merging to main, the Changesets bot opens a `Version Packages` PR; merging that PR publishes
 the package to npm and tags the release as `v<version>`.

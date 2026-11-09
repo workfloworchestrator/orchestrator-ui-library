@@ -36,14 +36,14 @@
   "scripts": {
     "test": "jest",
     "generate-version": "node -p \"'export const ORCHESTRATOR_UI_LIBRARY_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/configuration/version.ts && prettier --write src/configuration/version.ts",
-    "build": "npm run generate-version && tsup src/index.ts",
+    "build": "pnpm run generate-version && tsup src/index.ts",
     "tsc": "tsc --noEmit",
     "lint": "eslint",
     "dev": "tsup --watch",
     "prettier": "prettier -c \"{**/*,*}.{ts,tsx,json,js,md}\"",
     "prettier-fix": "prettier --write \"{**/*,*}.{ts,tsx,json,js,md}\"",
     "changeset": "changeset",
-    "release": "npm run build && npm run lint && npm run test && changeset publish",
+    "release": "pnpm run build && pnpm run lint && pnpm run test && changeset publish",
     "prepare": "husky"
   },
   "dependencies": {
@@ -68,9 +68,11 @@
     "pydantic-forms": "^4.6.0",
     "react-diff-view": "^3.2.0",
     "react-draggable": "^4.4.6",
+    "react-hook-form": "^7.77.0",
     "react-querybuilder": "^8.18.0",
     "react-redux": "^9.3.0",
     "react-select": "^5.8.0",
+    "refractor": "^3.6.0",
     "scroll-into-view": "^1.16.2",
     "unidiff": "^1.0.4",
     "use-query-params": "^2.2.2",
@@ -87,7 +89,11 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/invariant": "^2.2.33",
     "@types/jest": "^30.0.0",
+    "@types/json-schema": "^7.0.15",
     "@types/object-hash": "^3.0.6",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@types/refractor": "^3.4.1",
     "@types/scroll-into-view": "^1.16.3",
     "babel-jest": "^30.4.1",
     "eslint": "^10.4.0",
@@ -95,10 +101,12 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.6.0",
+    "graphql": "^16.14.2",
     "husky": "^9.0.11",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "jest-watch-typeahead": "^3.0.1",
+    "monaco-editor": "^0.57.0",
     "prettier": "^3.8.1",
     "tsup": "^8.5.0",
     "typescript": "^6.0.3",
@@ -114,22 +122,5 @@
   "main": "./dist/index.js",
   "browser": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "overrides": {
-    "eslint-plugin-react": {
-      "eslint": "^10.4.0"
-    },
-    "uuid": "^11.1.0",
-    "prismjs": "^1.30.0",
-    "dompurify": "^3.4.15",
-    "esbuild": "^0.28.2",
-    "d3-color": "^3.1.0",
-    "test-exclude": "^8.0.0",
-    "next-query-params": {
-      "next": "^16.0.0"
-    },
-    "@elastic/eui": {
-      "typescript": "6.0.3"
-    }
-  },
-  "packageManager": "npm@10.9.0"
+  "packageManager": "pnpm@12.14.0"
 }
