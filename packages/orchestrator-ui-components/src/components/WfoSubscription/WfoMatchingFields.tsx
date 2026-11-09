@@ -1,8 +1,7 @@
 import React from 'react';
 
+import { WfoHighlightedText } from '@/components/WfoHighlightedText';
 import type { MatchingField } from '@/types';
-
-import { WfoHighlightedText } from '../WfoSearchPage';
 
 export const WfoMatchingFields = ({ matchingFields }: { matchingFields?: MatchingField[] | null }) => {
   if (!matchingFields || matchingFields.length === 0) return null;

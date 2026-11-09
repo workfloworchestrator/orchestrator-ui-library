@@ -1,1 +1,0 @@
-export { FilterGroup } from './WfoFilterGroup';
