@@ -453,6 +453,7 @@ export type StartComboBoxOption = {
   /** Renders the option as a non-selectable group heading */
   isGroupLabel?: boolean;
   disabled?: boolean;
+  title?: string;
 };
 
 export interface GraphQlResultPage<T> {

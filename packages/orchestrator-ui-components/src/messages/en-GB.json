@@ -6,6 +6,7 @@
     "createFilter": "Create a filter",
     "deselect": "Deselect",
     "deselectAll": "Deselect all",
+    "disabledInsufficientRights": "Action disabled due to insufficient rights",
     "downloadCsv": "Download table in CSV",
     "editColumns": "Edit columns",
     "errorMessage": "An error occurred",
