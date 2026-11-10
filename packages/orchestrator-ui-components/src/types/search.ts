@@ -5,6 +5,15 @@ export enum EntityKind {
   PROCESS = 'PROCESS',
 }
 
+export enum QueryCombinator {
+  AND = 'and',
+  OR = 'or',
+}
+
+export enum QueryOperator {
+  EQUALS = '=',
+}
+
 export enum RetrieverType {
   Auto = 'auto',
   Fuzzy = 'fuzzy',

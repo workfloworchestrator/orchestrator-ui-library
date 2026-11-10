@@ -1,7 +1,7 @@
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 
-import { EntityKind, Filter, MatchingField, SubscriptionStatus } from '@/types';
+import { EntityKind, Filter, MatchingField, QueryCombinator, QueryOperator, SubscriptionStatus } from '@/types';
 
 import { WfoFilterTab } from '../../components';
 
@@ -60,10 +60,10 @@ const getSubscriptionStatusesFromTab = (tab: WfoSubscriptionListTab) => {
 
 const buildSubscriptionStatusFilter = (tab: WfoSubscriptionListTab) => {
   return {
-    combinator: 'or',
+    combinator: QueryCombinator.OR,
     rules: getSubscriptionStatusesFromTab(tab).map((status) => ({
       field: 'subscription.status',
-      operator: '=',
+      operator: QueryOperator.EQUALS,
       value: status,
     })),
   };
@@ -109,7 +109,7 @@ export const addStatusFilterFromTab = (ruleGroup: RuleGroupType | false | undefi
   const ruleGroups = [buildSubscriptionStatusFilter(tab), userRuleGroup].filter(Boolean) as RuleGroupType[];
 
   const combinedRuleGroup: RuleGroupType =
-    ruleGroups.length === 1 ? ruleGroups[0] : { combinator: 'and', rules: ruleGroups };
+    ruleGroups.length === 1 ? ruleGroups[0] : { combinator: QueryCombinator.AND, rules: ruleGroups };
 
   return parseRuleGroupToFilters(combinedRuleGroup);
 };
