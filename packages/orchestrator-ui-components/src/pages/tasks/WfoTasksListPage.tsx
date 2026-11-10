@@ -77,6 +77,7 @@ export const WfoTasksListPage = () => {
     ...toSortedTableColumnConfig(defaultTableColumns, ['score']),
     workflowName: {
       columnType: ColumnType.DATA,
+      searchPath: 'process.workflow_name',
       label: t('taskName'),
       renderData: (value, { processId }) => <Link href={`${PATH_TASKS}/${processId}`}>{value}</Link>,
     },

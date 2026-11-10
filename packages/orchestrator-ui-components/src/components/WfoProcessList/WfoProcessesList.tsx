@@ -69,7 +69,12 @@ export type ProcessListItem = Pick<
 
 const getSubscriptions = (value?: ProcessSubscriptions) => value?.searchEdges.map(({ node }) => node) ?? [];
 
-const ALWAYS_REQUESTED_PROPERTIES: (keyof ProcessListItem)[] = ['processId', 'workflowName', 'lastStatus'];
+const ALWAYS_REQUESTED_PROPERTIES: (keyof ProcessListItem)[] = [
+  'processId',
+  'workflowName',
+  'lastStatus',
+  'workflowTarget',
+];
 
 const buildTabRuleGroup = (isTask: boolean, statuses: ProcessStatus[]): RuleGroupType => ({
   combinator: 'and',
@@ -113,7 +118,6 @@ export type WfoProcessListTab<TabType> = WfoFilterTab<TabType> & { statuses: Pro
 export type WfoProcessesListProps = {
   isTask: boolean;
   statuses: ProcessStatus[];
-  defaultHiddenColumns?: TableColumnKeys<ProcessListItem>;
   localStorageKey: string;
   overrideDefaultTableColumns?: (
     defaultTableColumns: WfoStructuredSearchTableColumnConfig<ProcessListItem>,
@@ -307,7 +311,10 @@ export const WfoProcessesList = ({
     },
   };
 
-  const searchPathToProperty = getSearchPathToPropertyMap<ProcessListItem>(defaultTableColumns);
+  const tableColumns =
+    overrideDefaultTableColumns ? overrideDefaultTableColumns(defaultTableColumns) : defaultTableColumns;
+
+  const searchPathToProperty = getSearchPathToPropertyMap<ProcessListItem>(tableColumns);
 
   // The search payload is derived entirely from the committed search state, which lives in the URL
   // (queryString and filterString params). Changing any of these values (whether via the UI or a
@@ -343,9 +350,6 @@ export const WfoProcessesList = ({
     resetPageCursor();
   }, [isTask, statuses, resetPageCursor]);
 
-  const tableColumns =
-    overrideDefaultTableColumns ? overrideDefaultTableColumns(defaultTableColumns) : defaultTableColumns;
-
   const sortableAndFilterableFieldNames = [...searchPathToProperty.values()].map(String);
   const isSortingAllowed = queryString === '';
   const tableConfig = mapSortableAndFilterableValuesToTableColumnConfig<ProcessListItem>(
@@ -362,7 +366,7 @@ export const WfoProcessesList = ({
   const { exportData, isExporting } = useSearchExport<ProcessListItem>({
     entityKind: EntityKind.PROCESS,
     searchPathToProperty,
-    tableColumnConfig: defaultTableColumns,
+    tableColumnConfig: tableColumns,
     fileName: 'Processes',
   });
 
@@ -382,6 +386,7 @@ export const WfoProcessesList = ({
   return (
     <WfoStructuredSearchTable<ProcessListItem>
       entityKind={EntityKind.PROCESS}
+      detailModalTitle={isTask ? 'Details - Task' : 'Details - Process'}
       data={processListItems}
       error={mapRtkErrorToWfoError(error)}
       rowExpandingConfiguration={undefined}

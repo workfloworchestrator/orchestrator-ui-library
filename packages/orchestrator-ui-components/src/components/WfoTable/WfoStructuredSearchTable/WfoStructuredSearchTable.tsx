@@ -89,6 +89,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   defaultAdvancedNestedSearch?: boolean;
   queryString?: string;
   localStorageKey: string;
+  detailModalTitle?: string;
   exportDataIsLoading?: boolean;
   error?: WfoGraphqlError[];
   onChangeQueryString: (queryString: string) => void;
@@ -148,6 +149,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   hasNextPage,
   bulkEditConfiguration,
   entityKind,
+  detailModalTitle = 'Details',
   data,
   isLoading,
   ...tableProps
@@ -353,7 +355,7 @@ export const WfoStructuredSearchTable = <T extends object>({
       {showInformationModal && <WfoSearchHelpModal onClose={() => setShowInformationModal(false)} />}
 
       {rowDetailData && (
-        <WfoInformationModal title={'TODO: Information modal title'} onClose={() => setRowDetailModalData(undefined)}>
+        <WfoInformationModal title={detailModalTitle} onClose={() => setRowDetailModalData(undefined)}>
           <WfoKeyValueTable keyValues={rowDetailData} showCopyToClipboardIcon />
         </WfoInformationModal>
       )}
