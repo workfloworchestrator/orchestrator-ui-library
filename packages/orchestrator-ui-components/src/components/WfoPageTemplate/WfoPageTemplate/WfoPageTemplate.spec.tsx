@@ -87,6 +87,7 @@ jest.mock('@/components', () => ({
   WfoWebsocketStatusBadge: () => null,
   WfoEngineStatusBadge: () => null,
   WfoFailedTasksBadge: () => null,
+  WfoFailedWorkflowsBadge: () => null,
 }));
 
 jest.mock('@/components/WfoBadges/WfoVersionIncompatibleBadge/WfoVersionIncompatibleBadge', () => ({

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { transparentize } from '@elastic/eui';
+
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { WfoStatusDotIcon } from '@/icons/WfoStatusDotIcon';
 import { useGetEngineStatusQuery } from '@/rtk';
@@ -25,10 +27,12 @@ export const WfoEngineStatusBadge = () => {
 
   const engineColor = engineStatus === EngineStatus.RUNNING ? theme.colors.success : theme.colors.warning;
 
+  const transparentBgColor = transparentize(theme.colors.shadow, 0);
+
   return (
     <WfoHeaderBadge
-      color={theme.colors.backgroundBaseNeutral}
-      textColor={theme.colors.textParagraph}
+      color={transparentBgColor}
+      textColor={theme.colors.textGhost}
       iconType={() => <WfoStatusDotIcon color={engineColor} />}
     >
       {engineStatusText}

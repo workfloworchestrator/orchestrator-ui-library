@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { EuiToolTip } from '@elastic/eui';
+import { EuiToolTip, transparentize } from '@elastic/eui';
 
 import { PATH_TASKS, WfoHeaderBadge } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -44,12 +44,14 @@ const WfoTasksLink = ({ children }: { children: ReactNode }) => (
 );
 
 export const WfoFailedTasksBadge = () => {
-  const t = useTranslations('common');
+  const t = useTranslations();
   const { theme } = useOrchestratorTheme();
   const { failedTaskBadgeStyle } = useWithOrchestratorTheme(getTasksBadgeStyles);
   const { data: processStatusCounts } = useProcessStatusCountsQuery();
 
   const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
+
+  const transparentBgColor = transparentize(theme.colors.shadow, 0);
 
   if (taskCountsSummary.total != 0) {
     return (
@@ -66,11 +68,11 @@ export const WfoFailedTasksBadge = () => {
         <WfoTasksLink>
           <WfoHeaderBadge
             css={failedTaskBadgeStyle}
-            color={theme.colors.backgroundBaseNeutral}
-            textColor={theme.colors.textParagraph}
+            color={transparentBgColor}
+            textColor={theme.colors.textGhost}
             iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
           >
-            {taskCountsSummary.total}
+            {t('main.processStatusBadge', { count: taskCountsSummary.total, type: 'task' })}
           </WfoHeaderBadge>
         </WfoTasksLink>
       </EuiToolTip>
@@ -78,15 +80,15 @@ export const WfoFailedTasksBadge = () => {
   }
 
   return (
-    <EuiToolTip position="bottom" content={<div>{t('noFailedTasks')}</div>}>
+    <EuiToolTip position="bottom" content={<div>{t('common.noFailedTasks')}</div>}>
       <WfoTasksLink>
         <WfoHeaderBadge
           css={failedTaskBadgeStyle}
-          color={theme.colors.backgroundBaseNeutral}
-          textColor={theme.colors.textParagraph}
+          color={transparentBgColor}
+          textColor={theme.colors.textGhost}
           iconType={() => <WfoCheckmarkCircleFill color={theme.colors.success} />}
         >
-          0
+          {t('main.processStatusBadge', { count: 0, type: 'task' })}
         </WfoHeaderBadge>
       </WfoTasksLink>
     </EuiToolTip>
