@@ -2,6 +2,7 @@ import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 
 import { WfoSubscriptionListTab } from '@/components';
+import { SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { SearchPaginationPayload } from '@/rtk';
 import {
   Condition,
@@ -177,7 +178,7 @@ const buildSubscriptionStatusFilter = (tab: WfoSubscriptionListTab) => {
     combinator: 'or',
     rules: getSubscriptionStatusesFromTab(tab).map((status) => ({
       field: 'subscription.status',
-      operator: '=',
+      operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq,
       value: status,
     })),
   };

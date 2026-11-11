@@ -28,6 +28,7 @@ import {
 } from '@/components/WfoTable';
 import { WfoRowDetails } from '@/components/WfoTable/WfoStructuredSearchTable';
 import {
+  SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP,
   buildRowDetailsSearchPayload,
   getSearchPathToPropertyMap,
 } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
@@ -102,12 +103,12 @@ const ALWAYS_REQUESTED_PROPERTIES: (keyof ProcessListItem)[] = [
 const buildTabRuleGroup = (isTask: boolean, statuses: ProcessStatus[]): RuleGroupType => ({
   combinator: 'and',
   rules: [
-    { field: 'process.is_task', operator: '=', value: isTask },
+    { field: 'process.is_task', operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq, value: isTask },
     {
       combinator: 'or',
       rules: statuses.map((status) => ({
         field: 'process.last_status',
-        operator: '=',
+        operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq,
         value: status,
       })),
     },

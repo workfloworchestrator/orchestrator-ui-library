@@ -233,7 +233,7 @@ export const useBuildColumnFilter = <T>(
 // has_component/not_has_component ride on notNull/null: they survive the CEL round trip
 // (`field != null` / `field == null`) and formatQuery(elasticsearch) turns them into
 // exists / must_not-exists, which the backend translates to component-presence filters.
-const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
+export const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
   eq: '=',
   neq: '!=',
   lt: '<',
@@ -338,6 +338,12 @@ export const buildRowDetailsSearchPayload = <T>(
   columns: [...searchPathToProperty.values()].map(String),
   filters: parseRuleGroupToFilters({
     combinator: 'and',
-    rules: [{ field: getSearchPath(searchPathToProperty, idProperty), operator: '=', value: id }],
+    rules: [
+      {
+        field: getSearchPath(searchPathToProperty, idProperty),
+        operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq,
+        value: id,
+      },
+    ],
   }),
 });
