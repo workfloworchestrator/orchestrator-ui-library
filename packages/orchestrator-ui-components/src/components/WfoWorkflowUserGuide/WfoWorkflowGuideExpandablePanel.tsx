@@ -10,6 +10,7 @@ import {
   EuiMarkdownFormat,
   EuiPanel,
   EuiText,
+  getDefaultEuiMarkdownParsingPlugins,
   useIsWithinBreakpoints,
 } from '@elastic/eui';
 
@@ -95,6 +96,7 @@ const WfoWorkflowGuideMarkdown = ({ workflowName, isBigScreen }: { workflowName:
     useWithOrchestratorTheme(getStyles);
   const { data, isLoading, isError } = useGetWorkflowGuideQuery({ workflowName });
   const content = data?.content ?? '';
+  const guideParsingPlugins = getDefaultEuiMarkdownParsingPlugins({ exclude: ['lineBreaks'] });
 
   return (
     <div css={isBigScreen ? guideBodyStyle : guideStackedBodyStyle}>
@@ -109,7 +111,7 @@ const WfoWorkflowGuideMarkdown = ({ workflowName, isBigScreen }: { workflowName:
             <EuiText size="m" color="subdued">
               {t('noGuideAvailable')}
             </EuiText>
-          )) || <EuiMarkdownFormat>{content}</EuiMarkdownFormat>}
+          )) || <EuiMarkdownFormat parsingPluginList={guideParsingPlugins}>{content}</EuiMarkdownFormat>}
         </EuiPanel>
       )}
     </div>
