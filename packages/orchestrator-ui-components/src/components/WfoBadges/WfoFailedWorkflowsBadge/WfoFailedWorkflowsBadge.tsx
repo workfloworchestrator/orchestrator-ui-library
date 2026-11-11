@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { EuiToolTip } from '@elastic/eui';
+import { EuiToolTip, transparentize } from '@elastic/eui';
 
 import { PATH_WORKFLOWS, WfoHeaderBadge } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -48,6 +48,8 @@ export const WfoFailedWorkflowsBadge = () => {
 
   const workflowCountsSummary = getWorkflowCountsSummary(processStatusCounts);
 
+  const transparentBgColor = transparentize(theme.colors.shadow, 0);
+
   if (!workflowCountsSummary.total) {
     return null;
   }
@@ -65,7 +67,7 @@ export const WfoFailedWorkflowsBadge = () => {
       <WfoWorkflowsLink>
         <WfoHeaderBadge
           css={failedWorkflowBadgeStyle}
-          color={'#00000000'}
+          color={transparentBgColor}
           textColor={theme.colors.textGhost}
           iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
         >

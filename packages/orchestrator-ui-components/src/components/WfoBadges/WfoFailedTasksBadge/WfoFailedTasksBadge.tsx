@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-import { EuiToolTip } from '@elastic/eui';
+import { EuiToolTip, transparentize } from '@elastic/eui';
 
 import { PATH_TASKS, WfoHeaderBadge } from '@/components';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -51,6 +51,8 @@ export const WfoFailedTasksBadge = () => {
 
   const taskCountsSummary = getTaskCountsSummary(processStatusCounts);
 
+  const transparentBgColor = transparentize(theme.colors.shadow, 0);
+
   if (taskCountsSummary.total != 0) {
     return (
       <EuiToolTip
@@ -66,7 +68,7 @@ export const WfoFailedTasksBadge = () => {
         <WfoTasksLink>
           <WfoHeaderBadge
             css={failedTaskBadgeStyle}
-            color={'#00000000'}
+            color={transparentBgColor}
             textColor={theme.colors.textGhost}
             iconType={() => <WfoXCircleFill color={theme.colors.danger} />}
           >
@@ -82,7 +84,7 @@ export const WfoFailedTasksBadge = () => {
       <WfoTasksLink>
         <WfoHeaderBadge
           css={failedTaskBadgeStyle}
-          color={'#00000000'}
+          color={transparentBgColor}
           textColor={theme.colors.textGhost}
           iconType={() => <WfoCheckmarkCircleFill color={theme.colors.success} />}
         >
