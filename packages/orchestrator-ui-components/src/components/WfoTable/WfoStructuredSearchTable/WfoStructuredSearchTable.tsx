@@ -15,13 +15,10 @@ import {
   WfoDataSorting,
   WfoErrorWithMessage,
   WfoInformationModal,
-  WfoKeyValueTable,
-  WfoKeyValueTableDataType,
   clearTableConfigFromLocalStorage,
   getTableSettingsColumns,
   setTableConfigToLocalStorage,
 } from '@/components';
-import { getRowDetailData } from '@/components/WfoTable/WfoAdvancedTable/getRowDetailData';
 import {
   WfoTableControlColumnConfig,
   WfoTableControlColumnConfigItem,
@@ -36,6 +33,7 @@ import { getDefaultTableConfig } from '@/utils';
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoBulkEditToolbar } from './WfoBulkEditToolbar';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
+import { WfoRowDetails } from './WfoRowDetails';
 import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
 import { WfoSearchHelpModal } from './WfoSearchHelpModal';
 import { WfoStructuredSearchTableOptionsMenu } from './WfoStructuredSearchTableOptionsMenu';
@@ -90,6 +88,8 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   queryString?: string;
   localStorageKey: string;
   detailModalTitle?: string;
+  // Custom content for the row details modal. Defaults to the table row.
+  renderRowDetails?: (row: T) => React.ReactNode;
   exportDataIsLoading?: boolean;
   error?: WfoGraphqlError[];
   onChangeQueryString: (queryString: string) => void;
@@ -150,6 +150,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   bulkEditConfiguration,
   entityKind,
   detailModalTitle = 'Details',
+  renderRowDetails,
   data,
   isLoading,
   ...tableProps
@@ -207,8 +208,11 @@ export const WfoStructuredSearchTable = <T extends object>({
   const tableSettingsColumns = getTableSettingsColumns(tableColumnConfig, hiddenColumns, nonEditableColumns);
   const tableColumns = bulkEdit.withBulkEditColumns(tableColumnsWithControlColumns);
 
-  const rowDetailData: WfoKeyValueTableDataType[] | undefined =
-    rowDetailModalData && getRowDetailData(rowDetailModalData, tableColumnConfig);
+  const getRowDetailContent = (row: T) =>
+    renderRowDetails ?
+      renderRowDetails(row)
+    : <WfoRowDetails row={row} isLoading={false} tableColumnConfig={tableColumnConfig} />;
+  const rowDetailContent = rowDetailModalData && getRowDetailContent(rowDetailModalData);
 
   const handleUpdateTableConfig = (updatedTableConfig: TableSettingsConfig<T>) => {
     const updatedHiddenColumns = updatedTableConfig.columns
@@ -354,9 +358,9 @@ export const WfoStructuredSearchTable = <T extends object>({
 
       {showInformationModal && <WfoSearchHelpModal onClose={() => setShowInformationModal(false)} />}
 
-      {rowDetailData && (
+      {rowDetailModalData && (
         <WfoInformationModal title={detailModalTitle} onClose={() => setRowDetailModalData(undefined)}>
-          <WfoKeyValueTable keyValues={rowDetailData} showCopyToClipboardIcon />
+          {rowDetailContent}
         </WfoInformationModal>
       )}
     </>

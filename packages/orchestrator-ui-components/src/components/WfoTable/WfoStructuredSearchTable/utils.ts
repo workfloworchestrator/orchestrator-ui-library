@@ -12,8 +12,10 @@ import {
   parseCEL,
 } from 'react-querybuilder/parseCEL';
 
+import { parseRuleGroupToFilters } from '@/components/WfoSearchPage/utils';
 import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
 import { useGetEnvironmentVariablesQuery } from '@/rtk/endpoints/settings';
+import { type GraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
 import { EntityKind, OPERATOR_MAP, OperatorDescription, ResultColumToPropertyMap } from '@/types';
 import { stripQuotes } from '@/utils/strings';
 
@@ -324,3 +326,18 @@ export const getSearchPathToPropertyMap = <T extends object>(
       column.searchPath ? [[column.searchPath, property] as const] : [],
     ),
   );
+
+// The search that loads one row with all its columns, for the row details modal
+export const buildRowDetailsSearchPayload = <T>(
+  searchPathToProperty: ResultColumToPropertyMap<T>,
+  idProperty: keyof T,
+  id: string,
+): GraphqlSearchPayload => ({
+  query: '',
+  limit: 1,
+  columns: [...searchPathToProperty.values()].map(String),
+  filters: parseRuleGroupToFilters({
+    combinator: 'and',
+    rules: [{ field: getSearchPath(searchPathToProperty, idProperty), operator: '=', value: id }],
+  }),
+});

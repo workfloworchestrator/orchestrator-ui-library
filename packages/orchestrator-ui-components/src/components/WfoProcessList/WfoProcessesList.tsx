@@ -19,14 +19,18 @@ import { WfoConfidenceScore } from '@/components/WfoSubscription/WfoConfidenceSc
 import { WfoMatchingFields } from '@/components/WfoSubscription/WfoMatchingFields';
 import {
   TableColumnKeys,
+  WfoExportComputedColumn,
   WfoFirstPartUUID,
   WfoStructuredSearchTable,
   WfoStructuredSearchTableColumnConfig,
-  WfoExportComputedColumn,
   useSearchExport,
   useStructuredSearchState,
 } from '@/components/WfoTable';
-import { getSearchPathToPropertyMap } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
+import { WfoRowDetails } from '@/components/WfoTable/WfoStructuredSearchTable';
+import {
+  buildRowDetailsSearchPayload,
+  getSearchPathToPropertyMap,
+} from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useStoredTableConfig } from '@/hooks';
@@ -39,7 +43,7 @@ import type {
 } from '@/rtk/endpoints/processList';
 import { SearchScore, buildGraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import { EntityKind, Process, ProcessStatus, SortOrder } from '@/types';
+import { EntityKind, Process, ProcessStatus, ResultColumToPropertyMap, SortOrder } from '@/types';
 import { getConcatenatedResult, parseDate, parseDateToLocaleDateTimeString } from '@/utils';
 
 import { WfoProcessListActions } from './WfoProcessListActions';
@@ -130,6 +134,24 @@ const getItemsFromGraphqlResponse = (data: ProcessListSearchResponse): ProcessLi
         score: { score, matchingFields },
       }) as ProcessListItem,
   );
+
+type WfoProcessRowDetailsProps = {
+  row: ProcessListItem;
+  searchPathToProperty: ResultColumToPropertyMap<ProcessListItem>;
+  tableColumnConfig: WfoStructuredSearchTableColumnConfig<ProcessListItem>;
+};
+
+// The table request leaves out the hidden columns, so the details modal loads the full process
+const WfoProcessRowDetails = ({ row, searchPathToProperty, tableColumnConfig }: WfoProcessRowDetailsProps) => {
+  const { data, isFetching } = useGetProcessListSearchQuery(
+    { ...buildRowDetailsSearchPayload(searchPathToProperty, 'processId', row.processId), includeSubscriptions: true },
+    { refetchOnMountOrArgChange: true },
+  );
+
+  const detailRow = data && getItemsFromGraphqlResponse(data)[0];
+
+  return <WfoRowDetails row={detailRow} isLoading={isFetching} tableColumnConfig={tableColumnConfig} />;
+};
 
 // A filter tab of a process list: the statuses of the processes that it lists
 export type WfoProcessListTab<TabType> = WfoFilterTab<TabType> & { statuses: ProcessStatus[] };
@@ -403,10 +425,15 @@ export const WfoProcessesList = ({
   // We manually show/hide the score column and shouldn't be configurable by the user.
   const nonEditableColumns: TableColumnKeys<ProcessListItem> = ['score'];
 
+  const renderRowDetails = (row: ProcessListItem) => (
+    <WfoProcessRowDetails row={row} searchPathToProperty={searchPathToProperty} tableColumnConfig={tableColumns} />
+  );
+
   return (
     <WfoStructuredSearchTable<ProcessListItem>
       entityKind={EntityKind.PROCESS}
       detailModalTitle={isTask ? 'Details - Task' : 'Details - Process'}
+      renderRowDetails={renderRowDetails}
       data={processListItems}
       error={mapRtkErrorToWfoError(error)}
       rowExpandingConfiguration={undefined}

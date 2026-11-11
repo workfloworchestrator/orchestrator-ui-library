@@ -12,3 +12,4 @@ The workflows and tasks list pages now use the GraphQL `processes` search instea
 - `WfoStructuredSearchTable` and `WfoFilterBuilder` require an `entityKind`, which sets the search paths the filter builder and column filters resolve. A data column can declare a `searchPath` for sorting, filtering and export.
 - New hooks `useStructuredSearchState` and `useSearchExport` share the search state and csv export of the lists.
 - The subscriptions list no longer duplicates rows when a loaded page is refetched after an invalidation, such as a note edit.
+- The row details modal of the process and subscription lists loads the full row when it opens, so columns that are hidden in the table are filled. `WfoStructuredSearchTable` takes an optional `renderRowDetails` for custom modal content, which gives more freedom over what the row details show than the table data allows, and the new `WfoRowDetails` renders the row as a key value table with a loading state.
