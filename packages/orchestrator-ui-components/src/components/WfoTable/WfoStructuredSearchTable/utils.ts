@@ -14,7 +14,7 @@ import {
 
 import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
 import { useGetEnvironmentVariablesQuery } from '@/rtk/endpoints/settings';
-import { EntityKind, OPERATOR_MAP, OperatorDescription } from '@/types';
+import { EntityKind, OPERATOR_MAP, QueryOperator } from '@/types';
 import { stripQuotes } from '@/utils/strings';
 
 export const FILTER_CHANGE_DEBOUNCE_DELAY = 1000;
@@ -104,10 +104,11 @@ const dropFieldValueSources = (ruleGroup: RuleGroupType): RuleGroupType => ({
   }),
 });
 
-const LIKE_OPERATORS_TO_NEGATED_OPERATORS_MAP = new Map([
-  ['contains', 'doesNotContain'],
-  ['startsWith', 'doesNotBeginWith'],
-  ['endsWith', 'doesNotEndWith'],
+// Keys are CEL string method names (`a.startsWith("x")`), values are react-querybuilder operators.
+const LIKE_OPERATORS_TO_NEGATED_OPERATORS_MAP = new Map<string, QueryOperator>([
+  ['contains', QueryOperator.DOES_NOT_CONTAIN],
+  ['startsWith', QueryOperator.DOES_NOT_BEGIN_WITH],
+  ['endsWith', QueryOperator.DOES_NOT_END_WITH],
 ]);
 
 //Example: a.b.c.contains("test") -> contains 1 argument; a.b.c.contains("test", "test2") -> contains 2 arguments
@@ -230,22 +231,22 @@ export const useBuildColumnFilter = <T>(
 // has_component/not_has_component ride on notNull/null: they survive the CEL round trip
 // (`field != null` / `field == null`) and formatQuery(elasticsearch) turns them into
 // exists / must_not-exists, which the backend translates to component-presence filters.
-const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, string> = {
-  eq: '=',
-  neq: '!=',
-  lt: '<',
-  lte: '<=',
-  gt: '>',
-  gte: '>=',
-  between: 'between',
-  like: OperatorDescription.CONTAINS,
-  not_regexp: 'doesNotContain',
-  has_component: 'notNull',
-  not_has_component: 'null',
+const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, QueryOperator> = {
+  eq: QueryOperator.EQUALS,
+  neq: QueryOperator.NOT_EQUALS,
+  lt: QueryOperator.LESS_THAN,
+  lte: QueryOperator.LESS_THAN_OR_EQUAL,
+  gt: QueryOperator.GREATER_THAN,
+  gte: QueryOperator.GREATER_THAN_OR_EQUAL,
+  between: QueryOperator.BETWEEN,
+  like: QueryOperator.CONTAINS,
+  not_regexp: QueryOperator.DOES_NOT_CONTAIN,
+  has_component: QueryOperator.IS_NOT_NULL,
+  not_has_component: QueryOperator.IS_NULL,
 };
 
 // Operators without a value; marking them unary makes react-querybuilder's Rule hide the value editor.
-const RQB_UNARY_OPERATORS = ['null', 'notNull'];
+const RQB_UNARY_OPERATORS: string[] = [QueryOperator.IS_NULL, QueryOperator.IS_NOT_NULL];
 
 const isEmptyValue = (rule: RuleType): boolean => {
   const { value } = rule;
@@ -253,7 +254,7 @@ const isEmptyValue = (rule: RuleType): boolean => {
     return false;
   } else if (typeof value !== 'string') {
     return value === undefined || value === null;
-  } else if (rule.operator === 'between') {
+  } else if (rule.operator === QueryOperator.BETWEEN) {
     const rangeParts = value.split(',');
     return rangeParts.length < 2 || rangeParts.some((rangePart) => rangePart.trim() === '');
   }

@@ -4,7 +4,7 @@ import { defaultOperators } from 'react-querybuilder';
 
 import { EuiSelect } from '@elastic/eui';
 
-import { OperatorDescription } from '@/types';
+import { QueryOperator } from '@/types';
 
 const isOptionGroup = (operator: FullOperator | OptionGroup<FullOperator>): operator is OptionGroup<FullOperator> =>
   'options' in operator;
@@ -13,13 +13,13 @@ const isOptionGroup = (operator: FullOperator | OptionGroup<FullOperator>): oper
 // react-querybuilder encoding of the component-presence operators, so a restored rule
 // should label them accordingly instead of using defaultOperators' "is (not) null".
 const FALLBACK_OPERATOR_LABELS: Record<string, string> = {
-  notNull: '✓ has component',
-  null: '✗ does not have component',
+  [QueryOperator.IS_NOT_NULL]: '✓ has component',
+  [QueryOperator.IS_NULL]: '✗ does not have component',
 };
 
 // Prefer contains, which string fields offer; otherwise the field's first operator.
 const getDefaultOperator = (options: FullOperator[]) =>
-  (options.find((option) => option.name === OperatorDescription.CONTAINS) ?? options[0]).name;
+  (options.find((option) => option.name === QueryOperator.CONTAINS) ?? options[0]).name;
 
 export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
   const { value, handleOnChange } = props;
@@ -58,8 +58,8 @@ export const WfoOperatorSelector = (props: OperatorSelectorProps) => {
       // The new field's operators are unknown (nothing stored for it). A left-over unary
       // operator would keep the value editor hidden with nothing in the dropdown to bring
       // it back, so fall back to the query builder's default operator.
-      if (value === 'null' || value === 'notNull') {
-        handleOnChange('=');
+      if (value === QueryOperator.IS_NULL || value === QueryOperator.IS_NOT_NULL) {
+        handleOnChange(QueryOperator.EQUALS);
       }
       return;
     }
