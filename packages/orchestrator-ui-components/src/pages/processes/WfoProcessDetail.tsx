@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
   EuiButton,
   EuiButtonEmpty,
   EuiButtonIcon,
-  EuiDescriptionList,
+  EuiCallOut,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiIcon,
   EuiPanel,
   EuiPopover,
+  EuiPopoverTitle,
+  EuiScreenReaderOnly,
   EuiSpacer,
   EuiText,
   EuiToolTip,
@@ -29,6 +33,7 @@ import {
   WfoTitleWithWebsocketBadge,
 } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback';
 import { WfoWorkflowGuideExpandablePanel } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
@@ -40,7 +45,7 @@ import {
   useDeleteProcessMutation,
   useRetryProcessMutation,
 } from '@/rtk/endpoints/processDetail';
-import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
+import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus, StepStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
 import { getIndexOfCurrentStep } from './timelineUtils';
@@ -79,6 +84,36 @@ const ProcessHeaderValue = ({ translationKey, value = '' }: ProcessHeaderValuePr
   );
 };
 
+// Second line of the new header. Icons are decoration; the hover text (and a hidden label) names the value.
+const InfoItem = ({
+  icon,
+  label,
+  tooltip,
+  children,
+}: {
+  icon: string;
+  label: string;
+  tooltip?: React.ReactNode;
+  children: React.ReactNode;
+}) => (
+  <EuiToolTip content={tooltip ?? label}>
+    <span tabIndex={0} css={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+      <EuiIcon type={icon} size="m" color="subdued" aria-hidden />
+      <EuiScreenReaderOnly>
+        <span>{label}</span>
+      </EuiScreenReaderOnly>
+      <EuiText size="s" color="subdued">
+        {children}
+      </EuiText>
+    </span>
+  </EuiToolTip>
+);
+
+const InfoDivider = () => {
+  const { theme } = useOrchestratorTheme();
+  return <span aria-hidden css={{ width: 1, height: 16, background: theme.colors.borderBaseSubdued }} />;
+};
+
 interface ProcessDetailProps {
   pageTitle: string;
   productNames: string;
@@ -89,6 +124,8 @@ interface ProcessDetailProps {
   onTimelineItemClick?: (id: string) => void;
   isLoading?: boolean;
   hasError?: boolean;
+  /** Full traceback text of a failed process; the new layout shows it in the failure banner */
+  traceback?: string | null;
   /** 'new': sticky header with title, actions and timeline; details panel and user guide on the right */
   layout?: 'current' | 'new';
 }
@@ -115,15 +152,18 @@ export const WfoProcessDetail = ({
   onTimelineItemClick,
   isLoading = false,
   hasError = false,
+  traceback,
   layout = 'current',
 }: ProcessDetailProps) => {
+  const tIndex = useTranslations('processes.index');
+  const [isTracebackOpen, setIsTracebackOpen] = useState(false);
+  const [isRelatedOpen, setIsRelatedOpen] = useState(false);
   const {
     showWorkflowUserGuide,
     expandWorkflowUserGuideOnStart,
     showWorkflowInformationLink,
     workflowInformationLinkUrl,
   } = useGetOrchestratorConfig();
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(expandWorkflowUserGuideOnStart);
   const isBigScreen = useIsWithinBreakpoints(['xl', 'xxl']);
   // The sticky header's height: the user guide sticks right below it
@@ -211,50 +251,74 @@ export const WfoProcessDetail = ({
 
   const buttonSize = layout === 'new' ? 's' : 'm';
 
-  const actionButtons = (
-    <>
-      <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
+  // New layout: the main action sits last (right) and is filled
+  const isRetryFilled = layout === 'new' && !retryButtonIsDisabled;
+  const retryButton = (
+    <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
+      <EuiButton
+        size={buttonSize}
+        fill={isRetryFilled}
+        onClick={handleActionButtonClick(retryAction)}
+        iconType={() => (
+          <WfoRefresh
+            color={
+              isRetryFilled ? theme.colors.emptyShade
+              : retryButtonIsDisabled ?
+                theme.colors.textSubdued
+              : theme.colors.link
+            }
+          />
+        )}
+        isDisabled={retryButtonIsDisabled}
+      >
+        {t('retry')}
+      </EuiButton>
+    </WfoIsAllowedToRender>
+  );
+  const abortButton = (
+    <WfoIsAllowedToRender resource={PolicyResource.PROCESS_ABORT}>
+      <EuiButton
+        size={buttonSize}
+        onClick={handleActionButtonClick(abortAction)}
+        iconType={() => (
+          <WfoXCircleFill color={abortButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
+        )}
+        color="danger"
+        isDisabled={abortButtonIsDisabled}
+      >
+        {t('abort')}
+      </EuiButton>
+    </WfoIsAllowedToRender>
+  );
+  const deleteButton =
+    processDetail && processIsTask ?
+      <WfoIsAllowedToRender resource={PolicyResource.PROCESS_DELETE}>
         <EuiButton
           size={buttonSize}
-          onClick={handleActionButtonClick(retryAction)}
-          iconType={() => <WfoRefresh color={retryButtonIsDisabled ? theme.colors.textSubdued : theme.colors.link} />}
-          isDisabled={retryButtonIsDisabled}
-        >
-          {t('retry')}
-        </EuiButton>
-      </WfoIsAllowedToRender>
-      <WfoIsAllowedToRender resource={PolicyResource.PROCESS_ABORT}>
-        <EuiButton
-          size={buttonSize}
-          onClick={handleActionButtonClick(abortAction)}
+          onClick={handleActionButtonClick(deleteAction)}
           iconType={() => (
-            <WfoXCircleFill color={abortButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
+            <WfoXCircleFill color={deleteButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
           )}
           color="danger"
-          isDisabled={abortButtonIsDisabled}
+          isDisabled={deleteButtonIsDisabled}
         >
-          {t('abort')}
+          {t('delete')}
         </EuiButton>
       </WfoIsAllowedToRender>
+    : null;
+
+  const actionButtons =
+    layout === 'new' ?
       <>
-        {processDetail && processIsTask && (
-          <WfoIsAllowedToRender resource={PolicyResource.PROCESS_DELETE}>
-            <EuiButton
-              size={buttonSize}
-              onClick={handleActionButtonClick(deleteAction)}
-              iconType={() => (
-                <WfoXCircleFill color={deleteButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
-              )}
-              color="danger"
-              isDisabled={deleteButtonIsDisabled}
-            >
-              {t('delete')}
-            </EuiButton>
-          </WfoIsAllowedToRender>
-        )}
+        {deleteButton}
+        {abortButton}
+        {retryButton}
       </>
-    </>
-  );
+    : <>
+        {retryButton}
+        {abortButton}
+        {deleteButton}
+      </>;
 
   const relatedSubscriptions =
     processDetail?.subscriptions?.page.map((subscription) => ({
@@ -263,27 +327,123 @@ export const WfoProcessDetail = ({
     })) ?? [];
 
   if (layout === 'new') {
+    const showRelated = isAllowed(PolicyResource.PROCESS_RELATED_SUBSCRIPTIONS) && relatedSubscriptions.length > 0;
     const formatDate = (date?: string) => (date ? parseIsoString(parseDateRelativeToToday)(date) : '-');
-    const details = [
-      { title: t('lastStep'), description: processDetail?.lastStep ?? '-' },
-      ...(processDetail?.customer ? [{ title: t('customer'), description: processDetail.customer.fullname }] : []),
-      { title: t('startedBy'), description: processDetail?.createdBy ?? '-' },
-      { title: t('startedOn'), description: formatDate(processDetail?.startedAt) },
-      { title: t('lastUpdate'), description: formatDate(processDetail?.lastModifiedAt) },
-      ...(isAllowed(PolicyResource.PROCESS_RELATED_SUBSCRIPTIONS) && relatedSubscriptions.length ?
+    const [firstSubscription] = relatedSubscriptions;
+    const infoItems: { key: string; node: React.ReactNode }[] = [
+      ...(productNames ?
         [
           {
-            title: t('relatedSubscriptions'),
-            description: (
-              <WfoProcessListSubscriptionsCell
-                subscriptions={relatedSubscriptions}
-                renderDirection={RenderDirection.VERTICAL}
-              />
+            key: 'product',
+            node: (
+              <InfoItem icon="package" label={t('product')}>
+                {productNames}
+              </InfoItem>
+            ),
+          },
+        ]
+      : []),
+      ...(processDetail?.customer ?
+        [
+          {
+            key: 'customer',
+            node: (
+              <InfoItem icon="users" label={t('customer')}>
+                {processDetail.customer.fullname}
+              </InfoItem>
+            ),
+          },
+        ]
+      : []),
+      {
+        key: 'startedBy',
+        node: (
+          <InfoItem icon="user" label={t('startedBy')}>
+            {processDetail?.createdBy ?? '-'}
+          </InfoItem>
+        ),
+      },
+      {
+        key: 'dates',
+        node: (
+          <InfoItem
+            icon="clock"
+            label={t('lastUpdate')}
+            tooltip={
+              <>
+                <div>{`${t('startedOn')}: ${formatDate(processDetail?.startedAt)}`}</div>
+                <div>{`${t('lastUpdate')}: ${formatDate(processDetail?.lastModifiedAt)}`}</div>
+              </>
+            }
+          >
+            {formatDate(processDetail?.lastModifiedAt)}
+          </InfoItem>
+        ),
+      },
+      ...(showRelated ?
+        [
+          {
+            key: 'related',
+            // The most used link stays one click away; more than one: "+ N" lists them all
+            node: (
+              <span css={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+                <EuiIcon type="link" size="m" color="subdued" aria-hidden />
+                <EuiText size="s" css={{ minWidth: 0 }}>
+                  <Link
+                    href={`/subscriptions/${firstSubscription.subscriptionId}`}
+                    css={{
+                      display: 'block',
+                      maxWidth: 'min(360px, 40vw)',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {firstSubscription.description}
+                  </Link>
+                </EuiText>
+                {relatedSubscriptions.length > 1 && (
+                  // Click (works with keyboard and touch; a hover list would close while you move to a link)
+                  <EuiPopover
+                    isOpen={isRelatedOpen}
+                    closePopover={() => setIsRelatedOpen(false)}
+                    anchorPosition="downLeft"
+                    panelPaddingSize="m"
+                    aria-label={t('relatedSubscriptions')}
+                    button={
+                      <EuiToolTip content={tIndex('showAllRelatedSubscriptions')}>
+                        <EuiButtonEmpty
+                          size="xs"
+                          color="primary"
+                          flush="both"
+                          iconType={isRelatedOpen ? 'chevronSingleUp' : 'chevronSingleDown'}
+                          iconSide="right"
+                          onClick={() => setIsRelatedOpen((open) => !open)}
+                          aria-label={tIndex('showAllRelatedSubscriptions')}
+                        >
+                          {`+${relatedSubscriptions.length - 1}`}
+                        </EuiButtonEmpty>
+                      </EuiToolTip>
+                    }
+                  >
+                    <EuiPopoverTitle>{`${t('relatedSubscriptions')} (${relatedSubscriptions.length})`}</EuiPopoverTitle>
+                    <div css={{ maxWidth: 'min(480px, 80vw)', maxHeight: 280, overflowY: 'auto' }}>
+                      <WfoProcessListSubscriptionsCell
+                        subscriptions={relatedSubscriptions}
+                        renderDirection={RenderDirection.VERTICAL}
+                      />
+                    </div>
+                  </EuiPopover>
+                )}
+              </span>
             ),
           },
         ]
       : []),
     ];
+
+    const failedStepIndex = timelineItems.findIndex((item) => item.processStepStatus === StepStatus.FAILED);
+    const hasFailed = listIncludesStatus([ProcessStatus.FAILED], processDetail?.lastStatus) && failedStepIndex !== -1;
 
     // Guide open next to the content (xl+): it takes the free space, the content keeps its width
     const guideColumn = isGuideOpen && isBigScreen ? 'min(552px, 45vw)' : `${theme.base * 4 + 32}px`;
@@ -305,68 +465,64 @@ export const WfoProcessDetail = ({
             <EuiFlexItem css={{ minWidth: 0 }}>
               <WfoTitleWithWebsocketBadge
                 title={pageTitle}
+                // Same row, same centre line: [bolt badge] [info] | [status tag]. Info sits close to the bolt as a pair.
                 extraElement={
-                  showWorkflowInformationLink && processDetail?.workflowName ?
-                    <EuiToolTip content={t('openWorkflowTaskInfo')}>
-                      <EuiButtonIcon
-                        iconType="info"
-                        iconSize="m"
-                        href={workflowInformationLinkUrl + processDetail.workflowName}
-                        target="_blank"
-                        aria-label={t('openWorkflowTaskInfo')}
-                      />
-                    </EuiToolTip>
-                  : undefined
+                  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} css={{ marginInlineStart: -20 }}>
+                    {showWorkflowInformationLink && processDetail?.workflowName && (
+                      <EuiToolTip content={t('openWorkflowTaskInfo')}>
+                        <EuiButtonIcon
+                          size="s"
+                          iconType="info"
+                          iconSize="m"
+                          // the bolt badge sits ~2.5px above the centre line, so the info icon follows it
+                          css={{ marginBlockStart: -5 }}
+                          href={workflowInformationLinkUrl + processDetail.workflowName}
+                          target="_blank"
+                          aria-label={t('openWorkflowTaskInfo')}
+                        />
+                      </EuiToolTip>
+                    )}
+                    {processDetail?.lastStatus && (
+                      <>
+                        <span aria-hidden css={{ width: 1, height: 20, background: theme.colors.borderBaseSubdued }} />
+                        {/* 28px tall; the text is centred by flex, not by line-height guesses */}
+                        <span
+                          css={{
+                            display: 'inline-flex',
+                            '.euiBadge': { height: 28, padding: '0 12px', margin: 0 },
+                            '.euiBadge__content, .euiBadge__text': {
+                              height: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                            },
+                            '.euiText': { lineHeight: 1 },
+                          }}
+                        >
+                          <WfoProcessStatusBadge processStatus={processDetail.lastStatus} size="m" />
+                        </span>
+                      </>
+                    )}
+                  </EuiFlexGroup>
                 }
               />
-              {/* Info line: 8px inside a group, 16px between groups, 4px under the title, 8px above the timeline */}
+              {/* Info line: 12px between items, thin dividers; hover names each value. Dates: one value, both in the tooltip. */}
               <div
                 css={{
                   display: 'flex',
                   flexWrap: 'wrap',
                   alignItems: 'center',
-                  columnGap: theme.size.base,
+                  columnGap: theme.size.m,
                   rowGap: theme.size.xs,
                   marginTop: theme.size.xs,
                   marginBottom: theme.size.s,
                 }}
               >
-                <div css={{ display: 'flex', alignItems: 'center', gap: theme.size.s, minWidth: 0 }}>
-                  {processDetail?.lastStatus && <WfoProcessStatusBadge processStatus={processDetail.lastStatus} />}
-                  {productNames && (
-                    <EuiText size="s" color="subdued">
-                      {productNames}
-                    </EuiText>
-                  )}
-                </div>
-                <EuiPopover
-                  isOpen={isDetailsOpen}
-                  closePopover={() => setIsDetailsOpen(false)}
-                  anchorPosition="downLeft"
-                  panelPaddingSize="m"
-                  aria-label={t('details')}
-                  button={
-                    <EuiButtonEmpty
-                      size="s"
-                      color="text"
-                      flush="both"
-                      iconType={isDetailsOpen ? 'chevronSingleUp' : 'chevronSingleDown'}
-                      iconSide="right"
-                      onClick={() => setIsDetailsOpen((open) => !open)}
-                      isLoading={isLoading && !hasError}
-                    >
-                      {t('details')}
-                    </EuiButtonEmpty>
-                  }
-                >
-                  <EuiDescriptionList
-                    type="column"
-                    compressed
-                    listItems={details}
-                    columnWidths={[1, 2]}
-                    css={{ width: 'min(480px, 80vw)' }}
-                  />
-                </EuiPopover>
+                {infoItems.map((item, index) => (
+                  <React.Fragment key={item.key}>
+                    {index > 0 && <InfoDivider />}
+                    {item.node}
+                  </React.Fragment>
+                ))}
               </div>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
@@ -379,6 +535,14 @@ export const WfoProcessDetail = ({
             <WfoTimeline
               timelineItems={timelineItems}
               indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
+              // Name of the step it is on or failed on (not for a finished workflow)
+              labelIndex={
+                hasFailed ? failedStepIndex
+                : listIncludesStatus([ProcessStatus.COMPLETED], processDetail?.lastStatus) ?
+                  undefined
+                : getIndexOfCurrentStep(timelineItems)
+              }
+              labelColor={hasFailed ? theme.colors.textDanger : theme.colors.textPrimary}
               onStepClick={(timelineItem) =>
                 onTimelineItemClick && timelineItem.id && onTimelineItemClick(timelineItem.id)
               }
@@ -399,7 +563,38 @@ export const WfoProcessDetail = ({
             '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
           }}
         >
-          <div css={{ minWidth: 0, gridColumn: 1, gridRow: 2 }}>{children}</div>
+          <div css={{ minWidth: 0, gridColumn: 1, gridRow: 2 }}>
+            {hasFailed && (
+              <EuiCallOut
+                color="danger"
+                iconType="warning"
+                size="s"
+                title={t('failedAtStep', {
+                  number: failedStepIndex + 1,
+                  total: timelineItems.length,
+                  name: String(timelineItems[failedStepIndex].stepDetail ?? ''),
+                })}
+                css={{ marginBottom: theme.size.xl }}
+              >
+                {traceback && (
+                  <>
+                    <EuiButtonEmpty
+                      size="xs"
+                      color="danger"
+                      flush="left"
+                      iconType={isTracebackOpen ? 'chevronSingleUp' : 'chevronSingleDown'}
+                      iconSide="right"
+                      onClick={() => setIsTracebackOpen((open) => !open)}
+                    >
+                      {t(isTracebackOpen ? 'hideTraceback' : 'showTraceback')}
+                    </EuiButtonEmpty>
+                    {isTracebackOpen && <WfoTraceback>{traceback}</WfoTraceback>}
+                  </>
+                )}
+              </EuiCallOut>
+            )}
+            {children}
+          </div>
           {showWorkflowUserGuide && (
             <div
               css={{

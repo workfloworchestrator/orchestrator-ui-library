@@ -56,6 +56,7 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
         buttonsAreDisabled={isLoading || isError}
         processDetail={processDetail}
         timelineItems={timelineItems}
+        traceback={processDetail?.traceback}
         onTimelineItemClick={(id: string) => stepListRef.current?.scrollToStep(id)}
         isLoading={isLoading}
         hasError={isError}
@@ -69,7 +70,8 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
               processId={processDetail.processId}
               workflowName={processDetail.workflowName}
               steps={groupedSteps.flatMap((groupedStep) => groupedStep.steps)}
-              traceBack={processDetail.traceback}
+              // the new layout shows the traceback in the failure banner
+              traceBack={isNewUi ? null : processDetail.traceback}
               userInputForm={processDetail.form}
               startedAt={processDetail.startedAt}
               isTask={isTask}
