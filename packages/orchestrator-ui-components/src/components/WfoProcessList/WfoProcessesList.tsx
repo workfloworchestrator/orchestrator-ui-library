@@ -22,6 +22,7 @@ import {
   WfoFirstPartUUID,
   WfoStructuredSearchTable,
   WfoStructuredSearchTableColumnConfig,
+  WfoExportComputedColumn,
   useSearchExport,
   useStructuredSearchState,
 } from '@/components/WfoTable';
@@ -39,7 +40,7 @@ import type {
 import { SearchScore, buildGraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import { EntityKind, Process, ProcessStatus, SortOrder } from '@/types';
-import { parseDate, parseDateToLocaleDateTimeString } from '@/utils';
+import { getConcatenatedResult, parseDate, parseDateToLocaleDateTimeString } from '@/utils';
 
 import { WfoProcessListActions } from './WfoProcessListActions';
 import { WfoProcessListDeltaPopover } from './WfoProcessListDeltaPopover';
@@ -68,6 +69,24 @@ export type ProcessListItem = Pick<
 };
 
 const getSubscriptions = (value?: ProcessSubscriptions) => value?.searchEdges.map(({ node }) => node) ?? [];
+
+const EXPORT_MAX_PROCESS_SUBSCRIPTIONS = 10;
+
+const subscriptionsExportColumn: WfoExportComputedColumn<ProcessListItem> = {
+  property: 'subscriptions',
+  responseColumns: Array.from({ length: EXPORT_MAX_PROCESS_SUBSCRIPTIONS }, (_, index) => index).flatMap((index) => [
+    `process.subscriptions.${index}.subscription_id`,
+    `process.subscriptions.${index}.description`,
+  ]),
+  getValue: (responseColumns) =>
+    getConcatenatedResult(
+      Array.from({ length: EXPORT_MAX_PROCESS_SUBSCRIPTIONS }, (_, index) => ({
+        subscriptionId: responseColumns[`process.subscriptions.${index}.subscription_id`],
+        description: responseColumns[`process.subscriptions.${index}.description`],
+      })).filter(({ subscriptionId }) => subscriptionId),
+      ['subscriptionId', 'description'],
+    ),
+};
 
 const ALWAYS_REQUESTED_PROPERTIES: (keyof ProcessListItem)[] = [
   'processId',
@@ -368,6 +387,7 @@ export const WfoProcessesList = ({
     searchPathToProperty,
     tableColumnConfig: tableColumns,
     fileName: 'Processes',
+    computedColumns: [subscriptionsExportColumn],
   });
 
   const onShowMore = () => {
