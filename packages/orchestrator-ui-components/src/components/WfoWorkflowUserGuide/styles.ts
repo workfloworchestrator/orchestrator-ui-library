@@ -8,6 +8,9 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
   const stripBottomGap = theme.base;
   const stripMinHeight = theme.base * 40;
 
+  // A page with its own sticky header sets --wfo-guide-sticky-top on a parent so the guide sticks below it
+  const stickyTop = `var(--wfo-guide-sticky-top, ${timelineStickyHeight}px)`;
+
   const fullHeightStyle = css({
     height: '100%',
   });
@@ -22,9 +25,9 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     cursor: 'pointer',
     alignSelf: 'stretch',
     position: 'sticky',
-    top: timelineStickyHeight,
+    top: stickyTop,
     minHeight: stripMinHeight,
-    maxHeight: `calc(100vh - ${navigationHeight + timelineStickyHeight + stripBottomGap}px)`,
+    maxHeight: `calc(100vh - ${stickyTop} - ${navigationHeight + stripBottomGap}px)`,
   });
 
   const stripIconStyle = css({
@@ -47,7 +50,7 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     height: theme.base * 4,
     cursor: 'pointer',
     position: 'sticky',
-    top: timelineStickyHeight,
+    top: stickyTop,
     zIndex: 2,
   });
 
@@ -64,9 +67,9 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
   const guideExpandedItemStyle = css({
     alignSelf: 'stretch',
     position: 'sticky',
-    top: timelineStickyHeight,
+    top: stickyTop,
     minHeight: stripMinHeight,
-    maxHeight: `calc(100vh - ${navigationHeight + timelineStickyHeight + stripBottomGap}px)`,
+    maxHeight: `calc(100vh - ${stickyTop} - ${navigationHeight + stripBottomGap}px)`,
   });
 
   const guideExpandedFillStyle = css({

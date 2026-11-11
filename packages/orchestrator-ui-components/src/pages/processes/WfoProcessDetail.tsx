@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -6,12 +6,16 @@ import { useRouter } from 'next/router';
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiButtonIcon,
   EuiDescriptionList,
   EuiFlexGroup,
   EuiFlexItem,
   EuiPanel,
+  EuiPopover,
   EuiSpacer,
   EuiText,
+  EuiToolTip,
+  useIsWithinBreakpoints,
 } from '@elastic/eui';
 
 import {
@@ -25,9 +29,10 @@ import {
   WfoTitleWithWebsocketBadge,
 } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { WfoWorkflowGuideExpandablePanel } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
-import { useCheckEngineStatus, useOrchestratorTheme, usePolicy } from '@/hooks';
+import { useCheckEngineStatus, useGetOrchestratorConfig, useOrchestratorTheme, usePolicy } from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
 import { RenderDirection, WfoProcessListSubscriptionsCell, WfoProductInformationWithLink } from '@/pages';
 import {
@@ -38,7 +43,6 @@ import {
 import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
-import { WfoWorkflowHelpFlyout } from './WfoStartProcessPageV2';
 import { getIndexOfCurrentStep } from './timelineUtils';
 
 interface ProcessHeaderValueProps {
@@ -85,7 +89,7 @@ interface ProcessDetailProps {
   onTimelineItemClick?: (id: string) => void;
   isLoading?: boolean;
   hasError?: boolean;
-  /** 'new': sticky header with actions + help, details panel on the right, no timeline */
+  /** 'new': sticky header with title, actions and timeline; details panel and user guide on the right */
   layout?: 'current' | 'new';
 }
 
@@ -113,9 +117,26 @@ export const WfoProcessDetail = ({
   hasError = false,
   layout = 'current',
 }: ProcessDetailProps) => {
-  const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const {
+    showWorkflowUserGuide,
+    expandWorkflowUserGuideOnStart,
+    showWorkflowInformationLink,
+    workflowInformationLinkUrl,
+  } = useGetOrchestratorConfig();
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isGuideOpen, setIsGuideOpen] = useState(expandWorkflowUserGuideOnStart);
+  const isBigScreen = useIsWithinBreakpoints(['xl', 'xxl']);
+  // The sticky header's height: the user guide sticks right below it
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const observer = new ResizeObserver(() => setHeaderHeight(header.offsetHeight));
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, [layout]);
   const t = useTranslations('processes.detail');
-  const tForm = useTranslations('pydanticForms.userInputForm');
   const { theme } = useOrchestratorTheme();
   const { showConfirmDialog } = useContext(ConfirmationDialogContext);
   const [retryProcess] = useRetryProcessMutation();
@@ -188,10 +209,13 @@ export const WfoProcessDetail = ({
       },
     });
 
+  const buttonSize = layout === 'new' ? 's' : 'm';
+
   const actionButtons = (
     <>
       <WfoIsAllowedToRender resource={PolicyResource.PROCESS_RETRY}>
         <EuiButton
+          size={buttonSize}
           onClick={handleActionButtonClick(retryAction)}
           iconType={() => <WfoRefresh color={retryButtonIsDisabled ? theme.colors.textSubdued : theme.colors.link} />}
           isDisabled={retryButtonIsDisabled}
@@ -201,6 +225,7 @@ export const WfoProcessDetail = ({
       </WfoIsAllowedToRender>
       <WfoIsAllowedToRender resource={PolicyResource.PROCESS_ABORT}>
         <EuiButton
+          size={buttonSize}
           onClick={handleActionButtonClick(abortAction)}
           iconType={() => (
             <WfoXCircleFill color={abortButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
@@ -215,6 +240,7 @@ export const WfoProcessDetail = ({
         {processDetail && processIsTask && (
           <WfoIsAllowedToRender resource={PolicyResource.PROCESS_DELETE}>
             <EuiButton
+              size={buttonSize}
               onClick={handleActionButtonClick(deleteAction)}
               iconType={() => (
                 <WfoXCircleFill color={deleteButtonIsDisabled ? theme.colors.textSubdued : theme.colors.danger} />
@@ -239,7 +265,6 @@ export const WfoProcessDetail = ({
   if (layout === 'new') {
     const formatDate = (date?: string) => (date ? parseIsoString(parseDateRelativeToToday)(date) : '-');
     const details = [
-      { title: t('status'), description: processDetail?.lastStatus ?? '-' },
       { title: t('lastStep'), description: processDetail?.lastStep ?? '-' },
       ...(processDetail?.customer ? [{ title: t('customer'), description: processDetail.customer.fullname }] : []),
       { title: t('startedBy'), description: processDetail?.createdBy ?? '-' },
@@ -260,17 +285,20 @@ export const WfoProcessDetail = ({
       : []),
     ];
 
+    // Guide open next to the content (xl+): it takes the free space, the content keeps its width
+    const guideColumn = isGuideOpen && isBigScreen ? 'min(552px, 45vw)' : `${theme.base * 4 + 32}px`;
+
     return (
       <>
         <div
+          ref={headerRef}
           css={{
             position: 'sticky',
             top: 0,
             zIndex: 3,
             background: theme.colors.backgroundBasePlain,
-            borderBottom: `1px solid ${theme.colors.borderBaseSubdued}`,
-            padding: `${theme.size.s} 0`,
-            marginBottom: theme.size.l,
+            padding: `${theme.size.s} 0 0`,
+            marginBottom: theme.size.m,
           }}
         >
           <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" gutterSize="m" wrap responsive={false}>
@@ -278,46 +306,123 @@ export const WfoProcessDetail = ({
               <WfoTitleWithWebsocketBadge
                 title={pageTitle}
                 extraElement={
-                  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false}>
-                    {processDetail?.lastStatus && <WfoProcessStatusBadge processStatus={processDetail.lastStatus} />}
-                    {productNames && (
-                      <EuiText size="s" color="subdued">
-                        {productNames}
-                      </EuiText>
-                    )}
-                  </EuiFlexGroup>
+                  showWorkflowInformationLink && processDetail?.workflowName ?
+                    <EuiToolTip content={t('openWorkflowTaskInfo')}>
+                      <EuiButtonIcon
+                        iconType="info"
+                        iconSize="m"
+                        href={workflowInformationLinkUrl + processDetail.workflowName}
+                        target="_blank"
+                        aria-label={t('openWorkflowTaskInfo')}
+                      />
+                    </EuiToolTip>
+                  : undefined
                 }
               />
+              {/* Info line: 8px inside a group, 16px between groups, 4px under the title, 8px above the timeline */}
+              <div
+                css={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  columnGap: theme.size.base,
+                  rowGap: theme.size.xs,
+                  marginTop: theme.size.xs,
+                  marginBottom: theme.size.s,
+                }}
+              >
+                <div css={{ display: 'flex', alignItems: 'center', gap: theme.size.s, minWidth: 0 }}>
+                  {processDetail?.lastStatus && <WfoProcessStatusBadge processStatus={processDetail.lastStatus} />}
+                  {productNames && (
+                    <EuiText size="s" color="subdued">
+                      {productNames}
+                    </EuiText>
+                  )}
+                </div>
+                <EuiPopover
+                  isOpen={isDetailsOpen}
+                  closePopover={() => setIsDetailsOpen(false)}
+                  anchorPosition="downLeft"
+                  panelPaddingSize="m"
+                  aria-label={t('details')}
+                  button={
+                    <EuiButtonEmpty
+                      size="s"
+                      color="text"
+                      flush="both"
+                      iconType={isDetailsOpen ? 'chevronSingleUp' : 'chevronSingleDown'}
+                      iconSide="right"
+                      onClick={() => setIsDetailsOpen((open) => !open)}
+                      isLoading={isLoading && !hasError}
+                    >
+                      {t('details')}
+                    </EuiButtonEmpty>
+                  }
+                >
+                  <EuiDescriptionList
+                    type="column"
+                    compressed
+                    listItems={details}
+                    columnWidths={[1, 2]}
+                    css={{ width: 'min(480px, 80vw)' }}
+                  />
+                </EuiPopover>
+              </div>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiFlexGroup gutterSize="s" wrap responsive={false}>
                 {actionButtons}
-                <EuiButtonEmpty iconType="question" onClick={() => setIsHelpOpen(true)}>
-                  {tForm('help')}
-                </EuiButtonEmpty>
               </EuiFlexGroup>
             </EuiFlexItem>
           </EuiFlexGroup>
+          {timelineItems.length > 0 && (
+            <WfoTimeline
+              timelineItems={timelineItems}
+              indexOfCurrentStep={getIndexOfCurrentStep(timelineItems)}
+              onStepClick={(timelineItem) =>
+                onTimelineItemClick && timelineItem.id && onTimelineItemClick(timelineItem.id)
+              }
+            />
+          )}
         </div>
 
-        <EuiFlexGroup gutterSize="xl" alignItems="flexStart">
-          <EuiFlexItem css={{ minWidth: 0 }}>{children}</EuiFlexItem>
-          <EuiFlexItem grow={false} css={{ width: 300, '@media (max-width: 767px)': { width: '100%', order: -1 } }}>
-            <EuiPanel hasBorder hasShadow={false} paddingSize="m">
-              {(isLoading && !hasError && <WfoLoading />) || (
-                <EuiDescriptionList type="row" compressed listItems={details} />
-              )}
-            </EuiPanel>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-
-        {isHelpOpen && (
-          <WfoWorkflowHelpFlyout
-            workflowName={processDetail?.workflowName ?? ''}
-            title={pageTitle}
-            onClose={() => setIsHelpOpen(false)}
-          />
-        )}
+        <div
+          css={{
+            '--wfo-guide-sticky-top': `${headerHeight + 8}px`,
+            display: 'grid',
+            alignItems: 'start',
+            // Column width is animated (not swapped), so opening the guide slides the content instead of jumping.
+            // Below xl the guide stacks on top (see WfoWorkflowGuideExpandablePanel).
+            gridTemplateColumns:
+              isBigScreen ? `minmax(0, 1fr) ${showWorkflowUserGuide ? guideColumn : '0px'}` : 'minmax(0, 1fr)',
+            transition: 'grid-template-columns 300ms cubic-bezier(0.2, 0, 0, 1)',
+            '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+          }}
+        >
+          <div css={{ minWidth: 0, gridColumn: 1, gridRow: 2 }}>{children}</div>
+          {showWorkflowUserGuide && (
+            <div
+              css={{
+                gridColumn: isBigScreen ? 2 : 1,
+                gridRow: isBigScreen ? 2 : 1,
+                display: 'flex',
+                alignSelf: 'stretch',
+                paddingInlineStart: isBigScreen ? theme.size.xl : 0,
+                paddingBottom: isBigScreen ? 0 : theme.size.m,
+                // closed: the info strip sits at the far end; open: the guide fills the column
+                justifyContent: isGuideOpen ? 'stretch' : 'flex-end',
+              }}
+            >
+              <EuiFlexGroup gutterSize="none" css={{ position: 'relative', flexGrow: isGuideOpen ? 1 : 0 }}>
+                <WfoWorkflowGuideExpandablePanel
+                  workflowName={processDetail?.workflowName ?? ''}
+                  isExpanded={isGuideOpen}
+                  onToggle={() => setIsGuideOpen((open) => !open)}
+                />
+              </EuiFlexGroup>
+            </div>
+          )}
+        </div>
       </>
     );
   }

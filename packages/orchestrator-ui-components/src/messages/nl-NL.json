@@ -173,6 +173,7 @@
       "customer": "Customer",
       "delete": "Verwijder",
       "deleteQuestion": "Weet je zeker dat je de {workflowName} taak wilt verwijderen?",
+      "details": "Details",
       "lastStep": "Huidige stap",
       "lastUpdate": "Laatste update",
       "openWorkflowTaskInfo": "open workflow-/taakinformatie op een nieuw tabblad",
@@ -236,7 +237,11 @@
       "forbiddenTitle": "Geen toegang",
       "help": "Hulp",
       "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten",
+      "lastStep": "Laatste stap",
       "next": "Volgende",
+      "nextSteps": "Volgende stappen",
+      "nextStepsHint": "Verschijnen na deze stap",
+      "nextStepsMaybeHint": "Kunnen verschijnen na deze stap",
       "preconditionFailedFallback": "Aan een voorwaarde voor het starten van deze workflow is niet voldaan.",
       "preconditionFailedTitle": "Deze workflow kan op dit moment niet worden gestart",
       "previous": "Vorige",
@@ -250,6 +255,16 @@
     "widgets": {
       "arrayField": {
         "noItemsAvailable": "Geen items beschikbaar"
+      },
+      "arrayFieldV2": {
+        "add": "Toevoegen",
+        "addContactPerson": "Contactpersoon toevoegen",
+        "contactPersonNumber": "Contactpersoon {number}",
+        "itemNumber": "Item {number}",
+        "noItemsAvailable": "Geen items beschikbaar",
+        "remove": "Weghalen",
+        "removeItem": "{item} weghalen",
+        "selectCustomerFirst": "Kies eerst een klant. Daarna kun je een contactpersoon kiezen."
       },
       "contactPersonName": {
         "placeholder": "Zoek en voeg contactpersonen toe..."

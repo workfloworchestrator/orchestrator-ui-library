@@ -6,6 +6,7 @@ export * from './WfoCheckbox';
 export * from './WfoSummary';
 export * from './WfoObjectField';
 export * from './WfoArrayField';
+export * from './WfoArrayFieldV2';
 export * from './WfoRadio';
 export * from './WfoInteger';
 export * from './WfoDropdown';
