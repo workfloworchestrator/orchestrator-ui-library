@@ -10,6 +10,7 @@ import { EuiButtonGroup, EuiDatePicker, EuiFieldNumber, EuiFieldText } from '@el
 import { WfoRangeEditor } from '@/components/WfoTable/WfoStructuredSearchTable/WfoRangeEditor';
 import { getWfoStructuredSearchTableStyles } from '@/components/WfoTable/WfoStructuredSearchTable/styles';
 import { useWithOrchestratorTheme } from '@/hooks';
+import { QueryOperator } from '@/types';
 import type { WfoQueryBuilderContext } from '@/types';
 
 export interface EditorInputFieldProps<T = string> {
@@ -169,7 +170,7 @@ export const WfoValueEditor = ({
   // property of the QueryBuilder component (see WfoFilterBuilder)
   // Because this check might not have run yet when the query is rebuild from an URL
   // we make the check explicitly here aswell.
-  if (operator === 'null' || operator === 'notNull') {
+  if (operator === QueryOperator.IS_NULL || operator === QueryOperator.IS_NOT_NULL) {
     return null;
   }
 
@@ -189,7 +190,7 @@ export const WfoValueEditor = ({
   const getEditor = () => {
     const InputElement = getComponentByType();
 
-    if (operator === 'between') {
+    if (operator === QueryOperator.BETWEEN) {
       return <WfoRangeEditor handleOnChange={handleOnChange} value={value} InputElement={InputElement} />;
     }
 

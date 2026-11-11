@@ -1,3 +1,5 @@
+import type { DefaultOperatorName } from 'react-querybuilder';
+
 export enum EntityKind {
   SUBSCRIPTION = 'SUBSCRIPTION',
   PRODUCT = 'PRODUCT',
@@ -10,9 +12,26 @@ export enum QueryCombinator {
   OR = 'or',
 }
 
+/** react-querybuilder operator names used by the search filters. */
 export enum QueryOperator {
   EQUALS = '=',
+  NOT_EQUALS = '!=',
+  LESS_THAN = '<',
+  LESS_THAN_OR_EQUAL = '<=',
+  GREATER_THAN = '>',
+  GREATER_THAN_OR_EQUAL = '>=',
+  BETWEEN = 'between',
+  CONTAINS = 'contains',
+  DOES_NOT_CONTAIN = 'doesNotContain',
+  DOES_NOT_BEGIN_WITH = 'doesNotBeginWith',
+  DOES_NOT_END_WITH = 'doesNotEndWith',
+  IS_NULL = 'null',
+  IS_NOT_NULL = 'notNull',
 }
+
+// Compile-time guard: every QueryOperator value must be a react-querybuilder operator name (DefaultOperatorName).
+type AssertIsRqbOperator<T extends DefaultOperatorName> = T;
+export type RqbQueryOperator = AssertIsRqbOperator<`${QueryOperator}`>;
 
 export enum RetrieverType {
   Auto = 'auto',
