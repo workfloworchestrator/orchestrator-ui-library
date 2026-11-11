@@ -175,7 +175,6 @@
       "deleteQuestion": "Are you sure you want to delete the {workflowName} task?",
       "failedAtStep": "Failed at step {number} of {total}: {name}",
       "hideTraceback": "Hide traceback",
-      "failedAtStep": "Failed at step {number} of {total}: {name}",
       "lastStep": "Current step",
       "lastUpdate": "Last update",
       "openWorkflowTaskInfo": "open workflow/task information in a new tab",
