@@ -64,6 +64,14 @@ Setup auth with keycloak in docker
 
 Each PR, which typically addresses an existing ticket from the issue list, should have a reference to the issue (eg use the issue number in the branch name). Furthermore the PR should include a changeset describing the changes of the PR, which will become part of the changelog in NPM.
 
+## Pull requests
+
+Open PRs as **draft** and click _Ready for review_ once CI passes. That triggers one Greptile review.
+
+- To request another review, add the `greptile-review` label. The number of reviews per PR is limited; admins can exceed it.
+- PRs from authors without write access are not reviewed automatically; a maintainer adds `greptile-review`.
+- Admins can add `greptile-review-trex` for an in-depth review.
+
 # Release and publish
 
 ## Preparing the release
