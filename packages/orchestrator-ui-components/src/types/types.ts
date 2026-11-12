@@ -227,11 +227,6 @@ export enum ProcessStatus {
 
 export const ProcessDoneStatuses = [ProcessStatus.COMPLETED, ProcessStatus.ABORTED];
 
-// 'ProcessStatus.CREATE' only exists in the frontend.
-export const ProcessActiveStatuses = Object.values(ProcessStatus).filter(
-  (status) => status !== ProcessStatus.CREATE && !ProcessDoneStatuses.includes(status),
-);
-
 export const ProcessRetryableStatuses = [
   ProcessStatus.FAILED,
   ProcessStatus.API_UNAVAILABLE,

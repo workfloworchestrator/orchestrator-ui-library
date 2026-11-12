@@ -1,54 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import type { RuleGroupType } from 'react-querybuilder';
+import React from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import {
+  FilterQuery,
   PATH_WORKFLOWS,
-  StoredTableConfig,
   WfoDateTime,
-  WfoFilterTab,
   WfoProcessListNoteEdit,
   WfoProcessStatusBadge,
   WfoWorkflowTargetBadge,
+  getPageIndexChangeHandler,
+  getPageSizeChangeHandler,
 } from '@/components';
-import { parseRuleGroupToFilters } from '@/components/WfoSearchPage/utils';
-import { WfoConfidenceScore } from '@/components/WfoSubscription/WfoConfidenceScore';
-import { WfoMatchingFields } from '@/components/WfoSubscription/WfoMatchingFields';
 import {
+  DEFAULT_PAGE_SIZES,
   TableColumnKeys,
-  WfoExportComputedColumn,
+  WfoDataSorting,
   WfoFirstPartUUID,
-  WfoStructuredSearchTable,
-  WfoStructuredSearchTableColumnConfig,
-  useSearchExport,
-  useStructuredSearchState,
+  getDataSortHandler,
+  getQueryStringHandler,
 } from '@/components/WfoTable';
-import { WfoRowDetails } from '@/components/WfoTable/WfoStructuredSearchTable';
-import {
-  SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP,
-  buildRowDetailsSearchPayload,
-  getSearchPathToPropertyMap,
-} from '@/components/WfoTable/WfoStructuredSearchTable/utils';
-import { ColumnType } from '@/components/WfoTable/WfoTable';
+import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
+import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
+import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
-import { useStoredTableConfig } from '@/hooks';
+import { useShowToastMessage } from '@/hooks';
+import { DataDisplayParams } from '@/hooks';
 import { WfoProcessListSubscriptionsCell } from '@/pages';
-import { useGetProcessListSearchQuery } from '@/rtk';
-import type {
-  ProcessListSearchPayload,
-  ProcessListSearchResponse,
-  ProcessSubscriptions,
-} from '@/rtk/endpoints/processList';
-import { SearchScore, buildGraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
+import { ProcessListResponse, useGetProcessListQuery, useLazyGetProcessListQuery } from '@/rtk';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import { EntityKind, Process, ProcessStatus, ResultColumToPropertyMap, SortOrder } from '@/types';
-import { getConcatenatedResult, parseDate, parseDateToLocaleDateTimeString } from '@/utils';
+import { GraphqlQueryVariables, Process, SortOrder } from '@/types';
+import { parseDateToLocaleDateTimeString } from '@/utils';
+import { getQueryVariablesForExport } from '@/utils';
+import { csvDownloadHandler, getCsvFileNameWithDate } from '@/utils/csvDownload';
 
 import { WfoProcessListActions } from './WfoProcessListActions';
 import { WfoProcessListDeltaPopover } from './WfoProcessListDeltaPopover';
+import {
+  graphQlProcessFilterMapper,
+  graphQlProcessSortMapper,
+  mapGraphQlProcessListExportResultToProcessListItems,
+  mapGraphQlProcessListResultToPageInfo,
+  mapGraphQlProcessListResultToProcessListItems,
+} from './processListObjectMappers';
 
 export type ProcessListItem = Pick<
   Process,
@@ -59,156 +55,51 @@ export type ProcessListItem = Pick<
   | 'createdBy'
   | 'assignee'
   | 'processId'
+  | 'subscriptions'
   | 'note'
   | 'userPermissions'
   | 'isTask'
 > & {
   startedAt: Date;
   lastModifiedAt: Date;
-  'product.name'?: string;
-  'product.tag'?: string;
-  'customer.fullname': string;
-  'customer.shortcode': string;
-  subscriptions?: ProcessSubscriptions;
-  score?: SearchScore;
+  productName?: string;
+  tag?: string;
+  customer: string;
+  customerAbbreviation: string;
 };
 
-const getSubscriptions = (value?: ProcessSubscriptions) => value?.searchEdges.map(({ node }) => node) ?? [];
-
-const EXPORT_MAX_PROCESS_SUBSCRIPTIONS = 10;
-
-const subscriptionsExportColumn: WfoExportComputedColumn<ProcessListItem> = {
-  property: 'subscriptions',
-  responseColumns: Array.from({ length: EXPORT_MAX_PROCESS_SUBSCRIPTIONS }, (_, index) => index).flatMap((index) => [
-    `process.subscriptions.${index}.subscription_id`,
-    `process.subscriptions.${index}.description`,
-  ]),
-  getValue: (responseColumns) =>
-    getConcatenatedResult(
-      Array.from({ length: EXPORT_MAX_PROCESS_SUBSCRIPTIONS }, (_, index) => ({
-        subscriptionId: responseColumns[`process.subscriptions.${index}.subscription_id`],
-        description: responseColumns[`process.subscriptions.${index}.description`],
-      })).filter(({ subscriptionId }) => subscriptionId),
-      ['subscriptionId', 'description'],
-    ),
+export type ProcessListExportItem = Omit<ProcessListItem, 'subscriptions'> & {
+  subscriptions: string;
 };
-
-const ALWAYS_REQUESTED_PROPERTIES: (keyof ProcessListItem)[] = [
-  'processId',
-  'workflowName',
-  'lastStatus',
-  'workflowTarget',
-];
-
-const buildTabRuleGroup = (isTask: boolean, statuses: ProcessStatus[]): RuleGroupType => ({
-  combinator: 'and',
-  rules: [
-    { field: 'process.is_task', operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq, value: isTask },
-    {
-      combinator: 'or',
-      rules: statuses.map((status) => ({
-        field: 'process.last_status',
-        operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq,
-        value: status,
-      })),
-    },
-  ],
-});
-
-// The filters of the tab and the filter the user committed, combined into one search filter
-const buildTabAndUserFilters = (isTask: boolean, statuses: ProcessStatus[], userRuleGroup?: RuleGroupType) => {
-  const ruleGroups = [buildTabRuleGroup(isTask, statuses), userRuleGroup].filter(Boolean) as RuleGroupType[];
-  return parseRuleGroupToFilters(ruleGroups.length === 1 ? ruleGroups[0] : { combinator: 'and', rules: ruleGroups });
-};
-
-const getItemsFromGraphqlResponse = (data: ProcessListSearchResponse): ProcessListItem[] =>
-  data.searchEdges.map(
-    ({ score, matchingFields, node }) =>
-      ({
-        ...node,
-        'product.name': node.product?.name,
-        'product.tag': node.product?.tag,
-        'customer.fullname': node.customer?.fullname,
-        'customer.shortcode': node.customer?.shortcode,
-        startedAt: parseDate(node.startedAt),
-        lastModifiedAt: parseDate(node.lastModifiedAt),
-        score: { score, matchingFields },
-      }) as ProcessListItem,
-  );
-
-type WfoProcessRowDetailsProps = {
-  row: ProcessListItem;
-  searchPathToProperty: ResultColumToPropertyMap<ProcessListItem>;
-  tableColumnConfig: WfoStructuredSearchTableColumnConfig<ProcessListItem>;
-};
-
-// The table request leaves out the hidden columns, so the details modal loads the full process
-const WfoProcessRowDetails = ({ row, searchPathToProperty, tableColumnConfig }: WfoProcessRowDetailsProps) => {
-  const { data, isFetching } = useGetProcessListSearchQuery(
-    { ...buildRowDetailsSearchPayload(searchPathToProperty, 'processId', row.processId), includeSubscriptions: true },
-    { refetchOnMountOrArgChange: true },
-  );
-
-  const detailRow = data && getItemsFromGraphqlResponse(data)[0];
-
-  return <WfoRowDetails row={detailRow} isLoading={isFetching} tableColumnConfig={tableColumnConfig} />;
-};
-
-// A filter tab of a process list: the statuses of the processes that it lists
-export type WfoProcessListTab<TabType> = WfoFilterTab<TabType> & { statuses: ProcessStatus[] };
 
 export type WfoProcessesListProps = {
-  isTask: boolean;
-  statuses: ProcessStatus[];
+  alwaysOnFilters?: FilterQuery<ProcessListItem>[];
+  defaultHiddenColumns: TableColumnKeys<ProcessListItem> | undefined;
   localStorageKey: string;
+  dataDisplayParams: DataDisplayParams<ProcessListItem>;
+  setDataDisplayParam: <DisplayParamKey extends keyof DataDisplayParams<ProcessListItem>>(
+    prop: DisplayParamKey,
+    value: DataDisplayParams<ProcessListItem>[DisplayParamKey],
+  ) => void;
   overrideDefaultTableColumns?: (
-    defaultTableColumns: WfoStructuredSearchTableColumnConfig<ProcessListItem>,
-  ) => WfoStructuredSearchTableColumnConfig<ProcessListItem>;
+    defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem>,
+  ) => WfoAdvancedTableColumnConfig<ProcessListItem>;
 };
 
 export const WfoProcessesList = ({
-  isTask,
-  statuses,
+  alwaysOnFilters,
+  defaultHiddenColumns = [],
   localStorageKey,
+  dataDisplayParams,
   overrideDefaultTableColumns,
+  setDataDisplayParam,
 }: WfoProcessesListProps) => {
   const t = useTranslations('processes.index');
+  const tError = useTranslations('errors');
+  const { showToastMessage } = useShowToastMessage();
   const router = useRouter();
-  const getStoredTableConfig = useStoredTableConfig<ProcessListItem>(localStorageKey);
-  const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<ProcessListItem>>();
-  const {
-    committedQueryString,
-    committedFilterString,
-    committedRuleGroup,
-    retrieverType,
-    dataSorting,
-    pageSize,
-    cursor,
-    isSearchBlocked,
-    queryString,
-    filterString,
-    queryBuilderRuleGroup,
-    isValidFilterString,
-    hiddenColumns,
-    setHiddenColumns,
-    initPageSize,
-    onChangeQueryString,
-    onSearchQueryString,
-    handleApplyFilter,
-    onUpdateRetrieverType,
-    onUpdateQueryBuilder,
-    onUpdateFilterString,
-    onUpdateDataSorting,
-    onUpdatePageSize,
-    resetPageCursor,
-    showNextPage,
-  } = useStructuredSearchState<ProcessListItem>({
-    defaultSorting: { field: 'lastModifiedAt', sortOrder: SortOrder.DESC },
-    // A cursor is only valid within the tab it was requested for
-    searchKeyScope: [isTask, statuses],
-  });
 
-  const defaultTableColumns: WfoStructuredSearchTableColumnConfig<ProcessListItem> = {
+  const defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> = {
     delta: {
       columnType: ColumnType.CONTROL,
       width: '50px',
@@ -219,22 +110,8 @@ export const WfoProcessesList = ({
       width: '36px',
       renderControl: (row) => <WfoProcessListActions processListItem={row} />,
     },
-    score: {
-      columnType: ColumnType.DATA,
-      label: t('score'),
-      width: '100px',
-      excludeFromDetails: true,
-      renderData: (value) => (
-        <WfoConfidenceScore
-          score={value?.score}
-          fullyConfident={committedFilterString !== '' && committedQueryString === ''}
-        />
-      ),
-      renderTooltip: (value) => <WfoMatchingFields matchingFields={value?.matchingFields} />,
-    },
     workflowName: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.workflow_name',
       label: t('workflowName'),
       width: '225px',
       renderData: (value, { processId }) => <Link href={`${PATH_WORKFLOWS}/${processId}`}>{value}</Link>,
@@ -242,51 +119,43 @@ export const WfoProcessesList = ({
     },
     lastStep: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.last_step',
       label: t('step'),
       width: '375px',
     },
     lastStatus: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.last_status',
       label: t('status'),
       renderData: (cellValue) => <WfoProcessStatusBadge processStatus={cellValue} />,
       width: '150px',
     },
     workflowTarget: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.workflow_target',
       label: t('workflowTarget'),
       renderData: (target) => <WfoWorkflowTargetBadge target={target} />,
       width: '100px',
     },
-    'product.tag': {
+    tag: {
       columnType: ColumnType.DATA,
-      searchPath: 'product_tag',
       label: t('productTag'),
       width: '100px',
     },
-    'product.name': {
+    productName: {
       columnType: ColumnType.DATA,
-      searchPath: 'product_name',
       label: t('product'),
       width: '275px',
     },
-    'customer.fullname': {
+    customer: {
       columnType: ColumnType.DATA,
-      searchPath: 'customer_name',
       label: t('customer'),
       width: '250px',
     },
-    'customer.shortcode': {
+    customerAbbreviation: {
       columnType: ColumnType.DATA,
-      searchPath: 'customer_abbreviation',
       label: t('customerAbbreviation'),
       width: '125px',
     },
     note: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.note',
       label: t('note'),
       width: '250px',
       renderData: (note, { processId }) => <WfoProcessListNoteEdit processId={processId} note={note} />,
@@ -295,36 +164,30 @@ export const WfoProcessesList = ({
       columnType: ColumnType.DATA,
       label: t('subscriptions'),
       width: '425px',
-      renderData: (value, { processId }) => (
+      renderData: ({ page: subscriptions }, { processId }) => (
         <WfoProcessListSubscriptionsCell
-          subscriptions={getSubscriptions(value)}
+          subscriptions={subscriptions}
           numberOfSubscriptionsToRender={1}
           onMoreSubscriptionsClick={() => router.push(`${PATH_WORKFLOWS}/${processId}`)}
         />
       ),
-      renderDetails: (value) => <WfoProcessListSubscriptionsCell subscriptions={getSubscriptions(value)} />,
-      renderTooltip: (value) =>
-        getSubscriptions(value).map(({ description, subscriptionId }) => <p key={subscriptionId}>- {description}</p>),
-      clipboardText: (value) =>
-        getSubscriptions(value)
-          .map(({ subscriptionId }) => subscriptionId)
-          .join(', '),
+      renderDetails: ({ page: subscriptions }) => <WfoProcessListSubscriptionsCell subscriptions={subscriptions} />,
+      renderTooltip: ({ page: subscriptions }) =>
+        subscriptions.map(({ description, subscriptionId }) => <p key={subscriptionId}>- {description}</p>),
+      clipboardText: ({ page: subscriptions }) => subscriptions.map(({ subscriptionId }) => subscriptionId).join(', '),
     },
     createdBy: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.created_by',
       label: t('createdBy'),
       width: '100px',
     },
     assignee: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.assignee',
       label: t('assignee'),
       width: '100px',
     },
     processId: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.process_id',
       label: t('processId'),
       width: '90px',
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
@@ -333,140 +196,89 @@ export const WfoProcessesList = ({
     },
     startedAt: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.started_at',
       label: t('started'),
       width: '100px',
       renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
-      renderTooltip: (value) => value?.toString(),
+      renderTooltip: (value) => value.toString(),
     },
     lastModifiedAt: {
       columnType: ColumnType.DATA,
-      searchPath: 'process.last_modified_at',
       label: t('lastModified'),
       width: '125px',
       renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
       renderDetails: parseDateToLocaleDateTimeString,
       clipboardText: parseDateToLocaleDateTimeString,
-      renderTooltip: (value) => value?.toString(),
+      renderTooltip: (value) => value.toString(),
     },
   };
 
-  const tableColumns =
+  const tableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> =
     overrideDefaultTableColumns ? overrideDefaultTableColumns(defaultTableColumns) : defaultTableColumns;
 
-  const searchPathToProperty = getSearchPathToPropertyMap<ProcessListItem>(tableColumns);
+  const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
 
-  // The search payload is derived entirely from the committed search state, which lives in the URL
-  // (queryString and filterString params). Changing any of these values (whether via the UI or a
-  // browser back/forward that updates the URL) produces a new payload and RTK Query re-runs the search.
-  // RTK Query keys the request on the serialized payload, so it needs no memoization.
-  const searchPayload: ProcessListSearchPayload = {
-    ...buildGraphqlSearchPayload<ProcessListItem>({
-      searchPathToProperty,
-      alwaysRequestedProperties: ALWAYS_REQUESTED_PROPERTIES,
-      hiddenColumns,
-      dataSorting,
-      query: committedQueryString,
-      pageSize,
-      retrieverType,
-      filters: buildTabAndUserFilters(isTask, statuses, committedRuleGroup),
-      cursor,
-    }),
-    includeSubscriptions: !hiddenColumns.includes('subscriptions'),
+  const processListQueryVars: GraphqlQueryVariables<Process> = {
+    first: pageSize,
+    after: pageIndex * pageSize,
+    sortBy: graphQlProcessSortMapper(sortBy),
+    filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
+    query: queryString || undefined,
   };
 
-  const { data, error, isFetching } = useGetProcessListSearchQuery(searchPayload);
+  const { data, isFetching, error } = useGetProcessListQuery(processListQueryVars);
 
-  useEffect(() => {
-    const storedConfig = getStoredTableConfig();
-    if (storedConfig) {
-      setTableDefaults(storedConfig);
-      initPageSize(storedConfig.selectedPageSize);
-    }
-  }, [getStoredTableConfig, initPageSize]);
+  const [getProcessListTrigger, { isFetching: isFetchingCsv }] = useLazyGetProcessListQuery();
 
-  // A tab starts on its first page
-  useEffect(() => {
-    resetPageCursor();
-  }, [isTask, statuses, resetPageCursor]);
+  const { processes, pageInfo } = data || {};
 
-  const sortableAndFilterableFieldNames = [...searchPathToProperty.values()].map(String);
-  const isSortingAllowed = queryString === '';
-  const tableConfig = mapSortableAndFilterableValuesToTableColumnConfig<ProcessListItem>(
+  const pagination: Pagination = {
+    pageSize: pageSize,
+    pageIndex: pageIndex,
+    pageSizeOptions: DEFAULT_PAGE_SIZES,
+    totalItemCount: pageInfo?.totalItems ? pageInfo.totalItems : 0,
+    onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
+    onChangeItemsPerPage: getPageSizeChangeHandler(setDataDisplayParam),
+  };
+  const dataSorting: WfoDataSorting<ProcessListItem> = {
+    field: sortBy?.field ?? 'lastModified',
+    sortOrder: sortBy?.order ?? SortOrder.ASC,
+  };
+
+  const getProcessListForExport = () =>
+    getProcessListTrigger(getQueryVariablesForExport(processListQueryVars)).unwrap();
+
+  const tableConfig = mapSortableAndFilterableValuesToTableColumnConfig(
     tableColumns,
-    isSortingAllowed ? sortableAndFilterableFieldNames : [],
-    sortableAndFilterableFieldNames,
-  );
-
-  const processListItems = data && !isSearchBlocked ? getItemsFromGraphqlResponse(data) : [];
-  const totalItems = !isSearchBlocked && (data?.pageInfo?.totalItems || false);
-  const hasNextPage = !isSearchBlocked && (data?.pageInfo?.hasNextPage ?? false);
-  const nextPageCursor = data?.nextPageCursor ?? undefined;
-
-  const { exportData, isExporting } = useSearchExport<ProcessListItem>({
-    entityKind: EntityKind.PROCESS,
-    searchPathToProperty,
-    tableColumnConfig: tableColumns,
-    fileName: 'Processes',
-    computedColumns: [subscriptionsExportColumn],
-  });
-
-  const onShowMore = () => {
-    if (!isFetching) {
-      showNextPage(nextPageCursor);
-    }
-  };
-
-  const additionalHiddenColumns: TableColumnKeys<ProcessListItem> =
-    // only show 'score' when there is an active query or filter
-    committedQueryString || committedFilterString ? [] : ['score'];
-
-  // We manually show/hide the score column and shouldn't be configurable by the user.
-  const nonEditableColumns: TableColumnKeys<ProcessListItem> = ['score'];
-
-  const renderRowDetails = (row: ProcessListItem) => (
-    <WfoProcessRowDetails row={row} searchPathToProperty={searchPathToProperty} tableColumnConfig={tableColumns} />
+    pageInfo?.sortFields,
+    pageInfo?.filterFields,
   );
 
   return (
-    <WfoStructuredSearchTable<ProcessListItem>
-      entityKind={EntityKind.PROCESS}
-      detailModalTitle={isTask ? 'Details - Task' : 'Details - Process'}
-      renderRowDetails={renderRowDetails}
-      data={processListItems}
-      error={mapRtkErrorToWfoError(error)}
-      rowExpandingConfiguration={undefined}
-      defaultHiddenColumns={tableDefaults?.hiddenColumns}
-      additionalHiddenColumns={additionalHiddenColumns}
-      onHiddenColumnsChange={setHiddenColumns}
-      nonEditableColumns={nonEditableColumns}
-      defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
-      filterString={filterString}
-      handleSearch={handleApplyFilter}
-      isLoading={isFetching}
-      dataSorting={[dataSorting]}
-      isValidFilterString={isValidFilterString}
-      localStorageKey={localStorageKey}
-      onUpdateFilterString={onUpdateFilterString}
-      onUpdateQueryBuilder={onUpdateQueryBuilder}
-      onChangeQueryString={onChangeQueryString}
-      onSearchQueryString={onSearchQueryString}
-      onShowMore={onShowMore}
-      onUpdateRetrieverType={onUpdateRetrieverType}
-      queryBuilderRuleGroup={queryBuilderRuleGroup}
+    <WfoAdvancedTable<ProcessListItem>
       queryString={queryString}
-      retrieverType={retrieverType}
+      data={mapGraphQlProcessListResultToProcessListItems(processes || [])}
       tableColumnConfig={tableConfig}
-      getColumnSearchFieldName={(field) => getSearchPath(searchPathToProperty, field)}
-      pageSize={pageSize}
-      onUpdateDataSorting={onUpdateDataSorting}
-      setPageSize={onUpdatePageSize}
-      totalItems={totalItems}
-      hasNextPage={hasNextPage}
-      onExportData={() => exportData(searchPayload)}
-      exportDataIsLoading={isExporting}
+      dataSorting={[dataSorting]}
+      pagination={pagination}
+      isLoading={isFetching}
+      error={mapRtkErrorToWfoError(error)}
+      defaultHiddenColumns={defaultHiddenColumns}
+      localStorageKey={localStorageKey}
+      detailModalTitle={'Details - Process'}
+      onUpdateQueryString={getQueryStringHandler(setDataDisplayParam)}
+      onUpdateDataSorting={getDataSortHandler(setDataDisplayParam)}
+      onExportData={csvDownloadHandler<ProcessListResponse, ProcessListExportItem>(
+        getProcessListForExport,
+        mapGraphQlProcessListExportResultToProcessListItems,
+        mapGraphQlProcessListResultToPageInfo,
+        Object.keys(tableColumns),
+        getCsvFileNameWithDate('Processes'),
+        showToastMessage,
+        tError,
+      )}
+      exportDataIsLoading={isFetchingCsv}
     />
   );
 };

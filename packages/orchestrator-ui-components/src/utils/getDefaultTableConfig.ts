@@ -13,7 +13,7 @@ import {
 } from '@/components';
 import type { StoredTableConfig } from '@/components';
 import { ProcessListItem } from '@/components';
-import { SubscriptionSearchListItem } from '@/components/WfoSubscriptionsList';
+import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
 import { ProductBlockDefinition, ProductDefinition, ResourceTypeDefinition, WorkflowDefinition } from '@/types';
 
 function getTableConfig<T>(
@@ -55,8 +55,8 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
     }
     case ACTIVE_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY: {
       const activeProcessColumns: (keyof ProcessListItem)[] = [
-        'product.name',
-        'customer.fullname',
+        'productName',
+        'customer',
         'assignee',
         'processId',
         'startedAt',
@@ -66,8 +66,8 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
     case COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY: {
       const completedProcessColumns: (keyof ProcessListItem)[] = [
         'lastStep',
-        'product.name',
-        'customer.fullname',
+        'productName',
+        'customer',
         'assignee',
         'processId',
         'startedAt',
@@ -78,8 +78,8 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
       const activeTasksColumns: (keyof ProcessListItem)[] = [
         'assignee',
         'workflowTarget',
-        'product.name',
-        'customer.fullname',
+        'productName',
+        'customer',
         'processId',
       ];
       return getTableConfig<T>(activeTasksColumns as (keyof T)[]);
@@ -88,18 +88,14 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
       const completedTasksColumns: (keyof ProcessListItem)[] = [
         'assignee',
         'workflowTarget',
-        'product.name',
-        'customer.fullname',
+        'productName',
+        'customer',
         'processId',
       ];
       return getTableConfig<T>(completedTasksColumns as (keyof T)[]);
     }
     case SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY: {
-      const subscriptionColumns: (keyof SubscriptionSearchListItem)[] = [
-        'product.name',
-        'customer.fullname',
-        'metadata',
-      ];
+      const subscriptionColumns: (keyof SubscriptionListItem)[] = ['productName', 'customerFullname', 'metadata'];
       return getTableConfig<T>(subscriptionColumns as (keyof T)[]);
     }
     default:

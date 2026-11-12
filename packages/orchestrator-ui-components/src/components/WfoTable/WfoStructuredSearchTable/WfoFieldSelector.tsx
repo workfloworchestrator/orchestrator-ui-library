@@ -8,7 +8,7 @@ import type { EuiComboBoxOptionOption } from '@elastic/eui';
 import { EuiComboBox, EuiLoadingSpinner, EuiText } from '@elastic/eui';
 
 import { usePathAutocomplete } from '@/hooks';
-import { PathInfo, WfoQueryBuilderContext } from '@/types';
+import { EntityKind, PathInfo, WfoQueryBuilderContext } from '@/types';
 
 // react-querybuilder applies the `.rule` class to the rule container and `.rule-value` to
 // the value-editor cell (see `standardClassnames` in @react-querybuilder/core). We hop from
@@ -37,7 +37,7 @@ interface WfoFieldSelectorProps extends Omit<FieldSelectorProps, 'context'> {
 
 export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, disabled, rule, context }) => {
   const { field } = rule;
-  const { useAdvancedNestedSearch, onFieldSelected, entityKind } = context;
+  const { useAdvancedNestedSearch, onFieldSelected } = context;
   const [autoFocus] = useState(field === defaultPlaceholderFieldName);
   const selectedField = field === defaultPlaceholderFieldName ? '' : field;
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,7 +60,11 @@ export const WfoFieldSelector: FC<WfoFieldSelectorProps> = ({ handleOnChange, di
 
   const trimmedSearchTerm = searchTerm.trim();
   const autocompletePrefix = trimmedSearchTerm || (hasFocus ? selectedField : '');
-  const { paths, loading: isLoading, error: errorMessage } = usePathAutocomplete(autocompletePrefix, entityKind);
+  const {
+    paths,
+    loading: isLoading,
+    error: errorMessage,
+  } = usePathAutocomplete(autocompletePrefix, EntityKind.SUBSCRIPTION);
 
   const autocompleteOptions = getOptionsFromPathInfo(paths);
 
