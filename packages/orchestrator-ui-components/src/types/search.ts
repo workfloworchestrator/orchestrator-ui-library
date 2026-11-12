@@ -3,6 +3,7 @@ export enum EntityKind {
   PRODUCT = 'PRODUCT',
   WORKFLOW = 'WORKFLOW',
   PROCESS = 'PROCESS',
+  RESOURCE_TYPE = 'RESOURCE_TYPE',
 }
 
 export enum RetrieverType {

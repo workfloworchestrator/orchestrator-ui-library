@@ -40,6 +40,7 @@ export const isCondition = (item: Filter | Condition): item is Condition => {
 const ENDPOINT_PATHS: Record<EntityKind, string> = {
   PROCESS: 'processes',
   PRODUCT: 'products',
+  RESOURCE_TYPE: 'resource_types',
   WORKFLOW: 'workflows',
   SUBSCRIPTION: 'subscriptions',
 };
@@ -189,7 +190,7 @@ const buildSubscriptionStatusFilter = (tab: WfoSubscriptionListTab) => {
  * use; the others follow the same convention but should be verified against the backend paths
  * endpoint before relying on them.
  */
-const STATUS_FIELD_PATHS: Record<EntityKind, string> = {
+const STATUS_FIELD_PATHS: Partial<Record<EntityKind, string>> = {
   [EntityKind.SUBSCRIPTION]: 'subscription.status',
   [EntityKind.PROCESS]: 'process.last_status',
   [EntityKind.PRODUCT]: 'product.status',

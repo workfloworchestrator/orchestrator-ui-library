@@ -119,6 +119,7 @@
     "resourceTypes": {
       "description": "Resource type description",
       "resourceId": "ID",
+      "score": "Confidence",
       "type": "Resource type",
       "usedInProductBlocks": "Used in product blocks"
     },
