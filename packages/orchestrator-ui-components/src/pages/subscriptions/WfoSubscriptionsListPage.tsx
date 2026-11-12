@@ -1,28 +1,23 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { RuleGroupType } from 'react-querybuilder';
-import { formatQuery } from 'react-querybuilder/formatQuery';
+import React, { useEffect, useState } from 'react';
 
 import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
 import {
-  SearchParams,
   TableColumnKeys,
   WfoTitleWithWebsocketBadge,
   addStatusFilterFromTab,
   removeTabStatusMatchingFields,
 } from '@/components';
 import {
-  DEFAULT_PAGE_SIZE,
   SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
   StoredTableConfig,
   SubscriptionListItem,
   WfoContentHeader,
-  WfoDataSorting,
   WfoDateTime,
   WfoFilterTabs,
   WfoFirstPartUUID,
@@ -36,74 +31,25 @@ import {
   WfoSubscriptionNoteEdit,
   WfoSubscriptionStatusBadge,
   subscriptionListTabs,
+  useSearchExport,
+  useStructuredSearchState,
 } from '@/components';
 import { WfoConfidenceScore } from '@/components/WfoSubscription/WfoConfidenceScore';
 import { WfoMatchingFields } from '@/components/WfoSubscription/WfoMatchingFields';
-import { parseCelToRuleGroup } from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
-import { useShowToastMessage, useStoredTableConfig } from '@/hooks';
-import { getErrorDetail, useGetSubscriptionListSearchQuery, useSearchExportMutation } from '@/rtk';
+import { useStoredTableConfig } from '@/hooks';
+import { useGetSubscriptionListSearchQuery } from '@/rtk';
 import { getGraphqlField } from '@/rtk/endpoints/subscriptionList';
 import type { SubscriptionListSearchPayload, SubscriptionListSearchResponse } from '@/rtk/endpoints/subscriptionList';
+import { buildGraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import {
-  EntityKind,
-  PaginatedSearchResults,
-  ResultColumToPropertyMap,
-  RetrieverType,
-  SearchResult,
-  SortOrder,
-  ToastTypes,
-} from '@/types';
-import {
-  getCsvFileNameWithDate,
-  getSearchExportTruncation,
-  initiateCsvFileDownload,
-  parseDate,
-  parseDateToLocaleDateTimeString,
-} from '@/utils';
+import { EntityKind, ResultColumToPropertyMap, SortOrder } from '@/types';
+import { parseDate, parseDateToLocaleDateTimeString } from '@/utils';
 
-const getKeyByValueFromMap = <T,>(resultColumToPropertyMap: ResultColumToPropertyMap<T>, field: keyof T) => {
-  return [...resultColumToPropertyMap.entries()].find(([, v]) => v === field)?.[0] || '';
-};
+const ALWAYS_REQUESTED_PROPERTIES: (keyof SubscriptionListItem)[] = ['subscriptionId'];
 
-const getDataFromResponse = <T extends object>(
-  data: PaginatedSearchResults,
-  resultColumToPropertyMap: ResultColumToPropertyMap<T>,
-  addPropertyToItem: (item: T, searchHit: SearchResult) => T = (item) => item,
-): {
-  items: T[];
-} => {
-  const searchResult = data?.data;
-  if (!searchResult)
-    return {
-      items: [],
-    };
-
-  const items: T[] = searchResult.map((searchHit) => {
-    const { response_columns: responseColumn } = searchHit;
-    let item = Object.entries(responseColumn).reduce((acc, [key, value]) => {
-      const itemKey = resultColumToPropertyMap.get(key);
-      if (itemKey) {
-        acc[itemKey] = value as unknown as T[keyof T];
-      }
-      return acc;
-    }, {} as T);
-
-    // Next to the columns coming from the response, we might want to add additional properties to
-    // the item (which will show up as column in the table)
-    item = addPropertyToItem(item, searchHit);
-
-    return item;
-  });
-
-  return {
-    items,
-  };
-};
-
-const resultColumToPropertyMap: ResultColumToPropertyMap<SubscriptionListItem> = new Map([
+const searchPathToProperty: ResultColumToPropertyMap<SubscriptionListItem> = new Map([
   ['subscription.subscription_id', 'subscriptionId'],
   ['subscription.description', 'description'],
   ['subscription.status', 'status'],
@@ -126,7 +72,7 @@ const getItemsFromGraphqlResponse = (
 ): SubscriptionListItem[] =>
   data.searchEdges.map(({ score, matchingFields, node }) => {
     const edge = Object.fromEntries(
-      [...resultColumToPropertyMap].map(([searchPath, property]) => [property, get(node, getGraphqlField(searchPath))]),
+      [...searchPathToProperty].map(([searchPath, property]) => [property, get(node, getGraphqlField(searchPath))]),
     );
 
     const metadata = edge.metadata && Object.keys(edge.metadata).length > 0 ? edge.metadata : null;
@@ -145,129 +91,44 @@ const getItemsFromGraphqlResponse = (
 export const WfoSubscriptionsListPage = () => {
   const t = useTranslations('subscriptions.index');
   const tDetail = useTranslations('subscriptions.detail');
-  const tError = useTranslations('errors');
-  const { showToastMessage } = useShowToastMessage();
   const [activeTab, setActiveTab] = useQueryParam('activeTab', withDefault(StringParam, WfoSubscriptionListTab.ACTIVE));
   const selectedTab = subscriptionListTabs.find(({ id }) => id === activeTab)?.id ?? WfoSubscriptionListTab.ACTIVE;
   const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY);
-  const [retrieverType, setRetrieverType] = useState<RetrieverType>(RetrieverType.Auto);
-
-  // Part of the search endpoint payload that is passed in the queryString parameter
-  const [queryString, setQueryString] = useState<string>('');
-
-  // The committed query and filter live in the URL so a link reproduces the search and browser
-  // back/forward re-runs it. The filter is stored as a CEL string and parsed back to a rule group.
-  const [committedQueryString, setCommittedQueryString] = useQueryParam('queryString', withDefault(StringParam, ''));
-  const [committedFilterString, setCommittedFilterString] = useQueryParam('filterString', withDefault(StringParam, ''));
-  const [pageParam, setPageParam] = useQueryParam('page', withDefault(NumberParam, 1));
-  // Track the last value this page committed, so the URL->state sync effects below only rebuild the
-  // inputs for external changes (page load, back/forward). Rebuilding on own commits would revert
-  // characters typed right after committing (search bar) or visibly restructure builder rules the
-  // CEL round trip cannot preserve, such as 'between'. The refs hold the value as the params decode
-  // it (absent param -> ''); the setters receive undefined to remove an empty param from the URL.
-  const lastSelfCommittedFilter = useRef('');
-  const commitFilterString = (celString: string) => {
-    lastSelfCommittedFilter.current = celString;
-    setCommittedFilterString(celString || undefined);
-  };
-  const lastSelfCommittedQueryString = useRef('');
-  const commitQueryString = (queryString: string) => {
-    lastSelfCommittedQueryString.current = queryString;
-    setCommittedQueryString(queryString || undefined);
-  };
-
-  // String that is displayed in the filter textarea. This is transformed and if valid passed to the search endpoint in the filter parameter
-  const [filterString, setFilterString] = useState<string>('');
-  const [queryBuilderRuleGroup, setQueryBuilderRuleGroup] = useState<RuleGroupType | undefined>();
-  const committedRuleGroup = useMemo<RuleGroupType | undefined>(
-    () => parseCelToRuleGroup(committedFilterString),
-    [committedFilterString],
-  );
-  const [isValidFilterString, setIsValidFilterString] = useState<boolean>(true);
-  // Set when a commit attempt (Apply filter, or enter in the search bar) is refused because the
-  // filter draft is invalid; used to hide the search results — see isSearchBlocked below.
-  const [isCommitRefused, setIsCommitRefused] = useState<boolean>(false);
-  // Columns the user hid in the table; only the visible columns are requested from the backend
-  const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<SubscriptionListItem>>([]);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
-  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
-  const [pageState, setPageState] = useState<{ pageIndex: number; cursors: string[]; searchKey: string } | undefined>(
-    undefined,
-  );
-  const [dataSorting, setDataSorting] = useState<WfoDataSorting<SubscriptionListItem>>({
-    field: 'startDate',
-    sortOrder: SortOrder.DESC,
-  });
-
-  // A page is only valid for the committed search that produced it. The key also covers commits that
-  // bypass the handlers below, e.g. browser back/forward changing the URL params.
-  const committedSearchKey = JSON.stringify([
+  const {
     committedQueryString,
     committedFilterString,
-    selectedTab,
-    retrieverType,
-    dataSorting,
-    hiddenColumns,
-  ]);
-  const currentPage = pageState?.searchKey === committedSearchKey ? pageState : undefined;
-  // The page of a structured search is in the URL. The cursors of a text query can not be, so it starts on page 1
-  const pageIndex = committedQueryString ? (currentPage?.pageIndex ?? 0) : Math.max(pageParam - 1, 0);
-  // A text query pages with the cursors of the loaded pages, they are kept to go back
-  const cursors = currentPage?.cursors ?? [];
-  const cursor = cursors[pageIndex - 1];
-  const loadedPageCount = cursors.length + 1;
-
-  const resetPage = () => {
-    setPageState(undefined);
-    setPageParam(undefined);
-  };
-
-  // The search payload is derived entirely from the committed search state, which lives in the URL
-  // (queryString, filterString and activeTab params). Changing any of these values — whether via the
-  // UI or a browser back/forward that updates the URL — produces a new payload and RTK Query re-runs
-  // the search automatically. No imperative trigger or effect (and no eslint-disable) is needed.
-  const searchPayload: SubscriptionListSearchPayload = useMemo(() => {
-    const filters = addStatusFilterFromTab(committedRuleGroup, selectedTab);
-    const order_by = {
-      element: getKeyByValueFromMap(resultColumToPropertyMap, dataSorting.field),
-      direction: dataSorting.sortOrder.toLowerCase(),
-    };
-    // Only fetch the visible columns; subscriptionId identifies the row, so it is always requested
-    const visibleSearchPaths = [...resultColumToPropertyMap]
-      .filter(([, property]) => property === 'subscriptionId' || !hiddenColumns.includes(property))
-      .map(([searchPath]) => searchPath);
-    return {
-      query: committedQueryString,
-      limit: pageSize,
-      columns: visibleSearchPaths,
-      order_by,
-      ...(retrieverType !== RetrieverType.Auto && { retriever: retrieverType }),
-      ...(filters && { filters }),
-      ...(committedQueryString ? cursor && { cursor } : { offset: pageIndex * pageSize }),
-    };
-  }, [
-    committedQueryString,
     committedRuleGroup,
-    selectedTab,
     retrieverType,
-    pageSize,
     dataSorting,
-    pageIndex,
+    pageSize,
     cursor,
+    pageIndex,
+    loadedPageCount,
+    isTextSearch,
+    isSearchBlocked,
+    queryString,
+    filterString,
+    queryBuilderRuleGroup,
+    isValidFilterString,
     hiddenColumns,
-  ]);
-
-  const { data, error, isFetching, endpointName } = useGetSubscriptionListSearchQuery(searchPayload);
-
-  const [searchExportTrigger, { isLoading: isExporting }] = useSearchExportMutation();
-
-  useEffect(() => {
-    const storedConfig = getStoredTableConfig();
-    if (storedConfig) {
-      setTableDefaults(storedConfig);
-      setPageSize(storedConfig.selectedPageSize);
-    }
-  }, [getStoredTableConfig]);
+    setHiddenColumns,
+    initPageSize,
+    onChangeQueryString,
+    onSearchQueryString,
+    handleApplyFilter,
+    onUpdateRetrieverType,
+    onUpdateQueryBuilder,
+    onUpdateFilterString,
+    onUpdateDataSorting,
+    onUpdatePageSize,
+    resetPageCursor,
+    showPage,
+    showNextPage,
+  } = useStructuredSearchState<SubscriptionListItem>({
+    defaultSorting: { field: 'startDate', sortOrder: SortOrder.DESC },
+    searchKeyScope: [selectedTab],
+  });
 
   const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionListItem> = {
     actions: {
@@ -379,6 +240,33 @@ export const WfoSubscriptionsListPage = () => {
     },
   };
 
+  // The search payload is derived entirely from the committed search state, which lives in the URL
+  // (queryString, filterString and activeTab params). Changing any of these values (whether via the UI or a
+  // browser back/forward that updates the URL) produces a new payload and RTK Query re-runs the search.
+  // RTK Query keys the request on the serialized payload, so it needs no memoization.
+  const searchPayload: SubscriptionListSearchPayload = buildGraphqlSearchPayload<SubscriptionListItem>({
+    searchPathToProperty,
+    alwaysRequestedProperties: ALWAYS_REQUESTED_PROPERTIES,
+    hiddenColumns,
+    dataSorting,
+    query: committedQueryString,
+    pageSize,
+    retrieverType,
+    filters: addStatusFilterFromTab(committedRuleGroup, selectedTab),
+    cursor,
+    offset: isTextSearch ? undefined : pageIndex * pageSize,
+  });
+
+  const { data, error, isFetching, endpointName } = useGetSubscriptionListSearchQuery(searchPayload);
+
+  useEffect(() => {
+    const storedConfig = getStoredTableConfig();
+    if (storedConfig) {
+      setTableDefaults(storedConfig);
+      initPageSize(storedConfig.selectedPageSize);
+    }
+  }, [getStoredTableConfig, initPageSize]);
+
   const sortableAndFilterableFieldNames = Object.keys(tableColumnConfig).filter(
     (fieldName) => fieldName !== 'actions' && fieldName !== 'score',
   );
@@ -390,145 +278,10 @@ export const WfoSubscriptionsListPage = () => {
       sortableAndFilterableFieldNames,
     );
 
-  // Formats the given rule group to CEL and commits it. Returns false without committing when
-  // the CEL would not survive the URL round trip: formatQuery escapes double quotes in values
-  // but parseCEL has no escape support, so such a filter would silently be dropped after
-  // committing. Refusing keeps the URL and the search results consistent.
-  const commitFilterDraft = (effectiveRuleGroup: RuleGroupType | undefined): boolean => {
-    // '' (no rule group, or only placeholder rules) commits an empty filter, clearing the URL param.
-    const celQuery =
-      effectiveRuleGroup ? formatQuery(effectiveRuleGroup, { format: 'cel', fallbackExpression: '' }) : '';
-    if (celQuery && !parseCelToRuleGroup(celQuery)) {
-      setIsValidFilterString(false);
-      setIsCommitRefused(true);
-      return false;
-    }
-    commitFilterString(celQuery);
-    setIsCommitRefused(false);
-    return true;
-  };
-
-  const handleApplyFilter = (searchParams?: SearchParams) => {
-    const ruleGroupParam = searchParams?.ruleGroup;
-    // Use an explicitly passed rule group when provided (e.g. a column-header search), a cleared filter
-    // when `false`, and otherwise the current query builder state (the "Apply filter" button).
-    const effectiveRuleGroup = ruleGroupParam === false ? undefined : (ruleGroupParam ?? queryBuilderRuleGroup);
-    if (!commitFilterDraft(effectiveRuleGroup)) {
-      return;
-    }
-    // Also commit the draft search text, so applying a filter picks up text typed in the
-    // search bar without pressing enter.
-    commitQueryString(queryString);
-    resetPage();
-  };
-
-  const onChangeQueryString = (queryString: string) => {
-    setQueryString(queryString);
-  };
-
-  const onSearchQueryString = (queryString: string) => {
-    setQueryString(queryString);
-    // Mirror handleApplyFilter: searching also commits the pending filter draft, and an invalid
-    // draft refuses the whole search — nothing commits and the results are hidden until the
-    // draft is fixed. The isValidFilterString check guards the textarea state, which the
-    // queryBuilderRuleGroup (holding the last *valid* parse) does not reflect while invalid.
-    if (!isValidFilterString) {
-      setIsCommitRefused(true);
-      return;
-    }
-    if (!commitFilterDraft(queryBuilderRuleGroup)) {
-      return;
-    }
-    commitQueryString(queryString);
-    resetPage();
-  };
-
-  const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
-    setRetrieverType(retrieverType);
-    resetPage();
-  };
-
   const handleChangeTab = (updatedTab: WfoSubscriptionListTab) => {
     setActiveTab(updatedTab);
-    resetPage();
+    resetPageCursor();
   };
-
-  const safeCelParse = useCallback((celString: string) => {
-    if (celString === '') {
-      setIsValidFilterString(true);
-      return;
-    }
-    // parseCelToRuleGroup returns undefined when the string parses to no rules — in that
-    // case we assume the string is not valid. In any case it would not do anything to the
-    // search results. It also assigns the rule ids parseCEL leaves out, which the query
-    // builder needs to keep rule identity stable across query updates.
-    const ruleGroup = parseCelToRuleGroup(celString);
-    if (ruleGroup) {
-      setIsValidFilterString(true);
-      setQueryBuilderRuleGroup(ruleGroup);
-    } else {
-      setIsValidFilterString(false);
-    }
-  }, []);
-
-  // Populate the search bar and the filter builder from the URL, both on page load and when
-  // back/forward navigation changes the committed search. Commits made by this page are skipped —
-  // see the lastSelfCommitted refs above.
-  useEffect(() => {
-    if (committedQueryString === lastSelfCommittedQueryString.current) {
-      return;
-    }
-    lastSelfCommittedQueryString.current = committedQueryString;
-    setQueryString(committedQueryString);
-  }, [committedQueryString]);
-
-  useEffect(() => {
-    if (committedFilterString === lastSelfCommittedFilter.current) {
-      return;
-    }
-    lastSelfCommittedFilter.current = committedFilterString;
-    setFilterString(committedFilterString);
-    if (committedFilterString) {
-      safeCelParse(committedFilterString);
-    } else {
-      setQueryBuilderRuleGroup(undefined);
-      setIsValidFilterString(true);
-    }
-  }, [committedFilterString, safeCelParse]);
-
-  const onUpdateQueryBuilder = (ruleGroup: RuleGroupType | false) => {
-    if (ruleGroup === false) {
-      setQueryBuilderRuleGroup(undefined);
-      setFilterString('');
-      setIsValidFilterString(true);
-    } else {
-      setQueryBuilderRuleGroup({ ...ruleGroup });
-      const celQuery = formatQuery({ ...ruleGroup }, { format: 'cel', fallbackExpression: '' });
-      // 1 == 1 indicates the query can't be parsed. This is a fallback to allow it to still be used as
-      // part of other queries.
-      if (!celQuery || celQuery === '1 == 1') {
-        setFilterString('');
-        setIsValidFilterString(true);
-      } else {
-        setFilterString(celQuery);
-        // formatQuery output is normally valid CEL, but not unconditionally — a rule can
-        // hold state formatQuery renders as unparseable CEL (e.g. a 'field' value source
-        // renders its value unquoted). Validate the round trip so the invalid marker and
-        // the Apply button track what the textarea actually shows.
-        setIsValidFilterString(!!parseCelToRuleGroup(celQuery));
-      }
-    }
-  };
-
-  const onUpdateFilterString = (filterString: string) => {
-    setFilterString(filterString);
-    safeCelParse(filterString);
-  };
-
-  // A refused commit hides the search results for as long as the filter draft stays invalid:
-  // showing them would suggest the attempted search ran. Editing the draft back to valid CEL
-  // (or a later successful commit) lifts the block.
-  const isSearchBlocked = isCommitRefused && !isValidFilterString;
 
   const subscriptionListItems = data && !isSearchBlocked ? getItemsFromGraphqlResponse(data, selectedTab) : [];
 
@@ -536,57 +289,17 @@ export const WfoSubscriptionsListPage = () => {
   const hasNextPage = !isSearchBlocked && (data?.pageInfo?.hasNextPage ?? false);
   const nextPageCursor = data?.nextPageCursor ?? undefined;
 
-  const exportData = async () => {
-    try {
-      const exportResult = await searchExportTrigger({
-        ...searchPayload,
-        entity_type: EntityKind.SUBSCRIPTION,
-        response_columns: Array.from(resultColumToPropertyMap.keys()),
-      }).unwrap();
-      const { items: exportItems } = getDataFromResponse<SubscriptionListItem>(exportResult, resultColumToPropertyMap);
-      if (!exportItems.length) {
-        return;
-      }
-      const truncation = getSearchExportTruncation(exportResult, exportItems.length);
-      if (truncation) {
-        showToastMessage(
-          ToastTypes.ERROR,
-          tError('notAllResultsExported', truncation),
-          tError('notAllResultsExportedTitle'),
-        );
-      }
-      initiateCsvFileDownload(exportItems, Object.keys(tableColumnConfig), getCsvFileNameWithDate('Subscriptions'));
-    } catch (error) {
-      showToastMessage(ToastTypes.ERROR, getErrorDetail(error, true)?.toString(), 'Error');
-    }
-  };
-
-  const showPage = (updatedPageIndex: number) =>
-    committedQueryString ?
-      setPageState({ pageIndex: updatedPageIndex, cursors, searchKey: committedSearchKey })
-    : setPageParam(updatedPageIndex === 0 ? undefined : updatedPageIndex + 1);
+  const { exportData, isExporting } = useSearchExport<SubscriptionListItem>({
+    entityKind: EntityKind.SUBSCRIPTION,
+    searchPathToProperty,
+    tableColumnConfig,
+    fileName: 'Subscriptions',
+  });
 
   const onShowNextPage = () => {
-    if (!isFetching && nextPageCursor) {
-      setPageState({
-        pageIndex: pageIndex + 1,
-        cursors: [...cursors.slice(0, pageIndex), nextPageCursor],
-        searchKey: committedSearchKey,
-      });
+    if (!isFetching) {
+      showNextPage(nextPageCursor);
     }
-  };
-
-  const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
-    setDataSorting({ field, sortOrder });
-    resetPage();
-  };
-
-  const onUpdatePageSize = (updatedPageSize: number) => {
-    if (updatedPageSize === pageSize) {
-      return;
-    }
-    setPageSize(updatedPageSize);
-    resetPage();
   };
 
   const additionalHiddenColumns: TableColumnKeys<SubscriptionListItem> =
@@ -629,20 +342,20 @@ export const WfoSubscriptionsListPage = () => {
         pageIndex={pageIndex}
         onChangePage={showPage}
         onShowNextPage={onShowNextPage}
-        isTextSearch={!!committedQueryString}
+        isTextSearch={isTextSearch}
         loadedPageCount={loadedPageCount}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}
         queryString={queryString}
         retrieverType={retrieverType}
         tableColumnConfig={tableColumnConfigWithSortingAndFiltering}
-        getColumnSearchFieldName={(field) => getKeyByValueFromMap(resultColumToPropertyMap, field)}
+        getColumnSearchFieldName={(field) => getSearchPath(searchPathToProperty, field)}
         pageSize={pageSize}
         onUpdateDataSorting={onUpdateDataSorting}
         setPageSize={onUpdatePageSize}
         totalItems={totalItems}
         hasNextPage={hasNextPage}
-        onExportData={exportData}
+        onExportData={() => exportData(searchPayload)}
         bulkEditConfiguration={{ uniqueRowId: 'subscriptionId' }}
         exportDataIsLoading={isExporting}
       />

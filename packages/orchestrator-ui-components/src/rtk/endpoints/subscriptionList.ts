@@ -1,13 +1,17 @@
 import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
 import { orchestratorApi } from '@/rtk';
-import type { SearchPayload } from '@/rtk/endpoints/search';
+import {
+  GraphqlSearchEdge,
+  GraphqlSearchPayload,
+  GraphqlSearchResponse,
+  getSearchVariables,
+  toSelection,
+} from '@/rtk/graphqlSearch';
 import {
   BaseGraphQlResult,
   CACHETAG_TYPE_LIST,
   CacheTagType,
-  GraphQLPageInfo,
   GraphqlQueryVariables,
-  MatchingField,
   Subscription,
   SubscriptionsResult,
 } from '@/types';
@@ -83,10 +87,6 @@ export const getGraphqlField = (searchPath: string): string => {
   return fieldParts.map(snakeToCamel).join('.');
 };
 
-// 'product.name' -> 'product { name }'
-const toSelection = (path: string) =>
-  path.split('.').reduceRight((inner, field) => (inner ? `${field} { ${inner} }` : field), '');
-
 // Builds the node selection from the search paths of the requested columns (e.g. 'product.name'), so only the requested
 // columns are fetched. Paths sharing a parent are left as separate selections, which GraphQL merges.
 // subscriptionId is always selected: it identifies the row.
@@ -130,49 +130,15 @@ export type SubscriptionSearchNode = Pick<Subscription, 'subscriptionId'>
     customer?: Partial<Subscription['customer']>;
   };
 
-export type SubscriptionSearchEdge = {
-  score: number;
-  matchingFields: MatchingField[];
-  node: SubscriptionSearchNode;
-};
+export type SubscriptionSearchEdge = GraphqlSearchEdge<SubscriptionSearchNode>;
 
-export type SubscriptionListSearchResponse = {
-  searchEdges: SubscriptionSearchEdge[];
-  pageInfo: Pick<GraphQLPageInfo, 'totalItems' | 'hasNextPage'>;
-  nextPageCursor: string | null;
-};
+export type SubscriptionListSearchResponse = GraphqlSearchResponse<SubscriptionSearchNode>;
 
 type SubscriptionListSearchResult = {
   subscriptions: SubscriptionListSearchResponse;
 };
 
-export type SubscriptionListSearchPayload = Omit<SearchPayload, 'entity_type' | 'response_columns'> & {
-  columns: string[];
-  // Only for a structured search, a text query pages with a cursor
-  offset?: number;
-};
-
-const getSearchVariables = ({
-  query,
-  filters,
-  limit,
-  retriever,
-  order_by,
-  cursor,
-  offset,
-}: SubscriptionListSearchPayload) => ({
-  first: Array.isArray(limit) ? limit[0] : (limit ?? 10),
-  after: offset ?? 0,
-  search: {
-    query: query || undefined,
-    elasticFilters: filters,
-    retriever: retriever && retriever !== 'auto' ? retriever.toUpperCase() : undefined,
-    // Same as the REST endpoint: ordering only applies to a structured search, not to a text query
-    orderBy:
-      order_by && !query ? { element: order_by.element, direction: order_by.direction.toUpperCase() } : undefined,
-    cursor,
-  },
-});
+export type SubscriptionListSearchPayload = GraphqlSearchPayload;
 
 const subscriptionListApi = orchestratorApi.injectEndpoints({
   endpoints: (builder) => ({
