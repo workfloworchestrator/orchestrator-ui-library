@@ -119,6 +119,7 @@
     "resourceTypes": {
       "description": "Resource type beschrijving",
       "resourceId": "ID",
+      "score": "Betrouwbaarheid",
       "type": "Resource type",
       "usedInProductBlocks": "Gebruikt in product blocks"
     },
