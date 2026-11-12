@@ -3,7 +3,7 @@ import type { CSSProperties, ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiSpacer, EuiTablePagination, useEuiScrollBar } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTablePagination, useEuiScrollBar } from '@elastic/eui';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -24,6 +24,7 @@ export type Pagination = {
   pageSizeOptions?: number[];
   onChangeItemsPerPage?: (pageSize: number) => void;
   onChangePage?: (pageIndex: number) => void;
+  summary?: ReactNode;
 };
 
 export type LocalColumnWidths = {
@@ -296,14 +297,19 @@ export const WfoTable = <T extends object>({
       {pagination && (
         <div css={paginationStyle}>
           <EuiSpacer size="xs" />
-          <EuiTablePagination
-            pageCount={getPageCount(pagination)}
-            activePage={pagination.pageIndex}
-            itemsPerPage={pagination.pageSize}
-            itemsPerPageOptions={pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZES}
-            onChangePage={pagination.onChangePage}
-            onChangeItemsPerPage={pagination.onChangeItemsPerPage}
-          />
+          <EuiFlexGroup alignItems="center" gutterSize="m" responsive={false}>
+            <EuiFlexItem grow={false}>
+              <EuiTablePagination
+                pageCount={getPageCount(pagination)}
+                activePage={pagination.pageIndex}
+                itemsPerPage={pagination.pageSize}
+                itemsPerPageOptions={pagination.pageSizeOptions ?? DEFAULT_PAGE_SIZES}
+                onChangePage={pagination.onChangePage}
+                onChangeItemsPerPage={pagination.onChangeItemsPerPage}
+              />
+            </EuiFlexItem>
+            {pagination.summary && <EuiFlexItem grow={false}>{pagination.summary}</EuiFlexItem>}
+          </EuiFlexGroup>
         </div>
       )}
     </>
