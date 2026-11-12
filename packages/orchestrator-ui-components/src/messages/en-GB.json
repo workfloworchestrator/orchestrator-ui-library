@@ -14,7 +14,6 @@
     "export": "Export",
     "insyncFalse": "out-of-sync",
     "insyncTrue": "in-sync",
-    "loadMore": "Load more",
     "loading": "Loading",
     "newSubscription": "New subscription",
     "newSubscriptionOtherGroup": "Other",
@@ -36,6 +35,7 @@
     "selectRow": "Select row",
     "showAllColumnsInDetailView": "Show all columns in detail view",
     "tableSettings": "Table settings",
+    "totalRecords": "{total} records",
     "unauthorizedPage": "You are not authorized to see this page",
     "unknownError": "Unknown error"
   },
