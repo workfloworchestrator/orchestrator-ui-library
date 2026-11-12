@@ -5,7 +5,7 @@ import type { Filter, GraphQLPageInfo, MatchingField, ResultColumToPropertyMap, 
 // Building blocks shared by the lists that use the GraphQL `search`.
 
 export type GraphqlSearchPayload = Omit<SearchPayload, 'entity_type' | 'response_columns'> & {
-  // Search paths of the requested columns, e.g. 'subscription.start_date'
+  // GraphQL fields of the requested columns, e.g. 'startDate' or 'product.name'
   columns: string[];
   // Only for a structured search, a text query pages with a cursor
   offset?: number;
@@ -53,9 +53,9 @@ export const buildGraphqlSearchPayload = <T>({
 }: BuildGraphqlSearchPayloadOptions<T>): GraphqlSearchPayload => ({
   query,
   limit: pageSize,
-  columns: [...searchPathToProperty]
-    .filter(([, property]) => alwaysRequestedProperties.includes(property) || !hiddenColumns.includes(property))
-    .map(([searchPath]) => searchPath),
+  columns: [...searchPathToProperty.values()]
+    .filter((property) => alwaysRequestedProperties.includes(property) || !hiddenColumns.includes(property))
+    .map(String),
   order_by: {
     element: getSearchPath(searchPathToProperty, dataSorting.field),
     direction: dataSorting.sortOrder.toLowerCase(),
@@ -91,3 +91,5 @@ export const getSearchVariables = ({
     cursor,
   },
 });
+
+export type SearchScore = { score: number; matchingFields: MatchingField[] };

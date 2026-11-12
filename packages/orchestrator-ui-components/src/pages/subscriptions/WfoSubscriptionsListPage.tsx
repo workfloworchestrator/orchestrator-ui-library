@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { StringParam, useQueryParam, withDefault } from 'use-query-params';
@@ -16,7 +15,7 @@ import {
 import {
   SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY,
   StoredTableConfig,
-  SubscriptionListItem,
+  SubscriptionSearchListItem,
   WfoContentHeader,
   WfoDateTime,
   WfoFilterTabs,
@@ -36,65 +35,75 @@ import {
 } from '@/components';
 import { WfoConfidenceScore } from '@/components/WfoSubscription/WfoConfidenceScore';
 import { WfoMatchingFields } from '@/components/WfoSubscription/WfoMatchingFields';
+import { WfoRowDetails } from '@/components/WfoTable/WfoStructuredSearchTable';
+import {
+  buildRowDetailsSearchPayload,
+  getSearchPathToPropertyMap,
+} from '@/components/WfoTable/WfoStructuredSearchTable/utils';
 import { ColumnType } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
 import { useStoredTableConfig } from '@/hooks';
 import { useGetSubscriptionListSearchQuery } from '@/rtk';
-import { getGraphqlField } from '@/rtk/endpoints/subscriptionList';
 import type { SubscriptionListSearchPayload, SubscriptionListSearchResponse } from '@/rtk/endpoints/subscriptionList';
 import { buildGraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
 import { EntityKind, ResultColumToPropertyMap, SortOrder } from '@/types';
 import { parseDate, parseDateToLocaleDateTimeString } from '@/utils';
 
-const ALWAYS_REQUESTED_PROPERTIES: (keyof SubscriptionListItem)[] = ['subscriptionId'];
+const ALWAYS_REQUESTED_PROPERTIES: (keyof SubscriptionSearchListItem)[] = ['subscriptionId'];
 
-const searchPathToProperty: ResultColumToPropertyMap<SubscriptionListItem> = new Map([
-  ['subscription.subscription_id', 'subscriptionId'],
-  ['subscription.description', 'description'],
-  ['subscription.status', 'status'],
-  ['subscription.insync', 'insync'],
-  ['subscription.product.name', 'productName'],
-  ['subscription.product.tag', 'tag'],
-  ['subscription.customer_name', 'customerFullname'],
-  ['subscription.customer_abbreviation', 'customerShortcode'],
-  ['subscription.start_date', 'startDate'],
-  ['subscription.end_date', 'endDate'],
-  ['subscription.note', 'note'],
-  ['subscription.metadata', 'metadata'],
-]);
-
-// Fills each list item property from the GraphQL field of its column. Columns the user hid are not
-// requested, so they are absent from the node and stay undefined (as in the REST response).
 const getItemsFromGraphqlResponse = (
   data: SubscriptionListSearchResponse,
   selectedTab: WfoSubscriptionListTab,
-): SubscriptionListItem[] =>
-  data.searchEdges.map(({ score, matchingFields, node }) => {
-    const edge = Object.fromEntries(
-      [...searchPathToProperty].map(([searchPath, property]) => [property, get(node, getGraphqlField(searchPath))]),
-    );
+): SubscriptionSearchListItem[] =>
+  data.searchEdges.map(
+    ({ score, matchingFields, node }) =>
+      ({
+        ...node,
+        'product.name': node.product?.name,
+        'product.tag': node.product?.tag,
+        'customer.fullname': node.customer?.fullname,
+        'customer.shortcode': node.customer?.shortcode,
+        startDate: parseDate(node.startDate),
+        endDate: parseDate(node.endDate),
+        score: {
+          score,
+          matchingFields: removeTabStatusMatchingFields(matchingFields, selectedTab, EntityKind.SUBSCRIPTION),
+        },
+      }) as SubscriptionSearchListItem,
+  );
 
-    const metadata = edge.metadata && Object.keys(edge.metadata).length > 0 ? edge.metadata : null;
-    return {
-      ...edge,
-      startDate: parseDate(edge.startDate),
-      endDate: parseDate(edge.endDate),
-      metadata,
-      score: {
-        score,
-        matchingFields: removeTabStatusMatchingFields(matchingFields, selectedTab, EntityKind.SUBSCRIPTION),
-      },
-    } as SubscriptionListItem;
-  });
+type WfoSubscriptionRowDetailsProps = {
+  row: SubscriptionSearchListItem;
+  selectedTab: WfoSubscriptionListTab;
+  searchPathToProperty: ResultColumToPropertyMap<SubscriptionSearchListItem>;
+  tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionSearchListItem>;
+};
+
+// The table request leaves out the hidden columns, so the details modal loads the full subscription
+const WfoSubscriptionRowDetails = ({
+  row,
+  selectedTab,
+  searchPathToProperty,
+  tableColumnConfig,
+}: WfoSubscriptionRowDetailsProps) => {
+  const { data, isFetching } = useGetSubscriptionListSearchQuery(
+    buildRowDetailsSearchPayload(searchPathToProperty, 'subscriptionId', row.subscriptionId),
+    { refetchOnMountOrArgChange: true },
+  );
+
+  const detailRow = data && getItemsFromGraphqlResponse(data, selectedTab)[0];
+
+  return <WfoRowDetails row={detailRow} isLoading={isFetching} tableColumnConfig={tableColumnConfig} />;
+};
 
 export const WfoSubscriptionsListPage = () => {
   const t = useTranslations('subscriptions.index');
   const tDetail = useTranslations('subscriptions.detail');
   const [activeTab, setActiveTab] = useQueryParam('activeTab', withDefault(StringParam, WfoSubscriptionListTab.ACTIVE));
   const selectedTab = subscriptionListTabs.find(({ id }) => id === activeTab)?.id ?? WfoSubscriptionListTab.ACTIVE;
-  const getStoredTableConfig = useStoredTableConfig<SubscriptionListItem>(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY);
-  const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
+  const getStoredTableConfig = useStoredTableConfig<SubscriptionSearchListItem>(SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY);
+  const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionSearchListItem>>();
   const {
     committedQueryString,
     committedFilterString,
@@ -125,12 +134,12 @@ export const WfoSubscriptionsListPage = () => {
     resetPageCursor,
     showPage,
     showNextPage,
-  } = useStructuredSearchState<SubscriptionListItem>({
+  } = useStructuredSearchState<SubscriptionSearchListItem>({
     defaultSorting: { field: 'startDate', sortOrder: SortOrder.DESC },
     searchKeyScope: [selectedTab],
   });
 
-  const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionListItem> = {
+  const tableColumnConfig: WfoStructuredSearchTableColumnConfig<SubscriptionSearchListItem> = {
     actions: {
       columnType: ColumnType.CONTROL,
       width: '50px',
@@ -138,6 +147,7 @@ export const WfoSubscriptionsListPage = () => {
     },
     subscriptionId: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.subscription_id',
       label: t('id'),
       width: '100px',
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
@@ -159,6 +169,7 @@ export const WfoSubscriptionsListPage = () => {
     },
     description: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.description',
       label: t('description'),
       width: '500px',
       renderData: (value, record) => <Link href={`/subscriptions/${record.subscriptionId}`}>{value}</Link>,
@@ -166,38 +177,45 @@ export const WfoSubscriptionsListPage = () => {
     },
     status: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.status',
       label: t('status'),
       width: '120px',
       renderData: (value) => <WfoSubscriptionStatusBadge status={value} />,
     },
     insync: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.insync',
       label: t('insync'),
       width: '75px',
       isFilterable: 'toggle',
       renderData: (value) => <WfoInsyncIcon inSync={value} />,
     },
-    productName: {
+    'product.name': {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.product.name',
       width: '260px',
       label: t('product'),
     },
-    tag: {
+    'product.tag': {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.product.tag',
       label: t('tag'),
       width: '100px',
     },
-    customerFullname: {
+    'customer.fullname': {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.customer_name',
       label: t('customerFullname'),
     },
-    customerShortcode: {
+    'customer.shortcode': {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.customer_abbreviation',
       label: t('customerShortcode'),
       width: '150px',
     },
     startDate: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.start_date',
       label: t('startDate'),
       width: '100px',
       renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
@@ -207,6 +225,7 @@ export const WfoSubscriptionsListPage = () => {
     },
     endDate: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.end_date',
       label: t('endDate'),
       width: '100px',
       renderData: (value) => <WfoDateTime dateOrIsoString={value} />,
@@ -216,6 +235,7 @@ export const WfoSubscriptionsListPage = () => {
     },
     note: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.note',
       label: t('note'),
       width: '300px',
       renderData: (cellValue, row) => {
@@ -232,6 +252,7 @@ export const WfoSubscriptionsListPage = () => {
     },
     metadata: {
       columnType: ColumnType.DATA,
+      searchPath: 'subscription.metadata',
       label: t('metadata'),
       width: '100px',
       renderData: (value) => <WfoInlineJson data={value} />,
@@ -240,11 +261,13 @@ export const WfoSubscriptionsListPage = () => {
     },
   };
 
+  const searchPathToProperty = getSearchPathToPropertyMap<SubscriptionSearchListItem>(tableColumnConfig);
+
   // The search payload is derived entirely from the committed search state, which lives in the URL
   // (queryString, filterString and activeTab params). Changing any of these values (whether via the UI or a
   // browser back/forward that updates the URL) produces a new payload and RTK Query re-runs the search.
   // RTK Query keys the request on the serialized payload, so it needs no memoization.
-  const searchPayload: SubscriptionListSearchPayload = buildGraphqlSearchPayload<SubscriptionListItem>({
+  const searchPayload: SubscriptionListSearchPayload = buildGraphqlSearchPayload<SubscriptionSearchListItem>({
     searchPathToProperty,
     alwaysRequestedProperties: ALWAYS_REQUESTED_PROPERTIES,
     hiddenColumns,
@@ -267,12 +290,10 @@ export const WfoSubscriptionsListPage = () => {
     }
   }, [getStoredTableConfig, initPageSize]);
 
-  const sortableAndFilterableFieldNames = Object.keys(tableColumnConfig).filter(
-    (fieldName) => fieldName !== 'actions' && fieldName !== 'score',
-  );
+  const sortableAndFilterableFieldNames = [...searchPathToProperty.values()].map(String);
   const isSortingAllowed = queryString === '';
   const tableColumnConfigWithSortingAndFiltering =
-    mapSortableAndFilterableValuesToTableColumnConfig<SubscriptionListItem>(
+    mapSortableAndFilterableValuesToTableColumnConfig<SubscriptionSearchListItem>(
       tableColumnConfig,
       isSortingAllowed ? sortableAndFilterableFieldNames : [],
       sortableAndFilterableFieldNames,
@@ -289,7 +310,7 @@ export const WfoSubscriptionsListPage = () => {
   const hasNextPage = !isSearchBlocked && (data?.pageInfo?.hasNextPage ?? false);
   const nextPageCursor = data?.nextPageCursor ?? undefined;
 
-  const { exportData, isExporting } = useSearchExport<SubscriptionListItem>({
+  const { exportData, isExporting } = useSearchExport<SubscriptionSearchListItem>({
     entityKind: EntityKind.SUBSCRIPTION,
     searchPathToProperty,
     tableColumnConfig,
@@ -302,12 +323,21 @@ export const WfoSubscriptionsListPage = () => {
     }
   };
 
-  const additionalHiddenColumns: TableColumnKeys<SubscriptionListItem> =
+  const additionalHiddenColumns: TableColumnKeys<SubscriptionSearchListItem> =
     // only show 'score' when there is an active query or filter
     committedQueryString || committedFilterString ? [] : ['score'];
 
   // We manually show/hide the score column and shouldn't be configurable by the user.
-  const nonEditableColumns: TableColumnKeys<SubscriptionListItem> = ['score'];
+  const nonEditableColumns: TableColumnKeys<SubscriptionSearchListItem> = ['score'];
+
+  const renderRowDetails = (row: SubscriptionSearchListItem) => (
+    <WfoSubscriptionRowDetails
+      row={row}
+      selectedTab={selectedTab}
+      searchPathToProperty={searchPathToProperty}
+      tableColumnConfig={tableColumnConfig}
+    />
+  );
 
   return (
     <>
@@ -320,7 +350,9 @@ export const WfoSubscriptionsListPage = () => {
         onChangeTab={handleChangeTab}
       />
       <EuiSpacer size="l" />
-      <WfoStructuredSearchTable<SubscriptionListItem>
+      <WfoStructuredSearchTable<SubscriptionSearchListItem>
+        entityKind={EntityKind.SUBSCRIPTION}
+        renderRowDetails={renderRowDetails}
         data={subscriptionListItems}
         error={mapRtkErrorToWfoError(error)}
         rowExpandingConfiguration={undefined}

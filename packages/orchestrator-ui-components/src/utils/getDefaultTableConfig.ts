@@ -13,7 +13,7 @@ import {
 } from '@/components';
 import type { StoredTableConfig } from '@/components';
 import { ProcessListItem } from '@/components';
-import { SubscriptionListItem } from '@/components/WfoSubscriptionsList';
+import { SubscriptionSearchListItem } from '@/components/WfoSubscriptionsList';
 import { ProductBlockDefinition, ProductDefinition, ResourceTypeDefinition, WorkflowDefinition } from '@/types';
 
 function getTableConfig<T>(
@@ -95,7 +95,11 @@ export const getDefaultTableConfig = <T>(storageKey: string) => {
       return getTableConfig<T>(completedTasksColumns as (keyof T)[]);
     }
     case SUBSCRIPTIONS_TABLE_LOCAL_STORAGE_KEY: {
-      const subscriptionColumns: (keyof SubscriptionListItem)[] = ['productName', 'customerFullname', 'metadata'];
+      const subscriptionColumns: (keyof SubscriptionSearchListItem)[] = [
+        'product.name',
+        'customer.fullname',
+        'metadata',
+      ];
       return getTableConfig<T>(subscriptionColumns as (keyof T)[]);
     }
     default:

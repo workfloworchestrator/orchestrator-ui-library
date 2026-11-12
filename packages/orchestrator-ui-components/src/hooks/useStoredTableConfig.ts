@@ -7,6 +7,7 @@ import { ToastTypes } from '@/types';
 import type { StoredTableConfig } from '../components';
 import { getTableConfigFromLocalStorage } from '../components';
 import { getDefaultTableConfig } from '../utils/getDefaultTableConfig';
+import { migrateStoredHiddenColumns } from '../utils/migrateStoredHiddenColumns';
 import { useShowToastMessage } from './useShowToastMessage';
 
 export const useStoredTableConfig = <T>(localeStorageKey: string) => {
@@ -21,7 +22,7 @@ export const useStoredTableConfig = <T>(localeStorageKey: string) => {
     try {
       const storedConfig = getTableConfigFromLocalStorage(localeStorageKey);
       if (storedConfig) {
-        tableConfig.hiddenColumns = storedConfig.hiddenColumns;
+        tableConfig.hiddenColumns = migrateStoredHiddenColumns<T>(localeStorageKey, storedConfig.hiddenColumns);
         tableConfig.selectedPageSize = storedConfig.selectedPageSize;
         tableConfig.advancedNestedSearch = storedConfig.advancedNestedSearch;
       }

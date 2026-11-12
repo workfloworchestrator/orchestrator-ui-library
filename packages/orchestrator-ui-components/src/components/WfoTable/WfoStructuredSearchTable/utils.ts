@@ -12,9 +12,11 @@ import {
   parseCEL,
 } from 'react-querybuilder/parseCEL';
 
+import { parseRuleGroupToFilters } from '@/components/WfoSubscriptionsList/subscriptionListTabs';
 import { useDebouncedCallback, useFieldsPathInfo } from '@/hooks';
 import { useGetEnvironmentVariablesQuery } from '@/rtk/endpoints/settings';
-import { EntityKind, OPERATOR_MAP, QueryOperator } from '@/types';
+import { type GraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
+import { EntityKind, OPERATOR_MAP, QueryOperator, ResultColumToPropertyMap } from '@/types';
 import { stripQuotes } from '@/utils/strings';
 
 export const FILTER_CHANGE_DEBOUNCE_DELAY = 1000;
@@ -189,11 +191,12 @@ export const parseCelToRuleGroup = (celString: string): RuleGroupType | undefine
  */
 export const useBuildColumnFilter = <T>(
   tableColumnConfig: object,
+  entityKind: EntityKind,
   getColumnSearchFieldName?: (field: keyof T) => string,
 ) => {
   const columnsPathInfo = useFieldsPathInfo(
     (Object.keys(tableColumnConfig) as (keyof T)[]).map((field) => getColumnSearchFieldName?.(field) ?? String(field)),
-    EntityKind.SUBSCRIPTION,
+    entityKind,
   );
 
   const buildColumnFilter = (
@@ -231,7 +234,7 @@ export const useBuildColumnFilter = <T>(
 // has_component/not_has_component ride on notNull/null: they survive the CEL round trip
 // (`field != null` / `field == null`) and formatQuery(elasticsearch) turns them into
 // exists / must_not-exists, which the backend translates to component-presence filters.
-const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, QueryOperator> = {
+export const SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP: Record<string, QueryOperator> = {
   eq: QueryOperator.EQUALS,
   neq: QueryOperator.NOT_EQUALS,
   lt: QueryOperator.LESS_THAN,
@@ -314,3 +317,34 @@ export const useEmbeddingEnabled = (): boolean => {
 
   return embeddingSetting.env_value === true;
 };
+
+// Maps the search path of each column that has one to the property (column key) it fills
+export const getSearchPathToPropertyMap = <T extends object>(
+  columnConfig: Partial<Record<keyof T, object>>,
+): ResultColumToPropertyMap<T> =>
+  new Map(
+    (Object.entries(columnConfig) as [keyof T, { searchPath?: string }][]).flatMap(([property, column]) =>
+      column.searchPath ? [[column.searchPath, property] as const] : [],
+    ),
+  );
+
+// The search that loads one row with all its columns, for the row details modal
+export const buildRowDetailsSearchPayload = <T>(
+  searchPathToProperty: ResultColumToPropertyMap<T>,
+  idProperty: keyof T,
+  id: string,
+): GraphqlSearchPayload => ({
+  query: '',
+  limit: 1,
+  columns: [...searchPathToProperty.values()].map(String),
+  filters: parseRuleGroupToFilters({
+    combinator: 'and',
+    rules: [
+      {
+        field: getSearchPath(searchPathToProperty, idProperty),
+        operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq,
+        value: id,
+      },
+    ],
+  }),
+});

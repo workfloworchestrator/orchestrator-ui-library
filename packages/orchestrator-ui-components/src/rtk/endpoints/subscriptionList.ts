@@ -16,7 +16,6 @@ import {
   SubscriptionsResult,
 } from '@/types';
 import { getCacheTag } from '@/utils/cacheTag';
-import { snakeToCamel } from '@/utils/strings';
 
 export const subscriptionListQuery = `query SubscriptionsList(
         $first: Int!
@@ -69,31 +68,14 @@ export type SubscriptionListResponse = {
   subscriptions: Subscription[];
 } & BaseGraphQlResult;
 
-// Search paths whose GraphQL field is not the camelCased search path
-const GRAPHQL_FIELD_OVERRIDES: Record<string, string> = {
-  'subscription.customer_name': 'customer.fullname',
-  'subscription.customer_abbreviation': 'customer.shortcode',
-};
-
-// 'subscription.product.name' -> 'product.name', 'subscription.start_date' -> 'startDate'
-export const getGraphqlField = (searchPath: string): string => {
-  const override = GRAPHQL_FIELD_OVERRIDES[searchPath];
-  if (override) {
-    return override;
-  }
-
-  // The first part is the entity ('subscription'), which the node selection is already scoped to
-  const [, ...fieldParts] = searchPath.split('.');
-  return fieldParts.map(snakeToCamel).join('.');
-};
-
-// Builds the node selection from the search paths of the requested columns (e.g. 'product.name'), so only the requested
+// Builds the node selection from the GraphQL fields of the requested columns (e.g. 'product.name'), so only the requested
 // columns are fetched. Paths sharing a parent are left as separate selections, which GraphQL merges.
 // subscriptionId is always selected: it identifies the row.
-export const getSubscriptionNodeSelection = (searchPaths: string[]) =>
-  ['subscriptionId', ...searchPaths.map(getGraphqlField)].map(toSelection).join('\n');
+export const getSubscriptionNodeSelection = (fields: string[]) =>
+  ['subscriptionId', ...fields].map(toSelection).join('\n');
 
-export const getSubscriptionListSearchQuery = (searchPaths: string[]) => `query SubscriptionsListSearch(
+export const getSubscriptionListSearchQuery = (fields: string[]) =>
+  `query SubscriptionsListSearch(
         $first: Int!
         $after: Int!
         $search: ResourceSearchInput
@@ -111,7 +93,7 @@ export const getSubscriptionListSearchQuery = (searchPaths: string[]) => `query 
                     highlightIndices
                 }
                 node {
-                    ${getSubscriptionNodeSelection(searchPaths)}
+                    ${getSubscriptionNodeSelection(fields)}
                 }
             }
             pageInfo {
@@ -121,7 +103,7 @@ export const getSubscriptionListSearchQuery = (searchPaths: string[]) => `query 
             nextPageCursor
         }
     }
-`;
+  `;
 
 // Only the selected columns are present in a hit
 export type SubscriptionSearchNode = Pick<Subscription, 'subscriptionId'>
@@ -156,7 +138,7 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
           pageInfo,
         };
       },
-      providesTags: getCacheTag(CacheTagType.subscriptions),
+      providesTags: getCacheTag(CacheTagType.subscriptions, CACHETAG_TYPE_LIST),
     }),
     getSubscriptionListSearch: builder.query<SubscriptionListSearchResponse, SubscriptionListSearchPayload>({
       query: (payload) => ({
