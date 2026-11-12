@@ -1,5 +1,44 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 11.0.0
+
+### Major Changes
+
+- 29d7158: Removed the Search (beta) page and its related code.
+  
+  Removed exports:
+  
+  - Components: `WfoSearch`, `WfoSearchResults`, `WfoSearchResultItem`, `WfoSearchEmptyState`, `WfoSearchLoadingState`, `WfoSearchMetadataHeader`, `WfoSearchPaginationInfo`, `WfoPathBreadcrumb`, `FilterGroup`, `WfoConditionRow` (and its selectors), `WfoValueControl`, `WfoAvailabilityCheck`, `WfoBackendUnavailable`.
+  - Search page utils from `WfoSearchPage/utils` (e.g. `buildSearchParams`, `isFilterValid`, `getDetailUrl`, `ENTITY_TABS`).
+  - Hooks: `useSearchAvailability`.
+  - RTK: `useLazySearchQuery`, `useSearchWithPaginationMutation`, `useCheckSearchAvailabilityQuery`, `SearchPaginationPayload`.
+  - The `search.availability` and search page-only `search.page` translations.
+  
+  `WfoHighlightedText` is still exported, it moved to `components/WfoHighlightedText`.
+  If your app has a `/search` page or a `Search` menu item using `WfoSearch`, remove them.
+
+### Minor Changes
+
+- 44ed197: The subscriptions list page now uses the GraphQL `subscriptions` search instead of the REST search endpoint.
+  
+  - Only the visible columns are requested.
+  - The optimistic note edit patches the new cache shape.
+  - camelCase highlight_indices and matching_fields.
+- 14461c1: Update the header badges; badge for (failed) workflows added, layout updated (no more background
+  color, lighter text).
+  Fix gradient at bottom of table settings modal on dark mode
+- 0ef2cf0: Add the Websocket badge to the header of the Subscriptions list page
+- 50c1cec: Don't render md soft line breaks in workflow guides
+- c133981: Add the WFO agent's chat popup (`@orchestrator-ui/orchestrator-agent-chat`) to every page of a deployment that sets `orchestratorAgentUrl`; the person's access token goes along.
+
+### Patch Changes
+
+- e28ac7d: Reset the bulk edit selection whenever the data changes (e.g. after a filter's been applied)
+- 0047052: 281 Show only Fuzzy retrieval type when embedding setting is false
+- f46e514: Rename the "Scheduled tasks" metadata tab and menu item to "Schedules"
+- 94bec7b: Remove the search info icon and its outdated TSV help text from WfoAdvancedTable
+- a91f576: 245 Add lock icon to unpriviliged tasks
+
 ## 10.4.0
 
 ### Minor Changes
