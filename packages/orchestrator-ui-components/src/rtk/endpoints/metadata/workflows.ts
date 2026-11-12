@@ -1,12 +1,14 @@
 import { METADATA_WORKFLOWS_ENDPOINT } from '@/configuration';
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
-  BaseGraphQlResult,
-  GraphqlQueryVariables,
-  MetadataDescriptionParams,
-  WorkflowDefinition,
-  WorkflowDefinitionsResult,
-} from '@/types';
+  GraphqlSearchEdge,
+  GraphqlSearchPayload,
+  GraphqlSearchResponse,
+  getCursorPaginationCacheOptions,
+  getSearchVariables,
+  toSelection,
+} from '@/rtk/graphqlSearch';
+import { CacheTagType, MetadataDescriptionParams, WorkflowDefinition, WorkflowDefinitionsResult } from '@/types';
 
 export const workflowsDescription = `
 query MetadataWorkflowsDescription(
@@ -23,40 +25,38 @@ query MetadataWorkflowsDescription(
 }
 `;
 
-export const workflowsQuery = `
-query MetadataWorkflows(
+// Selected next to the requested columns: workflowId identifies the row, and products is not a search path
+// (it is only requested when its column is visible)
+const getWorkflowNodeSelection = (fields: string[], includeProducts: boolean) =>
+  ['workflowId', ...(includeProducts ? ['products { tag }'] : []), ...fields.map(toSelection)].join('\n');
+
+export const getWorkflowListSearchQuery = (fields: string[], includeProducts: boolean) => `
+query MetadataWorkflowListSearch(
     $first: Int!
     $after: Int!
-    $sortBy: [GraphqlSort!]
-    $query: String
+    $search: ResourceSearchInput
 ) {
     workflows(
         first: $first
         after: $after
-        sortBy: $sortBy
-        query: $query
-        filterBy: { field: "target", value: "CREATE|MODIFY|TERMINATE|RECONCILE" }
+        search: $search
     ) {
-        page {
-            workflowId
-            name
-            description
-            target
-            isTask
-            products {
-                tag
+        searchEdges {
+            score
+            matchingFields {
+                text
+                path
+                highlightIndices
             }
-            createdAt
+            node {
+                ${getWorkflowNodeSelection(fields, includeProducts)}
+            }
         }
         pageInfo {
-            endCursor
-            hasNextPage
-            hasPreviousPage
-            startCursor
             totalItems
-            sortFields
-            filterFields
+            hasNextPage
         }
+        nextPageCursor
     }
 }
 `;
@@ -67,30 +67,28 @@ export type WorkflowsDescriptionQueryVariables = {
 
 export type WorkflowsDescriptionResponse = Pick<WorkflowDefinition, 'name' | 'description'>;
 
-export type WorkflowsResponse = {
-  workflows: WorkflowDefinition[];
-} & BaseGraphQlResult;
+// Only the selected columns are present in a hit
+export type WorkflowSearchNode = Pick<WorkflowDefinition, 'workflowId'>
+  & Partial<Omit<WorkflowDefinition, 'workflowId' | 'products'>> & {
+    products?: Pick<WorkflowDefinition['products'][number], 'tag'>[];
+  };
+
+export type WorkflowSearchEdge = GraphqlSearchEdge<WorkflowSearchNode>;
+
+export type WorkflowListSearchResponse = GraphqlSearchResponse<WorkflowSearchNode>;
+
+export type WorkflowListSearchPayload = GraphqlSearchPayload & { includeProducts: boolean };
 
 const workflowsApi = orchestratorApi.injectEndpoints({
   endpoints: (builder) => ({
-    getWorkflows: builder.query<WorkflowsResponse | undefined, GraphqlQueryVariables<WorkflowDefinition>>({
-      query: (variables) => ({
-        document: workflowsQuery,
-        variables,
+    getWorkflowListSearch: builder.query<WorkflowListSearchResponse, WorkflowListSearchPayload>({
+      query: (payload) => ({
+        document: getWorkflowListSearchQuery(payload.columns, payload.includeProducts),
+        variables: getSearchVariables(payload),
       }),
-      transformResponse: (response: WorkflowDefinitionsResult | undefined): WorkflowsResponse | undefined => {
-        if (!response) {
-          return undefined;
-        }
-
-        const workflows = response?.workflows.page || [];
-        const pageInfo = response?.workflows.pageInfo || {};
-
-        return {
-          workflows,
-          pageInfo,
-        };
-      },
+      transformResponse: ({ workflows }: { workflows: WorkflowListSearchResponse }) => workflows,
+      ...getCursorPaginationCacheOptions<WorkflowSearchNode>(({ workflowId }) => workflowId),
+      providesTags: [CacheTagType.scheduledTasks],
     }),
     getDescriptionForWorkflowName: builder.query<WorkflowsDescriptionResponse, WorkflowsDescriptionQueryVariables>({
       query: (variables) => ({
@@ -119,7 +117,7 @@ const workflowsApi = orchestratorApi.injectEndpoints({
   }),
 });
 
-export const { useGetWorkflowsQuery, useLazyGetWorkflowsQuery, useGetDescriptionForWorkflowNameQuery } = workflowsApi;
+export const { useGetWorkflowListSearchQuery, useGetDescriptionForWorkflowNameQuery } = workflowsApi;
 
 const workflowsRestApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
