@@ -1,92 +1,181 @@
 import React, { useEffect, useState } from 'react';
+import type { RuleGroupType } from 'react-querybuilder';
 
 import { useTranslations } from 'next-intl';
 
 import {
-  PATH_METADATA_PRODUCT_BLOCKS,
-  WfoDataSorting,
-  getPageIndexChangeHandler,
-  getPageSizeChangeHandler,
-} from '@/components';
-import {
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_PAGE_SIZES,
   METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY,
+  PATH_METADATA_PRODUCT_BLOCKS,
   StoredTableConfig,
   WfoDateTime,
   WfoProductBlockBadge,
-  getDataSortHandler,
-  getQueryStringHandler,
 } from '@/components';
 import { WfoMetadataStatusField } from '@/components/WfoMetadata';
 import { WfoMetadataDescriptionField } from '@/components/WfoMetadata/WfoMetadataDescriptionField';
-import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
-import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
-import { WfoFirstPartUUID } from '@/components/WfoTable/WfoFirstPartUUID';
-import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
-import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
-import { useDataDisplayParams, useShowToastMessage, useStoredTableConfig } from '@/hooks';
+import { parseRuleGroupToFilters } from '@/components/WfoSearchPage/utils';
+import { WfoConfidenceScore } from '@/components/WfoSubscription/WfoConfidenceScore';
+import { WfoMatchingFields } from '@/components/WfoSubscription/WfoMatchingFields';
 import {
-  useGetProductsQuery,
-  useLazyGetProductsQuery,
+  TableColumnKeys,
+  WfoFirstPartUUID,
+  WfoStructuredSearchTable,
+  WfoStructuredSearchTableColumnConfig,
+  useSearchExport,
+  useStructuredSearchState,
+} from '@/components/WfoTable';
+import { WfoRowDetails } from '@/components/WfoTable/WfoStructuredSearchTable';
+import {
+  SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP,
+  buildRowDetailsSearchPayload,
+  getSearchPathToPropertyMap,
+} from '@/components/WfoTable/WfoStructuredSearchTable/utils';
+import { ColumnType } from '@/components/WfoTable/WfoTable';
+import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
+import { useStoredTableConfig } from '@/hooks';
+import {
+  useGetProductListSearchQuery,
   useUpdateProductDescriptionMutation,
   useUpdateProductStatusMutation,
 } from '@/rtk';
-import { ProductsResponse } from '@/rtk';
+import type { ProductListSearchResponse } from '@/rtk/endpoints/metadata/products';
+import { SearchScore, buildGraphqlSearchPayload, getSearchPath } from '@/rtk/graphqlSearch';
 import { mapRtkErrorToWfoError } from '@/rtk/utils';
-import type { GraphqlQueryVariables, ProductDefinition, ProductLifecycleStatus } from '@/types';
-import { BadgeType, SortOrder } from '@/types';
 import {
-  getConcatenatedResult,
-  getQueryUrl,
-  getQueryVariablesForExport,
-  parseDateToLocaleDateTimeString,
-  parseIsoString,
-} from '@/utils';
-import { csvDownloadHandler, getCsvFileNameWithDate } from '@/utils/csvDownload';
+  BadgeType,
+  EntityKind,
+  MatchingField,
+  ProductDefinition,
+  ProductLifecycleStatus,
+  ResultColumToPropertyMap,
+  SortOrder,
+} from '@/types';
+import { getProductLifecycleStatus, getQueryUrl, parseDateToLocaleDateTimeString, parseIsoString } from '@/utils';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
 
-const PRODUCT_FIELD_NAME: keyof ProductDefinition = 'name';
+// Only the visible columns are present in a hit
+export type ProductListItem = ProductDefinition & {
+  score?: SearchScore;
+};
 
-type ProductDefinitionExportItem = Omit<ProductDefinition, 'fixedInputs' | 'productBlocks'> & {
-  fixedInputs: string;
-  productBlocks: string;
+const STATUS_SEARCH_PATH = 'product.status';
+
+// A search without a query or filter returns nothing, so then the list filters on every lifecycle status
+// (like the tabs of the other search lists do). A filter the user committed is used as is.
+const buildAllStatusesRuleGroup = (): RuleGroupType => ({
+  combinator: 'or',
+  rules: Object.values(ProductLifecycleStatus).map((status) => ({
+    field: STATUS_SEARCH_PATH,
+    operator: SEARCH_OPERATOR_TO_RQB_OPERATOR_MAP.eq,
+    value: status,
+  })),
+});
+
+const isEmptySearch = (query: string, userRuleGroup?: RuleGroupType) => !query && !userRuleGroup;
+
+const buildFilters = (query: string, userRuleGroup?: RuleGroupType) => {
+  const ruleGroup = isEmptySearch(query, userRuleGroup) ? buildAllStatusesRuleGroup() : userRuleGroup;
+  return ruleGroup && parseRuleGroupToFilters(ruleGroup);
+};
+
+// The matches of the implicit status filter are not interesting to the user
+const removeImplicitStatusMatches = (matchingFields: MatchingField[]) =>
+  matchingFields.filter(
+    ({ path, text }) =>
+      path !== STATUS_SEARCH_PATH
+      || !Object.values(ProductLifecycleStatus).some((status) => status === text.toLowerCase()),
+  );
+
+const ALWAYS_REQUESTED_PROPERTIES: (keyof ProductListItem)[] = ['productId', 'name'];
+
+const getItemsFromGraphqlResponse = (data: ProductListSearchResponse, hasImplicitFilter: boolean): ProductListItem[] =>
+  data.searchEdges.map(
+    ({ score, matchingFields, node }) =>
+      ({
+        ...node,
+        ...(node.status && { status: getProductLifecycleStatus(node.status) }),
+        score: {
+          score,
+          matchingFields: hasImplicitFilter ? removeImplicitStatusMatches(matchingFields) : matchingFields,
+        },
+      }) as ProductListItem,
+  );
+
+type WfoProductRowDetailsProps = {
+  row: ProductListItem;
+  searchPathToProperty: ResultColumToPropertyMap<ProductListItem>;
+  tableColumnConfig: WfoStructuredSearchTableColumnConfig<ProductListItem>;
+};
+
+const WfoProductRowDetails = ({ row, searchPathToProperty, tableColumnConfig }: WfoProductRowDetailsProps) => {
+  const { data, isFetching } = useGetProductListSearchQuery(
+    {
+      ...buildRowDetailsSearchPayload(searchPathToProperty, 'productId', row.productId),
+      includeProductBlocks: true,
+      includeFixedInputs: true,
+    },
+    { refetchOnMountOrArgChange: true },
+  );
+
+  const detailRow = data && getItemsFromGraphqlResponse(data, false)[0];
+
+  return <WfoRowDetails row={detailRow} isLoading={isFetching} tableColumnConfig={tableColumnConfig} />;
 };
 
 export const WfoProductsPage = () => {
   const t = useTranslations('metadata.products');
-  const tError = useTranslations('errors');
-  const { showToastMessage } = useShowToastMessage();
-  const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<ProductDefinition>>();
+  const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<ProductListItem>>();
 
-  const getStoredTableConfig = useStoredTableConfig<ProductDefinition>(METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY);
+  const getStoredTableConfig = useStoredTableConfig<ProductListItem>(METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY);
   const [updateProductDescription] = useUpdateProductDescriptionMutation();
   const [updateProductStatus] = useUpdateProductStatusMutation();
 
-  useEffect(() => {
-    const storedConfig = getStoredTableConfig();
-
-    if (storedConfig) {
-      setTableDefaults(storedConfig);
-    }
-  }, [getStoredTableConfig]);
-
-  const { dataDisplayParams, setDataDisplayParam } = useDataDisplayParams<ProductDefinition>({
-    // TODO: Improvement: A default pageSize value is set to avoid a graphql error when the query is executed
-    // the fist time before the useEffect has populated the tableDefaults. Better is to create a way for
-    // the query to wait for the values to be available
-    // https://github.com/workfloworchestrator/orchestrator-ui/issues/261
-    pageSize: tableDefaults?.selectedPageSize || DEFAULT_PAGE_SIZE,
-    sortBy: {
-      field: PRODUCT_FIELD_NAME,
-      order: SortOrder.ASC,
-    },
+  const {
+    committedQueryString,
+    committedFilterString,
+    retrieverType,
+    dataSorting,
+    pageSize,
+    cursor,
+    isSearchBlocked,
+    queryString,
+    filterString,
+    queryBuilderRuleGroup,
+    isValidFilterString,
+    hiddenColumns,
+    setHiddenColumns,
+    initPageSize,
+    onChangeQueryString,
+    onSearchQueryString,
+    handleApplyFilter,
+    onUpdateRetrieverType,
+    onUpdateQueryBuilder,
+    onUpdateFilterString,
+    onUpdateDataSorting,
+    onUpdatePageSize,
+    showNextPage,
+    committedRuleGroup,
+  } = useStructuredSearchState<ProductListItem>({
+    defaultSorting: { field: 'name', sortOrder: SortOrder.ASC },
   });
 
-  const tableColumns: WfoAdvancedTableColumnConfig<ProductDefinition> = {
+  const defaultTableColumns: WfoStructuredSearchTableColumnConfig<ProductListItem> = {
+    score: {
+      columnType: ColumnType.DATA,
+      label: t('score'),
+      width: '100px',
+      excludeFromDetails: true,
+      renderData: (value) => (
+        <WfoConfidenceScore
+          score={value?.score}
+          fullyConfident={committedFilterString !== '' && committedQueryString === ''}
+        />
+      ),
+      renderTooltip: (value) => <WfoMatchingFields matchingFields={value?.matchingFields} />,
+    },
     productId: {
       columnType: ColumnType.DATA,
+      searchPath: 'product.product_id',
       label: t('id'),
       width: '90px',
       renderData: (value) => <WfoFirstPartUUID UUID={value} />,
@@ -95,18 +184,21 @@ export const WfoProductsPage = () => {
     },
     name: {
       columnType: ColumnType.DATA,
+      searchPath: 'product.name',
       label: t('name'),
       width: '200px',
       renderData: (name) => <WfoProductBlockBadge badgeType={BadgeType.PRODUCT}>{name}</WfoProductBlockBadge>,
     },
     tag: {
       columnType: ColumnType.DATA,
+      searchPath: 'product.tag',
       label: t('tag'),
       width: '120px',
       renderData: (value) => <WfoProductBlockBadge badgeType={BadgeType.PRODUCT_TAG}>{value}</WfoProductBlockBadge>,
     },
     description: {
       columnType: ColumnType.DATA,
+      searchPath: 'product.description',
       label: t('description'),
       width: '700px',
       renderData: (value, row) => (
@@ -123,11 +215,13 @@ export const WfoProductsPage = () => {
     },
     productType: {
       columnType: ColumnType.DATA,
+      searchPath: 'product.product_type',
       label: t('productType'),
       width: '250px',
     },
     status: {
       columnType: ColumnType.DATA,
+      searchPath: 'product.status',
       label: t('status'),
       width: '150px',
       renderData: (value, row) => (
@@ -183,6 +277,7 @@ export const WfoProductsPage = () => {
     },
     createdAt: {
       columnType: ColumnType.DATA,
+      searchPath: 'product.created_at',
       label: t('createdAt'),
       width: '90px',
       renderData: (date) => <WfoDateTime dateOrIsoString={date} />,
@@ -192,72 +287,116 @@ export const WfoProductsPage = () => {
     },
   };
 
-  const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-  const graphqlQueryVariables: GraphqlQueryVariables<ProductDefinition> = {
-    first: pageSize,
-    after: pageIndex * pageSize,
-    sortBy: sortBy,
-    query: queryString || undefined,
+  const searchPathToProperty = getSearchPathToPropertyMap<ProductListItem>(defaultTableColumns);
+
+  // The search payload is derived entirely from the committed search state, which lives in the URL
+  const searchPayload = buildGraphqlSearchPayload<ProductListItem>({
+    searchPathToProperty,
+    alwaysRequestedProperties: ALWAYS_REQUESTED_PROPERTIES,
+    hiddenColumns,
+    dataSorting,
+    query: committedQueryString,
+    pageSize,
+    retrieverType,
+    filters: buildFilters(committedQueryString, committedRuleGroup),
+    cursor,
+  });
+  const { data, error, isFetching } = useGetProductListSearchQuery({
+    ...searchPayload,
+    includeProductBlocks: !hiddenColumns.includes('productBlocks'),
+    includeFixedInputs: !hiddenColumns.includes('fixedInputs'),
+  });
+
+  useEffect(() => {
+    const storedConfig = getStoredTableConfig();
+    if (storedConfig) {
+      setTableDefaults(storedConfig);
+      initPageSize(storedConfig.selectedPageSize);
+    }
+  }, [getStoredTableConfig, initPageSize]);
+
+  const sortableAndFilterableFieldNames = [...searchPathToProperty.values()].map(String);
+  const isSortingAllowed = queryString === '';
+  const tableConfig = mapSortableAndFilterableValuesToTableColumnConfig<ProductListItem>(
+    defaultTableColumns,
+    isSortingAllowed ? sortableAndFilterableFieldNames : [],
+    sortableAndFilterableFieldNames,
+  );
+
+  const productListItems =
+    data && !isSearchBlocked ?
+      getItemsFromGraphqlResponse(data, isEmptySearch(committedQueryString, committedRuleGroup))
+    : [];
+  const totalItems = !isSearchBlocked && (data?.pageInfo?.totalItems || false);
+  const hasNextPage = !isSearchBlocked && (data?.pageInfo?.hasNextPage ?? false);
+  const nextPageCursor = data?.nextPageCursor ?? undefined;
+
+  const { exportData, isExporting } = useSearchExport<ProductListItem>({
+    entityKind: EntityKind.PRODUCT,
+    searchPathToProperty,
+    tableColumnConfig: defaultTableColumns,
+    fileName: 'Products',
+  });
+
+  const onShowMore = () => {
+    if (!isFetching) {
+      showNextPage(nextPageCursor);
+    }
   };
-  const { data, isFetching, error } = useGetProductsQuery(graphqlQueryVariables);
-  const [getProductsTrigger, { isFetching: isFetchingCsv }] = useLazyGetProductsQuery();
-  const getProductsForExport = () => getProductsTrigger(getQueryVariablesForExport(graphqlQueryVariables)).unwrap();
 
-  const { totalItems, sortFields, filterFields } = data?.pageInfo ?? {};
+  // only show 'score' when there is an active query or filter
+  const additionalHiddenColumns: TableColumnKeys<ProductListItem> =
+    committedQueryString || committedFilterString ? [] : ['score'];
 
-  const pagination: Pagination = {
-    pageSize: pageSize,
-    pageIndex: pageIndex,
-    pageSizeOptions: DEFAULT_PAGE_SIZES,
-    totalItemCount: totalItems ? totalItems : 0,
-    onChangePage: getPageIndexChangeHandler(setDataDisplayParam),
-    onChangeItemsPerPage: getPageSizeChangeHandler(setDataDisplayParam),
-  };
+  // We manually show/hide the score column and shouldn't be configurable by the user.
+  const nonEditableColumns: TableColumnKeys<ProductListItem> = ['score'];
 
-  const dataSorting: WfoDataSorting<ProductDefinition> = {
-    field: sortBy?.field ?? PRODUCT_FIELD_NAME,
-    sortOrder: sortBy?.order ?? SortOrder.ASC,
-  };
-
-  const mapToExportItems = ({ products }: ProductsResponse): ProductDefinitionExportItem[] =>
-    products.map(
-      ({ productId, name, tag, description, productType, status, fixedInputs, productBlocks, createdAt }) => ({
-        productId,
-        name,
-        tag,
-        description,
-        productType,
-        status,
-        fixedInputs: getConcatenatedResult(fixedInputs, ['name', 'value']),
-        productBlocks: getConcatenatedResult(productBlocks, ['name']),
-        createdAt,
-      }),
-    );
+  const renderRowDetails = (row: ProductListItem) => (
+    <WfoProductRowDetails
+      row={row}
+      searchPathToProperty={searchPathToProperty}
+      tableColumnConfig={defaultTableColumns}
+    />
+  );
 
   return (
     <WfoMetadataPageLayout>
-      <WfoAdvancedTable
-        data={data?.products ?? []}
-        tableColumnConfig={mapSortableAndFilterableValuesToTableColumnConfig(tableColumns, sortFields, filterFields)}
-        dataSorting={[dataSorting]}
-        defaultHiddenColumns={tableDefaults?.hiddenColumns}
-        onUpdateDataSorting={getDataSortHandler<ProductDefinition>(setDataDisplayParam)}
-        onUpdateQueryString={getQueryStringHandler<ProductDefinition>(setDataDisplayParam)}
-        pagination={pagination}
-        isLoading={isFetching}
+      <WfoStructuredSearchTable<ProductListItem>
+        entityKind={EntityKind.PRODUCT}
+        detailModalTitle="Details - Product"
+        renderRowDetails={renderRowDetails}
+        data={productListItems}
         error={mapRtkErrorToWfoError(error)}
-        queryString={queryString}
+        rowExpandingConfiguration={undefined}
+        defaultHiddenColumns={tableDefaults?.hiddenColumns}
+        additionalHiddenColumns={additionalHiddenColumns}
+        onHiddenColumnsChange={setHiddenColumns}
+        nonEditableColumns={nonEditableColumns}
+        defaultAdvancedNestedSearch={tableDefaults?.advancedNestedSearch}
+        filterString={filterString}
+        handleSearch={handleApplyFilter}
+        isLoading={isFetching}
+        dataSorting={[dataSorting]}
+        isValidFilterString={isValidFilterString}
         localStorageKey={METADATA_PRODUCT_TABLE_LOCAL_STORAGE_KEY}
-        onExportData={csvDownloadHandler(
-          getProductsForExport,
-          mapToExportItems,
-          (data) => data?.pageInfo || {},
-          Object.keys(tableColumns),
-          getCsvFileNameWithDate('Products'),
-          showToastMessage,
-          tError,
-        )}
-        exportDataIsLoading={isFetchingCsv}
+        onUpdateFilterString={onUpdateFilterString}
+        onUpdateQueryBuilder={onUpdateQueryBuilder}
+        onChangeQueryString={onChangeQueryString}
+        onSearchQueryString={onSearchQueryString}
+        onShowMore={onShowMore}
+        onUpdateRetrieverType={onUpdateRetrieverType}
+        queryBuilderRuleGroup={queryBuilderRuleGroup}
+        queryString={queryString}
+        retrieverType={retrieverType}
+        tableColumnConfig={tableConfig}
+        getColumnSearchFieldName={(field) => getSearchPath(searchPathToProperty, field)}
+        pageSize={pageSize}
+        onUpdateDataSorting={onUpdateDataSorting}
+        setPageSize={onUpdatePageSize}
+        totalItems={totalItems}
+        hasNextPage={hasNextPage}
+        onExportData={() => exportData(searchPayload)}
+        exportDataIsLoading={isExporting}
       />
     </WfoMetadataPageLayout>
   );
