@@ -9,7 +9,7 @@ import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { usePathAutocomplete } from '@/hooks';
-import { EntityKind, type PathInfo, type WfoQueryBuilderContext } from '@/types';
+import type { PathInfo, WfoQueryBuilderContext } from '@/types';
 
 import { WfoFieldSelector } from './WfoFieldSelector';
 
@@ -53,7 +53,6 @@ const renderFieldSelector = (field: string = defaultPlaceholderFieldName) => {
     onFieldSelected,
     fieldPathInfoMap: new Map(),
     useAdvancedNestedSearch: true,
-    entityKind: EntityKind.SUBSCRIPTION,
   };
   const props = {
     handleOnChange,
