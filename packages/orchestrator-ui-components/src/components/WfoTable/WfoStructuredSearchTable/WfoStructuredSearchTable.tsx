@@ -33,7 +33,7 @@ import { WfoGraphqlError } from '@/rtk';
 import { RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
-import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
+import { ColumnType, Pagination, WfoTable, WfoTableProps } from '../WfoTable';
 import { WfoBulkEditToolbar } from './WfoBulkEditToolbar';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
 import { WfoSearchFieldWithActions } from './WfoSearchFieldWithActions';
@@ -90,7 +90,11 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   error?: WfoGraphqlError[];
   onChangeQueryString: (queryString: string) => void;
   onSearchQueryString: (queryString: string) => void;
-  onShowMore: () => void;
+  pageIndex: number;
+  onChangePage: (pageIndex: number) => void;
+  onShowNextPage: () => void;
+  isTextSearch: boolean;
+  loadedPageCount: number;
   onUpdateDataSorting: (updateSorting: WfoDataSorting<T>) => void;
   // Resolves a column key to its search field path (e.g. "status" -> "subscription.status"), used
   // when a column header search adds a condition to the filter query.
@@ -124,7 +128,11 @@ export const WfoStructuredSearchTable = <T extends object>({
   error,
   onChangeQueryString,
   onSearchQueryString,
-  onShowMore,
+  pageIndex,
+  onChangePage,
+  onShowNextPage,
+  isTextSearch,
+  loadedPageCount,
   onExportData,
   retrieverType,
   onUpdateRetrieverType,
@@ -179,6 +187,30 @@ export const WfoStructuredSearchTable = <T extends object>({
       setIsFilterBuilderVisible(true);
     }
   }, [filterString]);
+
+  const handleChangePage = (updatedPageIndex: number) =>
+    isTextSearch && updatedPageIndex >= loadedPageCount ? onShowNextPage() : onChangePage(updatedPageIndex);
+  const pageCountWithNext = loadedPageCount + (hasNextPage ? 1 : 0);
+  const pagination: Pagination = {
+    pageIndex,
+    pageSize,
+    totalItemCount: isTextSearch ? pageCountWithNext * pageSize : totalItems || 0,
+    pageSizeOptions: DEFAULT_PAGE_SIZES,
+    onChangePage: handleChangePage,
+    onChangeItemsPerPage: setPageSize,
+    summary: totalItems ? t('totalRecords', { total: totalItems }) : undefined,
+  };
+
+  const getNextPageButtonSelector = (loadedPageCount: number) =>
+    `[data-test-subj="pagination-button-${loadedPageCount}"]`;
+
+  // A text query shows "..." instead of the number of that page
+  const nextPageButtonStyle = {
+    '& > *': { display: 'none' },
+    '&::after': { content: '"..."' },
+  };
+  const tablePaginationStyle =
+    isTextSearch ? { [getNextPageButtonSelector(loadedPageCount)]: nextPageButtonStyle } : undefined;
 
   const detailsIconColumn: WfoStructuredSearchTableColumnConfig<T> = {
     viewDetails: {
@@ -309,27 +341,21 @@ export const WfoStructuredSearchTable = <T extends object>({
 
       <EuiSpacer size="m" />
 
-      <WfoTable<T>
-        columnConfig={tableColumns}
-        hiddenColumns={hiddenColumns}
-        rowExpandingConfiguration={rowExpandingConfiguration}
-        onUpdateDataSorting={onUpdateDataSorting}
-        onUpdateDataSearch={handleColumnFilterSearch}
-        dataSorting={dataSorting}
-        data={data}
-        isLoading={isLoading}
-        loadingSkeletonRowCount={pageSize}
-        {...tableProps}
-      />
-
-      {(totalItems || data.length > 0) && (
-        <EuiFlexGroup alignItems={'center'} justifyContent={'center'} css={{ padding: theme.base }}>
-          <EuiButton onClick={() => onShowMore()} disabled={!hasNextPage || isLoading}>
-            {t('loadMore')}
-          </EuiButton>
-          <div>{totalItems ? `${data.length}/${totalItems} records` : `${data.length} records`}</div>
-        </EuiFlexGroup>
-      )}
+      <div css={tablePaginationStyle}>
+        <WfoTable<T>
+          columnConfig={tableColumns}
+          hiddenColumns={hiddenColumns}
+          rowExpandingConfiguration={rowExpandingConfiguration}
+          onUpdateDataSorting={onUpdateDataSorting}
+          onUpdateDataSearch={handleColumnFilterSearch}
+          dataSorting={dataSorting}
+          data={data}
+          isLoading={isLoading}
+          loadingSkeletonRowCount={pageSize}
+          pagination={pagination}
+          {...tableProps}
+        />
+      </div>
 
       {showTableSettingsModal && (
         <TableSettingsModal

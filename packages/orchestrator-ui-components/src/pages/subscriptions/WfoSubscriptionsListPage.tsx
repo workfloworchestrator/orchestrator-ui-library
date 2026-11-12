@@ -5,7 +5,7 @@ import { formatQuery } from 'react-querybuilder/formatQuery';
 import { get } from 'lodash';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import { EuiSpacer } from '@elastic/eui';
 
@@ -159,6 +159,7 @@ export const WfoSubscriptionsListPage = () => {
   // back/forward re-runs it. The filter is stored as a CEL string and parsed back to a rule group.
   const [committedQueryString, setCommittedQueryString] = useQueryParam('queryString', withDefault(StringParam, ''));
   const [committedFilterString, setCommittedFilterString] = useQueryParam('filterString', withDefault(StringParam, ''));
+  const [pageParam, setPageParam] = useQueryParam('page', withDefault(NumberParam, 1));
   // Track the last value this page committed, so the URL->state sync effects below only rebuild the
   // inputs for external changes (page load, back/forward). Rebuilding on own commits would revert
   // characters typed right after committing (search bar) or visibly restructure builder rules the
@@ -190,16 +191,16 @@ export const WfoSubscriptionsListPage = () => {
   const [hiddenColumns, setHiddenColumns] = useState<TableColumnKeys<SubscriptionListItem>>([]);
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<SubscriptionListItem>>();
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
-  const [pageCursor, setPageCursor] = useState<{ cursor: string; searchKey: string } | undefined>(undefined);
+  const [pageState, setPageState] = useState<{ pageIndex: number; cursors: string[]; searchKey: string } | undefined>(
+    undefined,
+  );
   const [dataSorting, setDataSorting] = useState<WfoDataSorting<SubscriptionListItem>>({
     field: 'startDate',
     sortOrder: SortOrder.DESC,
   });
 
-  // A next-page cursor is only valid for the committed search that produced it. Binding it to a key
-  // of that search covers commits that bypass the handlers below, e.g. browser back/forward changing
-  // the queryString/filterString/activeTab URL params: the key no longer matches, so the stale
-  // cursor is not sent along with the new search.
+  // A page is only valid for the committed search that produced it. The key also covers commits that
+  // bypass the handlers below, e.g. browser back/forward changing the URL params.
   const committedSearchKey = JSON.stringify([
     committedQueryString,
     committedFilterString,
@@ -208,14 +209,23 @@ export const WfoSubscriptionsListPage = () => {
     dataSorting,
     hiddenColumns,
   ]);
-  const cursor = pageCursor?.searchKey === committedSearchKey ? pageCursor.cursor : undefined;
+  const currentPage = pageState?.searchKey === committedSearchKey ? pageState : undefined;
+  // The page of a structured search is in the URL. The cursors of a text query can not be, so it starts on page 1
+  const pageIndex = committedQueryString ? (currentPage?.pageIndex ?? 0) : Math.max(pageParam - 1, 0);
+  // A text query pages with the cursors of the loaded pages, they are kept to go back
+  const cursors = currentPage?.cursors ?? [];
+  const cursor = cursors[pageIndex - 1];
+  const loadedPageCount = cursors.length + 1;
+
+  const resetPage = () => {
+    setPageState(undefined);
+    setPageParam(undefined);
+  };
 
   // The search payload is derived entirely from the committed search state, which lives in the URL
   // (queryString, filterString and activeTab params). Changing any of these values — whether via the
   // UI or a browser back/forward that updates the URL — produces a new payload and RTK Query re-runs
   // the search automatically. No imperative trigger or effect (and no eslint-disable) is needed.
-  // Cursor is stripped from the RTK cache key, so a cursor change appends to the accumulated
-  // result set instead of creating a new cache entry — see search endpoint's merge() logic.
   const searchPayload: SubscriptionListSearchPayload = useMemo(() => {
     const filters = addStatusFilterFromTab(committedRuleGroup, selectedTab);
     const order_by = {
@@ -233,7 +243,7 @@ export const WfoSubscriptionsListPage = () => {
       order_by,
       ...(retrieverType !== RetrieverType.Auto && { retriever: retrieverType }),
       ...(filters && { filters }),
-      ...(cursor && { cursor }),
+      ...(committedQueryString ? cursor && { cursor } : { offset: pageIndex * pageSize }),
     };
   }, [
     committedQueryString,
@@ -242,6 +252,7 @@ export const WfoSubscriptionsListPage = () => {
     retrieverType,
     pageSize,
     dataSorting,
+    pageIndex,
     cursor,
     hiddenColumns,
   ]);
@@ -408,7 +419,7 @@ export const WfoSubscriptionsListPage = () => {
     // Also commit the draft search text, so applying a filter picks up text typed in the
     // search bar without pressing enter.
     commitQueryString(queryString);
-    setPageCursor(undefined);
+    resetPage();
   };
 
   const onChangeQueryString = (queryString: string) => {
@@ -429,17 +440,17 @@ export const WfoSubscriptionsListPage = () => {
       return;
     }
     commitQueryString(queryString);
-    setPageCursor(undefined);
+    resetPage();
   };
 
   const onUpdateRetrieverType = (retrieverType: RetrieverType) => {
     setRetrieverType(retrieverType);
-    setPageCursor(undefined);
+    resetPage();
   };
 
   const handleChangeTab = (updatedTab: WfoSubscriptionListTab) => {
     setActiveTab(updatedTab);
-    setPageCursor(undefined);
+    resetPage();
   };
 
   const safeCelParse = useCallback((celString: string) => {
@@ -550,15 +561,24 @@ export const WfoSubscriptionsListPage = () => {
     }
   };
 
-  const onShowMore = () => {
+  const showPage = (updatedPageIndex: number) =>
+    committedQueryString ?
+      setPageState({ pageIndex: updatedPageIndex, cursors, searchKey: committedSearchKey })
+    : setPageParam(updatedPageIndex === 0 ? undefined : updatedPageIndex + 1);
+
+  const onShowNextPage = () => {
     if (!isFetching && nextPageCursor) {
-      setPageCursor({ cursor: nextPageCursor, searchKey: committedSearchKey });
+      setPageState({
+        pageIndex: pageIndex + 1,
+        cursors: [...cursors.slice(0, pageIndex), nextPageCursor],
+        searchKey: committedSearchKey,
+      });
     }
   };
 
   const onUpdateDataSorting = ({ field, sortOrder }: WfoDataSorting<SubscriptionListItem>) => {
     setDataSorting({ field, sortOrder });
-    setPageCursor(undefined);
+    resetPage();
   };
 
   const onUpdatePageSize = (updatedPageSize: number) => {
@@ -566,7 +586,7 @@ export const WfoSubscriptionsListPage = () => {
       return;
     }
     setPageSize(updatedPageSize);
-    setPageCursor(undefined);
+    resetPage();
   };
 
   const additionalHiddenColumns: TableColumnKeys<SubscriptionListItem> =
@@ -606,7 +626,11 @@ export const WfoSubscriptionsListPage = () => {
         onUpdateQueryBuilder={onUpdateQueryBuilder}
         onChangeQueryString={onChangeQueryString}
         onSearchQueryString={onSearchQueryString}
-        onShowMore={onShowMore}
+        pageIndex={pageIndex}
+        onChangePage={showPage}
+        onShowNextPage={onShowNextPage}
+        isTextSearch={!!committedQueryString}
+        loadedPageCount={loadedPageCount}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}
         queryString={queryString}

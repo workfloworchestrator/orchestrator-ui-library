@@ -3,6 +3,7 @@ import { orchestratorApi } from '@/rtk';
 import type { SearchPayload } from '@/rtk/endpoints/search';
 import {
   BaseGraphQlResult,
+  CACHETAG_TYPE_LIST,
   CacheTagType,
   GraphQLPageInfo,
   GraphqlQueryVariables,
@@ -147,11 +148,21 @@ type SubscriptionListSearchResult = {
 
 export type SubscriptionListSearchPayload = Omit<SearchPayload, 'entity_type' | 'response_columns'> & {
   columns: string[];
+  // Only for a structured search, a text query pages with a cursor
+  offset?: number;
 };
 
-const getSearchVariables = ({ query, filters, limit, retriever, order_by, cursor }: SubscriptionListSearchPayload) => ({
+const getSearchVariables = ({
+  query,
+  filters,
+  limit,
+  retriever,
+  order_by,
+  cursor,
+  offset,
+}: SubscriptionListSearchPayload) => ({
   first: Array.isArray(limit) ? limit[0] : (limit ?? 10),
-  after: 0,
+  after: offset ?? 0,
   search: {
     query: query || undefined,
     elasticFilters: filters,
@@ -188,23 +199,7 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
       }),
       transformResponse: ({ subscriptions }: SubscriptionListSearchResult): SubscriptionListSearchResponse =>
         subscriptions,
-      // Strip cursor so every page of the same base search shares one cache entry.
-      serializeQueryArgs: ({ queryArgs, endpointName }) => {
-        const rest = { ...queryArgs };
-        delete rest.cursor;
-        return { endpointName, queryArgs: rest };
-      },
-      merge: (currentCache, newItems, { arg }) => {
-        if (!arg.cursor) {
-          Object.assign(currentCache, newItems);
-          return;
-        }
-        currentCache.searchEdges.push(...newItems.searchEdges);
-        currentCache.pageInfo = newItems.pageInfo;
-        currentCache.nextPageCursor = newItems.nextPageCursor;
-      },
-      forceRefetch: ({ currentArg, previousArg }) => currentArg?.cursor !== previousArg?.cursor,
-      providesTags: getCacheTag(CacheTagType.subscriptions),
+      providesTags: getCacheTag(CacheTagType.subscriptions, CACHETAG_TYPE_LIST),
     }),
   }),
 });

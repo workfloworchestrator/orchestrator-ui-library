@@ -14,7 +14,6 @@
     "export": "Exporteren",
     "insyncFalse": "out-of-sync",
     "insyncTrue": "in-sync",
-    "loadMore": "Meer laden",
     "loading": "Laden",
     "newSubscription": "Nieuwe subscription",
     "newSubscriptionOtherGroup": "Overig",
@@ -36,6 +35,7 @@
     "selectRow": "Selecteer rij",
     "showAllColumnsInDetailView": "Toon alle kolommen in detailweergave",
     "tableSettings": "Tabel instellingen",
+    "totalRecords": "{total} records",
     "unauthorizedPage": "Niet geautoriseerd om deze pagina te bekijken",
     "unknownError": "Onbekende fout"
   },
