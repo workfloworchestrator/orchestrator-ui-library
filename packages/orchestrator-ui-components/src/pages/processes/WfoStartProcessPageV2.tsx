@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -25,7 +25,6 @@ import {
   EuiTitle,
   euiFontSizeFromScale,
   euiLineHeightFromBaseline,
-  useIsWithinBreakpoints,
 } from '@elastic/eui';
 import { css } from '@emotion/react';
 
@@ -34,7 +33,7 @@ import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader
 import { FormLayoutV2Context, FormPageFieldsV2Context, WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { RenderFormErrors } from '@/components/WfoPydanticForm/RenderFormErrors';
 import { WfoArrayFieldV2 } from '@/components/WfoPydanticForm/fields';
-import { WfoWorkflowGuideExpandablePanel } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
+import { WfoWorkflowGuideMarkdown } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { useGetDescriptionForWorkflowNameQuery } from '@/rtk';
@@ -44,11 +43,13 @@ import { getInitialProcessPayload } from './WfoStartProcessPage';
 
 /*
  * New start-workflow layout (shown with ?newUi=1 next to the current page):
- * - Cancel and Help live in the page header (page-level actions)
+ * - Back is a link above the step title; Next and Cancel sit under the form. DOM order = visual order, so Tab
+ *   from the last field goes straight to Next, and Shift+Tab from the (focused) step title reaches Back.
+ *   The sticky step list is the second way back, also from the bottom of a long step.
  * - Vertical step list on the left, with the form pages the user has seen so far
  *   (the backend sends one page at a time, so the total is unknown). A "Next steps" placeholder shows
  *   that more pages come (backend hasNext). Done steps are links to jump back.
- * - Back sits above the step title, so Shift+Tab from the focused title reaches it (WCAG 2.4.3 focus order)
+ * - On a step change focus moves to the new step title (WCAG 2.4.3); done steps in the list are links back
  * - Per field: label, description, input, error
  */
 
@@ -61,6 +62,7 @@ type FormStepsContextValue = {
   onPageShown: (key: string, title: string, fields: PageFields) => void;
   setNavigation: (hasPrevious: boolean, hasNext: boolean, onPrevious?: () => void) => void;
   goBack: (stepCount?: number) => void;
+  onCancel: () => void;
 };
 
 const FormStepsContext = createContext<FormStepsContextValue>({
@@ -69,6 +71,7 @@ const FormStepsContext = createContext<FormStepsContextValue>({
   onPageShown: () => {},
   setNavigation: () => {},
   goBack: () => {},
+  onCancel: () => {},
 });
 
 const StepHeader = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
@@ -88,9 +91,10 @@ const StepHeader = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
     if (isFormPage) onPageShown(pageKey, title, properties ?? {});
   }, [isFormPage, pageKey, title, properties, onPageShown]);
 
-  // Move focus to the new step title, but not on the first page load
+  // Move focus to the new step title, but not on the first page load. titles.length > 1 also covers going
+  // back to step 1: index is 0 and hasPrevious false there, while the focused Back link unmounts.
   useEffect(() => {
-    if (steps.index > 0 || hasPrevious) headingRef.current?.focus();
+    if (steps.index > 0 || steps.titles.length > 1 || hasPrevious) headingRef.current?.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [steps.index]);
 
@@ -99,9 +103,12 @@ const StepHeader = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
   return (
     <div>
       {hasPrevious && (
-        <EuiButtonEmpty size="s" flush="left" onClick={() => goBack()}>
-          {t('back')}
-        </EuiButtonEmpty>
+        <>
+          <EuiButtonEmpty size="s" flush="left" iconType="chevronSingleLeft" onClick={() => goBack()}>
+            {t('back')}
+          </EuiButtonEmpty>
+          <EuiSpacer size="m" />
+        </>
       )}
       <EuiText size="xs" color="subdued">
         <strong>{t('stepNumber', { number: steps.index + 1 })}</strong>
@@ -119,9 +126,14 @@ const StepHeader = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
 const FORM_INPUT_MAX_WIDTH = 400;
 // React 18 passes unknown attributes through as strings; its types only know the React 19 boolean form
 const inertWhen = (on: boolean) => (on ? ({ inert: '' } as object) : {});
-const STEP_COLUMN_WIDTH = 272; // 240 list + 32 gap
-const FORM_COLUMN_MAX_WIDTH = 640;
-
+const RAIL_WIDTH = 56; // collapsed step list: markers only
+const STEP_LIST_EXPANDED_WIDTH = 300; // step list on hover or focus, shown over the page
+// 24px gap + 640px panel: room for one field pair from a backend layout; more width only makes lines longer
+// and takes reading space from the guide
+const FORM_COLUMN_MAX_WIDTH = 664;
+const GUIDE_GAP = 8;
+const GUIDE_STRIP_WIDTH = 32;
+const GUIDE_MIN_WIDTH = 480; // open guide incl. strip: room for ~55 characters of guide text
 // Enabled inputs get the plain (white) form surface: the grey subdued surface reads as "disabled".
 // Covers EUI inputs and react-select controls (also the ones from app-level widgets we don't own).
 const getInputSurfaceStyle = (theme: WfoComputedTheme) =>
@@ -136,8 +148,6 @@ const getInputSurfaceStyle = (theme: WfoComputedTheme) =>
         backgroundColor: theme.components.forms.background,
       },
 
-    // One field per line: pydantic-forms puts fields with a backend `layout` in a 12-column grid (inline style)
-    '.pf-grid': { display: 'block !important' },
     // Inputs 400px wide (easy to scan, the width hints at the expected length); label, description and error
     // stay full width. react-select (`*-container`) and EUI controls; textareas stay full width for long text.
     '.euiFormControlLayout, .euiFieldText, .euiFieldNumber, .euiSelect, .euiComboBox, [class$="-container"]': {
@@ -174,7 +184,8 @@ const StepRow: RowRenderComponent = ({ title, description, error, isInvalid, req
         </EuiFormLabel>
       )}
       {description && (
-        <EuiText size="s" color="subdued" css={{ margin: '2px 0 8px' }}>
+        // 65ch: readable line length for UI descriptions (45–65 characters)
+        <EuiText size="s" color="subdued" css={{ margin: '2px 0 8px', maxWidth: '65ch' }}>
           {description}
         </EuiText>
       )}
@@ -193,7 +204,7 @@ const StepFooter = ({
   isTask,
 }: PydanticFormFooterProps & { isTask: boolean }) => {
   const t = useTranslations('pydanticForms.userInputForm');
-  const { setNavigation } = useContext(FormStepsContext);
+  const { setNavigation, onCancel } = useContext(FormStepsContext);
 
   useEffect(() => {
     setNavigation(hasPrevious, hasNext, onPrevious);
@@ -209,10 +220,13 @@ const StepFooter = ({
     <div data-testid="pydantic-form-footer">
       <RenderFormErrors />
       <EuiHorizontalRule />
-      <EuiFlexGroup justifyContent="flexEnd">
-        <EuiButton fill type="submit">
+      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center" responsive={false} wrap>
+        <EuiButton fill type="submit" iconType="chevronSingleRight" iconSide="right">
           {label}
         </EuiButton>
+        <EuiButtonEmpty color="text" onClick={onCancel}>
+          {t('cancel')}
+        </EuiButtonEmpty>
       </EuiFlexGroup>
     </div>
   );
@@ -294,138 +308,227 @@ const StepMarker = ({ state, className }: { state: StepItem['state']; className?
   );
 };
 
-// Horizontal variant, shown above the form while the guide takes the side space: markers on one line,
-// only the current step shows its name (the others are named for screen readers and on hover)
-const WfoInlineStepper = (props: StepListProps) => {
+/*
+ * Guide as a page tucked under the form panel: a strip sticks to the right edge of the panel (reachable by
+ * moving straight right from any field), and the guide panel slides out from behind the form panel.
+ * The form never moves; like the current layout, the open guide fills the space right of the form.
+ */
+const WfoTuckedGuide = ({
+  workflowName,
+  isOpen,
+  onToggle,
+}: {
+  workflowName: string;
+  isOpen: boolean;
+  onToggle: () => void;
+}) => {
+  const t = useTranslations('workflowGuide');
   const { theme } = useOrchestratorTheme();
-  const items = useStepItems(props);
+  const guideBorder = `2px solid ${theme.colors.backgroundLightPrimary}`;
+  const guideId = useId();
+
   return (
-    <ol css={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
-      {items.map(({ label, caption, state, onClick }, i) => {
-        const marker = <StepMarker state={state} />;
-        return (
-          <React.Fragment key={i}>
-            {i > 0 && (
-              <li
-                aria-hidden
-                css={{
-                  flex: '1 1 12px',
-                  minWidth: 12,
-                  height: 0,
-                  borderTop: `2px ${state === 'unknown' ? 'dashed' : 'solid'} ${
-                    i <= props.steps.index ? theme.colors.primary : theme.colors.borderBasePlain
-                  }`,
-                }}
-              />
-            )}
-            <li
-              aria-current={state === 'current' ? 'step' : undefined}
-              title={`${caption}: ${label}`}
-              css={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}
-            >
-              {onClick ?
-                <button
-                  type="button"
-                  onClick={onClick}
-                  aria-label={`${caption}: ${label}`}
-                  css={{ display: 'flex', padding: 0, border: 0, background: 'none', cursor: 'pointer' }}
-                >
-                  {marker}
-                </button>
-              : marker}
-              {state === 'current' && (
-                <EuiText
-                  size="s"
-                  css={{
-                    fontWeight: theme.font.weight.bold,
-                    color: theme.colors.primary,
-                    // Long titles shrink with an ellipsis; the full name is in the li title
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {label}
-                </EuiText>
-              )}
-              {state !== 'current' && <span css={visuallyHidden}>{`${caption}: ${label}`}</span>}
-            </li>
-          </React.Fragment>
-        );
-      })}
-    </ol>
+    <div
+      css={{
+        position: 'sticky',
+        top: theme.size.l,
+        // viewport minus the top navigation and a gap above and below
+        height: `calc(100vh - ${theme.base * 3}px - 2 * ${theme.size.l})`,
+        minHeight: theme.base * 25,
+        // clips the guide while it is "under" the form panel
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        css={{
+          display: 'flex',
+          // Guide and strip share the same gap above and below, so the open guide is as high as the strip
+          height: `calc(100% - 2 * ${theme.size.xl})`,
+          marginBlock: theme.size.xl,
+          width: `calc(100% - ${GUIDE_GAP}px)`,
+          // Closed: shifted left by the guide width, so only the strip shows, attached to the form panel.
+          // Open: slides out GUIDE_GAP past the panel edge; a small gap, smaller than the one to the step list,
+          // so the guide reads as its own object that still belongs to the form (law of proximity).
+          transform: isOpen ? `translateX(${GUIDE_GAP}px)` : `translateX(calc(-100% + ${GUIDE_STRIP_WIDTH}px))`,
+          transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
+          '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+        }}
+      >
+        <section
+          id={guideId}
+          aria-label={t('title')}
+          {...inertWhen(!isOpen)}
+          css={{ flex: 1, minWidth: 0, display: 'flex' }}
+        >
+          {/* Same guide panel as the current layout; mounted while closed so the slide shows content */}
+          <WfoWorkflowGuideMarkdown workflowName={workflowName} isBigScreen />
+        </section>
+        <button
+          type="button"
+          aria-expanded={isOpen}
+          aria-controls={guideId}
+          aria-label={isOpen ? t('hide') : t('show')}
+          title={isOpen ? t('hide') : t('show')}
+          onClick={onToggle}
+          css={{
+            // Same look as the current guide strip
+            alignSelf: 'stretch',
+            width: GUIDE_STRIP_WIDTH,
+            flexShrink: 0,
+            display: 'grid',
+            placeItems: 'center',
+            padding: 0,
+            background: theme.colors.backgroundBasePrimary,
+            border: guideBorder,
+            // Open it joins the guide panel, closed the form panel: no left border, rounded on the right only
+            borderInlineStart: 0,
+            borderRadius: `0 ${theme.border.radius.medium} ${theme.border.radius.medium} 0`,
+            cursor: 'pointer',
+            transition: 'border-color 100ms ease-in-out',
+            '&:hover': { borderColor: theme.colors.borderBasePrimary },
+          }}
+        >
+          <EuiIcon type={isOpen ? 'chevronSingleLeft' : 'info'} size="l" color="primary" />
+        </button>
+      </div>
+    </div>
   );
 };
 
-const visuallyHidden = {
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  overflow: 'hidden',
-  clip: 'rect(0 0 0 0)',
-  whiteSpace: 'nowrap',
-} as const;
-
+/*
+ * Step list as a rail: collapsed it shows only the markers (RAIL_WIDTH), so the wizard and guide get the space.
+ * Hover or keyboard focus expands it over the page (never pushes the form). Done steps stay real links, and
+ * the titles stay in the DOM while collapsed, so screen readers always get the names.
+ * WCAG 1.4.13: the expanded list stays open while the pointer is on it, and Escape hides it.
+ */
 const WfoFormStepList = (props: StepListProps) => {
   const { theme } = useOrchestratorTheme();
   const items = useStepItems(props);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
+  const isExpanded = (isHovered || hasFocus) && !isDismissed;
+  const textStyle = { opacity: isExpanded ? 1 : 0, transition: 'opacity 120ms ease' };
+  const t = useTranslations('pydanticForms.userInputForm');
+
+  // Escape hides the expanded list wherever focus is (also while typing in the form under a hovered list)
+  useEffect(() => {
+    if (!isExpanded) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsDismissed(true);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isExpanded]);
 
   return (
-    <EuiPanel hasBorder hasShadow={false} paddingSize="m" css={{ position: 'sticky', top: theme.size.l }}>
-      <ol css={{ listStyle: 'none', margin: 0, padding: 0 }}>
-        {items.map(({ label, caption, state, onClick }, i) => {
-          const isUnknown = state === 'unknown';
-          const labelColor =
-            state === 'current' ? theme.colors.primary
-            : state === 'upcoming' || state === 'final' || isUnknown ? theme.colors.textSubdued
-            : undefined;
-          return (
-            <li
-              key={i}
-              aria-current={state === 'current' ? 'step' : undefined}
-              css={{
-                position: 'relative',
-                padding: `0 0 ${theme.size.l} 32px`,
-                '&:not(:last-child)::before': {
-                  content: '""',
-                  position: 'absolute',
-                  left: 9,
-                  top: 22,
-                  bottom: 2,
-                  borderLeft: `2px ${isUnknown ? 'dashed' : 'solid'} ${
-                    state === 'done' ? theme.colors.primary : theme.colors.borderBasePlain
-                  }`,
-                },
-              }}
-            >
-              <StepMarker state={state} css={{ position: 'absolute', left: 0, top: 0 }} />
-              {!isUnknown && (
-                <EuiText size="xs" color="subdued">
-                  {caption}
-                </EuiText>
-              )}
-              <EuiText
-                size="s"
+    <nav
+      aria-label={t('steps')}
+      css={{ position: 'relative', zIndex: 2 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsDismissed(false);
+      }}
+      onFocus={() => {
+        setHasFocus(true);
+        setIsDismissed(false);
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setHasFocus(false);
+      }}
+    >
+      <EuiPanel
+        hasBorder
+        hasShadow={false}
+        paddingSize="m"
+        css={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: isExpanded ? STEP_LIST_EXPANDED_WIDTH : RAIL_WIDTH,
+          // Many steps on a short screen: the list scrolls instead of running off the bottom
+          maxHeight: `calc(100vh - ${theme.base * 3}px - 2 * ${theme.size.l})`,
+          overflowX: 'hidden',
+          overflowY: 'auto',
+          boxShadow: isExpanded ? '0 8px 24px rgba(0, 0, 0, 0.15)' : 'none',
+          transition: 'width 160ms ease, box-shadow 160ms ease',
+          '@media (prefers-reduced-motion: reduce)': { transition: 'none', '*': { transition: 'none !important' } },
+        }}
+      >
+        {/* Fixed inner width: the titles never re-wrap while the panel opens */}
+        <ol css={{ listStyle: 'none', margin: 0, padding: 0, width: STEP_LIST_EXPANDED_WIDTH - 2 * theme.base }}>
+          {items.map(({ label, caption, state, onClick }, i) => {
+            const isUnknown = state === 'unknown';
+            const labelColor =
+              state === 'current' ? theme.colors.primary
+              : state === 'upcoming' || state === 'final' || isUnknown ? theme.colors.textSubdued
+              : undefined;
+            return (
+              <li
+                key={i}
+                aria-current={state === 'current' ? 'step' : undefined}
                 css={{
-                  fontWeight: state === 'current' ? theme.font.weight.bold : theme.font.weight.regular,
-                  fontStyle: isUnknown ? 'italic' : undefined,
-                  color: labelColor,
+                  position: 'relative',
+                  padding: `0 0 ${theme.size.l} 32px`,
+                  // No space under the last step: the panel's own padding closes the list. Collapsed, the hidden
+                  // two-line text (caption 16 + label 20) is 16px higher than the marker; pull that up as well,
+                  // so the space under the last marker equals the space above the first one.
+                  '&:last-child': { paddingBottom: 0, marginBottom: isExpanded ? 0 : `-${theme.size.base}` },
+                  // Collapsed (after Escape) the focused link text is hidden: show the focus on its marker (WCAG 2.4.7)
+                  ...(!isExpanded && {
+                    '&:focus-within > [aria-hidden]': {
+                      outline: `2px solid ${theme.colors.primary}`,
+                      outlineOffset: 2,
+                    },
+                  }),
+                  '&:not(:last-child)::before': {
+                    content: '""',
+                    position: 'absolute',
+                    left: 9,
+                    top: 22,
+                    bottom: 2,
+                    borderLeft: `2px ${isUnknown ? 'dashed' : 'solid'} ${
+                      state === 'done' ? theme.colors.primary : theme.colors.borderBasePlain
+                    }`,
+                  },
                 }}
               >
-                {onClick ?
-                  <EuiLink onClick={onClick}>{label}</EuiLink>
-                : label}
-              </EuiText>
-              {isUnknown && (
-                <EuiText size="xs" color="subdued">
-                  {caption}
+                <StepMarker state={state} css={{ position: 'absolute', left: 0, top: 0 }} />
+                {!isUnknown && (
+                  <EuiText size="xs" color="subdued" css={textStyle}>
+                    {caption}
+                  </EuiText>
+                )}
+                <EuiText
+                  size="s"
+                  title={label}
+                  css={{
+                    ...textStyle,
+                    fontWeight: state === 'current' ? theme.font.weight.bold : theme.font.weight.regular,
+                    fontStyle: isUnknown ? 'italic' : undefined,
+                    color: labelColor,
+                    // One line per title: long titles get an ellipsis (full title on hover)
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {onClick ?
+                    <EuiLink onClick={onClick}>{label}</EuiLink>
+                  : label}
                 </EuiText>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </EuiPanel>
+                {isUnknown && (
+                  <EuiText size="xs" color="subdued" css={textStyle}>
+                    {caption}
+                  </EuiText>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </EuiPanel>
+    </nav>
   );
 };
 
@@ -441,9 +544,6 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
   const { theme } = useOrchestratorTheme();
   const { showWorkflowUserGuide, expandWorkflowUserGuideOnStart } = useGetOrchestratorConfig();
   const [isGuideOpen, setIsGuideOpen] = useState(expandWorkflowUserGuideOnStart);
-  // Below xl the guide stacks (see WfoWorkflowGuideExpandablePanel); only a side-by-side guide needs the space
-  const isBigScreen = useIsWithinBreakpoints(['xl', 'xxl']);
-  const isCompact = showWorkflowUserGuide && isGuideOpen && isBigScreen;
   const { productId, subscriptionId } = router.query as { productId?: string; subscriptionId?: string };
 
   const { data: workflowMetadata, isError: isErrorWorkflowDescription } = useGetDescriptionForWorkflowNameQuery({
@@ -495,9 +595,18 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
     for (let i = 0; i < stepCount; i++) previousRef.current?.();
   }, []);
 
+  const handleCancel = useCallback(
+    () =>
+      showConfirmDialog({
+        question: t('previousQuestion'),
+        onConfirm: () => router.replace(isTask ? PATH_TASKS : PATH_WORKFLOWS),
+      }),
+    [showConfirmDialog, t, router, isTask],
+  );
+
   const contextValue = useMemo(
-    () => ({ steps, hasPrevious, onPageShown, setNavigation, goBack }),
-    [steps, hasPrevious, onPageShown, setNavigation, goBack],
+    () => ({ steps, hasPrevious, onPageShown, setNavigation, goBack, onCancel: handleCancel }),
+    [steps, hasPrevious, onPageShown, setNavigation, goBack, handleCancel],
   );
 
   const renderers = useMemo(
@@ -511,65 +620,27 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
 
   const stepListProps = { steps, isTask, hasNext, canGoBack: hasPrevious, goBack };
 
-  const handleCancel = () =>
-    showConfirmDialog({
-      question: t('previousQuestion'),
-      onConfirm: () => router.replace(isTask ? PATH_TASKS : PATH_WORKFLOWS),
-    });
-
-  const headerButtons = [
-    <EuiButton key="cancel" onClick={handleCancel}>
-      {t('cancel')}
-    </EuiButton>,
-  ];
-
   return (
     <FormLayoutV2Context.Provider value={true}>
       <FormStepsContext.Provider value={contextValue}>
-        <WfoContentHeader title={<WfoTitleWithWebsocketBadge title={pageTitle} />}>{headerButtons}</WfoContentHeader>
+        <WfoContentHeader title={<WfoTitleWithWebsocketBadge title={pageTitle} />} spacerSize="xxl" />
         <div
           css={{
             display: 'grid',
             alignItems: 'start',
-            // Column widths are animated (not swapped), so opening the guide slides the form instead of jumping
-            gridTemplateColumns: `${isCompact ? 0 : STEP_COLUMN_WIDTH}px minmax(0, ${FORM_COLUMN_MAX_WIDTH}px) minmax(0, 1fr)`,
-            transition: 'grid-template-columns 300ms cubic-bezier(0.2, 0, 0, 1)',
-            '@media (prefers-reduced-motion: reduce)': { transition: 'none', '*': { transition: 'none !important' } },
+            // Fixed columns, open or closed: the guide always has its space, so opening it never moves the form.
+            // On a wide screen the form gets its max width and the guide the rest; on a laptop the form gives way.
+            // Without the guide (config off) no space is reserved for it.
+            gridTemplateColumns: `${RAIL_WIDTH}px minmax(0, ${FORM_COLUMN_MAX_WIDTH}px) minmax(${
+              showWorkflowUserGuide ? GUIDE_MIN_WIDTH : 0
+            }px, 1fr)`,
           }}
         >
-          <div
-            aria-hidden={isCompact}
-            // `inert` keeps the hidden list out of the tab order
-            {...inertWhen(isCompact)}
-            css={{
-              overflow: 'hidden',
-              paddingInlineEnd: theme.size.xl,
-              opacity: isCompact ? 0 : 1,
-              transition: 'opacity 200ms ease',
-              // Fixed inner width: the list fades out while the column shrinks, its text never re-wraps
-              '> *': { width: STEP_COLUMN_WIDTH - 32 },
-            }}
-          >
+          {/* Sticky on the grid item itself: a sticky child of a content-high cell has no room to stick */}
+          <div css={{ position: 'sticky', top: theme.size.l, zIndex: 2 }}>
             <WfoFormStepList {...stepListProps} />
           </div>
-          <div css={{ minWidth: 0 }}>
-            {/* 0fr -> 1fr grid row: the stepper grows in without a measured height */}
-            <div
-              aria-hidden={!isCompact}
-              {...inertWhen(!isCompact)}
-              css={{
-                display: 'grid',
-                gridTemplateRows: isCompact ? '1fr' : '0fr',
-                opacity: isCompact ? 1 : 0,
-                transition: 'grid-template-rows 300ms cubic-bezier(0.2, 0, 0, 1), opacity 200ms ease',
-              }}
-            >
-              <div css={{ overflow: 'hidden', minHeight: 0 }}>
-                <EuiPanel hasBorder hasShadow={false} paddingSize="m" css={{ marginBottom: theme.size.base }}>
-                  <WfoInlineStepper {...stepListProps} />
-                </EuiPanel>
-              </div>
-            </div>
+          <div css={{ minWidth: 0, paddingInlineStart: theme.size.l }}>
             <EuiPanel hasBorder hasShadow={false} paddingSize="l" css={getInputSurfaceStyle(theme)}>
               <FormPageFieldsV2Context.Provider value={pageFields}>
                 <WfoPydanticForm
@@ -583,23 +654,11 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
             </EuiPanel>
           </div>
           {showWorkflowUserGuide && (
-            <div
-              css={{
-                display: 'flex',
-                alignSelf: 'stretch',
-                paddingInlineStart: theme.size.xl,
-                // closed: the info strip sits at the far end; open: the guide fills the rest
-                justifyContent: isGuideOpen ? 'stretch' : 'flex-end',
-              }}
-            >
-              <EuiFlexGroup gutterSize="none" css={{ position: 'relative', flexGrow: isGuideOpen ? 1 : 0 }}>
-                <WfoWorkflowGuideExpandablePanel
-                  workflowName={processName}
-                  isExpanded={isGuideOpen}
-                  onToggle={() => setIsGuideOpen((open) => !open)}
-                />
-              </EuiFlexGroup>
-            </div>
+            <WfoTuckedGuide
+              workflowName={processName}
+              isOpen={isGuideOpen}
+              onToggle={() => setIsGuideOpen((open) => !open)}
+            />
           )}
         </div>
       </FormStepsContext.Provider>

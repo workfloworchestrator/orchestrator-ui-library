@@ -458,7 +458,6 @@ export const WfoProcessDetail = ({
             zIndex: 3,
             background: theme.colors.backgroundBasePlain,
             padding: `${theme.size.s} 0 0`,
-            marginBottom: theme.size.m,
           }}
         >
           <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" gutterSize="m" wrap responsive={false}>
@@ -549,6 +548,9 @@ export const WfoProcessDetail = ({
             />
           )}
         </div>
+
+        {/* Outside the sticky header, so scrolling content doesn't show through the gap */}
+        <EuiSpacer size="xxl" />
 
         <div
           css={{

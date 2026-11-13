@@ -253,7 +253,9 @@
       "resumeWorkflow": "Resume workflow",
       "startTask": "Start task",
       "startWorkflow": "Start workflow",
-      "stepNumber": "Step {number}"
+      "refreshOptions": "Refresh options",
+      "stepNumber": "Step {number}",
+      "steps": "Steps"
     },
     "widgets": {
       "arrayField": {
@@ -627,7 +629,8 @@
   "workflowGuide": {
     "hide": "Hide user guide",
     "noGuideAvailable": "No user guide is available for this workflow/task",
-    "show": "Show user guide"
+    "show": "Show user guide",
+    "title": "User guide"
   },
   "workflows": {
     "index": {

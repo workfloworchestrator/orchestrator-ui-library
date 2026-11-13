@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 
-import { EuiFlexGroup, EuiFlexItem, EuiPageHeader, EuiSpacer } from '@elastic/eui';
+import { EuiFlexGroup, EuiFlexItem, EuiPageHeader, EuiSpacer, EuiSpacerProps } from '@elastic/eui';
 
 import { WfoRenderElementOrString } from '@/components';
 
@@ -8,9 +8,10 @@ export type WfoContentHeaderProps = {
   title: ReactElement | string;
   subtitle?: ReactElement | string;
   children?: ReactElement | ReactElement[] | string;
+  spacerSize?: EuiSpacerProps['size'];
 };
 
-export const WfoContentHeader: FC<WfoContentHeaderProps> = ({ title, subtitle, children }) => (
+export const WfoContentHeader: FC<WfoContentHeaderProps> = ({ title, subtitle, children, spacerSize = 'l' }) => (
   <>
     <EuiFlexGroup>
       <EuiFlexItem>
@@ -34,6 +35,6 @@ export const WfoContentHeader: FC<WfoContentHeaderProps> = ({ title, subtitle, c
       )}
     </EuiFlexGroup>
 
-    <EuiSpacer size="l" />
+    <EuiSpacer size={spacerSize} />
   </>
 );

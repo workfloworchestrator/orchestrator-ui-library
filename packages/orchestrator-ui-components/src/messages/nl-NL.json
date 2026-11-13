@@ -253,7 +253,9 @@
       "resumeWorkflow": "Hervat workflow",
       "startTask": "Start taak",
       "startWorkflow": "Start workflow",
-      "stepNumber": "Stap {number}"
+      "refreshOptions": "Opties vernieuwen",
+      "stepNumber": "Stap {number}",
+      "steps": "Stappen"
     },
     "widgets": {
       "arrayField": {
@@ -627,7 +629,8 @@
   "workflowGuide": {
     "hide": "Verberg gebruikershandleiding",
     "noGuideAvailable": "Er is geen gebruikershandleiding beschikbaar voor deze workflow/taak",
-    "show": "Toon gebruikershandleiding"
+    "show": "Toon gebruikershandleiding",
+    "title": "Gebruikershandleiding"
   },
   "workflows": {
     "index": {
