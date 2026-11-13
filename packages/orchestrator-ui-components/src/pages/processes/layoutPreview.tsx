@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import { EuiButtonGroup } from '@elastic/eui';
+import { EuiButtonGroup, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
-// ponytail: temporary before/after demo switch for the new start/process layouts; delete this file when the new layout replaces the current one
+// Opt-in switch between the current and the new (beta) start/process layouts. Kept so users can try the new layout; remove when the new layout becomes the default.
 const STORAGE_KEY = 'wfoNewUiPreview';
 
 /**
@@ -55,15 +55,23 @@ export const WfoLayoutPreviewToggle = ({
   isNewUi?: boolean;
   onChange: (value: boolean) => void;
 }) => (
-  <EuiButtonGroup
-    legend="Layout preview"
-    buttonSize="compressed"
-    idSelected={isNewUi ? 'new' : 'current'}
-    onChange={(id) => onChange(id === 'new')}
-    options={[
-      { id: 'current', label: 'Current layout' },
-      { id: 'new', label: 'New layout' },
-    ]}
-    css={{ marginBottom: 16 }}
-  />
+  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} css={{ marginBottom: 16 }}>
+    <EuiFlexItem grow={false}>
+      <EuiText size="s">
+        <strong>Layout:</strong>
+      </EuiText>
+    </EuiFlexItem>
+    <EuiFlexItem grow={false}>
+      <EuiButtonGroup
+        legend="Layout"
+        buttonSize="compressed"
+        idSelected={isNewUi ? 'new' : 'current'}
+        onChange={(id) => onChange(id === 'new')}
+        options={[
+          { id: 'current', label: 'Classic' },
+          { id: 'new', label: 'New (beta)' },
+        ]}
+      />
+    </EuiFlexItem>
+  </EuiFlexGroup>
 );
