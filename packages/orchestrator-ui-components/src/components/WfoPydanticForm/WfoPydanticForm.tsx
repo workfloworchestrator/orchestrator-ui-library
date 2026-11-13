@@ -3,7 +3,7 @@ import React, { useCallback, useMemo } from 'react';
 import _ from 'lodash';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
-import type { PydanticFormApiProvider } from 'pydantic-forms';
+import type { PydanticComponentMatcher, PydanticFormApiProvider, PydanticFormConfig } from 'pydantic-forms';
 import { PydanticForm } from 'pydantic-forms';
 
 import { PATH_TASKS, PATH_WORKFLOWS } from '@/components';
@@ -19,13 +19,23 @@ interface WfoPydanticFormProps {
   processName: string;
   startProcessPayload?: StartWorkflowPayload;
   isTask?: boolean;
+  /** Replaces the default header, row and/or footer renderers */
+  renderers?: Pick<PydanticFormConfig, 'headerRenderer' | 'rowRenderer' | 'footerRenderer'>;
+  /** Matchers checked before the default ones (first match wins). Pass a stable (module-level) array. */
+  componentOverrides?: PydanticComponentMatcher[];
 }
 
 interface StartProcessResponse {
   id: string;
 }
 
-export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: WfoPydanticFormProps) => {
+export const WfoPydanticForm = ({
+  processName,
+  startProcessPayload,
+  isTask,
+  renderers,
+  componentOverrides,
+}: WfoPydanticFormProps) => {
   const generateFormId = useMemo(() => {
     return `${JSON.stringify(startProcessPayload)}`;
   }, [startProcessPayload]);
@@ -116,6 +126,15 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
 
   const config = useGetPydanticFormsConfig(getPydanticFormProvider, (props) => <Footer {...props} isTask={isTask} />);
 
+  const baseExtender = config.componentMatcherExtender;
+  const componentMatcherExtender = useCallback<NonNullable<PydanticFormConfig['componentMatcherExtender']>>(
+    (matchers) => {
+      const base = baseExtender ? baseExtender(matchers) : matchers;
+      return componentOverrides ? [...componentOverrides, ...base] : base;
+    },
+    [baseExtender, componentOverrides],
+  );
+
   const handleCancel = useCallback(() => {
     const pfBasePath = isTask ? PATH_TASKS : PATH_WORKFLOWS;
     router.replace(pfBasePath);
@@ -127,7 +146,7 @@ export const WfoPydanticForm = ({ processName, startProcessPayload, isTask }: Wf
       formId={generateFormId}
       onSuccess={onSuccess}
       onCancel={handleCancel}
-      config={config}
+      config={{ ...config, ...renderers, componentMatcherExtender }}
     />
   );
 };

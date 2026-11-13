@@ -90,7 +90,13 @@ const WfoWorkflowGuideToggleStrip = ({
   );
 };
 
-const WfoWorkflowGuideMarkdown = ({ workflowName, isBigScreen }: { workflowName: string; isBigScreen: boolean }) => {
+export const WfoWorkflowGuideMarkdown = ({
+  workflowName,
+  isBigScreen,
+}: {
+  workflowName: string;
+  isBigScreen: boolean;
+}) => {
   const t = useTranslations('workflowGuide');
   const { guideBodyStyle, guidePanelStyle, guideStackedBodyStyle, guideStackedPanelStyle } =
     useWithOrchestratorTheme(getStyles);

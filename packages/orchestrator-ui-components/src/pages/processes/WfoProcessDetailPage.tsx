@@ -6,6 +6,7 @@ import { Step } from '@/types';
 import { getProductNamesFromProcess } from '@/utils';
 
 import { WfoProcessDetail } from './WfoProcessDetail';
+import { WfoLayoutPreviewToggle, useNewUiPreview } from './layoutPreview';
 import { convertStepsToGroupedSteps, mapGroupedStepsToTimelineItems } from './timelineUtils';
 
 export type GroupedStep = {
@@ -18,6 +19,7 @@ interface WfoProcessDetailPageProps {
 
 export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) => {
   const stepListRef = useRef<WfoStepListRef>(null);
+  const { isNewUi, setNewUi } = useNewUiPreview();
 
   const { data, isLoading, isError } = useGetProcessDetailQuery({
     processId,
@@ -41,33 +43,43 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
   const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
   const timelineItems: TimelineItem[] = mapGroupedStepsToTimelineItems(groupedSteps);
 
+  // Wait for the layout choice, so a suspended step form is not mounted twice (see layoutPreview.tsx)
+  if (isNewUi === undefined) return <WfoLoading />;
+
   return (
-    <WfoProcessDetail
-      pageTitle={pageTitle}
-      productNames={productNames}
-      buttonsAreDisabled={isLoading || isError}
-      processDetail={processDetail}
-      timelineItems={timelineItems}
-      onTimelineItemClick={(id: string) => stepListRef.current?.scrollToStep(id)}
-      isLoading={isLoading}
-      hasError={isError}
-    >
-      {(isError && <WfoError />)
-        || (isLoading && <WfoLoading />)
-        || (processDetail !== undefined && (
-          <WfoWorkflowStepList
-            ref={stepListRef}
-            lastStatus={processDetail.lastStatus}
-            processId={processDetail.processId}
-            workflowName={processDetail.workflowName}
-            steps={groupedSteps.flatMap((groupedStep) => groupedStep.steps)}
-            traceBack={processDetail.traceback}
-            userInputForm={processDetail.form}
-            startedAt={processDetail.startedAt}
-            isTask={isTask}
-            userPermissions={processDetail.userPermissions}
-          />
-        )) || <h1>Invalid processId</h1>}
-    </WfoProcessDetail>
+    <>
+      <WfoLayoutPreviewToggle isNewUi={isNewUi} onChange={setNewUi} />
+      <WfoProcessDetail
+        layout={isNewUi ? 'new' : 'current'}
+        pageTitle={pageTitle}
+        productNames={productNames}
+        buttonsAreDisabled={isLoading || isError}
+        processDetail={processDetail}
+        timelineItems={timelineItems}
+        traceback={processDetail?.traceback}
+        onTimelineItemClick={(id: string) => stepListRef.current?.scrollToStep(id)}
+        isLoading={isLoading}
+        hasError={isError}
+      >
+        {(isError && <WfoError />)
+          || (isLoading && <WfoLoading />)
+          || (processDetail !== undefined && (
+            <WfoWorkflowStepList
+              ref={stepListRef}
+              lastStatus={processDetail.lastStatus}
+              processId={processDetail.processId}
+              workflowName={processDetail.workflowName}
+              steps={groupedSteps.flatMap((groupedStep) => groupedStep.steps)}
+              // the new layout shows the traceback in the failure banner
+              traceBack={isNewUi ? null : processDetail.traceback}
+              userInputForm={processDetail.form}
+              startedAt={processDetail.startedAt}
+              isTask={isTask}
+              userPermissions={processDetail.userPermissions}
+              isNewLayout={isNewUi}
+            />
+          )) || <h1>Invalid processId</h1>}
+      </WfoProcessDetail>
+    </>
   );
 };

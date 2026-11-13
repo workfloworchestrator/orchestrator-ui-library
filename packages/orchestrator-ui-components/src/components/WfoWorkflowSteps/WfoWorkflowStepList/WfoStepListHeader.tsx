@@ -4,13 +4,17 @@ import { useTranslations } from 'next-intl';
 
 import {
   EuiButton,
+  EuiButtonEmpty,
   EuiButtonGroup,
   EuiFlexGroup,
   EuiForm,
   EuiFormRow,
+  EuiHorizontalRule,
   EuiPopover,
+  EuiRadioGroup,
   EuiSwitch,
   EuiText,
+  EuiTitle,
 } from '@elastic/eui';
 
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
@@ -35,6 +39,8 @@ export type WfoStepListHeaderProps = {
   onChangeHideMinimalStepNames: (hideMinimalStepNames: boolean) => void;
   onShowTraceback: (showTraceback: boolean) => void;
   onChangeDetailLevel: (detailLevel: StepDetailLevel) => void;
+  /** New process page layout: one tight row, title on one line, quiet secondary buttons */
+  isCompact?: boolean;
 };
 
 export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
@@ -53,6 +59,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   onChangeHideMinimalStepNames,
   onShowTraceback,
   onChangeDetailLevel,
+  isCompact = false,
 }) => {
   const t = useTranslations('processes.steps');
   const { theme } = useOrchestratorTheme();
@@ -64,16 +71,15 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   const onViewOptionClick = () => setIsViewOptionOpen((isViewOptionOpen) => !isViewOptionOpen);
   const closeViewOption = () => setIsViewOptionOpen(false);
 
-  const viewOptionButton = (
-    <EuiButton
-      onClick={onViewOptionClick}
-      iconType={() => <WfoEyeFill color={theme.colors.link} />}
-      iconSide="right"
-      size="s"
-    >
-      {t('viewOptions')}
-    </EuiButton>
-  );
+  // Secondary actions are quiet in the compact header, so the detail-level switch stays the main control
+  const SecondaryButton = isCompact ? EuiButtonEmpty : EuiButton;
+  const compactHeaderStyle = isCompact && {
+    marginTop: 0,
+    marginBottom: theme.size.m,
+    alignItems: 'center' as const,
+    flexWrap: 'wrap' as const,
+    rowGap: theme.size.s,
+  };
 
   const detailLevelOptions = [
     { id: StepDetailLevel.MINIMAL, label: t('detailMinimal') },
@@ -81,14 +87,31 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     { id: StepDetailLevel.HIGH, label: t('detailHigh') },
   ];
 
+  const viewOptionButton = (
+    <SecondaryButton
+      onClick={onViewOptionClick}
+      iconType={() => <WfoEyeFill color={theme.colors.link} />}
+      iconSide="right"
+      size="s"
+    >
+      {t('viewOptions')}
+    </SecondaryButton>
+  );
+
   return (
-    <EuiFlexGroup css={stepListHeaderStyle}>
+    <EuiFlexGroup css={[stepListHeaderStyle, compactHeaderStyle]}>
       {/* Left side: header and detail level selector */}
       <EuiFlexGroup css={stepListContentStyle}>
-        <EuiText size="m" css={stepListTitleStyle}>
-          {t(isTask ? 'taskSteps' : 'workflowSteps')}
-        </EuiText>
-        {!showRaw && (
+        {(isCompact && (
+          <EuiTitle size="s" css={{ whiteSpace: 'nowrap' }}>
+            <h2>{t(isTask ? 'taskSteps' : 'workflowSteps')}</h2>
+          </EuiTitle>
+        )) || (
+          <EuiText size="m" css={stepListTitleStyle}>
+            {t(isTask ? 'taskSteps' : 'workflowSteps')}
+          </EuiText>
+        )}
+        {!showRaw && !isCompact && (
           <EuiButtonGroup
             legend={t('detailLevel')}
             options={detailLevelOptions}
@@ -102,11 +125,15 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
       {/* Right side: view options */}
       <EuiFlexGroup justifyContent="flexEnd" direction="row" css={stepListOptionsContainerStyle} gutterSize="s">
         {showTracebackButton && (
-          <EuiButton onClick={() => onShowTraceback(!showTraceback)} size="s">
+          <SecondaryButton
+            onClick={() => onShowTraceback(!showTraceback)}
+            size="s"
+            {...(isCompact && { color: 'danger' as const, iconType: 'warning' })}
+          >
             {showTraceback ? t('hideTraceback') : t('showTraceback')}
-          </EuiButton>
+          </SecondaryButton>
         )}
-        <EuiButton
+        <SecondaryButton
           onClick={() => onChangeShowDelta(!showDelta)}
           disabled={isRunningWorkflow}
           iconSide="right"
@@ -116,10 +143,26 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
           )}
         >
           {showDelta ? t('hideDelta') : t('showDelta')}
-        </EuiButton>
+        </SecondaryButton>
         <EuiPopover button={viewOptionButton} isOpen={isViewOptionOpen} closePopover={closeViewOption} display="block">
           <div>
             <EuiForm component="form">
+              {isCompact && !showRaw && (
+                <>
+                  <EuiFormRow label={t('display')}>
+                    <EuiRadioGroup
+                      name="step-detail-level"
+                      options={detailLevelOptions}
+                      idSelected={detailLevel}
+                      onChange={(id) => {
+                        onChangeDetailLevel(id as StepDetailLevel);
+                        closeViewOption();
+                      }}
+                    />
+                  </EuiFormRow>
+                  <EuiHorizontalRule margin="s" />
+                </>
+              )}
               <EuiFormRow>
                 <EuiSwitch
                   label="Hidden keys"

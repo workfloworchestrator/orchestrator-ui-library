@@ -174,13 +174,17 @@
       "customer": "Customer",
       "delete": "Delete",
       "deleteQuestion": "Are you sure you want to delete the {workflowName} task?",
+      "failedAtStep": "Failed at step {number} of {total}: {name}",
+      "hideTraceback": "Hide traceback",
       "lastStep": "Current step",
       "lastUpdate": "Last update",
       "openWorkflowTaskInfo": "open workflow/task information in a new tab",
+      "product": "Product",
       "relatedSubscriptions": "Related subscriptions",
       "retry": "Retry",
       "retryTaskQuestion": "Are you sure you want to retry the {workflowName} task?",
       "retryWorkflowQuestion": "Are you sure you want to retry the {workflowName} workflow?",
+      "showTraceback": "Show traceback",
       "startedBy": "Started by",
       "startedOn": "Started on",
       "status": "Status"
@@ -213,6 +217,7 @@
       "detailLevel": "Detail",
       "detailMinimal": "Minimal",
       "detailStandard": "Standard",
+      "display": "Display",
       "duration": "Duration",
       "hideDelta": "Hide subscription delta",
       "hideMinimalStepNames": "Hide minimal step name",
@@ -230,11 +235,17 @@
   },
   "pydanticForms": {
     "userInputForm": {
+      "back": "Back",
       "cancel": "Cancel",
       "forbiddenFallback": "You are not allowed to perform this action.",
       "forbiddenTitle": "Not authorized",
+      "help": "Help",
       "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input field(s) have validation errors",
+      "lastStep": "Last step",
       "next": "Next",
+      "nextSteps": "Next steps",
+      "nextStepsHint": "Appear after this step",
+      "nextStepsMaybeHint": "May appear after this step",
       "preconditionFailedFallback": "A precondition for starting this task was not met.",
       "preconditionFailedTitle": "This task cannot be started right now",
       "previous": "Previous",
@@ -242,11 +253,24 @@
       "resumeTask": "Resume task",
       "resumeWorkflow": "Resume workflow",
       "startTask": "Start task",
-      "startWorkflow": "Start workflow"
+      "startWorkflow": "Start workflow",
+      "refreshOptions": "Refresh options",
+      "stepNumber": "Step {number}",
+      "steps": "Steps"
     },
     "widgets": {
       "arrayField": {
         "noItemsAvailable": "No items available"
+      },
+      "arrayFieldV2": {
+        "add": "Add",
+        "addContactPerson": "Add contact person",
+        "contactPersonNumber": "Contact person {number}",
+        "itemNumber": "Item {number}",
+        "noItemsAvailable": "No items available",
+        "remove": "Remove",
+        "removeItem": "Remove {item}",
+        "selectCustomerFirst": "Select a customer first. Then you can pick a contact person."
       },
       "contactPersonName": {
         "placeholder": "Search and add contact persons..."
@@ -550,7 +574,8 @@
   "workflowGuide": {
     "hide": "Hide user guide",
     "noGuideAvailable": "No user guide is available for this workflow/task",
-    "show": "Show user guide"
+    "show": "Show user guide",
+    "title": "User guide"
   },
   "workflows": {
     "index": {
