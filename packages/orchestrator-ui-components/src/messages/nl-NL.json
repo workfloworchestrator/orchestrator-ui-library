@@ -186,6 +186,7 @@
       "status": "Status"
     },
     "index": {
+      "score": "Betrouwbaarheid",
       "assignee": "Assignee",
       "createdBy": "Aangemaakt door",
       "customer": "Klant",
