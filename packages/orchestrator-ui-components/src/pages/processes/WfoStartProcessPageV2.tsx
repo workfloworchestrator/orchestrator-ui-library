@@ -471,13 +471,21 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
   const [hasNext, setHasNext] = useState(false);
   const [pageFields, setPageFields] = useState<PageFields>({});
   const shownKey = useRef<string | undefined>(undefined);
+  // The page we just left with Back. pydantic-forms renders it once more (stale schema) after the previous
+  // page loads but before it swaps the schema; without this that stale render counts as a new step.
+  const leftKey = useRef<string | undefined>(undefined);
   const previousRef = useRef<(() => void) | undefined>(undefined);
   const stepsRef = useRef(steps);
   stepsRef.current = steps;
 
   const onPageShown = useCallback((key: string, title: string, fields: PageFields) => {
     // The header also re-renders the page that is already shown (and the page we went back to): ignore that
-    if (key === shownKey.current) return;
+    if (key === leftKey.current) return;
+    if (key === shownKey.current) {
+      leftKey.current = undefined; // the page we went back to is shown: the stale render is over
+      return;
+    }
+    leftKey.current = undefined;
     shownKey.current = key;
     setPageFields(fields);
     setSteps((current) => {
@@ -504,6 +512,7 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
     const { index, keys } = stepsRef.current;
     const target = Math.max(0, index - stepCount);
     if (!onPrevious || target === index) return;
+    leftKey.current = keys[index];
     shownKey.current = keys[target];
     setSteps((current) => ({ ...current, index: target }));
     for (let i = 0; i < stepCount; i++) onPrevious();
