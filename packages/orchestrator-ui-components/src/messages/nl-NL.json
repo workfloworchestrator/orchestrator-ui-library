@@ -61,6 +61,11 @@
     "softwareVersions": "Software Versies",
     "support": "Support"
   },
+  "layoutPreview": {
+    "classic": "Klassiek",
+    "label": "Weergave",
+    "new": "Nieuw (bèta)"
+  },
   "main": {
     "ariaLabelCurrentPage": "Huidige pagina",
     "ariaLabelToggleSideMenu": "Toon/Verberg menu",
@@ -249,11 +254,11 @@
       "preconditionFailedTitle": "Deze workflow kan op dit moment niet worden gestart",
       "previous": "Vorige",
       "previousQuestion": "Weet je zeker dat je deze pagina wilt verlaten? Ingevulde velden worden niet opgeslagen",
+      "refreshOptions": "Opties vernieuwen",
       "resumeTask": "Hervat taak",
       "resumeWorkflow": "Hervat workflow",
       "startTask": "Start taak",
       "startWorkflow": "Start workflow",
-      "refreshOptions": "Opties vernieuwen",
       "stepNumber": "Stap {number}",
       "steps": "Stappen"
     },

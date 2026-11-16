@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -46,10 +46,10 @@ import {
   useDeleteProcessMutation,
   useRetryProcessMutation,
 } from '@/rtk/endpoints/processDetail';
-import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus, StepStatus } from '@/types';
+import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
-import { getIndexOfCurrentStep } from './timelineUtils';
+import { getFailedStepIndex, getIndexOfCurrentStep } from './timelineUtils';
 
 // Detail page: the steps have no panel, so the tab floats; the strip is a 16px gap + a 32px tab
 const DETAIL_GUIDE_STRIP_WIDTH = 48;
@@ -173,9 +173,9 @@ export const WfoProcessDetail = ({
   // The sticky header's height: the user guide sticks right below it
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
-  useLayoutEffect(() => {
+  useEffect(() => {
     const header = headerRef.current;
-    if (!header) return;
+    if (!header || typeof ResizeObserver === 'undefined') return;
     const observer = new ResizeObserver(() => setHeaderHeight(header.offsetHeight));
     observer.observe(header);
     return () => observer.disconnect();
@@ -446,8 +446,8 @@ export const WfoProcessDetail = ({
       : []),
     ];
 
-    const failedStepIndex = timelineItems.findIndex((item) => item.processStepStatus === StepStatus.FAILED);
-    const hasFailed = listIncludesStatus([ProcessStatus.FAILED], processDetail?.lastStatus) && failedStepIndex !== -1;
+    const failedStepIndex = getFailedStepIndex(timelineItems, processDetail?.lastStatus);
+    const hasFailed = failedStepIndex !== -1;
 
     return (
       <>

@@ -61,6 +61,11 @@
     "softwareVersions": "Software Versions",
     "support": "Support"
   },
+  "layoutPreview": {
+    "classic": "Classic",
+    "label": "Layout",
+    "new": "New (beta)"
+  },
   "main": {
     "ariaLabelCurrentPage": "Current page",
     "ariaLabelToggleSideMenu": "Show/Hide side menu",
@@ -249,11 +254,11 @@
       "preconditionFailedTitle": "This task cannot be started right now",
       "previous": "Previous",
       "previousQuestion": "Are you sure you want to leave this page? Any filled form data will be lost",
+      "refreshOptions": "Refresh options",
       "resumeTask": "Resume task",
       "resumeWorkflow": "Resume workflow",
       "startTask": "Start task",
       "startWorkflow": "Start workflow",
-      "refreshOptions": "Refresh options",
       "stepNumber": "Step {number}",
       "steps": "Steps"
     },

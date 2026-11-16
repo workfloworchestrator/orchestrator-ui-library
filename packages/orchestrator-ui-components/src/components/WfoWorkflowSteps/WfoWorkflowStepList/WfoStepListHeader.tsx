@@ -71,7 +71,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   const onViewOptionClick = () => setIsViewOptionOpen((isViewOptionOpen) => !isViewOptionOpen);
   const closeViewOption = () => setIsViewOptionOpen(false);
 
-  // Secondary actions are quiet in the compact header, so the detail-level switch stays the main control
+  // Compact header: secondary actions are quiet, and the detail level moves into the view options popover
   const SecondaryButton = isCompact ? EuiButtonEmpty : EuiButton;
   const compactHeaderStyle = isCompact && {
     marginTop: 0,

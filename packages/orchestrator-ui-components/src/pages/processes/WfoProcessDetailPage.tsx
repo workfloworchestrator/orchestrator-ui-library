@@ -7,7 +7,7 @@ import { getProductNamesFromProcess } from '@/utils';
 
 import { WfoProcessDetail } from './WfoProcessDetail';
 import { WfoLayoutPreviewToggle, useNewUiPreview } from './layoutPreview';
-import { convertStepsToGroupedSteps, mapGroupedStepsToTimelineItems } from './timelineUtils';
+import { convertStepsToGroupedSteps, getFailedStepIndex, mapGroupedStepsToTimelineItems } from './timelineUtils';
 
 export type GroupedStep = {
   steps: Step[];
@@ -43,6 +43,8 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
   const groupedSteps: GroupedStep[] = convertStepsToGroupedSteps(steps);
   const timelineItems: TimelineItem[] = mapGroupedStepsToTimelineItems(groupedSteps);
 
+  const hasFailureBanner = getFailedStepIndex(timelineItems, processDetail?.lastStatus) !== -1;
+
   // Wait for the layout choice, so a suspended step form is not mounted twice (see layoutPreview.tsx)
   if (isNewUi === undefined) return <WfoLoading />;
 
@@ -70,8 +72,8 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
               processId={processDetail.processId}
               workflowName={processDetail.workflowName}
               steps={groupedSteps.flatMap((groupedStep) => groupedStep.steps)}
-              // the new layout shows the traceback in the failure banner
-              traceBack={isNewUi ? null : processDetail.traceback}
+              // the new layout shows the traceback in the failure banner; without a banner the step list keeps its button
+              traceBack={isNewUi && hasFailureBanner ? null : processDetail.traceback}
               userInputForm={processDetail.form}
               startedAt={processDetail.startedAt}
               isTask={isTask}

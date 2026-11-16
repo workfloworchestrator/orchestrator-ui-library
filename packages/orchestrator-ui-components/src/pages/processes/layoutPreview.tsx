@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
+
 import { EuiButtonGroup, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
 // Opt-in switch between the current and the new (beta) start/process layouts. Kept so users can try the new layout; remove when the new layout becomes the default.
@@ -41,24 +43,27 @@ export const WfoLayoutPreviewToggle = ({
 }: {
   isNewUi?: boolean;
   onChange: (value: boolean) => void;
-}) => (
-  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} css={{ marginBottom: 16 }}>
-    <EuiFlexItem grow={false}>
-      <EuiText size="s">
-        <strong>Layout:</strong>
-      </EuiText>
-    </EuiFlexItem>
-    <EuiFlexItem grow={false}>
-      <EuiButtonGroup
-        legend="Layout"
-        buttonSize="compressed"
-        idSelected={isNewUi ? 'new' : 'current'}
-        onChange={(id) => onChange(id === 'new')}
-        options={[
-          { id: 'current', label: 'Classic' },
-          { id: 'new', label: 'New (beta)' },
-        ]}
-      />
-    </EuiFlexItem>
-  </EuiFlexGroup>
-);
+}) => {
+  const t = useTranslations('layoutPreview');
+  return (
+    <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} css={{ marginBottom: 16 }}>
+      <EuiFlexItem grow={false}>
+        <EuiText size="s">
+          <strong>{t('label')}:</strong>
+        </EuiText>
+      </EuiFlexItem>
+      <EuiFlexItem grow={false}>
+        <EuiButtonGroup
+          legend={t('label')}
+          buttonSize="compressed"
+          idSelected={isNewUi ? 'new' : 'current'}
+          onChange={(id) => onChange(id === 'new')}
+          options={[
+            { id: 'current', label: t('classic') },
+            { id: 'new', label: t('new') },
+          ]}
+        />
+      </EuiFlexItem>
+    </EuiFlexGroup>
+  );
+};

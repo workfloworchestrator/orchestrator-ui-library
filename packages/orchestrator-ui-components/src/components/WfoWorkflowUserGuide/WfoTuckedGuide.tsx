@@ -45,7 +45,7 @@ export const WfoTuckedGuide = ({
   stripWidth?: number;
   /** tall: fills the free screen (big target). compact: a small tab in the middle (less visual weight). */
   tabSize?: 'tall' | 'compact';
-  /** false: the tab floats with a gap and round corners, for content that has no panel to attach to (include the gap in stripWidth) */
+  /** false: while closed the tab floats with a gap and round corners, for content that has no panel to attach to (include the gap in stripWidth). Open, it always touches the guide. */
   tabAttached?: boolean;
 }) => {
   const t = useTranslations('workflowGuide');
@@ -115,7 +115,9 @@ export const WfoTuckedGuide = ({
             position: 'sticky',
             top: stickyTop,
             display: 'grid',
-            width: stripWidth,
+            // Open: the tab always touches the guide, so it gives back the room of its gap (tabAttached={false})
+            width: isOpen ? EDGE_TAB_WIDTH : stripWidth,
+            transition: 'width 300ms cubic-bezier(0.2, 0, 0, 1)',
             flexShrink: 0,
             height: isOpen ? screenHigh : `min(100%, ${screenHigh})`,
           }}
@@ -123,7 +125,7 @@ export const WfoTuckedGuide = ({
           <WfoEdgeTab
             // Not the "info" icon: the page title already has one for the workflow information link
             size={tabSize}
-            attached={tabAttached}
+            attached={tabAttached || isOpen}
             icon={isOpen ? 'chevronSingleLeft' : 'documentation'}
             label={isOpen ? t('hide') : t('show')}
             onClick={onToggle}

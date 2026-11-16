@@ -53,7 +53,8 @@ import { getInitialProcessPayload } from './WfoStartProcessPage';
  * - Per field: label, description, input, error
  */
 
-type FormSteps = { titles: string[]; index: number; key?: string };
+// keys: what identifies a page (see StepHeader); the backend sends no step id, so title + field names it is
+type FormSteps = { titles: string[]; keys: string[]; index: number };
 type PageFields = NonNullable<PydanticFormHeaderProps['pydanticFormSchema']>['properties'];
 
 type FormStepsContextValue = {
@@ -66,7 +67,7 @@ type FormStepsContextValue = {
 };
 
 const FormStepsContext = createContext<FormStepsContextValue>({
-  steps: { titles: [], index: -1 },
+  steps: { titles: [], keys: [], index: -1 },
   hasPrevious: false,
   onPageShown: () => {},
   setNavigation: () => {},
@@ -465,28 +466,26 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
   );
 
   // Step tracking: one entry per form page the backend has sent so far
-  const [steps, setSteps] = useState<FormSteps>({ titles: [], index: -1 });
+  const [steps, setSteps] = useState<FormSteps>({ titles: [], keys: [], index: -1 });
   const [hasPrevious, setHasPrevious] = useState(false);
   const [hasNext, setHasNext] = useState(false);
   const [pageFields, setPageFields] = useState<PageFields>({});
-  const goingBack = useRef(0);
   const shownKey = useRef<string | undefined>(undefined);
   const previousRef = useRef<(() => void) | undefined>(undefined);
+  const stepsRef = useRef(steps);
+  stepsRef.current = steps;
 
   const onPageShown = useCallback((key: string, title: string, fields: PageFields) => {
-    // The header also re-renders the same page (e.g. while going back): ignore that, keep the back flag
+    // The header also re-renders the page that is already shown (and the page we went back to): ignore that
     if (key === shownKey.current) return;
     shownKey.current = key;
-    const back = goingBack.current;
-    goingBack.current = 0;
     setPageFields(fields);
     setSteps((current) => {
-      if (back) return { ...current, index: Math.max(0, current.index - back), key };
       const index = current.index + 1;
       return {
         titles: [...current.titles.slice(0, index), title],
+        keys: [...current.keys.slice(0, index), key],
         index,
-        key,
       };
     });
   }, []);
@@ -497,10 +496,17 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
     setHasNext(next);
   }, []);
 
-  // pydantic-forms goes back one page per onPrevious call (sync slice of its step history), so call it n times
+  // pydantic-forms goes back one page per onPrevious call (sync slice of its step history), so call it n times.
+  // The new step index is set here and not derived from the page that shows up: that page can look the same as
+  // the current one (same title and fields), and then it would not be noticed.
   const goBack = useCallback((stepCount = 1) => {
-    goingBack.current = stepCount;
-    for (let i = 0; i < stepCount; i++) previousRef.current?.();
+    const onPrevious = previousRef.current;
+    const { index, keys } = stepsRef.current;
+    const target = Math.max(0, index - stepCount);
+    if (!onPrevious || target === index) return;
+    shownKey.current = keys[target];
+    setSteps((current) => ({ ...current, index: target }));
+    for (let i = 0; i < stepCount; i++) onPrevious();
   }, []);
 
   const handleCancel = useCallback(
