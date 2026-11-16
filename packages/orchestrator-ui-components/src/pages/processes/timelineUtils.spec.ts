@@ -1,7 +1,9 @@
-import { Step, StepStatus } from '../../types';
+import { TimelineItem } from '../../components';
+import { ProcessStatus, Step, StepStatus } from '../../types';
 import { GroupedStep } from './WfoProcessDetailPage';
 import {
   convertStepsToGroupedSteps,
+  getFailedStepIndex,
   getMostAccurateTimelineStatus,
   mapGroupedStepsToTimelineItems,
 } from './timelineUtils';
@@ -188,5 +190,21 @@ describe('mapGroupedStepsToTimelineItems()', () => {
     // Then
     expect(result.length).toEqual(1);
     expect(result[0].value).toBeUndefined();
+  });
+});
+
+describe('getFailedStepIndex()', () => {
+  const items = [{ processStepStatus: StepStatus.SUCCESS }, { processStepStatus: StepStatus.FAILED }] as TimelineItem[];
+
+  it('returns the index of the failed step when the process failed', () => {
+    expect(getFailedStepIndex(items, ProcessStatus.FAILED)).toBe(1);
+  });
+
+  it('returns -1 when the process did not fail, also if a step failed', () => {
+    expect(getFailedStepIndex(items, ProcessStatus.ABORTED)).toBe(-1);
+  });
+
+  it('returns -1 when the process failed but no step is marked failed', () => {
+    expect(getFailedStepIndex([items[0]], ProcessStatus.FAILED)).toBe(-1);
   });
 });

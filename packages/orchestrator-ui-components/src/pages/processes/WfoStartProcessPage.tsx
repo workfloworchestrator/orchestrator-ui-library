@@ -16,6 +16,8 @@ import { useGetSubscriptionDetailQuery } from '@/rtk';
 import { ProcessDetail, ProcessStatus, StepStatus } from '@/types';
 
 import { WfoProcessDetail } from './WfoProcessDetail';
+import { WfoStartProcessPageV2 } from './WfoStartProcessPageV2';
+import { WfoLayoutPreviewToggle, useNewUiPreview } from './layoutPreview';
 
 type PreselectedInput = {
   prefix?: string;
@@ -47,7 +49,7 @@ export interface UserInputForm {
   hasNext?: boolean;
 }
 
-const getInitialProcessPayload = ({
+export const getInitialProcessPayload = ({
   productId,
   subscriptionId,
 }: StartProcessPageQuery): StartWorkflowPayload | undefined => {
@@ -63,7 +65,7 @@ const getInitialProcessPayload = ({
   return undefined;
 };
 
-export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartProcessPageProps) => {
+const WfoStartProcessPageCurrent = ({ processName, isTask = false }: WfoStartProcessPageProps) => {
   const t = useTranslations('processes.steps');
   const router = useRouter();
   const [hasError, setHasError] = useState<boolean>(false);
@@ -158,5 +160,17 @@ export const WfoStartProcessPage = ({ processName, isTask = false }: WfoStartPro
         </EuiPanel>
       </WfoPageWithUserGuide>
     </WfoProcessDetail>
+  );
+};
+
+export const WfoStartProcessPage = (props: WfoStartProcessPageProps) => {
+  const { isNewUi, setNewUi } = useNewUiPreview();
+  return (
+    <>
+      <WfoLayoutPreviewToggle isNewUi={isNewUi} onChange={setNewUi} />
+      {/* key: switching to another workflow keeps this page mounted, so reset its step list */}
+      {isNewUi === true && <WfoStartProcessPageV2 key={props.processName} {...props} />}
+      {isNewUi === false && <WfoStartProcessPageCurrent {...props} />}
+    </>
   );
 };
