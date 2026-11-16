@@ -168,7 +168,8 @@ export const WfoStartProcessPage = (props: WfoStartProcessPageProps) => {
   return (
     <>
       <WfoLayoutPreviewToggle isNewUi={isNewUi} onChange={setNewUi} />
-      {isNewUi === true && <WfoStartProcessPageV2 {...props} />}
+      {/* key: switching to another workflow keeps this page mounted, so reset its step list */}
+      {isNewUi === true && <WfoStartProcessPageV2 key={props.processName} {...props} />}
       {isNewUi === false && <WfoStartProcessPageCurrent {...props} />}
     </>
   );

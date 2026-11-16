@@ -34,6 +34,7 @@ import {
 } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback';
+import { TUCKED_GUIDE_OPEN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflowUserGuide/WfoTuckedGuide';
 import { WfoWorkflowGuideExpandablePanel } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
@@ -49,6 +50,9 @@ import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus, StepStatus } fr
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
 import { getIndexOfCurrentStep } from './timelineUtils';
+
+// Detail page: the steps have no panel, so the tab floats; the strip is a 16px gap + a 32px tab
+const DETAIL_GUIDE_STRIP_WIDTH = 48;
 
 interface ProcessHeaderValueProps {
   translationKey: string;
@@ -445,9 +449,6 @@ export const WfoProcessDetail = ({
     const failedStepIndex = timelineItems.findIndex((item) => item.processStepStatus === StepStatus.FAILED);
     const hasFailed = listIncludesStatus([ProcessStatus.FAILED], processDetail?.lastStatus) && failedStepIndex !== -1;
 
-    // Guide open next to the content (xl+): it takes the free space, the content keeps its width
-    const guideColumn = isGuideOpen && isBigScreen ? 'min(552px, 45vw)' : `${theme.base * 4 + 32}px`;
-
     return (
       <>
         <div
@@ -557,10 +558,17 @@ export const WfoProcessDetail = ({
             '--wfo-guide-sticky-top': `${headerHeight + 8}px`,
             display: 'grid',
             alignItems: 'start',
-            // Column width is animated (not swapped), so opening the guide slides the content instead of jumping.
+            // Big screen: the tucked guide column is only the strip while closed, so the content is as wide as it can be.
+            // The column width is animated (not swapped), so opening the guide slides the content instead of jumping.
             // Below xl the guide stacks on top (see WfoWorkflowGuideExpandablePanel).
             gridTemplateColumns:
-              isBigScreen ? `minmax(0, 1fr) ${showWorkflowUserGuide ? guideColumn : '0px'}` : 'minmax(0, 1fr)',
+              isBigScreen ?
+                `minmax(0, 1fr) ${
+                  !showWorkflowUserGuide ? '0px'
+                  : isGuideOpen ? TUCKED_GUIDE_OPEN_WIDTH
+                  : `${DETAIL_GUIDE_STRIP_WIDTH}px`
+                }`
+              : 'minmax(0, 1fr)',
             transition: 'grid-template-columns 300ms cubic-bezier(0.2, 0, 0, 1)',
             '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
           }}
@@ -597,28 +605,29 @@ export const WfoProcessDetail = ({
             )}
             {children}
           </div>
-          {showWorkflowUserGuide && (
-            <div
-              css={{
-                gridColumn: isBigScreen ? 2 : 1,
-                gridRow: isBigScreen ? 2 : 1,
-                display: 'flex',
-                alignSelf: 'stretch',
-                paddingInlineStart: isBigScreen ? theme.size.xl : 0,
-                paddingBottom: isBigScreen ? 0 : theme.size.m,
-                // closed: the info strip sits at the far end; open: the guide fills the column
-                justifyContent: isGuideOpen ? 'stretch' : 'flex-end',
-              }}
-            >
-              <EuiFlexGroup gutterSize="none" css={{ position: 'relative', flexGrow: isGuideOpen ? 1 : 0 }}>
-                <WfoWorkflowGuideExpandablePanel
+          {showWorkflowUserGuide
+            && (isBigScreen ?
+              <div css={{ gridColumn: 2, gridRow: 2, display: 'grid', alignSelf: 'stretch' }}>
+                <WfoTuckedGuide
                   workflowName={processDetail?.workflowName ?? ''}
-                  isExpanded={isGuideOpen}
+                  isOpen={isGuideOpen}
                   onToggle={() => setIsGuideOpen((open) => !open)}
+                  openWidth={TUCKED_GUIDE_OPEN_WIDTH}
+                  stripWidth={DETAIL_GUIDE_STRIP_WIDTH}
+                  tabAttached={false}
                 />
-              </EuiFlexGroup>
-            </div>
-          )}
+              </div>
+            : <div
+                css={{ gridColumn: 1, gridRow: 1, display: 'flex', alignSelf: 'stretch', paddingBottom: theme.size.m }}
+              >
+                <EuiFlexGroup gutterSize="none" css={{ position: 'relative', flexGrow: isGuideOpen ? 1 : 0 }}>
+                  <WfoWorkflowGuideExpandablePanel
+                    workflowName={processDetail?.workflowName ?? ''}
+                    isExpanded={isGuideOpen}
+                    onToggle={() => setIsGuideOpen((open) => !open)}
+                  />
+                </EuiFlexGroup>
+              </div>)}
         </div>
       </>
     );

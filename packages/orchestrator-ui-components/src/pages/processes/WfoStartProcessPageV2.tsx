@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
@@ -33,7 +33,7 @@ import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader
 import { FormLayoutV2Context, FormPageFieldsV2Context, WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { RenderFormErrors } from '@/components/WfoPydanticForm/RenderFormErrors';
 import { WfoArrayFieldV2 } from '@/components/WfoPydanticForm/fields';
-import { WfoWorkflowGuideMarkdown } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
+import { TUCKED_GUIDE_MIN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflowUserGuide/WfoTuckedGuide';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { useGetDescriptionForWorkflowNameQuery } from '@/rtk';
@@ -42,7 +42,7 @@ import type { WfoComputedTheme } from '@/theme';
 import { getInitialProcessPayload } from './WfoStartProcessPage';
 
 /*
- * New start-workflow layout (shown with ?newUi=1 next to the current page):
+ * New start-workflow layout (opt-in with the layout toggle, next to the current page):
  * - Back is a link above the step title; Next and Cancel sit under the form. DOM order = visual order, so Tab
  *   from the last field goes straight to Next, and Shift+Tab from the (focused) step title reaches Back.
  *   The sticky step list is the second way back, also from the bottom of a long step.
@@ -124,16 +124,11 @@ const StepHeader = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
 };
 
 const FORM_INPUT_MAX_WIDTH = 400;
-// React 18 passes unknown attributes through as strings; its types only know the React 19 boolean form
-const inertWhen = (on: boolean) => (on ? ({ inert: '' } as object) : {});
 const RAIL_WIDTH = 56; // collapsed step list: markers only
 const STEP_LIST_EXPANDED_WIDTH = 300; // step list on hover or focus, shown over the page
 // 24px gap + 640px panel: room for one field pair from a backend layout; more width only makes lines longer
 // and takes reading space from the guide
 const FORM_COLUMN_MAX_WIDTH = 664;
-const GUIDE_GAP = 8;
-const GUIDE_STRIP_WIDTH = 32;
-const GUIDE_MIN_WIDTH = 480; // open guide incl. strip: room for ~55 characters of guide text
 // Enabled inputs get the plain (white) form surface: the grey subdued surface reads as "disabled".
 // Covers EUI inputs and react-select controls (also the ones from app-level widgets we don't own).
 const getInputSurfaceStyle = (theme: WfoComputedTheme) =>
@@ -305,93 +300,6 @@ const StepMarker = ({ state, className }: { state: StepItem['state']; className?
         <span css={{ width: 8, height: 8, borderRadius: '50%', background: theme.colors.primary }} />
       )}
     </span>
-  );
-};
-
-/*
- * Guide as a page tucked under the form panel: a strip sticks to the right edge of the panel (reachable by
- * moving straight right from any field), and the guide panel slides out from behind the form panel.
- * The form never moves; like the current layout, the open guide fills the space right of the form.
- */
-const WfoTuckedGuide = ({
-  workflowName,
-  isOpen,
-  onToggle,
-}: {
-  workflowName: string;
-  isOpen: boolean;
-  onToggle: () => void;
-}) => {
-  const t = useTranslations('workflowGuide');
-  const { theme } = useOrchestratorTheme();
-  const guideBorder = `2px solid ${theme.colors.backgroundLightPrimary}`;
-  const guideId = useId();
-
-  return (
-    <div
-      css={{
-        position: 'sticky',
-        top: theme.size.l,
-        // viewport minus the top navigation and a gap above and below
-        height: `calc(100vh - ${theme.base * 3}px - 2 * ${theme.size.l})`,
-        minHeight: theme.base * 25,
-        // clips the guide while it is "under" the form panel
-        overflow: 'hidden',
-      }}
-    >
-      <div
-        css={{
-          display: 'flex',
-          // Guide and strip share the same gap above and below, so the open guide is as high as the strip
-          height: `calc(100% - 2 * ${theme.size.xl})`,
-          marginBlock: theme.size.xl,
-          width: `calc(100% - ${GUIDE_GAP}px)`,
-          // Closed: shifted left by the guide width, so only the strip shows, attached to the form panel.
-          // Open: slides out GUIDE_GAP past the panel edge; a small gap, smaller than the one to the step list,
-          // so the guide reads as its own object that still belongs to the form (law of proximity).
-          transform: isOpen ? `translateX(${GUIDE_GAP}px)` : `translateX(calc(-100% + ${GUIDE_STRIP_WIDTH}px))`,
-          transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
-          '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-        }}
-      >
-        <section
-          id={guideId}
-          aria-label={t('title')}
-          {...inertWhen(!isOpen)}
-          css={{ flex: 1, minWidth: 0, display: 'flex' }}
-        >
-          {/* Same guide panel as the current layout; mounted while closed so the slide shows content */}
-          <WfoWorkflowGuideMarkdown workflowName={workflowName} isBigScreen />
-        </section>
-        <button
-          type="button"
-          aria-expanded={isOpen}
-          aria-controls={guideId}
-          aria-label={isOpen ? t('hide') : t('show')}
-          title={isOpen ? t('hide') : t('show')}
-          onClick={onToggle}
-          css={{
-            // Same look as the current guide strip
-            alignSelf: 'stretch',
-            width: GUIDE_STRIP_WIDTH,
-            flexShrink: 0,
-            display: 'grid',
-            placeItems: 'center',
-            padding: 0,
-            background: theme.colors.backgroundBasePrimary,
-            border: guideBorder,
-            // Open it joins the guide panel, closed the form panel: no left border, rounded on the right only
-            borderInlineStart: 0,
-            borderRadius: `0 ${theme.border.radius.medium} ${theme.border.radius.medium} 0`,
-            cursor: 'pointer',
-            transition: 'border-color 100ms ease-in-out',
-            '&:hover': { borderColor: theme.colors.borderBasePrimary },
-          }}
-        >
-          <EuiIcon type={isOpen ? 'chevronSingleLeft' : 'info'} size="l" color="primary" />
-        </button>
-      </div>
-    </div>
   );
 };
 
@@ -632,7 +540,7 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
             // On a wide screen the form gets its max width and the guide the rest; on a laptop the form gives way.
             // Without the guide (config off) no space is reserved for it.
             gridTemplateColumns: `${RAIL_WIDTH}px minmax(0, ${FORM_COLUMN_MAX_WIDTH}px) minmax(${
-              showWorkflowUserGuide ? GUIDE_MIN_WIDTH : 0
+              showWorkflowUserGuide ? TUCKED_GUIDE_MIN_WIDTH : 0
             }px, 1fr)`,
           }}
         >
