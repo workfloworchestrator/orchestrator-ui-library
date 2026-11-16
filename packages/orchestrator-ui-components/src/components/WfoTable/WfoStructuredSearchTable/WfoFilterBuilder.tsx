@@ -44,6 +44,7 @@ interface WfoFilterBuilderProps {
   handleSearch: (searchParams?: SearchParams) => void;
   onToggleFilterBuilder: (isVisible: boolean) => void;
   useAdvancedNestedSearch?: boolean;
+  entityKind: EntityKind;
   error?: WfoGraphqlError[];
 }
 
@@ -62,6 +63,7 @@ export const WfoFilterBuilder = ({
   handleSearch,
   onToggleFilterBuilder,
   useAdvancedNestedSearch = false,
+  entityKind,
   error,
 }: WfoFilterBuilderProps) => {
   const t = useTranslations('common');
@@ -105,12 +107,13 @@ export const WfoFilterBuilder = ({
       ),
     [queryBuilderRuleGroup, fieldPathInfoMap],
   );
-  const resolvedFieldsPathInfo = useFieldsPathInfo(unresolvedFields, EntityKind.SUBSCRIPTION);
+  const resolvedFieldsPathInfo = useFieldsPathInfo(unresolvedFields, entityKind);
 
   const queryBuilderContext: WfoQueryBuilderContext = {
     onFieldSelected: handleFieldSelected,
     fieldPathInfoMap,
     useAdvancedNestedSearch,
+    entityKind,
   };
 
   useEffect(() => {
