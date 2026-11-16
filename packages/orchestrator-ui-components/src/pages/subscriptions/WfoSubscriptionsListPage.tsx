@@ -629,7 +629,7 @@ export const WfoSubscriptionsListPage = () => {
         pageIndex={pageIndex}
         onChangePage={showPage}
         onShowNextPage={onShowNextPage}
-        isTextSearch={!!committedQueryString}
+        paginationMode={committedQueryString ? 'cursor' : 'offset'}
         loadedPageCount={loadedPageCount}
         onUpdateRetrieverType={onUpdateRetrieverType}
         queryBuilderRuleGroup={queryBuilderRuleGroup}

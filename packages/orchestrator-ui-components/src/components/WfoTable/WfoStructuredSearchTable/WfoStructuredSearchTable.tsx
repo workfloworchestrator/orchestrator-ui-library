@@ -93,7 +93,7 @@ export type WfoStructuredSearchTableProps<T extends object> = Omit<
   pageIndex: number;
   onChangePage: (pageIndex: number) => void;
   onShowNextPage: () => void;
-  isTextSearch: boolean;
+  paginationMode: 'offset' | 'cursor';
   loadedPageCount: number;
   onUpdateDataSorting: (updateSorting: WfoDataSorting<T>) => void;
   // Resolves a column key to its search field path (e.g. "status" -> "subscription.status"), used
@@ -131,7 +131,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   pageIndex,
   onChangePage,
   onShowNextPage,
-  isTextSearch,
+  paginationMode,
   loadedPageCount,
   onExportData,
   retrieverType,
@@ -156,7 +156,7 @@ export const WfoStructuredSearchTable = <T extends object>({
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
   const { theme } = useOrchestratorTheme();
-  const { toggleButtonStyles } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
+  const { toggleButtonStyles, nextPageButtonStyle } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [userHiddenColumns, setUserHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
   const hiddenColumns = [...userHiddenColumns, ...additionalHiddenColumns];
   const [isFilterBuilderVisible, setIsFilterBuilderVisible] = useState(false);
@@ -188,13 +188,14 @@ export const WfoStructuredSearchTable = <T extends object>({
     }
   }, [filterString]);
 
+  const isCursorPaginationMode = paginationMode === 'cursor';
   const handleChangePage = (updatedPageIndex: number) =>
-    isTextSearch && updatedPageIndex >= loadedPageCount ? onShowNextPage() : onChangePage(updatedPageIndex);
+    isCursorPaginationMode && updatedPageIndex >= loadedPageCount ? onShowNextPage() : onChangePage(updatedPageIndex);
   const pageCountWithNext = loadedPageCount + (hasNextPage ? 1 : 0);
   const pagination: Pagination = {
     pageIndex,
     pageSize,
-    totalItemCount: isTextSearch ? pageCountWithNext * pageSize : totalItems || 0,
+    totalItemCount: isCursorPaginationMode ? pageCountWithNext * pageSize : totalItems || 0,
     pageSizeOptions: DEFAULT_PAGE_SIZES,
     onChangePage: handleChangePage,
     onChangeItemsPerPage: setPageSize,
@@ -204,13 +205,9 @@ export const WfoStructuredSearchTable = <T extends object>({
   const getNextPageButtonSelector = (loadedPageCount: number) =>
     `[data-test-subj="pagination-button-${loadedPageCount}"]`;
 
-  // A text query shows "..." instead of the number of that page
-  const nextPageButtonStyle = {
-    '& > *': { display: 'none' },
-    '&::after': { content: '"..."' },
-  };
+  // A cursor pagination mode shows "..." instead of the number of that page
   const tablePaginationStyle =
-    isTextSearch ? { [getNextPageButtonSelector(loadedPageCount)]: nextPageButtonStyle } : undefined;
+    isCursorPaginationMode ? { [getNextPageButtonSelector(loadedPageCount)]: nextPageButtonStyle } : undefined;
 
   const detailsIconColumn: WfoStructuredSearchTableColumnConfig<T> = {
     viewDetails: {

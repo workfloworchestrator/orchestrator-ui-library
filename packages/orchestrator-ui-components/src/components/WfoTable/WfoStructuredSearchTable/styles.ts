@@ -195,6 +195,11 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     alignItems: 'center',
   });
 
+  const nextPageButtonStyle = {
+    '& > *': { display: 'none' },
+    '&::after': { content: '"..."' },
+  };
+
   return {
     toggleButtonStyles,
     queryBuilderContainerStyles,
@@ -219,5 +224,6 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
     optionsMenuButtonStyles,
     optionsMenuSectionTitleStyles,
     optionsMenuCheckboxStyles,
+    nextPageButtonStyle,
   };
 };
