@@ -38,6 +38,7 @@ pnpm run prettier
 Each PR, which typically addresses an existing ticket from the issue list, should have a reference to the issue (eg use the issue number in the branch name). Furthermore the PR should include a changeset describing the changes of the PR, which will become part of the changelog in NPM.
 
 <<<<<<< HEAD
+
 ## Pull requests
 
 Open PRs as **draft** and click _Ready for review_ once CI passes. That triggers one Greptile review.
@@ -47,9 +48,12 @@ Open PRs as **draft** and click _Ready for review_ once CI passes. That triggers
 - Admins can add `greptile-review-trex` for an in-depth review.
 
 # Release and publish
+
 =======
+
 ## Release and publish
->>>>>>> 8170f08a (Change repo to only include and publish the orchestator-ui-components package)
+
+> > > > > > > 8170f08a (Change repo to only include and publish the orchestator-ui-components package)
 
 ### Preparing the release
 
