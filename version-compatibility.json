@@ -1,5 +1,10 @@
 [
   {
+    "orchestratorUiVersion": "11.1.0",
+    "minimumOrchestratorCoreVersion": "5.7.0a1",
+    "changes": "Bulk edit on the tasks list retries the selected tasks with the new bulk endpoint for process actions in the BE."
+  },
+  {
     "orchestratorUiVersion": "10.3.0",
     "minimumOrchestratorCoreVersion": "5.6.0",
     "changes": "Subscriptions export uses the new search export endpoint in the BE and process steps expose an importance value, used to show steps as minimal, standard or verbose."

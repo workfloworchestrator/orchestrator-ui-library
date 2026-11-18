@@ -21,6 +21,7 @@ import {
   WfoExportComputedColumn,
   WfoFirstPartUUID,
   WfoStructuredSearchTable,
+  WfoStructuredSearchTableBulkEditConfiguration,
   WfoStructuredSearchTableColumnConfig,
   useSearchExport,
   useStructuredSearchState,
@@ -164,6 +165,7 @@ export type WfoProcessesListProps = {
   overrideDefaultTableColumns?: (
     defaultTableColumns: WfoStructuredSearchTableColumnConfig<ProcessListItem>,
   ) => WfoStructuredSearchTableColumnConfig<ProcessListItem>;
+  bulkEditConfiguration?: WfoStructuredSearchTableBulkEditConfiguration<ProcessListItem>;
 };
 
 export const WfoProcessesList = ({
@@ -171,6 +173,7 @@ export const WfoProcessesList = ({
   statuses,
   localStorageKey,
   overrideDefaultTableColumns,
+  bulkEditConfiguration,
 }: WfoProcessesListProps) => {
   const t = useTranslations('processes.index');
   const router = useRouter();
@@ -470,6 +473,7 @@ export const WfoProcessesList = ({
       hasNextPage={hasNextPage}
       onExportData={() => exportData(searchPayload)}
       exportDataIsLoading={isExporting}
+      bulkEditConfiguration={bulkEditConfiguration}
     />
   );
 };

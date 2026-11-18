@@ -547,6 +547,26 @@ export type ProcessPatchParams = {
   note: string | null;
 };
 
+export type ProcessBulkAction = 'resume' | 'abort' | 'delete' | 'note';
+
+export type ProcessBulkParams = {
+  action: ProcessBulkAction;
+  processIds: string[];
+  note?: string | null;
+};
+
+export type ProcessBulkItemResult = {
+  process_id: string;
+  success: boolean;
+  error: string | null;
+};
+
+export type ProcessBulkResult = {
+  action: ProcessBulkAction;
+  count: number;
+  results: ProcessBulkItemResult[];
+};
+
 export type MetadataStatusParams = {
   id: string;
   status: ProductLifecycleStatus;

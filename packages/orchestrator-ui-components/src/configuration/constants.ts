@@ -7,6 +7,7 @@ export const NUMBER_OF_ITEMS_REPRESENTING_ALL_ITEMS = 1000000;
 export const PROCESSES_ENDPOINT = 'processes';
 export const PROCESS_STATUS_COUNTS_ENDPOINT = `${PROCESSES_ENDPOINT}/status-counts`;
 export const PROCESSES_RESUME_ALL_ENDPOINT = `resume-all`;
+export const PROCESSES_BULK_ENDPOINT = `bulk`;
 export const PROCESS_RESUME_ENDPOINT = `resume`;
 export const PROCESS_ABORT_ENDPOINT = `abort`;
 

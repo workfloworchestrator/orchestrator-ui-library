@@ -69,8 +69,14 @@ export type SearchParams = {
   };
 };
 
+export type WfoBulkEditActionsProps<T extends object> = {
+  selectedRows: T[];
+  clearSelection: () => void;
+};
+
 export type WfoStructuredSearchTableBulkEditConfiguration<T extends object> = {
   uniqueRowId: keyof T;
+  renderActions?: (bulkEditActionsProps: WfoBulkEditActionsProps<T>) => React.ReactNode;
 };
 
 export type WfoStructuredSearchTableProps<T extends object> = Omit<
@@ -286,6 +292,11 @@ export const WfoStructuredSearchTable = <T extends object>({
     handleSearch({ ruleGroup: columnFilter.ruleGroup });
   };
 
+  const bulkEditActions = bulkEditConfiguration?.renderActions?.({
+    selectedRows: bulkEdit.selectedRows,
+    clearSelection: bulkEdit.handleClearSelection,
+  });
+
   return (
     <>
       <EuiFlexGroup alignItems="center" gutterSize="s">
@@ -346,7 +357,7 @@ export const WfoStructuredSearchTable = <T extends object>({
 
       {error && !isFilterBuilderVisible && <WfoErrorWithMessage error={error} />}
 
-      {bulkEdit.isBulkEditMode && <WfoBulkEditToolbar bulkEdit={bulkEdit} />}
+      {bulkEdit.isBulkEditMode && <WfoBulkEditToolbar bulkEdit={bulkEdit} actions={bulkEditActions} />}
 
       <EuiSpacer size="m" />
 

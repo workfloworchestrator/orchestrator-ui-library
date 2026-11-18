@@ -11,11 +11,10 @@ import { useCheckEngineStatus, useOrchestratorTheme, usePolicy, useWithOrchestra
 import { WfoRefresh } from '@/icons';
 import { WfoDotsHorizontal } from '@/icons/WfoDotsHorizontal';
 import { useRetryProcessMutation } from '@/rtk/endpoints/processDetail';
-import { ProcessRetryableStatuses } from '@/types';
-import { listIncludesStatus } from '@/utils';
 
 import type { ProcessListItem } from './WfoProcessesList';
 import { getProcessActionStyles } from './styles';
+import { isProcessRetryable } from './utils';
 
 interface WfoProcessListActionsProps {
   processListItem: ProcessListItem;
@@ -31,12 +30,9 @@ export const WfoProcessListActions: FC<WfoProcessListActionsProps> = ({ processL
   const [retryProcess] = useRetryProcessMutation();
   const [isPopoverOpen, setPopover] = useState<boolean>(false);
 
-  const { processId, workflowName, lastStatus, userPermissions, isTask } = processListItem;
+  const { processId, workflowName, isTask } = processListItem;
 
-  const retryIsAllowed =
-    isAllowed(PolicyResource.PROCESS_RETRY)
-    && userPermissions?.retryAllowed === true
-    && listIncludesStatus(ProcessRetryableStatuses, lastStatus);
+  const retryIsAllowed = isAllowed(PolicyResource.PROCESS_RETRY) && isProcessRetryable(processListItem);
 
   const handleRetryClick = async () => {
     setPopover(false);

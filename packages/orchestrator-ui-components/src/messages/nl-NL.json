@@ -541,6 +541,13 @@
     "page": {
       "rerunAll": "Alle taken herstarten",
       "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt herstarten?",
+      "retrySelected": "Selectie opnieuw proberen",
+      "retrySelectedQuestion": "Weet u zeker dat u {count, plural, one {# geselecteerde taak} other {# geselecteerde taken}} opnieuw wilt proberen?",
+      "retrySelectedSkipped": "{count, plural, one {# geselecteerde taak kan niet opnieuw worden geprobeerd en wordt} other {# geselecteerde taken kunnen niet opnieuw worden geprobeerd en worden}} overgeslagen.",
+      "retrySelectedStartedTitle": "Opnieuw proberen gestart",
+      "retrySelectedStartedText": "{count, plural, one {# taak wordt} other {# taken worden}} opnieuw geprobeerd.",
+      "retrySelectedFailedTitle": "Opnieuw proberen mislukt",
+      "retrySelectedFailedText": "{count, plural, one {# taak kon} other {# taken konden}} niet opnieuw worden geprobeerd.",
       "taskName": "Taak"
     },
     "tabs": {

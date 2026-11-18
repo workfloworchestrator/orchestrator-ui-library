@@ -22,6 +22,7 @@ export type useBulkEditProps<T extends object = object> = {
   canSelectAll: boolean;
   handleToggleBulkEditMode: (enabled: boolean) => void;
   handleToggleSelectAll: () => void;
+  handleClearSelection: () => void;
   withBulkEditColumns: (
     columnConfig: WfoStructuredSearchTableColumnConfig<T>,
   ) => WfoStructuredSearchTableColumnConfig<T>;
@@ -60,6 +61,8 @@ export const useBulkEdit = <T extends object>(
   }
 
   const handleToggleSelectAll = () => setSelectedRowIds(toggleSelectAll(data.map(getRowId), isAllSelected));
+
+  const handleClearSelection = () => setSelectedRowIds(new Set());
 
   const selectColumn: WfoStructuredSearchTableColumnConfig<T> = {
     bulkEditSelect: {
@@ -102,6 +105,7 @@ export const useBulkEdit = <T extends object>(
     canSelectAll: data.length > 0,
     handleToggleBulkEditMode,
     handleToggleSelectAll,
+    handleClearSelection,
     withBulkEditColumns,
   };
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { useTranslations } from 'next-intl';
 
@@ -13,9 +13,10 @@ export type WfoBulkEditToolbarProps = {
     useBulkEditProps,
     'selectedRows' | 'isAllSelected' | 'canSelectAll' | 'handleToggleSelectAll' | 'handleToggleBulkEditMode'
   >;
+  actions?: ReactNode;
 };
 
-export const WfoBulkEditToolbar = ({ bulkEdit }: WfoBulkEditToolbarProps) => {
+export const WfoBulkEditToolbar = ({ bulkEdit, actions }: WfoBulkEditToolbarProps) => {
   const t = useTranslations('common');
   const { selectedRows, isAllSelected, canSelectAll, handleToggleSelectAll, handleToggleBulkEditMode } = bulkEdit;
 
@@ -23,9 +24,6 @@ export const WfoBulkEditToolbar = ({ bulkEdit }: WfoBulkEditToolbarProps) => {
     <>
       <EuiSpacer size="m" />
       <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} wrap>
-        <EuiFlexItem grow={false}>
-          <EuiText size="s">{t('numberOfSelectedRows', { count: selectedRows.length })}</EuiText>
-        </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiButton
             size="s"
@@ -36,6 +34,7 @@ export const WfoBulkEditToolbar = ({ bulkEdit }: WfoBulkEditToolbarProps) => {
             {isAllSelected ? t('deselectAll') : t('selectAll')}
           </EuiButton>
         </EuiFlexItem>
+        {actions}
         <EuiFlexItem grow={false}>
           <EuiButtonEmpty
             size="s"
@@ -46,6 +45,8 @@ export const WfoBulkEditToolbar = ({ bulkEdit }: WfoBulkEditToolbarProps) => {
           </EuiButtonEmpty>
         </EuiFlexItem>
       </EuiFlexGroup>
+      <EuiSpacer size="s" />
+      <EuiText size="s">{t('numberOfSelectedRows', { count: selectedRows.length })}</EuiText>
     </>
   );
 };

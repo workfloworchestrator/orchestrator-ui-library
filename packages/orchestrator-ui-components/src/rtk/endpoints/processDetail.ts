@@ -1,4 +1,5 @@
 import {
+  PROCESSES_BULK_ENDPOINT,
   PROCESSES_ENDPOINT,
   PROCESSES_RESUME_ALL_ENDPOINT,
   PROCESS_ABORT_ENDPOINT,
@@ -7,6 +8,8 @@ import {
 import { BaseQueryTypes, orchestratorApi } from '@/rtk';
 import {
   CacheTagType,
+  ProcessBulkParams,
+  ProcessBulkResult,
   ProcessDetail,
   ProcessDetailResultRaw,
   ProcessPatchParams,
@@ -119,6 +122,24 @@ const processDetailApi = orchestratorApi.injectEndpoints({
       },
       invalidatesTags: getCacheTag(CacheTagType.processes),
     }),
+    bulkProcessAction: builder.mutation<ProcessBulkResult, ProcessBulkParams>({
+      query: ({ action, processIds, note }) => ({
+        url: `${PROCESSES_ENDPOINT}/${PROCESSES_BULK_ENDPOINT}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          action,
+          process_ids: processIds,
+          ...(action === 'note' && { note: note ?? null }),
+        },
+      }),
+      extraOptions: {
+        baseQueryType: BaseQueryTypes.fetch,
+      },
+      invalidatesTags: getCacheTag(CacheTagType.processes),
+    }),
     deleteProcess: builder.mutation<void, { processId: string }>({
       query: ({ processId }) => ({
         url: `${PROCESSES_ENDPOINT}/${processId}`,
@@ -163,6 +184,7 @@ export const {
   useGetRawProcessDetailQuery,
   useRetryAllProcessesMutation,
   useRetryProcessMutation,
+  useBulkProcessActionMutation,
   useDeleteProcessMutation,
   useAbortProcessMutation,
   usePatchProcessMutation,

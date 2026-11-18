@@ -16,7 +16,14 @@ import {
   WfoStartTaskButtonComboBox,
 } from '@/components';
 import { PATH_TASKS } from '@/components';
-import { ProcessListItem, WfoProcessListActions, WfoProcessesList, WfoTitleWithWebsocketBadge } from '@/components';
+import {
+  ProcessListItem,
+  WfoProcessListActions,
+  WfoProcessesList,
+  WfoRetrySelectedTasksButton,
+  WfoStructuredSearchTableBulkEditConfiguration,
+  WfoTitleWithWebsocketBadge,
+} from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 import { toSortedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
@@ -99,6 +106,16 @@ export const WfoTasksListPage = () => {
     ]),
   });
 
+  const bulkEditConfiguration: WfoStructuredSearchTableBulkEditConfiguration<ProcessListItem> | undefined =
+    selectedTasksListTab === WfoTasksListTabType.ACTIVE ?
+      {
+        uniqueRowId: 'processId',
+        renderActions: ({ selectedRows, clearSelection }) => (
+          <WfoRetrySelectedTasksButton selectedTasks={selectedRows} onRetryStarted={clearSelection} />
+        ),
+      }
+    : undefined;
+
   return (
     <>
       <WfoContentHeader title={<WfoTitleWithWebsocketBadge title="Tasks" />}>
@@ -128,6 +145,7 @@ export const WfoTasksListPage = () => {
         overrideDefaultTableColumns={handleOverrideTableColumns}
         isTask
         statuses={defaultTasksListTabs.find(({ id }) => id === selectedTasksListTab)?.statuses ?? []}
+        bulkEditConfiguration={bulkEditConfiguration}
       />
     </>
   );
