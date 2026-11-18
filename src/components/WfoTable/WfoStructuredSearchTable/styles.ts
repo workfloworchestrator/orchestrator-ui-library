@@ -23,6 +23,13 @@ export const getWfoStructuredSearchTableStyles = ({ theme, isDarkModeActive }: W
       backgroundColor: 'transparent',
       height: theme.base * 2,
       minHeight: theme.base * 2,
+      // EUI 122 adds an inset padding, gap and border frame around the buttons
+      padding: 0,
+      gap: 0,
+      borderRadius: theme.base,
+      '&::after': {
+        display: 'none',
+      },
     },
     'button.euiButtonGroupButton': {
       height: theme.base * 2,
