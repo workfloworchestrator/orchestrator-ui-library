@@ -5,7 +5,7 @@ export default defineConfig((opts) => ({
   sourcemap: true,
   splitting: false,
   clean: !opts.watch,
-  dts: !opts.watch,
+  dts: true,
   outDir: 'dist',
   format: ['esm'],
   platform: 'node',
