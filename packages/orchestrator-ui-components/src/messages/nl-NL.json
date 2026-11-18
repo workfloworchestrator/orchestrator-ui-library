@@ -538,16 +538,49 @@
     }
   },
   "tasks": {
+    "bulkActions": {
+      "resume": {
+        "button": "Probeer opnieuw",
+        "question": "Weet u zeker dat u {count, plural, one {# geselecteerde taak} other {# geselecteerde taken}} opnieuw wilt proberen?",
+        "skipped": "{count, plural, one {# geselecteerde taak kan niet opnieuw worden geprobeerd en wordt} other {# geselecteerde taken kunnen niet opnieuw worden geprobeerd en worden}} overgeslagen.",
+        "successTitle": "Opnieuw proberen gestart",
+        "successText": "{count, plural, one {# taak wordt} other {# taken worden}} opnieuw geprobeerd.",
+        "failedTitle": "Opnieuw proberen mislukt",
+        "failedText": "{count, plural, one {# taak kon} other {# taken konden}} niet opnieuw worden geprobeerd."
+      },
+      "abort": {
+        "button": "Stop",
+        "question": "Weet u zeker dat u {count, plural, one {# geselecteerde taak} other {# geselecteerde taken}} wilt stoppen? Dit kan niet ongedaan worden gemaakt.",
+        "skipped": "{count, plural, one {# geselecteerde taak kan niet worden gestopt en wordt} other {# geselecteerde taken kunnen niet worden gestopt en worden}} overgeslagen.",
+        "successTitle": "Taken gestopt",
+        "successText": "{count, plural, one {# taak is} other {# taken zijn}} gestopt.",
+        "failedTitle": "Stoppen mislukt",
+        "failedText": "{count, plural, one {# taak kon} other {# taken konden}} niet worden gestopt."
+      },
+      "delete": {
+        "button": "Verwijder",
+        "question": "Weet u zeker dat u {count, plural, one {# geselecteerde taak} other {# geselecteerde taken}} wilt verwijderen? Dit kan niet ongedaan worden gemaakt.",
+        "skipped": "{count, plural, one {# geselecteerde taak kan niet worden verwijderd en wordt} other {# geselecteerde taken kunnen niet worden verwijderd en worden}} overgeslagen.",
+        "successTitle": "Taken verwijderd",
+        "successText": "{count, plural, one {# taak is} other {# taken zijn}} verwijderd.",
+        "failedTitle": "Verwijderen mislukt",
+        "failedText": "{count, plural, one {# taak kon} other {# taken konden}} niet worden verwijderd."
+      },
+      "note": {
+        "button": "Notitie toevoegen",
+        "title": "Notitie toevoegen aan {count, plural, one {# geselecteerde taak} other {# geselecteerde taken}}",
+        "label": "Notitie",
+        "helpText": "Vervangt de huidige notitie van de geselecteerde taken. Laat leeg om hun notities te wissen.",
+        "save": "Notitie opslaan",
+        "successTitle": "Notitie opgeslagen",
+        "successText": "De notitie van {count, plural, one {# taak is} other {# taken zijn}} bijgewerkt.",
+        "failedTitle": "Notitie opslaan mislukt",
+        "failedText": "De notitie van {count, plural, one {# taak kon} other {# taken konden}} niet worden opgeslagen."
+      }
+    },
     "page": {
       "rerunAll": "Alle taken herstarten",
       "rerunAllQuestion": "Weet u zeker dat u alle gefaalde taken opnieuw wilt herstarten?",
-      "retrySelected": "Selectie opnieuw proberen",
-      "retrySelectedQuestion": "Weet u zeker dat u {count, plural, one {# geselecteerde taak} other {# geselecteerde taken}} opnieuw wilt proberen?",
-      "retrySelectedSkipped": "{count, plural, one {# geselecteerde taak kan niet opnieuw worden geprobeerd en wordt} other {# geselecteerde taken kunnen niet opnieuw worden geprobeerd en worden}} overgeslagen.",
-      "retrySelectedStartedTitle": "Opnieuw proberen gestart",
-      "retrySelectedStartedText": "{count, plural, one {# taak wordt} other {# taken worden}} opnieuw geprobeerd.",
-      "retrySelectedFailedTitle": "Opnieuw proberen mislukt",
-      "retrySelectedFailedText": "{count, plural, one {# taak kon} other {# taken konden}} niet opnieuw worden geprobeerd.",
       "taskName": "Taak"
     },
     "tabs": {

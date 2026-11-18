@@ -18,9 +18,9 @@ import {
 import { PATH_TASKS } from '@/components';
 import {
   ProcessListItem,
+  WfoBulkProcessActions,
   WfoProcessListActions,
   WfoProcessesList,
-  WfoRetrySelectedTasksButton,
   WfoStructuredSearchTableBulkEditConfiguration,
   WfoTitleWithWebsocketBadge,
 } from '@/components';
@@ -31,9 +31,15 @@ import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useCheckEngineStatus, useOrchestratorTheme } from '@/hooks';
 import { WfoRefresh } from '@/icons';
-import { WfoTasksListTabType, defaultTasksListTabs } from '@/pages';
 import { getTasksListTabTypeFromString } from '@/pages/tasks/getTasksListTabTypeFromString';
+import { WfoTasksListTabType, defaultTasksListTabs } from '@/pages/tasks/tabConfig';
 import { useRetryAllProcessesMutation } from '@/rtk/endpoints/processDetail';
+import { ProcessBulkAction } from '@/types';
+
+const bulkProcessActionsPerTab: Record<WfoTasksListTabType, ProcessBulkAction[]> = {
+  [WfoTasksListTabType.ACTIVE]: ['resume', 'abort', 'delete', 'note'],
+  [WfoTasksListTabType.COMPLETED]: ['delete', 'note'],
+};
 
 export const WfoTasksListPage = () => {
   const router = useRouter();
@@ -106,15 +112,16 @@ export const WfoTasksListPage = () => {
     ]),
   });
 
-  const bulkEditConfiguration: WfoStructuredSearchTableBulkEditConfiguration<ProcessListItem> | undefined =
-    selectedTasksListTab === WfoTasksListTabType.ACTIVE ?
-      {
-        uniqueRowId: 'processId',
-        renderActions: ({ selectedRows, clearSelection }) => (
-          <WfoRetrySelectedTasksButton selectedTasks={selectedRows} onRetryStarted={clearSelection} />
-        ),
-      }
-    : undefined;
+  const bulkEditConfiguration: WfoStructuredSearchTableBulkEditConfiguration<ProcessListItem> = {
+    uniqueRowId: 'processId',
+    renderActions: ({ selectedRows, clearSelection }) => (
+      <WfoBulkProcessActions
+        actions={bulkProcessActionsPerTab[selectedTasksListTab]}
+        selectedProcesses={selectedRows}
+        onActionDone={clearSelection}
+      />
+    ),
+  };
 
   return (
     <>

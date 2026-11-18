@@ -538,16 +538,49 @@
     }
   },
   "tasks": {
+    "bulkActions": {
+      "resume": {
+        "button": "Retry",
+        "question": "Are you sure you want to retry {count, plural, one {# selected task} other {# selected tasks}}?",
+        "skipped": "{count, plural, one {# selected task can't be retried and is} other {# selected tasks can't be retried and are}} skipped.",
+        "successTitle": "Retry started",
+        "successText": "{count, plural, one {# task is} other {# tasks are}} being retried.",
+        "failedTitle": "Retry failed",
+        "failedText": "{count, plural, one {# task} other {# tasks}} could not be retried."
+      },
+      "abort": {
+        "button": "Abort",
+        "question": "Are you sure you want to abort {count, plural, one {# selected task} other {# selected tasks}}? This can't be undone.",
+        "skipped": "{count, plural, one {# selected task can't be aborted and is} other {# selected tasks can't be aborted and are}} skipped.",
+        "successTitle": "Tasks aborted",
+        "successText": "{count, plural, one {# task is} other {# tasks are}} aborted.",
+        "failedTitle": "Abort failed",
+        "failedText": "{count, plural, one {# task} other {# tasks}} could not be aborted."
+      },
+      "delete": {
+        "button": "Delete",
+        "question": "Are you sure you want to delete {count, plural, one {# selected task} other {# selected tasks}}? This can't be undone.",
+        "skipped": "{count, plural, one {# selected task can't be deleted and is} other {# selected tasks can't be deleted and are}} skipped.",
+        "successTitle": "Tasks deleted",
+        "successText": "{count, plural, one {# task is} other {# tasks are}} deleted.",
+        "failedTitle": "Delete failed",
+        "failedText": "{count, plural, one {# task} other {# tasks}} could not be deleted."
+      },
+      "note": {
+        "button": "Add note",
+        "title": "Add a note to {count, plural, one {# selected task} other {# selected tasks}}",
+        "label": "Note",
+        "helpText": "Replaces the current note of the selected tasks. Leave it empty to clear their notes.",
+        "save": "Save note",
+        "successTitle": "Note saved",
+        "successText": "The note of {count, plural, one {# task is} other {# tasks are}} updated.",
+        "failedTitle": "Saving the note failed",
+        "failedText": "The note of {count, plural, one {# task} other {# tasks}} could not be saved."
+      }
+    },
     "page": {
       "rerunAll": "Re-try all tasks",
       "rerunAllQuestion": "Are you sure you want to re-try all failed tasks?",
-      "retrySelected": "Retry selected",
-      "retrySelectedQuestion": "Are you sure you want to retry {count, plural, one {# selected task} other {# selected tasks}}?",
-      "retrySelectedSkipped": "{count, plural, one {# selected task can't be retried and is} other {# selected tasks can't be retried and are}} skipped.",
-      "retrySelectedStartedTitle": "Retry started",
-      "retrySelectedStartedText": "{count, plural, one {# task is} other {# tasks are}} being retried.",
-      "retrySelectedFailedTitle": "Retry failed",
-      "retrySelectedFailedText": "{count, plural, one {# task} other {# tasks}} could not be retried.",
       "taskName": "Task"
     },
     "tabs": {
