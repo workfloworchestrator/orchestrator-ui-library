@@ -14,4 +14,4 @@ Fixes # (issue number)
 ## Checklist
 
 - [ ] I opened this PR as a draft and CI passes before marking it ready for review.
-- [ ] I added a changeset describing the change (`npx changeset`), if applicable.
+- [ ] I added a changeset describing the change (`pnpm changeset`), if applicable.
