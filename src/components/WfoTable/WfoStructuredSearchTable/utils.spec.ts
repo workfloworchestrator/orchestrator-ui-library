@@ -177,8 +177,8 @@ describe('useBuildColumnFilter', () => {
   const getColumnSearchFieldName = (field: keyof Row) => `subscription.${String(field)}`;
 
   const renderBuildColumnFilter = (columnSearchFieldName?: (field: keyof Row) => string) =>
-    renderHook(() => useBuildColumnFilter<Row>(tableColumnConfig, columnSearchFieldName)).result.current
-      .buildColumnFilter;
+    renderHook(() => useBuildColumnFilter<Row>(tableColumnConfig, EntityKind.SUBSCRIPTION, columnSearchFieldName))
+      .result.current.buildColumnFilter;
 
   beforeEach(() => {
     // subscription.note has no path info: the backend does not know it, or its lookup is still pending.
