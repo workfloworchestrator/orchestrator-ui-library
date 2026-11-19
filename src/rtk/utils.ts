@@ -1,12 +1,11 @@
 import { GraphQLError } from 'graphql/error/GraphQLError';
 import { isPlainObject } from 'lodash';
-import { getSession } from 'next-auth/react';
 
 import { SerializedError } from '@reduxjs/toolkit';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-import type { WfoSession } from '@/hooks';
 import { HttpStatus, WfoGraphqlError } from '@/rtk/api';
+import { getWfoSession } from '@/rtk/session';
 
 export function stripUndefined(obj: object): Record<string, unknown> {
   if (!isPlainObject(obj)) {
@@ -126,7 +125,7 @@ export const isFetchBaseForbiddenError = (error: unknown): error is FetchBaseQue
 };
 
 export const getWebSocket = async (url: string) => {
-  const session = (await getSession()) as WfoSession;
+  const session = await getWfoSession();
 
   if (session?.accessToken) {
     // Implemented authentication taking this into account: https://stackoverflow.com/questions/4361173/http-headers-in-websockets-client-api/77060459#77060459

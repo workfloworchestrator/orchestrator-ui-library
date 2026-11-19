@@ -1,6 +1,5 @@
 import { ClientError, GraphQLClient } from 'graphql-request';
 import type { GraphQLError } from 'graphql/error/GraphQLError.js';
-import { signOut } from 'next-auth/react';
 
 import { BaseQueryFn } from '@reduxjs/toolkit/query';
 import {
@@ -10,6 +9,7 @@ import {
   RequestHeaders,
 } from '@rtk-query/graphql-request-base-query/dist/GraphqlBaseQueryTypes';
 
+import { reauthenticate } from '@/rtk/session';
 import { stripUndefined } from '@/rtk/utils';
 import { GraphqlQueryVariables } from '@/types';
 
@@ -59,7 +59,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
 
       // orchestrator-core reports a missing or invalid token with HTTP 200, which does not throw with errorPolicy 'all'
       if (authActive && isNotAuthenticated(errors)) {
-        signOut();
+        reauthenticate();
       }
 
       // With errorPolicy 'all' a response with errors does not throw. Without any data (e.g. access denied)
@@ -81,7 +81,7 @@ export const wfoGraphqlRequestBaseQuery = <T, E = ErrorResponse>(
     } catch (error) {
       if (error instanceof ClientError) {
         if (authActive && isNotAuthenticated(error.response.errors)) {
-          signOut();
+          reauthenticate();
         }
 
         return toErrorResult(error);

@@ -4,8 +4,11 @@ import type { UseSessionOptions } from 'next-auth/react';
 
 export type WfoSession = Session & {
   accessToken?: string;
+  // Seconds since epoch (like the JWT exp claim). The client reuses the access token until shortly before this time
   accessTokenExpiresAt?: number;
   refreshTokenExpiresAt?: number;
+  // Set by the server when the access token is no longer valid (any value): the app signs in again
+  error?: string;
   profile?: WfoUserProfile;
 };
 
