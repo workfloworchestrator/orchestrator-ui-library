@@ -87,14 +87,21 @@ const WfoSubscriptionRowDetails = ({
   searchPathToProperty,
   tableColumnConfig,
 }: WfoSubscriptionRowDetailsProps) => {
-  const { data, isFetching } = useGetSubscriptionListSearchQuery(
+  const { data, isFetching, error } = useGetSubscriptionListSearchQuery(
     buildRowDetailsSearchPayload(searchPathToProperty, 'subscriptionId', row.subscriptionId),
     { refetchOnMountOrArgChange: true },
   );
 
   const detailRow = data && getItemsFromGraphqlResponse(data, selectedTab)[0];
 
-  return <WfoRowDetails row={detailRow} isLoading={isFetching} tableColumnConfig={tableColumnConfig} />;
+  return (
+    <WfoRowDetails
+      row={detailRow}
+      isLoading={isFetching}
+      error={mapRtkErrorToWfoError(error)}
+      tableColumnConfig={tableColumnConfig}
+    />
+  );
 };
 
 export const WfoSubscriptionsListPage = () => {
@@ -273,6 +280,7 @@ export const WfoSubscriptionsListPage = () => {
     dataSorting,
     query: committedQueryString,
     pageSize,
+    pageIndex,
     retrieverType,
     filters: addStatusFilterFromTab(committedRuleGroup, selectedTab),
     cursor,

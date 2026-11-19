@@ -7,6 +7,8 @@ import type { Filter, GraphQLPageInfo, MatchingField, ResultColumToPropertyMap, 
 export type GraphqlSearchPayload = Omit<SearchPayload, 'entity_type' | 'response_columns'> & {
   // GraphQL fields of the requested columns, e.g. 'startDate' or 'product.name'
   columns: string[];
+  // Hits to skip, the page of a structured search; see offset in buildGraphqlSearchPayload below
+  offset?: number;
 };
 
 export type GraphqlSearchEdge<Node> = {
@@ -31,6 +33,7 @@ type BuildGraphqlSearchPayloadOptions<T> = {
   dataSorting: WfoDataSorting<T>;
   query: string;
   pageSize: number;
+  pageIndex: number;
   retrieverType: RetrieverType;
   filters?: Filter;
   cursor?: string;
@@ -43,12 +46,16 @@ export const buildGraphqlSearchPayload = <T>({
   dataSorting,
   query,
   pageSize,
+  pageIndex,
   retrieverType,
   filters,
   cursor,
 }: BuildGraphqlSearchPayloadOptions<T>): GraphqlSearchPayload => ({
   query,
   limit: pageSize,
+  // A structured search pages by offset. A text query pages with a cursor, which resumes the search itself,
+  // so its offset stays 0.
+  offset: query ? 0 : pageIndex * pageSize,
   columns: [...searchPathToProperty.values()]
     .filter((property) => alwaysRequestedProperties.includes(property) || !hiddenColumns.includes(property))
     .map(String),
@@ -65,9 +72,17 @@ export const buildGraphqlSearchPayload = <T>({
 export const toSelection = (path: string) =>
   path.split('.').reduceRight((inner, field) => (inner ? `${field} { ${inner} }` : field), '');
 
-export const getSearchVariables = ({ query, filters, limit, retriever, order_by, cursor }: GraphqlSearchPayload) => ({
+export const getSearchVariables = ({
+  query,
+  filters,
+  limit,
+  retriever,
+  order_by,
+  cursor,
+  offset,
+}: GraphqlSearchPayload) => ({
   first: Array.isArray(limit) ? limit[0] : (limit ?? 10),
-  after: 0,
+  after: offset ?? 0,
   search: {
     query: query || undefined,
     elasticFilters: filters,
