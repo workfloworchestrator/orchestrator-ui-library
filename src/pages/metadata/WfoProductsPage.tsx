@@ -108,7 +108,7 @@ type WfoProductRowDetailsProps = {
 };
 
 const WfoProductRowDetails = ({ row, searchPathToProperty, tableColumnConfig }: WfoProductRowDetailsProps) => {
-  const { data, isFetching } = useGetProductListSearchQuery(
+  const { data, isFetching, error } = useGetProductListSearchQuery(
     {
       ...buildRowDetailsSearchPayload(searchPathToProperty, 'productId', row.productId),
       includeProductBlocks: true,
@@ -119,7 +119,14 @@ const WfoProductRowDetails = ({ row, searchPathToProperty, tableColumnConfig }: 
 
   const detailRow = data && getItemsFromGraphqlResponse(data, false)[0];
 
-  return <WfoRowDetails row={detailRow} isLoading={isFetching} tableColumnConfig={tableColumnConfig} />;
+  return (
+    <WfoRowDetails
+      row={detailRow}
+      isLoading={isFetching}
+      error={mapRtkErrorToWfoError(error)}
+      tableColumnConfig={tableColumnConfig}
+    />
+  );
 };
 
 export const WfoProductsPage = () => {
@@ -245,7 +252,7 @@ export const WfoProductsPage = () => {
       width: '400px',
       renderData: (fixedInputs) => (
         <>
-          {fixedInputs.map((fixedInput, index) => (
+          {(fixedInputs ?? []).map((fixedInput, index) => (
             <WfoProductBlockBadge key={index} badgeType={BadgeType.FIXED_INPUT}>
               {`${fixedInput.name}: ${fixedInput.value}`}
             </WfoProductBlockBadge>
@@ -253,7 +260,7 @@ export const WfoProductsPage = () => {
         </>
       ),
       renderTooltip: (fixedInputs) => {
-        return fixedInputs.map((fixedInput) => (
+        return (fixedInputs ?? []).map((fixedInput) => (
           <p key={fixedInput.name}>- {`${fixedInput.name}: ${fixedInput.value}`}</p>
         ));
       },
@@ -264,7 +271,7 @@ export const WfoProductsPage = () => {
       width: '250px',
       renderData: (productBlocks) => (
         <>
-          {productBlocks.map(({ name }, index) => (
+          {(productBlocks ?? []).map(({ name }, index) => (
             <WfoProductBlockBadge
               key={index}
               link={getQueryUrl(PATH_METADATA_PRODUCT_BLOCKS, `name:"${name}"`)}
@@ -276,7 +283,7 @@ export const WfoProductsPage = () => {
         </>
       ),
       renderTooltip: (productBlocks) =>
-        productBlocks.map((productBlock) => <p key={productBlock.name}>- {productBlock.name}</p>),
+        (productBlocks ?? []).map((productBlock) => <p key={productBlock.name}>- {productBlock.name}</p>),
     },
     createdAt: {
       columnType: ColumnType.DATA,
@@ -300,6 +307,7 @@ export const WfoProductsPage = () => {
     dataSorting,
     query: committedQueryString,
     pageSize,
+    pageIndex,
     retrieverType,
     filters: buildFilters(committedQueryString, committedRuleGroup),
     cursor,

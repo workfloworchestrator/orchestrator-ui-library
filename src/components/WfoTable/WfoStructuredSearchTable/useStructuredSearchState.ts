@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RuleGroupType } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 
-import { StringParam, useQueryParam, withDefault } from 'use-query-params';
+import { NumberParam, StringParam, useQueryParam, withDefault } from 'use-query-params';
 
 import type { TableColumnKeys, WfoDataSorting } from '@/components/WfoTable/utils/columns';
 import { DEFAULT_PAGE_SIZE } from '@/components/WfoTable/utils/constants';
@@ -43,6 +43,7 @@ export const useStructuredSearchState = <T extends object>({
 
   const [committedQueryString, setCommittedQueryString] = useQueryParam('queryString', withDefault(StringParam, ''));
   const [committedFilterString, setCommittedFilterString] = useQueryParam('filterString', withDefault(StringParam, ''));
+  const [pageParam, setPageParam] = useQueryParam('page', withDefault(NumberParam, 1));
   const committedRuleGroup = useMemo<RuleGroupType | undefined>(
     () => parseCelToRuleGroup(committedFilterString),
     [committedFilterString],
@@ -86,12 +87,17 @@ export const useStructuredSearchState = <T extends object>({
     ...searchKeyScope,
   ]);
   const currentPage = pageState?.searchKey === committedSearchKey ? pageState : undefined;
-  const pageIndex = currentPage?.pageIndex ?? 0;
+  // The page of a structured search is in the URL, so a link reproduces it. The cursors of a text query
+  // can not be, so it starts on page 1.
+  const pageIndex = committedQueryString ? (currentPage?.pageIndex ?? 0) : Math.max(pageParam - 1, 0);
   // A text query pages with a cursor, a structured search with an offset
   const cursors = currentPage?.cursors ?? [];
   const cursor = cursors[pageIndex - 1];
   const loadedPageCount = pageIndex + 1;
-  const resetPage = () => setPageState(undefined);
+  const resetPage = () => {
+    setPageState(undefined);
+    setPageParam(undefined);
+  };
 
   // Formats the given rule group to CEL and commits it. Returns false without committing when
   // the CEL would not survive the URL round trip: formatQuery escapes double quotes in values
@@ -232,9 +238,10 @@ export const useStructuredSearchState = <T extends object>({
     resetPage();
   };
 
-  const showPage = (updatedPageIndex: number) => {
-    setPageState({ pageIndex: updatedPageIndex, cursors, searchKey: committedSearchKey });
-  };
+  const showPage = (updatedPageIndex: number) =>
+    committedQueryString ?
+      setPageState({ pageIndex: updatedPageIndex, cursors, searchKey: committedSearchKey })
+    : setPageParam(updatedPageIndex === 0 ? undefined : updatedPageIndex + 1);
 
   const onShowNextPage = (nextPageCursor: string | undefined) => {
     if (!nextPageCursor) {

@@ -149,7 +149,12 @@ const productsApi = orchestratorApi.injectEndpoints({
   }),
 });
 
-export const { useGetProductsQuery, useLazyGetProductsQuery, useGetProductListSearchQuery } = productsApi;
+export const {
+  useGetProductsQuery,
+  useLazyGetProductsQuery,
+  useGetProductListSearchQuery,
+  useLazyGetProductListSearchQuery,
+} = productsApi;
 
 const productRestApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
