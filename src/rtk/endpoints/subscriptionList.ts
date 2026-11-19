@@ -4,7 +4,6 @@ import {
   GraphqlSearchEdge,
   GraphqlSearchPayload,
   GraphqlSearchResponse,
-  getCursorPaginationCacheOptions,
   getSearchVariables,
   toSelection,
 } from '@/rtk/graphqlSearch';
@@ -148,7 +147,6 @@ const subscriptionListApi = orchestratorApi.injectEndpoints({
       }),
       transformResponse: ({ subscriptions }: SubscriptionListSearchResult): SubscriptionListSearchResponse =>
         subscriptions,
-      ...getCursorPaginationCacheOptions<SubscriptionSearchNode>(({ subscriptionId }) => subscriptionId),
       providesTags: getCacheTag(CacheTagType.subscriptions, CACHETAG_TYPE_LIST),
     }),
   }),

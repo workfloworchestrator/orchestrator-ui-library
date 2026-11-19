@@ -4,7 +4,6 @@ import {
   GraphqlSearchEdge,
   GraphqlSearchPayload,
   GraphqlSearchResponse,
-  getCursorPaginationCacheOptions,
   getSearchVariables,
   toSelection,
 } from '@/rtk/graphqlSearch';
@@ -145,13 +144,17 @@ const productsApi = orchestratorApi.injectEndpoints({
         variables: getSearchVariables(payload),
       }),
       transformResponse: ({ products }: { products: ProductListSearchResponse }) => products,
-      ...getCursorPaginationCacheOptions<ProductSearchNode>(({ productId }) => productId),
       providesTags: getCacheTag(CacheTagType.metadataProducts),
     }),
   }),
 });
 
-export const { useGetProductsQuery, useLazyGetProductsQuery, useGetProductListSearchQuery } = productsApi;
+export const {
+  useGetProductsQuery,
+  useLazyGetProductsQuery,
+  useGetProductListSearchQuery,
+  useLazyGetProductListSearchQuery,
+} = productsApi;
 
 const productRestApi = orchestratorApi.injectEndpoints({
   endpoints: (build) => ({
