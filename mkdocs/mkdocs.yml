@@ -6,6 +6,7 @@ repo_name: 'orchestrator-ui-library'
 nav:
   - Introduction: index.md
   - Guides:
+      - Agent Chat Configuration: guides/agent-chat.md
       - Frontend / Backend Compatibility: guides/compatibility.md
       - Step Importance and Detail Levels: guides/step-importance.md
       - Upgrade Guides:
