@@ -6,4 +6,5 @@ export * from './WfoTasksPage';
 export * from './WfoMetadataPageLayout';
 export * from './WfoScheduledTasksPage';
 export * from './workflowListObjectMapper';
+export * from './productListExport';
 export * from './WfoScheduleTaskFormPage';

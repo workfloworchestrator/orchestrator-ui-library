@@ -20,7 +20,6 @@ import {
   WfoFirstPartUUID,
   WfoStructuredSearchTable,
   WfoStructuredSearchTableColumnConfig,
-  useSearchExport,
   useStructuredSearchState,
 } from '@/components/WfoTable';
 import { WfoRowDetails } from '@/components/WfoTable/WfoStructuredSearchTable';
@@ -52,6 +51,7 @@ import {
 import { getProductLifecycleStatus, getQueryUrl, parseDateToLocaleDateTimeString, parseIsoString } from '@/utils';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
+import { useProductListExport } from './productListExport';
 
 // Only the visible columns are present in a hit
 export type ProductListItem = ProductDefinition & {
@@ -342,12 +342,12 @@ export const WfoProductsPage = () => {
   const hasNextPage = !isSearchBlocked && (data?.pageInfo?.hasNextPage ?? false);
   const nextPageCursor = data?.nextPageCursor ?? undefined;
 
-  const { exportData, isExporting } = useSearchExport<ProductListItem>({
-    entityKind: EntityKind.PRODUCT,
-    searchPathToProperty,
-    tableColumnConfig: defaultTableColumns,
-    fileName: 'Products',
-  });
+  const { exportData, isExporting } = useProductListExport(
+    defaultTableColumns,
+    dataSorting,
+    pageSize,
+    committedQueryString,
+  );
 
   const onShowNextPageFromCursor = () => {
     if (!isFetching) {
@@ -410,7 +410,7 @@ export const WfoProductsPage = () => {
         setPageSize={onUpdatePageSize}
         totalItems={totalItems}
         hasNextPage={hasNextPage}
-        onExportData={() => exportData(searchPayload)}
+        onExportData={exportData}
         exportDataIsLoading={isExporting}
       />
     </WfoMetadataPageLayout>
