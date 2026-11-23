@@ -697,6 +697,7 @@ export enum CacheTagType {
   subscriptions = 'subscriptions',
   scheduledTasks = 'scheduledTags',
   metadataProducts = 'metadataProducts',
+  metadataProductBlocks = 'metadataProductBlocks',
 }
 
 export interface MappedVersion {

@@ -38,6 +38,7 @@ export interface SearchDefinitionsResponse {
 const ENDPOINT_PATHS: Record<EntityKind, string> = {
   PROCESS: 'processes',
   PRODUCT: 'products',
+  PRODUCT_BLOCK: 'product_blocks',
   WORKFLOW: 'workflows',
   SUBSCRIPTION: 'subscriptions',
 };
