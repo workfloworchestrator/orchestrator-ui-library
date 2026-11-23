@@ -78,6 +78,7 @@ const STATUS_FIELD_PATHS: Record<EntityKind, string> = {
   [EntityKind.SUBSCRIPTION]: 'subscription.status',
   [EntityKind.PROCESS]: 'process.last_status',
   [EntityKind.PRODUCT]: 'product.status',
+  [EntityKind.PRODUCT_BLOCK]: 'product_block.status',
   [EntityKind.WORKFLOW]: 'workflow.status',
 };
 

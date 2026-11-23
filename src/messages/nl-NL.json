@@ -107,6 +107,7 @@
       "id": "ID",
       "name": "Product block",
       "resourceTypes": "Resource types",
+      "score": "Betrouwbaarheid",
       "status": "Status",
       "tag": "Tag"
     },
