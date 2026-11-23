@@ -1,11 +1,11 @@
 import { ClientError, GraphQLClient } from 'graphql-request';
-import { signOut } from 'next-auth/react';
 
 import { BaseQueryApi } from '@reduxjs/toolkit/query';
 
+import { reauthenticate } from '@/rtk/session';
 import { wfoGraphqlRequestBaseQuery } from '@/rtk/wfoGraphqlRequestBaseQuery';
 
-jest.mock('next-auth/react', () => ({ signOut: jest.fn() }));
+jest.mock('@/rtk/session', () => ({ reauthenticate: jest.fn(), getWfoSession: jest.fn() }));
 
 const notAuthorized = { message: 'Not authorized', extensions: { error_type: 'not_authorized' } };
 const notAuthenticated = { message: 'User is not authenticated', extensions: { error_type: 'not_authenticated' } };
@@ -79,30 +79,30 @@ describe('wfoGraphqlRequestBaseQuery', () => {
     });
   });
 
-  it('signs out when a non-2xx response reports the user as not authenticated', async () => {
+  it('signs in again when a non-2xx response reports the user as not authenticated', async () => {
     const result = await run(jest.fn().mockRejectedValue(clientErrorWith(401, [notAuthenticated])));
 
     expect(result).toMatchObject({ error: [notAuthenticated] });
-    expect(signOut).toHaveBeenCalledTimes(1);
+    expect(reauthenticate).toHaveBeenCalledTimes(1);
   });
 
   // orchestrator-core reports a missing or invalid token on GraphQL with HTTP 200, which resolves with errorPolicy 'all'
-  it('signs out when a resolved response reports the user as not authenticated', async () => {
+  it('signs in again when a resolved response reports the user as not authenticated', async () => {
     const errors = [notAuthenticated];
 
     await expect(run(jest.fn().mockResolvedValue({ data: null, errors }))).resolves.toMatchObject({ error: errors });
-    expect(signOut).toHaveBeenCalledTimes(1);
+    expect(reauthenticate).toHaveBeenCalledTimes(1);
   });
 
-  it('does not sign out when a resolved response reports the user as not authorized', async () => {
+  it('does not sign in again when a resolved response reports the user as not authorized', async () => {
     await run(jest.fn().mockResolvedValue({ data: null, errors: [notAuthorized] }));
 
-    expect(signOut).not.toHaveBeenCalled();
+    expect(reauthenticate).not.toHaveBeenCalled();
   });
 
-  it('does not sign out on not authenticated when auth is not active', async () => {
+  it('does not sign in again on not authenticated when auth is not active', async () => {
     await run(jest.fn().mockResolvedValue({ data: null, errors: [notAuthenticated] }), false);
 
-    expect(signOut).not.toHaveBeenCalled();
+    expect(reauthenticate).not.toHaveBeenCalled();
   });
 });

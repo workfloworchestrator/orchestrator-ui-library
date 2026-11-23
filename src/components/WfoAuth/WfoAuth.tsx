@@ -1,9 +1,10 @@
-import React, { ReactNode, useContext } from 'react';
+import React, { ReactNode, useContext, useEffect } from 'react';
 
 import { WfoLogoSpinner } from '@/components';
 import { OrchestratorConfigContext } from '@/contexts';
 import { PolicyContextProvider } from '@/contexts/PolicyContext';
 import { useWfoSession } from '@/hooks';
+import { reauthenticate } from '@/rtk/session';
 
 interface AuthProps {
   children: ReactNode;
@@ -31,11 +32,19 @@ interface AuthProps {
  */
 export const WfoAuth = ({ children, isAllowedHandler = () => true }: AuthProps) => {
   const { authActive } = useContext(OrchestratorConfigContext);
-  const { status } = useWfoSession({
+  const { status, session } = useWfoSession({
     required: authActive,
   });
+  const hasExpiredSession = authActive && !!session?.error;
 
-  if (status === 'loading') {
+  useEffect(() => {
+    if (hasExpiredSession) {
+      reauthenticate();
+    }
+  }, [hasExpiredSession]);
+
+  // No page with data while the access token is not valid
+  if (status === 'loading' || hasExpiredSession) {
     return <WfoLogoSpinner />;
   }
 

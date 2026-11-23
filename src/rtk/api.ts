@@ -1,12 +1,11 @@
 import { ClientError } from 'graphql-request';
 import { GraphQLErrorExtensions } from 'graphql/error/GraphQLError';
-import { getSession, signOut } from 'next-auth/react';
 
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ErrorResponse } from '@rtk-query/graphql-request-base-query/dist/GraphqlBaseQueryTypes';
 
 import { SubscriptionListItem } from '@/components';
-import type { WfoSession } from '@/hooks';
+import { getWfoSession, reauthenticate } from '@/rtk/session';
 import { wfoGraphqlRequestBaseQuery } from '@/rtk/wfoGraphqlRequestBaseQuery';
 import { CacheTagType, GraphqlQueryVariables } from '@/types';
 
@@ -74,7 +73,7 @@ export type WfoGraphqlErrorsMeta = {
 };
 
 export const prepareHeaders = async (headers: Headers) => {
-  const session = (await getSession()) as WfoSession;
+  const session = await getWfoSession();
   if (session?.accessToken) {
     headers.set('Authorization', `Bearer ${session.accessToken}`);
   }
@@ -113,7 +112,7 @@ export const catchErrorResponse = async (response: Response, authActive: boolean
   }
   // 403 is an authorization denial for a logged-in user; only 401 means the session is gone.
   if (status === HttpStatus.Unauthorized && authActive) {
-    signOut();
+    reauthenticate();
   } else if (status === HttpStatus.NoContent) {
     return {};
   } else {
