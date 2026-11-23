@@ -23,7 +23,6 @@ import {
   WfoFirstPartUUID,
   WfoStructuredSearchTable,
   WfoStructuredSearchTableColumnConfig,
-  useSearchExport,
   useStructuredSearchState,
 } from '@/components/WfoTable';
 import { WfoRowDetails } from '@/components/WfoTable/WfoStructuredSearchTable';
@@ -51,6 +50,7 @@ import {
 import { getProductLifecycleStatus, getQueryUrl, parseDateToLocaleDateTimeString, parseIsoString } from '@/utils';
 
 import { WfoMetadataPageLayout } from './WfoMetadataPageLayout';
+import { useProductBlockListExport } from './productBlockListExport';
 
 // Only the visible columns are present in a hit
 export type ProductBlockListItem = ProductBlockDefinition & {
@@ -110,7 +110,7 @@ const WfoProductBlockRowDetails = ({
   searchPathToProperty,
   tableColumnConfig,
 }: WfoProductBlockRowDetailsProps) => {
-  const { data, isFetching } = useGetProductBlockListSearchQuery(
+  const { data, isFetching, error } = useGetProductBlockListSearchQuery(
     {
       ...buildRowDetailsSearchPayload(searchPathToProperty, 'productBlockId', row.productBlockId),
       includeResourceTypes: true,
@@ -121,7 +121,14 @@ const WfoProductBlockRowDetails = ({
 
   const detailRow = data && getItemsFromGraphqlResponse(data, false)[0];
 
-  return <WfoRowDetails row={detailRow} isLoading={isFetching} tableColumnConfig={tableColumnConfig} />;
+  return (
+    <WfoRowDetails
+      row={detailRow}
+      isLoading={isFetching}
+      error={mapRtkErrorToWfoError(error)}
+      tableColumnConfig={tableColumnConfig}
+    />
+  );
 };
 
 export const WfoProductBlocksPage = () => {
@@ -345,12 +352,14 @@ export const WfoProductBlocksPage = () => {
   const hasNextPage = !isSearchBlocked && (data?.pageInfo?.hasNextPage ?? false);
   const nextPageCursor = data?.nextPageCursor ?? undefined;
 
-  const { exportData, isExporting } = useSearchExport<ProductBlockListItem>({
-    entityKind: EntityKind.PRODUCT_BLOCK,
-    searchPathToProperty,
-    tableColumnConfig: defaultTableColumns,
-    fileName: 'ProductBlocks',
-  });
+  // The old export: the search export has no paths for the nested resourceTypes and dependsOn lists.
+  // The collection query can only apply the text search, so a committed filter is not applied to its rows.
+  const { exportData, isExporting } = useProductBlockListExport(
+    defaultTableColumns,
+    dataSorting,
+    pageSize,
+    committedQueryString,
+  );
 
   const onShowNextPageFromCursor = () => {
     if (!isFetching) {
@@ -412,7 +421,7 @@ export const WfoProductBlocksPage = () => {
         setPageSize={onUpdatePageSize}
         totalItems={totalItems}
         hasNextPage={hasNextPage}
-        onExportData={() => exportData(searchPayload)}
+        onExportData={exportData}
         exportDataIsLoading={isExporting}
       />
     </WfoMetadataPageLayout>

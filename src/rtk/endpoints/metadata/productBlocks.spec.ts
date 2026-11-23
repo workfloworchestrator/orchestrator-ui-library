@@ -30,4 +30,11 @@ describe('getProductBlockListSearchQuery()', () => {
 
     expect(query.match(/resourceTypes/g)).toHaveLength(1);
   });
+
+  it.each([
+    ['resourceTypes', 'resourceTypes { resourceType description resourceTypeId }'],
+    ['dependsOn', 'dependsOn { name }'],
+  ])('accepts the selection of the nested %s list', (field, selection) => {
+    expect(getProductBlockListSearchQuery([field], true, true)).toContain(selection);
+  });
 });
