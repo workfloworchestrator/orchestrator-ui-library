@@ -272,13 +272,10 @@
         "addItem": "Add item",
         "groupNumber": "Group {number}",
         "add": "Add",
-        "addContactPerson": "Add contact person",
-        "contactPersonNumber": "Contact person {number}",
         "itemNumber": "Item {number}",
         "noItemsAvailable": "No items available",
         "remove": "Remove",
-        "removeItem": "Remove {item}",
-        "selectCustomerFirst": "Select a customer first. Then you can pick a contact person."
+        "removeItem": "Remove {item}"
       },
       "contactPersonName": {
         "placeholder": "Search and add contact persons..."

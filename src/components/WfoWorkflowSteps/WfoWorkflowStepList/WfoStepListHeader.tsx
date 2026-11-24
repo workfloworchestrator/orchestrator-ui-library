@@ -100,15 +100,14 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
     <EuiFlexGroup css={[stepListHeaderStyle, isCompact && stepListHeaderCompactStyle]}>
       {/* Left side: header and detail level selector */}
       <EuiFlexGroup css={stepListContentStyle}>
-        {(isCompact && (
+        {isCompact ?
           <EuiTitle size="s" css={{ whiteSpace: 'nowrap' }}>
             <h2>{t(isTask ? 'taskSteps' : 'workflowSteps')}</h2>
           </EuiTitle>
-        )) || (
-          <EuiText size="m" css={stepListTitleStyle}>
+        : <EuiText size="m" css={stepListTitleStyle}>
             {t(isTask ? 'taskSteps' : 'workflowSteps')}
           </EuiText>
-        )}
+        }
         {!showRaw && !isCompact && (
           <EuiButtonGroup
             legend={t('detailLevel')}

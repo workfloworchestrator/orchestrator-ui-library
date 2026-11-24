@@ -9,6 +9,9 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
   const TIMELINE_HEIGHT = theme.base * 2.5;
   const TIMELINE_OUTLINE_WIDTH = theme.base * 0.75;
 
+  // Space under the markers for the label of the current step
+  const STEP_LABEL_HEIGHT = theme.base * 1.5;
+
   const timelineHeightPx = `${TIMELINE_HEIGHT}px`;
   const timelineOutlineWidthPx = `${TIMELINE_OUTLINE_WIDTH}px`;
   const emptyStepOuterDiameter = theme.base;
@@ -73,7 +76,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
   const labelRoomStyle = css({
     height: 'auto',
     minHeight: timelineHeightPx,
-    paddingBottom: theme.font.baseline * 2 + 24,
+    paddingBottom: theme.font.baseline * 2 + STEP_LABEL_HEIGHT,
   });
 
   const getHorizontalLineStyle = (color: string) =>

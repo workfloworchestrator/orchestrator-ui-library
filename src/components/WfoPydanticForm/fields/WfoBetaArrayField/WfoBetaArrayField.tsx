@@ -4,6 +4,7 @@ import { useFieldArray, useWatch } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import {
   PydanticFormElementProps,
+  PydanticFormField,
   PydanticFormFieldType,
   RenderFields,
   disableField,
@@ -16,7 +17,6 @@ import {
 
 import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiIcon, EuiText, EuiTextColor } from '@elastic/eui';
 
-import { BetaPageFieldsContext } from '@/components/WfoPydanticForm/betaLayoutContext';
 import { useOrchestratorTheme } from '@/hooks';
 
 import { getWfoBetaArrayFieldStyles } from './styles';
@@ -32,7 +32,42 @@ const NestedListContext = createContext(false);
  * - Groups and the items in a group never go below 1 (no remove button then).
  * - Add/remove are real buttons with text, so they work with keyboard and screen reader.
  */
-export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProps) => {
+/** Per-field behaviour of the list. Without options the list is a plain generic list. */
+export type WfoBetaArrayFieldOptions = {
+  /** Title of item n (card title, remove label). Default: "Item n" */
+  getItemLabel?: (number: number) => string;
+  /** Text of the add button. Default: "Add" */
+  addButtonLabel?: string;
+  /**
+   * Card items show only this field (id of the field inside the item) until any field of the item has a value or an
+   * error. Also puts every field of the card on its own line, ignoring the backend grid layout.
+   */
+  leadingFieldKey?: string;
+  /** When set, the list is locked (cannot add or edit) and this text explains why */
+  lockedReason?: string;
+};
+
+/** Hook, so options can depend on form state (e.g. a sibling field) */
+export type UseWfoBetaArrayFieldOptions = (pydanticFormField: PydanticFormField) => WfoBetaArrayFieldOptions;
+
+const useNoOptions: UseWfoBetaArrayFieldOptions = () => ({});
+
+/** Creates a list field with its own options, e.g. for a contact persons list. */
+export const createWfoBetaArrayField = (useOptions: UseWfoBetaArrayFieldOptions) => {
+  const WfoBetaArrayFieldWithOptions = (props: PydanticFormElementProps) => (
+    <WfoBetaArray {...props} useOptions={useOptions} />
+  );
+  return WfoBetaArrayFieldWithOptions;
+};
+
+export const WfoBetaArrayField = (props: PydanticFormElementProps) => (
+  <WfoBetaArray {...props} useOptions={useNoOptions} />
+);
+
+const WfoBetaArray = ({
+  pydanticFormField,
+  useOptions,
+}: PydanticFormElementProps & { useOptions: UseWfoBetaArrayFieldOptions }) => {
   const config = useGetConfig();
   const { control, getFieldState, formState } = useGetForm();
   const { theme } = useOrchestratorTheme();
@@ -52,17 +87,13 @@ export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProp
   const minimumItems = isRequiredGroupList || isInGroup ? Math.max(minItems ?? 0, 1) : (minItems ?? 0);
   const listValues: Record<string, unknown>[] | undefined = useWatch({ control, name: arrayName });
 
-  // ponytail: contact list is detected by its name field's format (contactPersonName); other object lists get "Item n"
-  const contactNameKey = Object.entries(arrayItem?.properties ?? {}).find(
-    ([, property]) => property.format === 'contactPersonName',
-  )?.[0];
-  const isContactList = contactNameKey !== undefined;
-
-  // Contacts are loaded per customer: lock the list until the customer field on this page has a value
-  const pageFields = useContext(BetaPageFieldsContext);
-  const customerKey = Object.entries(pageFields).find(([, field]) => field.format === 'customerId')?.[0];
-  const customerValue = useWatch({ control, name: customerKey ?? arrayName, disabled: !customerKey });
-  const isLockedByCustomer = isContactList && customerKey !== undefined && !customerValue;
+  const {
+    getItemLabel,
+    addButtonLabel: customAddButtonLabel,
+    leadingFieldKey,
+    lockedReason,
+  } = useOptions(pydanticFormField);
+  const isLocked = lockedReason !== undefined;
 
   const appendDefault = useCallback(() => {
     append({ [arrayName]: arrayItem?.default ?? undefined });
@@ -82,13 +113,11 @@ export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProp
   const showNoItemsAvailable = fields.length === 0 && maxItems === 0;
 
   const isObjectItem = arrayItem.type === PydanticFormFieldType.OBJECT;
-  const itemLabel = (number: number) =>
-    isContactList ? t('contactPersonNumber', { number }) : t('itemNumber', { number });
+  const itemLabel = (number: number) => getItemLabel?.(number) ?? t('itemNumber', { number });
   const addButtonLabel =
     isGroupList ? t('addGroup')
     : isInGroup ? t('addItem')
-    : isContactList ? t('addContactPerson')
-    : t('add');
+    : (customAddButtonLabel ?? t('add'));
 
   // Only shown when removing is possible: at the minimum (e.g. the last group) there is nothing to click
   const renderRemoveButton = (index: number, label: string) =>
@@ -117,19 +146,19 @@ export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProp
     const components = getPydanticFormComponents(itemField.properties || {}, config?.componentMatcher);
     components.forEach((component) => {
       // Follow the backend grid layout (e.g. Subscription and Vlan side by side), like the current layout does.
-      // Contact cards stay one field per line: name first, details appear later (see below).
+      // Cards with a leading field stay one field per line (see below).
       const cardField =
-        isContactList ? { ...component.pydanticFormField, layout: undefined } : component.pydanticFormField;
+        leadingFieldKey ? { ...component.pydanticFormField, layout: undefined } : component.pydanticFormField;
       component.pydanticFormField = disabled ? disableField(cardField) : cardField;
     });
 
-    // Contact card: name first; e-mail/phone appear once a name is picked (filled in) or typed (empty).
-    // Any value or validation error in the card also shows them, so no error can hide behind a collapsed card.
+    // Leading field first; the other fields appear once any field of the item has a value.
+    // A validation error in the card also shows them, so no error can hide behind a collapsed card.
     const hasItemInput = Object.values(listValues?.[index] ?? {}).some(Boolean);
-    const showContactDetails = hasItemInput || getFieldState(itemField.id, formState).invalid;
+    const showAllFields = hasItemInput || getFieldState(itemField.id, formState).invalid;
     const visibleComponents =
-      isContactList && !showContactDetails ?
-        components.filter((component) => component.pydanticFormField.id === contactNameKey)
+      leadingFieldKey && !showAllFields ?
+        components.filter((component) => component.pydanticFormField.id === leadingFieldKey)
       : components;
 
     return (
@@ -138,7 +167,7 @@ export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProp
         key={field.id}
         css={card}
         data-testid={itemField.id}
-        disabled={isLockedByCustomer}
+        disabled={isLocked}
         aria-labelledby={`${itemField.id}-label`}
       >
         <div css={cardHeader}>
@@ -155,9 +184,9 @@ export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProp
             idPrefix={itemField.id}
             extraTriggerFields={[arrayName]}
           />
-          {isLockedByCustomer && (
+          {isLocked && (
             <EuiText size="s" color="subdued">
-              <EuiIcon type="iInCircle" size="s" /> {t('selectCustomerFirst')}
+              <EuiIcon type="iInCircle" size="s" /> {lockedReason}
             </EuiText>
           )}
         </div>
@@ -236,7 +265,7 @@ export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProp
               iconType="plus"
               fill={isGroupList}
               onClick={appendDefault}
-              isDisabled={isLockedByCustomer}
+              isDisabled={isLocked}
               data-testid={`${arrayName}-plus-button`}
             >
               {addButtonLabel}

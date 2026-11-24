@@ -7,7 +7,7 @@ import { useOrchestratorTheme } from '@/hooks';
 // New layout only. A small tab tucked against the right edge of a panel, to open something that sits behind the panel.
 
 export const EDGE_TAB_WIDTH = 32;
-export const EDGE_TAB_MIN_HEIGHT = 120;
+const EDGE_TAB_MIN_HEIGHT = 120;
 
 export type WfoEdgeTabProps = {
   icon: IconType;

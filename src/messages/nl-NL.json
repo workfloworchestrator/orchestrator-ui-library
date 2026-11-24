@@ -272,13 +272,10 @@
         "addItem": "Item toevoegen",
         "groupNumber": "Groep {number}",
         "add": "Toevoegen",
-        "addContactPerson": "Contactpersoon toevoegen",
-        "contactPersonNumber": "Contactpersoon {number}",
         "itemNumber": "Item {number}",
         "noItemsAvailable": "Geen items beschikbaar",
         "remove": "Weghalen",
-        "removeItem": "{item} weghalen",
-        "selectCustomerFirst": "Kies eerst een klant. Daarna kun je een contactpersoon kiezen."
+        "removeItem": "{item} weghalen"
       },
       "contactPersonName": {
         "placeholder": "Zoek en voeg contactpersonen toe..."

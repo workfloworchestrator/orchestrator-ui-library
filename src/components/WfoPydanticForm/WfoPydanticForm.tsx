@@ -21,7 +21,7 @@ interface WfoPydanticFormProps {
   isTask?: boolean;
   /** Replaces the default header, row and/or footer renderers */
   renderers?: Pick<PydanticFormConfig, 'headerRenderer' | 'rowRenderer' | 'footerRenderer'>;
-  /** Matchers checked before the default ones (first match wins). Pass a stable (module-level) array. */
+  /** Matchers checked before the default ones, but after the app's own (first match wins). Pass a stable array. */
   componentOverrides?: PydanticComponentMatcher[];
 }
 
@@ -129,8 +129,8 @@ export const WfoPydanticForm = ({
   const baseExtender = config.componentMatcherExtender;
   const componentMatcherExtender = useCallback<NonNullable<PydanticFormConfig['componentMatcherExtender']>>(
     (matchers) => {
-      const base = baseExtender ? baseExtender(matchers) : matchers;
-      return componentOverrides ? [...componentOverrides, ...base] : base;
+      const withOverrides = componentOverrides ? [...componentOverrides, ...matchers] : matchers;
+      return baseExtender ? baseExtender(withOverrides) : withOverrides;
     },
     [baseExtender, componentOverrides],
   );

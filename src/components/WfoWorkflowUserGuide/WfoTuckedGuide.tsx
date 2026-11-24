@@ -13,7 +13,7 @@ import { useOrchestratorTheme } from '@/hooks';
 const inertWhen = (on: boolean) => (on ? ({ inert: '' } as object) : {});
 
 const GUIDE_GAP = 8;
-export const TUCKED_GUIDE_STRIP_WIDTH = EDGE_TAB_WIDTH;
+const TUCKED_GUIDE_STRIP_WIDTH = EDGE_TAB_WIDTH;
 export const TUCKED_GUIDE_MIN_WIDTH = 480; // open guide incl. strip: room for ~55 characters of guide text
 export const TUCKED_GUIDE_OPEN_WIDTH = 'min(552px, 45vw)'; // for a column that grows when the guide opens
 
