@@ -37,6 +37,8 @@ export interface WfoWorkflowStepListProps {
   isTask: boolean;
   userInputForm?: InputForm;
   userPermissions: FormUserPermissions;
+  /** New process page layout: compact list header, user guide opens from the page header instead */
+  isNewLayout?: boolean;
 }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
@@ -62,6 +64,7 @@ export const WfoWorkflowStepList = React.forwardRef(
       isTask,
       userInputForm,
       userPermissions,
+      isNewLayout = false,
     }: WfoWorkflowStepListProps,
     reference: Ref<WfoStepListRef>,
   ) => {
@@ -133,9 +136,25 @@ export const WfoWorkflowStepList = React.forwardRef(
       .map((status) => status.toLowerCase())
       .includes(lastStatus.toLowerCase());
 
+    const stepList = (
+      <WfoStepList
+        ref={reference}
+        stepListItems={stepListItems}
+        showHiddenKeys={showHiddenKeys}
+        hideMinimalStepNames={hideMinimalStepNames}
+        isTask={isTask}
+        onToggleExpandStepListItem={toggleExpandedStateStepListItem}
+        processId={processId}
+        workflowName={workflowName}
+        onTriggerExpandStepListItem={handleExpandStepListItem}
+        userPermissions={userPermissions}
+      />
+    );
+
     return (
       <>
         <WfoStepListHeader
+          isCompact={isNewLayout}
           showHiddenKeys={showHiddenKeys}
           hideMinimalStepNames={hideMinimalStepNames}
           showRaw={showRaw}
@@ -155,22 +174,11 @@ export const WfoWorkflowStepList = React.forwardRef(
         {showTraceback && <WfoTraceback>{traceBack}</WfoTraceback>}
         {showRaw && <WfoProcessRawData processId={processId} />}
         {showDelta && <WfoProcessSubscriptionDelta processId={processId} />}
-        {!showRaw && !showDelta && (
-          <WfoPageWithUserGuide workflowName={workflowName}>
-            <WfoStepList
-              ref={reference}
-              stepListItems={stepListItems}
-              showHiddenKeys={showHiddenKeys}
-              hideMinimalStepNames={hideMinimalStepNames}
-              isTask={isTask}
-              onToggleExpandStepListItem={toggleExpandedStateStepListItem}
-              processId={processId}
-              workflowName={workflowName}
-              onTriggerExpandStepListItem={handleExpandStepListItem}
-              userPermissions={userPermissions}
-            />
-          </WfoPageWithUserGuide>
-        )}
+        {!showRaw
+          && !showDelta
+          && ((isNewLayout && stepList) || (
+            <WfoPageWithUserGuide workflowName={workflowName}>{stepList}</WfoPageWithUserGuide>
+          ))}
       </>
     );
   },

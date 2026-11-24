@@ -69,6 +69,13 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     },
   });
 
+  // Extra room under the markers for the label of the current step
+  const labelRoomStyle = css({
+    height: 'auto',
+    minHeight: timelineHeightPx,
+    paddingBottom: theme.font.baseline * 2 + 24,
+  });
+
   const getHorizontalLineStyle = (color: string) =>
     css({
       content: '""',
@@ -159,6 +166,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     TIMELINE_HEIGHT,
     TIMELINE_OUTLINE_WIDTH,
     timelinePanelStyle,
+    labelRoomStyle,
     stepStyle,
     clickableStyle,
     notClickableStyle,
