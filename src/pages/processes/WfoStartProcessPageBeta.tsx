@@ -30,9 +30,9 @@ import { css } from '@emotion/react';
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoTitleWithWebsocketBadge } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
-import { FormLayoutV2Context, FormPageFieldsV2Context, WfoPydanticForm } from '@/components/WfoPydanticForm';
+import { BetaLayoutContext, BetaPageFieldsContext, WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { RenderFormErrors } from '@/components/WfoPydanticForm/RenderFormErrors';
-import { WfoArrayFieldV2 } from '@/components/WfoPydanticForm/fields';
+import { WfoBetaArrayField } from '@/components/WfoPydanticForm/fields';
 import { TUCKED_GUIDE_MIN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflowUserGuide/WfoTuckedGuide';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
@@ -152,10 +152,10 @@ const getInputSurfaceStyle = (theme: WfoComputedTheme) =>
   });
 
 // New-layout-only field components; checked before the shared ones
-const v2ComponentOverrides: PydanticComponentMatcher[] = [
+const betaComponentOverrides: PydanticComponentMatcher[] = [
   {
-    id: 'arrayV2',
-    ElementMatch: { isControlledElement: true, Element: WfoArrayFieldV2 },
+    id: 'betaArray',
+    ElementMatch: { isControlledElement: true, Element: WfoBetaArrayField },
     matcher: (field) => field.type === PydanticFormFieldType.ARRAY,
   },
 ];
@@ -449,12 +449,12 @@ const WfoFormStepList = (props: StepListProps) => {
   );
 };
 
-interface WfoStartProcessPageV2Props {
+interface WfoStartProcessPageBetaProps {
   processName: string;
   isTask?: boolean;
 }
 
-export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartProcessPageV2Props) => {
+export const WfoStartProcessPageBeta = ({ processName, isTask = false }: WfoStartProcessPageBetaProps) => {
   const t = useTranslations('pydanticForms.userInputForm');
   const router = useRouter();
   const { showConfirmDialog } = useContext(ConfirmationDialogContext);
@@ -553,7 +553,7 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
   const stepListProps = { steps, isTask, hasNext, canGoBack: hasPrevious, goBack };
 
   return (
-    <FormLayoutV2Context.Provider value={true}>
+    <BetaLayoutContext.Provider value={true}>
       <FormStepsContext.Provider value={contextValue}>
         <WfoContentHeader title={<WfoTitleWithWebsocketBadge title={pageTitle} />} spacerSize="xxl" />
         <div
@@ -574,15 +574,15 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
           </div>
           <div css={{ minWidth: 0, paddingInlineStart: theme.size.l }}>
             <EuiPanel hasBorder hasShadow={false} paddingSize="l" css={getInputSurfaceStyle(theme)}>
-              <FormPageFieldsV2Context.Provider value={pageFields}>
+              <BetaPageFieldsContext.Provider value={pageFields}>
                 <WfoPydanticForm
                   processName={processName}
                   startProcessPayload={startProcessPayload}
                   isTask={isTask}
                   renderers={renderers}
-                  componentOverrides={v2ComponentOverrides}
+                  componentOverrides={betaComponentOverrides}
                 />
-              </FormPageFieldsV2Context.Provider>
+              </BetaPageFieldsContext.Provider>
             </EuiPanel>
           </div>
           {showWorkflowUserGuide && (
@@ -594,6 +594,6 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
           )}
         </div>
       </FormStepsContext.Provider>
-    </FormLayoutV2Context.Provider>
+    </BetaLayoutContext.Provider>
   );
 };

@@ -63,8 +63,13 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
 }) => {
   const t = useTranslations('processes.steps');
   const { theme } = useOrchestratorTheme();
-  const { stepListHeaderStyle, stepListContentStyle, stepListTitleStyle, stepListOptionsContainerStyle } =
-    useWithOrchestratorTheme(getWorkflowStepsStyles);
+  const {
+    stepListHeaderStyle,
+    stepListHeaderCompactStyle,
+    stepListContentStyle,
+    stepListTitleStyle,
+    stepListOptionsContainerStyle,
+  } = useWithOrchestratorTheme(getWorkflowStepsStyles);
 
   const [isViewOptionOpen, setIsViewOptionOpen] = useState(false);
 
@@ -73,13 +78,6 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
 
   // Compact header: secondary actions are quiet, and the detail level moves into the view options popover
   const SecondaryButton = isCompact ? EuiButtonEmpty : EuiButton;
-  const compactHeaderStyle = isCompact && {
-    marginTop: 0,
-    marginBottom: theme.size.m,
-    alignItems: 'center' as const,
-    flexWrap: 'wrap' as const,
-    rowGap: theme.size.s,
-  };
 
   const detailLevelOptions = [
     { id: StepDetailLevel.MINIMAL, label: t('detailMinimal') },
@@ -99,7 +97,7 @@ export const WfoStepListHeader: FC<WfoStepListHeaderProps> = ({
   );
 
   return (
-    <EuiFlexGroup css={[stepListHeaderStyle, compactHeaderStyle]}>
+    <EuiFlexGroup css={[stepListHeaderStyle, isCompact && stepListHeaderCompactStyle]}>
       {/* Left side: header and detail level selector */}
       <EuiFlexGroup css={stepListContentStyle}>
         {(isCompact && (

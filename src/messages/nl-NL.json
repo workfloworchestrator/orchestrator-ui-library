@@ -267,7 +267,7 @@
       "arrayField": {
         "noItemsAvailable": "Geen items beschikbaar"
       },
-      "arrayFieldV2": {
+      "betaArrayField": {
         "addGroup": "Groep toevoegen",
         "addItem": "Item toevoegen",
         "groupNumber": "Groep {number}",

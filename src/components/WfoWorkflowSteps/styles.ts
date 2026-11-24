@@ -26,6 +26,15 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
     alignItems: 'flex-end',
   });
 
+  // New process page layout: one tight row that wraps on narrow screens
+  const stepListHeaderCompactStyle = css({
+    marginTop: 0,
+    marginBottom: theme.size.m,
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    rowGap: theme.size.s,
+  });
+
   const stepListContentStyle = css({
     flexDirection: 'row',
     alignItems: 'center',
@@ -233,6 +242,7 @@ export const getWorkflowStepsStyles = ({ theme, toSecondaryColor, isDarkModeActi
 
   return {
     SPACE_BETWEEN_STEPS,
+    stepListHeaderCompactStyle,
     stepDurationStyle,
     stepEmailContainerStyle,
     stepHeaderRightStyle,

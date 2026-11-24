@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 import { WfoComputedTheme } from '@/theme';
 
-export const getWfoArrayFieldV2Styles = (theme: WfoComputedTheme) => {
+export const getWfoBetaArrayFieldStyles = (theme: WfoComputedTheme) => {
   const container = css({
     display: 'flex',
     flexDirection: 'column',

@@ -148,6 +148,25 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     });
   };
 
+  // Name under a marker (current or failed step): anchored to the marker, centred under it
+  const stepLabelAnchorStyle = css({
+    position: 'relative',
+  });
+
+  const getStepLabelStyle = (color?: string) =>
+    css({
+      position: 'absolute',
+      top: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      marginTop: theme.size.xs,
+      whiteSpace: 'nowrap',
+      fontSize: theme.size.m,
+      lineHeight: theme.size.base,
+      fontWeight: theme.font.weight.semiBold,
+      color,
+    });
+
   const stepStyle = css({
     display: 'flex',
     flexDirection: 'row',
@@ -173,5 +192,7 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     getStepLineStyle,
     getStepOuterCircleStyle,
     getStepInnerCircleStyle,
+    stepLabelAnchorStyle,
+    getStepLabelStyle,
   };
 };

@@ -16,28 +16,28 @@ import {
 
 import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiIcon, EuiText, EuiTextColor } from '@elastic/eui';
 
-import { FormPageFieldsV2Context } from '@/components/WfoPydanticForm/formLayoutV2Context';
+import { BetaPageFieldsContext } from '@/components/WfoPydanticForm/betaLayoutContext';
 import { useOrchestratorTheme } from '@/hooks';
 
-import { getWfoArrayFieldV2Styles } from './styles';
+import { getWfoBetaArrayFieldStyles } from './styles';
 
 // True inside a group of a list of lists (e.g. ESI groups with endpoints), so the inner list can name its button
 const NestedListContext = createContext(false);
 
 /*
- * List field for the new start-workflow layout (WfoStartProcessPageV2).
+ * List field for the new start-workflow layout (WfoStartProcessPageBeta).
  * - Items with several fields (e.g. a contact person) become a card: title, "remove" action, one field per line.
  * - Simple items stay one row with an icon button.
  * - A list of lists becomes group boxes ("Group n"), each with its own item list: "Add item" inside, "Add group" below.
  * - Groups and the items in a group never go below 1 (no remove button then).
  * - Add/remove are real buttons with text, so they work with keyboard and screen reader.
  */
-export const WfoArrayFieldV2 = ({ pydanticFormField }: PydanticFormElementProps) => {
+export const WfoBetaArrayField = ({ pydanticFormField }: PydanticFormElementProps) => {
   const config = useGetConfig();
   const { control, getFieldState, formState } = useGetForm();
   const { theme } = useOrchestratorTheme();
-  const { container, row, card, group, cardHeader, cardFields } = getWfoArrayFieldV2Styles(theme);
-  const t = useTranslations('pydanticForms.widgets.arrayFieldV2');
+  const { container, row, card, group, cardHeader, cardFields } = getWfoBetaArrayFieldStyles(theme);
+  const t = useTranslations('pydanticForms.widgets.betaArrayField');
 
   const disabled = pydanticFormField.attributes?.disabled || false;
   const { id: arrayName, arrayItem } = pydanticFormField;
@@ -59,7 +59,7 @@ export const WfoArrayFieldV2 = ({ pydanticFormField }: PydanticFormElementProps)
   const isContactList = contactNameKey !== undefined;
 
   // Contacts are loaded per customer: lock the list until the customer field on this page has a value
-  const pageFields = useContext(FormPageFieldsV2Context);
+  const pageFields = useContext(BetaPageFieldsContext);
   const customerKey = Object.entries(pageFields).find(([, field]) => field.format === 'customerId')?.[0];
   const customerValue = useWatch({ control, name: customerKey ?? arrayName, disabled: !customerKey });
   const isLockedByCustomer = isContactList && customerKey !== undefined && !customerValue;

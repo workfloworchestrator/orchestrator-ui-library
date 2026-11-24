@@ -39,6 +39,8 @@ export const WfoTimelineStep = ({
     getStepLineStyle,
     getStepOuterCircleStyle,
     getStepInnerCircleStyle,
+    stepLabelAnchorStyle,
+    getStepLabelStyle,
   } = useWithOrchestratorTheme(getTimelineStyles);
 
   return (
@@ -51,26 +53,9 @@ export const WfoTimelineStep = ({
       onClick={() => onClick && onClick()}
     >
       <EuiToolTip position="top" content={tooltipContent}>
-        <div css={[getStepOuterCircleStyle(!!children), { position: 'relative' }]}>
+        <div css={[getStepOuterCircleStyle(!!children), stepLabelAnchorStyle]}>
           <div css={getStepInnerCircleStyle(stepStatus, !!children)}>{children}</div>
-          {label && (
-            <span
-              css={{
-                position: 'absolute',
-                top: '100%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                marginTop: 6,
-                whiteSpace: 'nowrap',
-                fontSize: 12,
-                lineHeight: '16px',
-                fontWeight: 600,
-                color: labelColor,
-              }}
-            >
-              {label}
-            </span>
-          )}
+          {label && <span css={getStepLabelStyle(labelColor)}>{label}</span>}
         </div>
       </EuiToolTip>
     </button>
