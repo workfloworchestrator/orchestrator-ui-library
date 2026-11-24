@@ -217,7 +217,14 @@ const StepFooter = ({
       <RenderFormErrors />
       <EuiHorizontalRule />
       <EuiFlexGroup justifyContent="spaceBetween" alignItems="center" responsive={false} wrap>
-        <EuiButton fill type="submit" iconType="chevronSingleRight" iconSide="right">
+        <EuiButton
+          fill
+          type="submit"
+          iconType="chevronSingleRight"
+          iconSide="right"
+          id="button-submit-form-submit"
+          data-testid="button-submit-form-submit"
+        >
           {label}
         </EuiButton>
         <EuiButtonEmpty color="text" onClick={onCancel}>
@@ -324,7 +331,8 @@ const WfoFormStepList = (props: StepListProps) => {
   useEffect(() => {
     if (!isExpanded) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsDismissed(true);
+      // A dropdown or dialog that handled this Escape marks it; then it was not meant for the step list
+      if (event.key === 'Escape' && !event.defaultPrevented) setIsDismissed(true);
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
@@ -483,6 +491,7 @@ export const WfoStartProcessPageV2 = ({ processName, isTask = false }: WfoStartP
     if (key === leftKey.current) return;
     if (key === shownKey.current) {
       leftKey.current = undefined; // the page we went back to is shown: the stale render is over
+      setPageFields(fields); // else page-aware fields (e.g. contacts waiting for the customer) see the page we left
       return;
     }
     leftKey.current = undefined;

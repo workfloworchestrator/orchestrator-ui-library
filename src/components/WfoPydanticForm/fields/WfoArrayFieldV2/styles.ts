@@ -21,6 +21,22 @@ export const getWfoArrayFieldV2Styles = (theme: WfoComputedTheme) => {
   const card = css({
     border: `${theme.border.width.thin} solid ${theme.colors.borderBaseSubdued}`,
     borderRadius: theme.border.radius.panel,
+    backgroundColor: theme.colors.backgroundBasePlain,
+    padding: theme.size.base,
+    margin: 0,
+    minWidth: 0,
+    // Backend layout puts fields side by side; below 640px (e.g. 50/50 = 2x ~250px) values get cut off, so stack
+    containerType: 'inline-size',
+    '@container (max-width: 640px)': {
+      '[class^="pf-col-span-"]': { gridColumn: '1 / -1 !important' },
+    },
+  });
+
+  // Group of a list of lists: grey box around white item cards, so the two levels differ at a glance
+  const group = css({
+    border: `${theme.border.width.thin} solid ${theme.colors.borderBasePlain}`,
+    borderRadius: theme.border.radius.panel,
+    backgroundColor: theme.colors.backgroundBaseSubdued,
     padding: theme.size.base,
     margin: 0,
     minWidth: 0,
@@ -42,5 +58,5 @@ export const getWfoArrayFieldV2Styles = (theme: WfoComputedTheme) => {
     flexDirection: 'column',
   });
 
-  return { container, row, card, cardHeader, cardFields };
+  return { container, row, card, group, cardHeader, cardFields };
 };
