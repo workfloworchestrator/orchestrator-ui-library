@@ -11,11 +11,24 @@ import {
   COMPLETED_PROCESSES_LIST_TABLE_LOCAL_STORAGE_KEY,
   PATH_WORKFLOWS,
 } from '@/components';
-import { WfoFilterTabs, WfoProcessesList, WfoTitleWithWebsocketBadge } from '@/components';
+import {
+  ProcessListItem,
+  WfoBulkProcessAction,
+  WfoBulkProcessActions,
+  WfoFilterTabs,
+  WfoProcessesList,
+  WfoStructuredSearchTableBulkEditConfiguration,
+  WfoTitleWithWebsocketBadge,
+} from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
 
 import { getWorkflowsListTabTypeFromString } from './getWorkflowsListTabTypeFromString';
 import { WfoWorkflowsListTabType, defaultWorkflowsListTabs } from './tabConfig';
+
+const bulkProcessActionsPerTab: Record<WfoWorkflowsListTabType, WfoBulkProcessAction[]> = {
+  [WfoWorkflowsListTabType.ACTIVE]: ['retry', 'abort', 'note'],
+  [WfoWorkflowsListTabType.COMPLETED]: ['note'],
+};
 
 export const WfoWorkflowsListPage = () => {
   const router = useRouter();
@@ -41,6 +54,18 @@ export const WfoWorkflowsListPage = () => {
     return null;
   }
 
+  const bulkEditConfiguration: WfoStructuredSearchTableBulkEditConfiguration<ProcessListItem> = {
+    uniqueRowId: 'processId',
+    renderActions: ({ selectedRows, clearSelection }) => (
+      <WfoBulkProcessActions
+        actions={bulkProcessActionsPerTab[selectedWorkflowsListTab]}
+        translationNamespace="workflows.bulkActions"
+        selectedProcesses={selectedRows}
+        onActionDone={clearSelection}
+      />
+    ),
+  };
+
   return (
     <>
       <WfoContentHeader title={<WfoTitleWithWebsocketBadge title={t('title')} />} />
@@ -57,6 +82,7 @@ export const WfoWorkflowsListPage = () => {
         isTask={false}
         statuses={defaultWorkflowsListTabs.find(({ id }) => id === selectedWorkflowsListTab)?.statuses ?? []}
         localStorageKey={localStorageKey}
+        bulkEditConfiguration={bulkEditConfiguration}
       />
     </>
   );

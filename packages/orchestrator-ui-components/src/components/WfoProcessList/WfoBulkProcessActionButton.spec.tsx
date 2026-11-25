@@ -57,24 +57,28 @@ const allTasks = [failedTask, waitingTask, runningTask, notPermittedTask, comple
 
 const actionCases: {
   action: WfoConfirmedBulkProcessAction;
+  bulkAction: string;
   policyResource: PolicyResource;
   needsRunningEngine: boolean;
   applicableTaskIds: string[];
 }[] = [
   {
-    action: 'resume',
+    action: 'retry',
+    bulkAction: 'resume',
     policyResource: PolicyResource.PROCESS_RETRY,
     needsRunningEngine: true,
     applicableTaskIds: ['failed-task', 'waiting-task'],
   },
   {
     action: 'abort',
+    bulkAction: 'abort',
     policyResource: PolicyResource.PROCESS_ABORT,
     needsRunningEngine: true,
     applicableTaskIds: ['failed-task', 'waiting-task', 'running-task', 'not-permitted-task'],
   },
   {
     action: 'delete',
+    bulkAction: 'delete',
     policyResource: PolicyResource.PROCESS_DELETE,
     needsRunningEngine: false,
     applicableTaskIds: ['failed-task', 'waiting-task', 'not-permitted-task', 'completed-task', 'aborted-task'],
@@ -86,7 +90,12 @@ const renderButton = (action: WfoConfirmedBulkProcessAction, selectedProcesses: 
   const onActionDone = jest.fn();
   render(
     <ConfirmationDialogContext.Provider value={{ showConfirmDialog, closeConfirmDialog: jest.fn() }}>
-      <WfoBulkProcessActionButton action={action} selectedProcesses={selectedProcesses} onActionDone={onActionDone} />
+      <WfoBulkProcessActionButton
+        action={action}
+        translationNamespace="tasks.bulkActions"
+        selectedProcesses={selectedProcesses}
+        onActionDone={onActionDone}
+      />
     </ConfirmationDialogContext.Provider>,
   );
   return { showConfirmDialog, onActionDone };
@@ -117,88 +126,93 @@ describe('WfoBulkProcessActionButton', () => {
     }));
   });
 
-  describe.each(actionCases)('$action', ({ action, policyResource, needsRunningEngine, applicableTaskIds }) => {
-    it('is not shown without its policy', () => {
-      mockIsAllowed.mockImplementation((resource: PolicyResource) => resource !== policyResource);
-      renderButton(action, allTasks);
+  describe.each(actionCases)(
+    '$action',
+    ({ action, bulkAction, policyResource, needsRunningEngine, applicableTaskIds }) => {
+      it('is not shown without its policy', () => {
+        mockIsAllowed.mockImplementation((resource: PolicyResource) => resource !== policyResource);
+        renderButton(action, allTasks);
 
-      expect(getButton(action)).not.toBeInTheDocument();
-    });
+        expect(getButton(action)).not.toBeInTheDocument();
+      });
 
-    it('is disabled when the action can be applied to none of the selected tasks', () => {
-      renderButton(
-        action,
-        allTasks.filter(({ processId }) => !applicableTaskIds.includes(processId)),
-      );
+      it('is disabled when the action can be applied to none of the selected tasks', () => {
+        renderButton(
+          action,
+          allTasks.filter(({ processId }) => !applicableTaskIds.includes(processId)),
+        );
 
-      expect(getButton(action)).toBeDisabled();
-    });
+        expect(getButton(action)).toBeDisabled();
+      });
 
-    it('applies the action to the tasks it can be applied to in one request after confirmation', async () => {
-      const { showConfirmDialog, onActionDone } = renderButton(action, allTasks);
+      it('applies the action to the tasks it can be applied to in one request after confirmation', async () => {
+        const { showConfirmDialog, onActionDone } = renderButton(action, allTasks);
 
-      await clickAndConfirm(action, showConfirmDialog);
+        await clickAndConfirm(action, showConfirmDialog);
 
-      expect(showConfirmDialog).toHaveBeenCalledWith(
-        expect.objectContaining({
-          question: `tasks.bulkActions.${action}.question: ${applicableTaskIds.length}`,
-          subQuestion: `tasks.bulkActions.${action}.skipped: ${allTasks.length - applicableTaskIds.length}`,
-          confirmButtonText: `tasks.bulkActions.${action}.button`,
-        }),
-      );
-      expect(mockBulkProcessAction.mock.calls).toEqual([[{ action, processIds: applicableTaskIds, note: undefined }]]);
-      expect(mockShowToastMessage).toHaveBeenCalledTimes(1);
-      expect(mockShowToastMessage).toHaveBeenCalledWith(
-        ToastTypes.SUCCESS,
-        `tasks.bulkActions.${action}.successText: ${applicableTaskIds.length}`,
-        `tasks.bulkActions.${action}.successTitle`,
-      );
-      expect(onActionDone).toHaveBeenCalled();
-    });
+        expect(showConfirmDialog).toHaveBeenCalledWith(
+          expect.objectContaining({
+            question: `tasks.bulkActions.${action}.question: ${applicableTaskIds.length}`,
+            subQuestion: `tasks.bulkActions.${action}.skipped: ${allTasks.length - applicableTaskIds.length}`,
+            confirmButtonText: `tasks.bulkActions.${action}.button`,
+          }),
+        );
+        expect(mockBulkProcessAction.mock.calls).toEqual([
+          [{ action: bulkAction, processIds: applicableTaskIds, note: undefined }],
+        ]);
+        expect(mockShowToastMessage).toHaveBeenCalledTimes(1);
+        expect(mockShowToastMessage).toHaveBeenCalledWith(
+          ToastTypes.SUCCESS,
+          `tasks.bulkActions.${action}.successText: ${applicableTaskIds.length}`,
+          `tasks.bulkActions.${action}.successTitle`,
+        );
+        expect(onActionDone).toHaveBeenCalled();
+      });
 
-    it('reports the error detail of the backend and keeps the selection when the request is rejected', async () => {
-      mockBulkProcessAction.mockImplementation(() => ({
-        unwrap: () => Promise.reject({ status: 409, data: { detail: 'failed-task: not possible' } }),
-      }));
-      const { showConfirmDialog, onActionDone } = renderButton(action, [failedTask]);
+      it('reports the error detail of the backend and keeps the selection when the request is rejected', async () => {
+        mockBulkProcessAction.mockImplementation(() => ({
+          unwrap: () => Promise.reject({ status: 409, data: { detail: 'failed-task: not possible' } }),
+        }));
+        const { showConfirmDialog, onActionDone } = renderButton(action, [waitingTask]);
 
-      await clickAndConfirm(action, showConfirmDialog);
+        await clickAndConfirm(action, showConfirmDialog);
 
-      expect(mockShowToastMessage).toHaveBeenCalledTimes(1);
-      expect(mockShowToastMessage).toHaveBeenCalledWith(
-        ToastTypes.ERROR,
-        'failed-task: not possible',
-        `tasks.bulkActions.${action}.failedTitle`,
-      );
-      expect(onActionDone).not.toHaveBeenCalled();
-    });
+        expect(mockShowToastMessage).toHaveBeenCalledTimes(1);
+        expect(mockShowToastMessage).toHaveBeenCalledWith(
+          ToastTypes.ERROR,
+          'failed-task: not possible',
+          `tasks.bulkActions.${action}.failedTitle`,
+        );
+        expect(onActionDone).not.toHaveBeenCalled();
+      });
 
-    it(`${needsRunningEngine ? 'needs' : 'does not need'} a running engine`, async () => {
-      mockIsEngineRunningNow.mockResolvedValue(false);
-      const { showConfirmDialog } = renderButton(action, [failedTask]);
+      it(`${needsRunningEngine ? 'needs' : 'does not need'} a running engine`, async () => {
+        mockIsEngineRunningNow.mockResolvedValue(false);
+        const { showConfirmDialog } = renderButton(action, [waitingTask]);
 
-      fireEvent.click(getButton(action)!);
+        fireEvent.click(getButton(action)!);
 
-      if (needsRunningEngine) {
-        await waitFor(() => expect(mockIsEngineRunningNow).toHaveBeenCalled());
-        expect(showConfirmDialog).not.toHaveBeenCalled();
-      } else {
-        await waitFor(() => expect(showConfirmDialog).toHaveBeenCalled());
-        expect(mockIsEngineRunningNow).not.toHaveBeenCalled();
-      }
-    });
-  });
+        if (needsRunningEngine) {
+          await waitFor(() => expect(mockIsEngineRunningNow).toHaveBeenCalled());
+          expect(showConfirmDialog).not.toHaveBeenCalled();
+        } else {
+          await waitFor(() => expect(showConfirmDialog).toHaveBeenCalled());
+          expect(mockIsEngineRunningNow).not.toHaveBeenCalled();
+        }
+      });
+    },
+  );
 
   it('reports a fallback when the rejected request has no error detail', async () => {
     mockBulkProcessAction.mockImplementation(() => ({ unwrap: () => Promise.reject({ status: 500, data: {} }) }));
-    const { showConfirmDialog } = renderButton('resume', [failedTask, waitingTask]);
+    const { showConfirmDialog } = renderButton('retry', [failedTask, waitingTask]);
 
-    await clickAndConfirm('resume', showConfirmDialog);
+    await clickAndConfirm('retry', showConfirmDialog);
 
     expect(mockShowToastMessage).toHaveBeenCalledWith(
       ToastTypes.ERROR,
-      'tasks.bulkActions.resume.failedText: 2',
-      'tasks.bulkActions.resume.failedTitle',
+      'tasks.bulkActions.retry.failedText: 2',
+      'tasks.bulkActions.retry.failedTitle',
     );
   });
 

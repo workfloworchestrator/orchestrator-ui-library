@@ -8,13 +8,12 @@ import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useCheckEngineStatus, usePolicy } from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
-import { ProcessBulkAction } from '@/types';
 
 import type { ProcessListItem } from './WfoProcessesList';
-import { useBulkProcessAction } from './useBulkProcessAction';
+import { WfoBulkProcessAction, useBulkProcessAction } from './useBulkProcessAction';
 import { isProcessAbortable, isProcessDeletable, isProcessRetryable } from './utils';
 
-export type WfoConfirmedBulkProcessAction = Exclude<ProcessBulkAction, 'note'>;
+export type WfoConfirmedBulkProcessAction = Exclude<WfoBulkProcessAction, 'note'>;
 
 type BulkProcessActionConfig = {
   policyResource: PolicyResource;
@@ -25,7 +24,7 @@ type BulkProcessActionConfig = {
 };
 
 const bulkProcessActionConfigs: Record<WfoConfirmedBulkProcessAction, BulkProcessActionConfig> = {
-  resume: {
+  retry: {
     policyResource: PolicyResource.PROCESS_RETRY,
     canApplyTo: isProcessRetryable,
     needsRunningEngine: true,
@@ -49,20 +48,22 @@ const bulkProcessActionConfigs: Record<WfoConfirmedBulkProcessAction, BulkProces
 
 export type WfoBulkProcessActionButtonProps = {
   action: WfoConfirmedBulkProcessAction;
+  translationNamespace: string;
   selectedProcesses: ProcessListItem[];
   onActionDone: () => void;
 };
 
 export const WfoBulkProcessActionButton = ({
   action,
+  translationNamespace,
   selectedProcesses,
   onActionDone,
 }: WfoBulkProcessActionButtonProps) => {
-  const t = useTranslations(`tasks.bulkActions.${action}`);
+  const t = useTranslations(`${translationNamespace}.${action}`);
   const { isAllowed } = usePolicy();
   const { showConfirmDialog } = useContext(ConfirmationDialogContext);
   const { isEngineRunningNow } = useCheckEngineStatus();
-  const { runBulkProcessAction, isLoading } = useBulkProcessAction(action, onActionDone);
+  const { runBulkProcessAction, isLoading } = useBulkProcessAction({ action, translationNamespace, onActionDone });
   const { policyResource, canApplyTo, needsRunningEngine, iconType, color } = bulkProcessActionConfigs[action];
 
   if (!isAllowed(policyResource)) {

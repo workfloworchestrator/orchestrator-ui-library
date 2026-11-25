@@ -34,7 +34,13 @@ const selectedTasks = [
 
 const renderButton = (selectedProcesses: ProcessListItem[]) => {
   const onActionDone = jest.fn();
-  render(<WfoBulkProcessNoteButton selectedProcesses={selectedProcesses} onActionDone={onActionDone} />);
+  render(
+    <WfoBulkProcessNoteButton
+      translationNamespace="tasks.bulkActions"
+      selectedProcesses={selectedProcesses}
+      onActionDone={onActionDone}
+    />,
+  );
   return { onActionDone };
 };
 

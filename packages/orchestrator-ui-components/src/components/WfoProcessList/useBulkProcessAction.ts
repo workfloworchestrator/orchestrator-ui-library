@@ -7,15 +7,30 @@ import { ProcessBulkAction, ToastTypes } from '@/types';
 
 import type { ProcessListItem } from './WfoProcessesList';
 
-export const useBulkProcessAction = (action: ProcessBulkAction, onActionDone: () => void) => {
-  const t = useTranslations(`tasks.bulkActions.${action}`);
+export type WfoBulkProcessAction = 'retry' | 'abort' | 'delete' | 'note';
+
+const processBulkActions: Record<WfoBulkProcessAction, ProcessBulkAction> = {
+  retry: 'resume',
+  abort: 'abort',
+  delete: 'delete',
+  note: 'note',
+};
+
+export type UseBulkProcessActionProps = {
+  action: WfoBulkProcessAction;
+  translationNamespace: string;
+  onActionDone: () => void;
+};
+
+export const useBulkProcessAction = ({ action, translationNamespace, onActionDone }: UseBulkProcessActionProps) => {
+  const t = useTranslations(`${translationNamespace}.${action}`);
   const { showToastMessage } = useShowToastMessage();
   const [bulkProcessAction, { isLoading }] = useBulkProcessActionMutation();
 
   const runBulkProcessAction = async (processes: ProcessListItem[], note?: string | null): Promise<boolean> => {
     try {
       const { count, results } = await bulkProcessAction({
-        action,
+        action: processBulkActions[action],
         processIds: processes.map(({ processId }) => processId),
         note,
       }).unwrap();

@@ -13,13 +13,22 @@ import { useBulkProcessAction } from './useBulkProcessAction';
 export const PROCESS_NOTE_MAX_LENGTH = 5000;
 
 export type WfoBulkProcessNoteButtonProps = {
+  translationNamespace: string;
   selectedProcesses: ProcessListItem[];
   onActionDone: () => void;
 };
 
-export const WfoBulkProcessNoteButton = ({ selectedProcesses, onActionDone }: WfoBulkProcessNoteButtonProps) => {
-  const t = useTranslations('tasks.bulkActions.note');
-  const { runBulkProcessAction, isLoading } = useBulkProcessAction('note', onActionDone);
+export const WfoBulkProcessNoteButton = ({
+  translationNamespace,
+  selectedProcesses,
+  onActionDone,
+}: WfoBulkProcessNoteButtonProps) => {
+  const t = useTranslations(`${translationNamespace}.note`);
+  const { runBulkProcessAction, isLoading } = useBulkProcessAction({
+    action: 'note',
+    translationNamespace,
+    onActionDone,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [note, setNote] = useState('');
 

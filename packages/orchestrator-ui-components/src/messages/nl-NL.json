@@ -539,7 +539,7 @@
   },
   "tasks": {
     "bulkActions": {
-      "resume": {
+      "retry": {
         "button": "Probeer opnieuw",
         "question": "Weet u zeker dat u {count, plural, one {# geselecteerde taak} other {# geselecteerde taken}} opnieuw wilt proberen?",
         "skipped": "{count, plural, one {# geselecteerde taak kan niet opnieuw worden geprobeerd en wordt} other {# geselecteerde taken kunnen niet opnieuw worden geprobeerd en worden}} overgeslagen.",
@@ -594,6 +594,37 @@
     "show": "Toon gebruikershandleiding"
   },
   "workflows": {
+    "bulkActions": {
+      "retry": {
+        "button": "Probeer opnieuw",
+        "question": "Weet u zeker dat u {count, plural, one {# geselecteerde workflow} other {# geselecteerde workflows}} opnieuw wilt proberen?",
+        "skipped": "{count, plural, one {# geselecteerde workflow kan niet opnieuw worden geprobeerd en wordt} other {# geselecteerde workflows kunnen niet opnieuw worden geprobeerd en worden}} overgeslagen.",
+        "successTitle": "Opnieuw proberen gestart",
+        "successText": "{count, plural, one {# workflow wordt} other {# workflows worden}} opnieuw geprobeerd.",
+        "failedTitle": "Opnieuw proberen mislukt",
+        "failedText": "{count, plural, one {# workflow kon} other {# workflows konden}} niet opnieuw worden geprobeerd."
+      },
+      "abort": {
+        "button": "Stop",
+        "question": "Weet u zeker dat u {count, plural, one {# geselecteerde workflow} other {# geselecteerde workflows}} wilt stoppen? Dit kan niet ongedaan worden gemaakt.",
+        "skipped": "{count, plural, one {# geselecteerde workflow kan niet worden gestopt en wordt} other {# geselecteerde workflows kunnen niet worden gestopt en worden}} overgeslagen.",
+        "successTitle": "Workflows gestopt",
+        "successText": "{count, plural, one {# workflow is} other {# workflows zijn}} gestopt.",
+        "failedTitle": "Stoppen mislukt",
+        "failedText": "{count, plural, one {# workflow kon} other {# workflows konden}} niet worden gestopt."
+      },
+      "note": {
+        "button": "Notitie toevoegen",
+        "title": "Notitie toevoegen aan {count, plural, one {# geselecteerde workflow} other {# geselecteerde workflows}}",
+        "label": "Notitie",
+        "helpText": "Vervangt de huidige notitie van de geselecteerde workflows. Laat leeg om hun notities te wissen.",
+        "save": "Notitie opslaan",
+        "successTitle": "Notitie opgeslagen",
+        "successText": "De notitie van {count, plural, one {# workflow is} other {# workflows zijn}} bijgewerkt.",
+        "failedTitle": "Notitie opslaan mislukt",
+        "failedText": "De notitie van {count, plural, one {# workflow kon} other {# workflows konden}} niet worden opgeslagen."
+      }
+    },
     "index": {
       "title": "Workflows"
     },

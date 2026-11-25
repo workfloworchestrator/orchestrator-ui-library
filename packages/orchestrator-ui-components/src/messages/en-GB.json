@@ -539,7 +539,7 @@
   },
   "tasks": {
     "bulkActions": {
-      "resume": {
+      "retry": {
         "button": "Retry",
         "question": "Are you sure you want to retry {count, plural, one {# selected task} other {# selected tasks}}?",
         "skipped": "{count, plural, one {# selected task can't be retried and is} other {# selected tasks can't be retried and are}} skipped.",
@@ -594,6 +594,37 @@
     "show": "Show user guide"
   },
   "workflows": {
+    "bulkActions": {
+      "retry": {
+        "button": "Retry",
+        "question": "Are you sure you want to retry {count, plural, one {# selected workflow} other {# selected workflows}}?",
+        "skipped": "{count, plural, one {# selected workflow can't be retried and is} other {# selected workflows can't be retried and are}} skipped.",
+        "successTitle": "Retry started",
+        "successText": "{count, plural, one {# workflow is} other {# workflows are}} being retried.",
+        "failedTitle": "Retry failed",
+        "failedText": "{count, plural, one {# workflow} other {# workflows}} could not be retried."
+      },
+      "abort": {
+        "button": "Abort",
+        "question": "Are you sure you want to abort {count, plural, one {# selected workflow} other {# selected workflows}}? This can't be undone.",
+        "skipped": "{count, plural, one {# selected workflow can't be aborted and is} other {# selected workflows can't be aborted and are}} skipped.",
+        "successTitle": "Workflows aborted",
+        "successText": "{count, plural, one {# workflow is} other {# workflows are}} aborted.",
+        "failedTitle": "Abort failed",
+        "failedText": "{count, plural, one {# workflow} other {# workflows}} could not be aborted."
+      },
+      "note": {
+        "button": "Add note",
+        "title": "Add a note to {count, plural, one {# selected workflow} other {# selected workflows}}",
+        "label": "Note",
+        "helpText": "Replaces the current note of the selected workflows. Leave it empty to clear their notes.",
+        "save": "Save note",
+        "successTitle": "Note saved",
+        "successText": "The note of {count, plural, one {# workflow is} other {# workflows are}} updated.",
+        "failedTitle": "Saving the note failed",
+        "failedText": "The note of {count, plural, one {# workflow} other {# workflows}} could not be saved."
+      }
+    },
     "index": {
       "title": "Workflows"
     },

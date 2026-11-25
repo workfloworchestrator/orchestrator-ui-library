@@ -18,6 +18,7 @@ import {
 import { PATH_TASKS } from '@/components';
 import {
   ProcessListItem,
+  WfoBulkProcessAction,
   WfoBulkProcessActions,
   WfoProcessListActions,
   WfoProcessesList,
@@ -34,10 +35,9 @@ import { WfoRefresh } from '@/icons';
 import { getTasksListTabTypeFromString } from '@/pages/tasks/getTasksListTabTypeFromString';
 import { WfoTasksListTabType, defaultTasksListTabs } from '@/pages/tasks/tabConfig';
 import { useRetryAllProcessesMutation } from '@/rtk/endpoints/processDetail';
-import { ProcessBulkAction } from '@/types';
 
-const bulkProcessActionsPerTab: Record<WfoTasksListTabType, ProcessBulkAction[]> = {
-  [WfoTasksListTabType.ACTIVE]: ['resume', 'abort', 'delete', 'note'],
+const bulkProcessActionsPerTab: Record<WfoTasksListTabType, WfoBulkProcessAction[]> = {
+  [WfoTasksListTabType.ACTIVE]: ['retry', 'abort', 'delete', 'note'],
   [WfoTasksListTabType.COMPLETED]: ['delete', 'note'],
 };
 
@@ -117,6 +117,7 @@ export const WfoTasksListPage = () => {
     renderActions: ({ selectedRows, clearSelection }) => (
       <WfoBulkProcessActions
         actions={bulkProcessActionsPerTab[selectedTasksListTab]}
+        translationNamespace="tasks.bulkActions"
         selectedProcesses={selectedRows}
         onActionDone={clearSelection}
       />
