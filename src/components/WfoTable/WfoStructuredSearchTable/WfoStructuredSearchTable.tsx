@@ -24,13 +24,13 @@ import {
   WfoTableControlColumnConfigItem,
   WfoTableDataColumnConfigItem,
 } from '@/components/WfoTable/WfoTable';
-import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
-import { WfoArrowsExpand } from '@/icons';
+import { useWithOrchestratorTheme } from '@/hooks';
 import { WfoGraphqlError } from '@/rtk';
 import { EntityKind, RetrieverType } from '@/types';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, Pagination, WfoTable, WfoTableProps } from '../WfoTable';
+import { WfoViewDetailsButton } from '../WfoViewDetailsButton';
 import { WfoBulkEditToolbar } from './WfoBulkEditToolbar';
 import { WfoFilterBuilder } from './WfoFilterBuilder';
 import { WfoRowDetails } from './WfoRowDetails';
@@ -163,7 +163,6 @@ export const WfoStructuredSearchTable = <T extends object>({
   isLoading,
   ...tableProps
 }: WfoStructuredSearchTableProps<T>) => {
-  const { theme } = useOrchestratorTheme();
   const { toggleButtonStyles, nextPageButtonStyle } = useWithOrchestratorTheme(getWfoStructuredSearchTableStyles);
   const [userHiddenColumns, setUserHiddenColumns] = useState<TableColumnKeys<T>>(defaultHiddenColumns);
   const hiddenColumns = [...userHiddenColumns, ...additionalHiddenColumns];
@@ -221,11 +220,7 @@ export const WfoStructuredSearchTable = <T extends object>({
     viewDetails: {
       columnType: ColumnType.CONTROL,
       width: '36px',
-      renderControl: (row) => (
-        <EuiFlexItem css={{ cursor: 'pointer' }} onClick={() => setRowDetailModalData(row)}>
-          <WfoArrowsExpand color={theme.colors.borderBasePlain} />
-        </EuiFlexItem>
-      ),
+      renderControl: (row) => <WfoViewDetailsButton onClick={() => setRowDetailModalData(row)} />,
     },
   };
 

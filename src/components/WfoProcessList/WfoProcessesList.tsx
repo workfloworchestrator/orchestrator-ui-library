@@ -36,7 +36,7 @@ import { parseDateToLocaleDateTimeString } from '@/utils';
 import { getQueryVariablesForExport } from '@/utils';
 import { csvDownloadHandler, getCsvFileNameWithDate } from '@/utils/csvDownload';
 
-import { WfoProcessListActions } from './WfoProcessListActions';
+import { WfoProcessListActions, useIsProcessRetryAllowed } from './WfoProcessListActions';
 import { WfoProcessListDeltaPopover } from './WfoProcessListDeltaPopover';
 import {
   graphQlProcessFilterMapper,
@@ -98,18 +98,35 @@ export const WfoProcessesList = ({
   const tError = useTranslations('errors');
   const { showToastMessage } = useShowToastMessage();
   const router = useRouter();
+  const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
+
+  const processListQueryVars: GraphqlQueryVariables<Process> = {
+    first: pageSize,
+    after: pageIndex * pageSize,
+    sortBy: graphQlProcessSortMapper(sortBy),
+    filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
+    query: queryString || undefined,
+  };
+
+  const { data, isFetching, error } = useGetProcessListQuery(processListQueryVars);
+
+  const [getProcessListTrigger, { isFetching: isFetchingCsv }] = useLazyGetProcessListQuery();
+
+  const { processes, pageInfo } = data || {};
+
+  const isProcessRetryAllowed = useIsProcessRetryAllowed();
+  const processListItems = mapGraphQlProcessListResultToProcessListItems(processes || []);
+  // Hide the whole actions column when no row on this page has an action
+  const hasRowActions = processListItems.some(isProcessRetryAllowed);
 
   const defaultTableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> = {
-    delta: {
-      columnType: ColumnType.CONTROL,
-      width: '50px',
-      renderControl: (row) => <WfoProcessListDeltaPopover processListItem={row} />,
-    },
-    actions: {
-      columnType: ColumnType.CONTROL,
-      width: '36px',
-      renderControl: (row) => <WfoProcessListActions processListItem={row} />,
-    },
+    ...(hasRowActions && {
+      actions: {
+        columnType: ColumnType.CONTROL as const,
+        width: '36px',
+        renderControl: (row: ProcessListItem) => <WfoProcessListActions processListItem={row} />,
+      },
+    }),
     workflowName: {
       columnType: ColumnType.DATA,
       label: t('workflowName'),
@@ -212,26 +229,15 @@ export const WfoProcessesList = ({
       clipboardText: parseDateToLocaleDateTimeString,
       renderTooltip: (value) => value.toString(),
     },
+    delta: {
+      columnType: ColumnType.CONTROL,
+      width: '36px',
+      renderControl: (row) => <WfoProcessListDeltaPopover processListItem={row} />,
+    },
   };
 
   const tableColumns: WfoAdvancedTableColumnConfig<ProcessListItem> =
     overrideDefaultTableColumns ? overrideDefaultTableColumns(defaultTableColumns) : defaultTableColumns;
-
-  const { pageSize, pageIndex, sortBy, queryString } = dataDisplayParams;
-
-  const processListQueryVars: GraphqlQueryVariables<Process> = {
-    first: pageSize,
-    after: pageIndex * pageSize,
-    sortBy: graphQlProcessSortMapper(sortBy),
-    filterBy: graphQlProcessFilterMapper(alwaysOnFilters),
-    query: queryString || undefined,
-  };
-
-  const { data, isFetching, error } = useGetProcessListQuery(processListQueryVars);
-
-  const [getProcessListTrigger, { isFetching: isFetchingCsv }] = useLazyGetProcessListQuery();
-
-  const { processes, pageInfo } = data || {};
 
   const pagination: Pagination = {
     pageSize: pageSize,
@@ -258,7 +264,7 @@ export const WfoProcessesList = ({
   return (
     <WfoAdvancedTable<ProcessListItem>
       queryString={queryString}
-      data={mapGraphQlProcessListResultToProcessListItems(processes || [])}
+      data={processListItems}
       tableColumnConfig={tableConfig}
       dataSorting={[dataSorting]}
       pagination={pagination}

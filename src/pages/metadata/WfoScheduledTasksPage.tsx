@@ -26,7 +26,14 @@ import { WfoAdvancedTable } from '@/components/WfoTable/WfoAdvancedTable';
 import { WfoAdvancedTableColumnConfig } from '@/components/WfoTable/WfoAdvancedTable/types';
 import { ColumnType, Pagination } from '@/components/WfoTable/WfoTable';
 import { mapSortableAndFilterableValuesToTableColumnConfig } from '@/components/WfoTable/WfoTable/utils';
-import { useDataDisplayParams, useGetWorkflowNameById, useShowToastMessage, useStoredTableConfig } from '@/hooks';
+import {
+  useDataDisplayParams,
+  useGetWorkflowNameById,
+  useOrchestratorTheme,
+  useShowToastMessage,
+  useStoredTableConfig,
+} from '@/hooks';
+import { WfoTrash } from '@/icons';
 import {
   ScheduledTasksResponse,
   useDeleteScheduledTaskMutation,
@@ -55,6 +62,7 @@ const WfoWorkflowNameById = ({ workflowId }: { workflowId: string }) => {
 export const WfoScheduledTasksPage = () => {
   const t = useTranslations('metadata.scheduledTasks');
   const tError = useTranslations('errors');
+  const { theme } = useOrchestratorTheme();
   const { showToastMessage } = useShowToastMessage();
   const router = useRouter();
   const [tableDefaults, setTableDefaults] = useState<StoredTableConfig<ScheduledTaskDefinition>>();
@@ -87,6 +95,23 @@ export const WfoScheduledTasksPage = () => {
   });
 
   const tableColumns: WfoAdvancedTableColumnConfig<ScheduledTaskDefinition> = {
+    deleteSchedule: {
+      columnType: ColumnType.CONTROL,
+      width: '36px',
+      renderControl: (taskListItem) => (
+        <WfoButtonWithConfirm
+          question={t('deleteConfirmationQuestion')}
+          onConfirm={() => {
+            deleteScheduledTask({
+              workflowId: taskListItem.workflowId,
+              scheduleId: taskListItem.id,
+            });
+          }}
+          iconType={() => <WfoTrash width={20} height={20} color={theme.colors.textDisabled} />}
+          ariaLabel={t('ariaLabelDeleteButton')}
+        />
+      ),
+    },
     workflowId: {
       columnType: ColumnType.DATA,
       label: t('task'),
@@ -119,22 +144,6 @@ export const WfoScheduledTasksPage = () => {
           </EuiFlexItem>
           <EuiFlexItem>{trigger}</EuiFlexItem>
         </EuiFlexGroup>
-      ),
-    },
-    deleteSchedule: {
-      columnType: ColumnType.CONTROL,
-      width: '80px',
-      renderControl: (taskListItem) => (
-        <WfoButtonWithConfirm
-          question={t('deleteConfirmationQuestion')}
-          onConfirm={() => {
-            deleteScheduledTask({
-              workflowId: taskListItem.workflowId,
-              scheduleId: taskListItem.id,
-            });
-          }}
-          ariaLabel={t('ariaLabelDeleteButton')}
-        />
       ),
     },
   };

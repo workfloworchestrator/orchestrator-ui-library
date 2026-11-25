@@ -8,6 +8,7 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
   const uuidFieldStyle = css({
     fontWeight: theme.font.weight.medium,
     display: 'flex',
+    alignItems: 'center',
     gap: theme.size.xs,
     [`&:focus-visible .${COPY_ICON_CLASS}`]: {
       visibility: 'visible',

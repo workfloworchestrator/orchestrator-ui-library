@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
 
-import { EuiButtonIcon } from '@elastic/eui';
-import type { EuiIconType } from '@elastic/eui/src/components/icon/icon';
+import { EuiButtonIcon, IconType } from '@elastic/eui';
 
 import { ConfirmationDialogContext } from '@/contexts';
 
 interface WfoButtonWithConfirmProps {
   question: string;
   onConfirm: () => void;
-  iconType?: EuiIconType;
+  iconType?: IconType;
   ariaLabel?: string;
 }
 
