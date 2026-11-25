@@ -1,5 +1,55 @@
 # @orchestrator-ui/orchestrator-ui-components
 
+## 12.1.0
+
+### Minor Changes
+
+- bfb0a7f: 295 New layouts (beta) for the start-workflow and process detail pages, behind a "Layout: Classic | New (beta)" toggle. The toggle is off by default: set `showBetaWorkflowLayoutToggle` in the `OrchestratorConfig` (the app reads it from its own env var, e.g. `SHOW_BETA_WORKFLOW_LAYOUT_TOGGLE`) to show it. Without it only the classic layout shows. The choice is stored in localStorage.
+  
+  - Start workflow: vertical step list as a rail that expands on hover or focus, Back link above the step title, Next and Cancel under the form, focus moves to the step title on each step change.
+  - Start workflow: the step count stays correct when you go back.
+  - Start workflow: the Next button has the same `id` and `data-testid` (`button-submit-form-submit`) as in the classic layout. Escape in a dropdown or dialog no longer collapses the step list.
+  - Start workflow: list fields (`WfoBetaArrayField`) as cards with add and remove buttons with text. Cards follow the backend field layout when wider than 640px (narrower cards show one field per line). A list of lists shows each group as a box with "Add item" inside and "Add group" below; a group keeps at least 1 item, and a required list keeps at least 1 group.
+  - Workflow guide as an edge tab (`WfoTuckedGuide`, `WfoEdgeTab`) next to the form; opening it does not move the form.
+  - Process detail: compact header with an info line, failure banner and step label in the timeline.
+  - `WfoPydanticForm` accepts custom `renderers` and `componentOverrides`. An app's own matchers still win over `componentOverrides`.
+  - `createWfoBetaArrayField(useOptions)` makes a list field with its own item label, add button text, leading field and lock reason. `useIsBetaLayout` and `BetaPageFieldsContext` let app fields follow the new layout.
+  - `WfoReactSelect`: the refresh button moved to the right, has a tooltip and is disabled while loading.
+  - Form fields (also in the classic layout and in search fields) use EUI's form background colours, so enabled fields no longer look disabled.
+  - Small props: `WfoContentHeader` `spacerSize`, `WfoProcessStatusBadge` `size`, `WfoTimeline` `labelIndex` and `labelColor`.
+- 31b770e: Make action menu and row icons consistent across tables
+  
+  - New `WfoViewDetailsButton`: one "show all columns in detail view" button (hover state and tooltip) used by `WfoAdvancedTable` and `WfoStructuredSearchTable`.
+  - Workflows list: the `...` menu is first and only shows for rows that can be retried. The column is left out when no row on the page can be retried. The `</>` delta icon is the last column.
+  - Scheduled tasks list: the delete button is the first column, with a grey 20px icon. `WfoButtonWithConfirm` accepts any `IconType` for `iconType`.
+  - `WfoFirstPartUUID`: the text is vertically centred with its copy icon.
+- 5ad080f: Refactor the metadata product blocks page to use the GraphQL `productBlocks` search instead of the old query, in the structured search table.
+  
+  - The page gets the search bar, filter builder, retriever selection and "show more" pagination, with the search in the URL. Only visible columns are requested, and a score column shows during a query or filter.
+  - New `getProductBlockListSearch` endpoint (`useGetProductBlockListSearchQuery`). The old `getProductBlocks` endpoint is kept.
+  - The row details modal loads the full product block when it opens, so columns that are hidden in the table are filled.
+- 74629b4: The metadata products list and the subscriptions list now use the structured search table with a GraphQL search.
+  
+  - The metadata products page searches through the new `getProductListSearch` endpoint (`useGetProductListSearchQuery`) instead of the old query. The old `getProducts` endpoint is kept.
+  - Both lists get the search bar, filter builder, retriever selection and "show more" pagination, with the search in the URL. Only visible columns are requested, and a score column shows during a query or filter.
+  - Search list columns are keyed by the GraphQL path of their value. Subscriptions `productName`, `tag`, `customerFullname` and `customerShortcode` are now `product.name`, `product.tag`, `customer.fullname` and `customer.shortcode`. Their stored hidden columns are migrated once; the workflow and task lists keep their original column keys. The csv exports are named by the translated column labels.
+  - `getSubscriptionListSearch` takes GraphQL fields in the payload `columns` (`'product.name'`, not `'subscription.product.name'`).
+  - `WfoStructuredSearchTable` and `WfoFilterBuilder` require an `entityKind`, which sets the search paths that the filter builder and column filters resolve. A data column can declare a `searchPath` for sorting, filtering and export.
+  - New hooks `useStructuredSearchState` and `useSearchExport` share the search state and csv export of the lists.
+  - The csv export of the metadata products list keeps using the old `getProducts` query, because the search export has no response columns for the nested `productBlocks` and `fixedInputs` lists and left those columns out. It lives in `pages/metadata/productListExport.ts` (`useProductListExport`), takes the committed text query and sort order, and still exports all columns, hidden or not. Like the other metadata lists, it exports at most `MAXIMUM_ITEMS_FOR_BULK_FETCHING` rows.
+  - The subscriptions list no longer duplicates rows when a loaded page is refetched after an invalidation, such as a note edit.
+  - The row details modal of the subscription list loads the full row when it opens, so columns that are hidden in the table are filled. When loading the details fails, the modal shows the error instead of staying empty; `WfoRowDetails` takes an optional `error` for this. `WfoStructuredSearchTable` takes an optional `renderRowDetails` for custom modal content and a `detailModalTitle`, and the new `WfoRowDetails` renders the row as a key value table with a loading state.
+- d4d6e81: Sign in again, instead of signing out, when the access token is no longer valid
+  
+  - On a REST 401 or a GraphQL `not_authenticated` error the user is sent to sign in again (`signIn()`), not signed out. With an active login at the identity provider the user comes back on the same page without a password. With one provider the next-auth sign-in page is skipped. `events.signOut` no longer runs on an expired token; it still runs on Log out.
+  - Many failed calls at the same time give one sign-in. More than 3 sign-ins within a minute signs the user out, to stop a redirect loop.
+  - The session is fetched once for all API calls and reused until shortly before `accessTokenExpiresAt` (seconds since epoch). Apps without `accessTokenExpiresAt` only share calls made at the same moment.
+  - When the server sets `session.error` (for example `RefreshAccessTokenError` from a failed token refresh), `WfoAuth` shows a spinner and signs in again.
+
+### Patch Changes
+
+- 890eebc: Reintroduced shadow around workflow step
+
 ## 12.0.0
 
 ### Major Changes
