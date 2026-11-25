@@ -102,7 +102,7 @@ export const WfoStep = React.forwardRef(
 
     return (
       <div ref={ref}>
-        <EuiPanel hasBorder={true} css={getStepPanelStyle(isClickable)}>
+        <EuiPanel hasBorder={false} hasShadow css={getStepPanelStyle(isClickable)}>
           <WfoStepHeader
             ref={toggleRef}
             step={step}
