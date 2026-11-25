@@ -2,9 +2,11 @@ import React, { useId } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EDGE_TAB_WIDTH, WfoEdgeTab } from '@/components/WfoWorkflowUserGuide/WfoEdgeTab';
+import { WfoEdgeTab } from '@/components/WfoWorkflowUserGuide/WfoEdgeTab';
 import { WfoWorkflowGuideMarkdown } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
+
+import { EDGE_TAB_WIDTH, getTuckedGuideStyles } from './styles';
 
 // New layout only (start workflow + process detail). The current layout uses WfoWorkflowGuideExpandablePanel.
 // To go back to the current layout, stop using this file; nothing else depends on it.
@@ -12,7 +14,6 @@ import { useOrchestratorTheme } from '@/hooks';
 // React 18 passes unknown attributes through as strings; its types only know the React 19 boolean form
 const inertWhen = (on: boolean) => (on ? ({ inert: '' } as object) : {});
 
-const GUIDE_GAP = 8;
 const TUCKED_GUIDE_STRIP_WIDTH = EDGE_TAB_WIDTH;
 export const TUCKED_GUIDE_MIN_WIDTH = 480; // open guide incl. strip: room for ~55 characters of guide text
 export const TUCKED_GUIDE_OPEN_WIDTH = 'min(552px, 45vw)'; // for a column that grows when the guide opens
@@ -49,57 +50,14 @@ export const WfoTuckedGuide = ({
   tabAttached?: boolean;
 }) => {
   const t = useTranslations('workflowGuide');
-  const { theme } = useOrchestratorTheme();
+  const { containerStyle, getSliderStyle, getGuideSectionStyle, getTabBoxStyle } =
+    useWithOrchestratorTheme(getTuckedGuideStyles);
   const guideId = useId();
 
-  // viewport minus the top navigation (or sticky page header) and a gap below
-  const stickyTop = `var(--wfo-guide-sticky-top, calc(${theme.base * 3}px + ${theme.size.l}))`;
-  const screenHigh = `calc(100vh - ${stickyTop} - ${theme.size.l})`;
-
   return (
-    <div
-      css={{
-        // Same height as the cell: the guide inside is absolute, so a long guide text cannot make the row taller
-        alignSelf: 'stretch',
-        position: 'relative',
-        // clips the guide sideways while it is "under" the panel; not downwards, so it can be taller than the cell
-        overflowX: 'clip',
-      }}
-    >
-      <div
-        css={{
-          display: 'flex',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          height: '100%',
-          width: `calc(${openWidth ?? '100%'} - ${GUIDE_GAP}px)`,
-          // Closed: shifted left by the guide width, so only the strip shows, attached to the panel.
-          // Open: slides out GUIDE_GAP past the panel edge; a small gap, so the guide reads as its own object
-          // that still belongs to the panel (law of proximity).
-          transform: isOpen ? `translateX(${GUIDE_GAP}px)` : `translateX(calc(-100% + ${stripWidth}px))`,
-          transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
-          '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-        }}
-      >
-        <section
-          id={guideId}
-          aria-label={t('title')}
-          {...inertWhen(!isOpen)}
-          css={{
-            flex: 1,
-            minWidth: 0,
-            display: 'flex',
-            // One screen high, also next to a short panel; sticks while a long page scrolls
-            alignSelf: 'flex-start',
-            position: 'sticky',
-            top: stickyTop,
-            height: screenHigh,
-            // Closed it is tucked behind the panel, but it can be taller than the panel: hide it once it has slid in
-            visibility: isOpen ? 'visible' : 'hidden',
-            transition: `visibility 0s linear ${isOpen ? 0 : 300}ms`,
-          }}
-        >
+    <div css={containerStyle}>
+      <div css={getSliderStyle({ isOpen, openWidth, stripWidth })}>
+        <section id={guideId} aria-label={t('title')} {...inertWhen(!isOpen)} css={getGuideSectionStyle(isOpen)}>
           {/* Same guide panel as the current layout; mounted while closed so the slide shows content */}
           <WfoWorkflowGuideMarkdown workflowName={workflowName} isBigScreen />
         </section>
@@ -109,19 +67,7 @@ export const WfoTuckedGuide = ({
           box minus a small gap, so it is as high as possible without looking like part of the panel.
           The box is a div, not the button: sticky inside a button is unreliable.
         */}
-        <div
-          css={{
-            alignSelf: 'flex-start',
-            position: 'sticky',
-            top: stickyTop,
-            display: 'grid',
-            // Open: the tab always touches the guide, so it gives back the room of its gap (tabAttached={false})
-            width: isOpen ? EDGE_TAB_WIDTH : stripWidth,
-            transition: 'width 300ms cubic-bezier(0.2, 0, 0, 1)',
-            flexShrink: 0,
-            height: isOpen ? screenHigh : `min(100%, ${screenHigh})`,
-          }}
-        >
+        <div css={getTabBoxStyle({ isOpen, stripWidth })}>
           <WfoEdgeTab
             // Not the "info" icon: the page title already has one for the workflow information link
             size={tabSize}

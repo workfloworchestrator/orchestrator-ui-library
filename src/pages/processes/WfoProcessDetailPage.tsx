@@ -78,7 +78,7 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
               startedAt={processDetail.startedAt}
               isTask={isTask}
               userPermissions={processDetail.userPermissions}
-              isNewLayout={isNewUi}
+              isCompact={isNewUi}
             />
           )) || <h1>Invalid processId</h1>}
       </WfoProcessDetail>

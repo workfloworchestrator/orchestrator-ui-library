@@ -2,12 +2,13 @@ import React from 'react';
 
 import { EuiIcon, IconType } from '@elastic/eui';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+
+import { EDGE_TAB_WIDTH, getEdgeTabStyles } from './styles';
 
 // New layout only. A small tab tucked against the right edge of a panel, to open something that sits behind the panel.
 
-export const EDGE_TAB_WIDTH = 32;
-const EDGE_TAB_MIN_HEIGHT = 120;
+export { EDGE_TAB_WIDTH };
 
 export type WfoEdgeTabProps = {
   icon: IconType;
@@ -39,6 +40,7 @@ export const WfoEdgeTab = ({
   ariaControls,
 }: WfoEdgeTabProps) => {
   const { theme } = useOrchestratorTheme();
+  const { getEdgeTabStyle } = useWithOrchestratorTheme(getEdgeTabStyles);
   const gap = inset ?? theme.size.m;
 
   return (
@@ -49,28 +51,7 @@ export const WfoEdgeTab = ({
       aria-label={label}
       title={label}
       onClick={onClick}
-      css={{
-        width: attached ? '100%' : `calc(100% - ${gap})`,
-        marginInlineStart: attached ? 0 : gap,
-        display: 'grid',
-        alignSelf: 'center',
-        placeItems: 'center',
-        ...(size === 'tall' ?
-          { height: `calc(100% - 2 * ${gap})`, minHeight: EDGE_TAB_MIN_HEIGHT, marginBlock: gap }
-        : { padding: `${theme.size.l} 0` }),
-        background: theme.colors.backgroundBasePrimary,
-        border: `2px solid ${theme.colors.backgroundLightPrimary}`,
-        // Attached: against the panel, no left border, round on the right only
-        borderInlineStart: attached ? 0 : undefined,
-        borderRadius:
-          attached ? `0 ${theme.border.radius.medium} ${theme.border.radius.medium} 0` : theme.border.radius.medium,
-        cursor: 'pointer',
-        transition: 'border-color 100ms ease-in-out, background-color 100ms ease-in-out',
-        '&:hover': {
-          borderColor: theme.colors.borderBasePrimary,
-          backgroundColor: theme.colors.backgroundLightPrimary,
-        },
-      }}
+      css={getEdgeTabStyle({ size, attached, gap })}
     >
       <EuiIcon type={icon} size="l" color="primary" />
     </button>

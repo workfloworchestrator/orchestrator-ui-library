@@ -37,8 +37,8 @@ export interface WfoWorkflowStepListProps {
   isTask: boolean;
   userInputForm?: InputForm;
   userPermissions: FormUserPermissions;
-  /** New process page layout: compact list header, user guide opens from the page header instead */
-  isNewLayout?: boolean;
+  /** Compact list header. The page then shows the user guide itself, so the list is not wrapped with one. */
+  isCompact?: boolean;
 }
 
 export const WfoProcessRawData = ({ processId }: { processId: string }) => {
@@ -64,7 +64,7 @@ export const WfoWorkflowStepList = React.forwardRef(
       isTask,
       userInputForm,
       userPermissions,
-      isNewLayout = false,
+      isCompact = false,
     }: WfoWorkflowStepListProps,
     reference: Ref<WfoStepListRef>,
   ) => {
@@ -151,10 +151,13 @@ export const WfoWorkflowStepList = React.forwardRef(
       />
     );
 
+    // Raw data and delta replace the step list
+    const showStepList = !showRaw && !showDelta;
+
     return (
       <>
         <WfoStepListHeader
-          isCompact={isNewLayout}
+          isCompact={isCompact}
           showHiddenKeys={showHiddenKeys}
           hideMinimalStepNames={hideMinimalStepNames}
           showRaw={showRaw}
@@ -174,9 +177,8 @@ export const WfoWorkflowStepList = React.forwardRef(
         {showTraceback && <WfoTraceback>{traceBack}</WfoTraceback>}
         {showRaw && <WfoProcessRawData processId={processId} />}
         {showDelta && <WfoProcessSubscriptionDelta processId={processId} />}
-        {!showRaw
-          && !showDelta
-          && ((isNewLayout && stepList) || (
+        {showStepList
+          && (isCompact ? stepList : (
             <WfoPageWithUserGuide workflowName={workflowName}>{stepList}</WfoPageWithUserGuide>
           ))}
       </>
