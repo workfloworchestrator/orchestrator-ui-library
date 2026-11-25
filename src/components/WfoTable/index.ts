@@ -12,3 +12,4 @@ export * from './WfoRowContextMenu';
 export * from './WfoAdvancedTable';
 export * from './WfoTable';
 export * from './WfoStructuredSearchTable';
+export * from './WfoViewDetailsButton';

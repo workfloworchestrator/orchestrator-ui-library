@@ -21,22 +21,31 @@ interface WfoProcessListActionsProps {
   processListItem: ProcessListItem;
 }
 
+// One rule for "can this row be retried", shared by the row menu and the list (to hide an empty column)
+export const useIsProcessRetryAllowed = () => {
+  const { isAllowed } = usePolicy();
+
+  return ({ lastStatus, userPermissions }: ProcessListItem) =>
+    isAllowed(PolicyResource.PROCESS_RETRY)
+    && userPermissions?.retryAllowed === true
+    && listIncludesStatus(ProcessRetryableStatuses, lastStatus);
+};
+
 export const WfoProcessListActions: FC<WfoProcessListActionsProps> = ({ processListItem }) => {
   const t = useTranslations('processes.detail');
   const { theme } = useOrchestratorTheme();
   const { linkMenuItemStyle, iconStyle } = useWithOrchestratorTheme(getProcessActionStyles);
   const { showConfirmDialog } = useContext(ConfirmationDialogContext);
   const { isEngineRunningNow } = useCheckEngineStatus();
-  const { isAllowed } = usePolicy();
+  const isProcessRetryAllowed = useIsProcessRetryAllowed();
   const [retryProcess] = useRetryProcessMutation();
   const [isPopoverOpen, setPopover] = useState<boolean>(false);
 
-  const { processId, workflowName, lastStatus, userPermissions, isTask } = processListItem;
+  const { processId, workflowName, isTask } = processListItem;
 
-  const retryIsAllowed =
-    isAllowed(PolicyResource.PROCESS_RETRY)
-    && userPermissions?.retryAllowed === true
-    && listIncludesStatus(ProcessRetryableStatuses, lastStatus);
+  if (!isProcessRetryAllowed(processListItem)) {
+    return null;
+  }
 
   const handleRetryClick = async () => {
     setPopover(false);
@@ -56,7 +65,6 @@ export const WfoProcessListActions: FC<WfoProcessListActionsProps> = ({ processL
       iconType={() => <WfoDotsHorizontal color={theme.colors.textDisabled} />}
       onClick={() => setPopover(!isPopoverOpen)}
       aria-label="Row context menu"
-      disabled={!retryIsAllowed}
     />
   );
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { EuiButton, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiSpacer } from '@elastic/eui';
 
 import {
   DEFAULT_PAGE_SIZE,
@@ -15,19 +15,18 @@ import {
   WfoKeyValueTable,
   WfoKeyValueTableDataType,
   WfoSearchField,
-  WfoToolTip,
   clearTableConfigFromLocalStorage,
   getTableSettingsColumns,
   setTableConfigToLocalStorage,
 } from '@/components';
 import { getRowDetailData } from '@/components/WfoTable/WfoAdvancedTable/getRowDetailData';
 import { useOrchestratorTheme } from '@/hooks';
-import { WfoArrowsExpand } from '@/icons';
 import { WfoGraphqlError } from '@/rtk';
 import { getDefaultTableConfig } from '@/utils';
 
 import { ColumnType, WfoTable, WfoTableProps } from '../WfoTable';
 import { updateQueryString } from '../WfoTableWithFilter/updateQueryString';
+import { WfoViewDetailsButton } from '../WfoViewDetailsButton';
 import { WfoAdvancedTableColumnConfig } from './types';
 
 export type WfoAdvancedTableProps<T extends object> = Omit<WfoTableProps<T>, 'columnConfig'> & {
@@ -78,15 +77,7 @@ export const WfoAdvancedTable = <T extends object>({
     viewDetails: {
       columnType: ColumnType.CONTROL,
       width: '36px',
-      renderControl: (row) => (
-        <WfoToolTip tooltipContent={t('showAllColumnsInDetailView')}>
-          <EuiButtonIcon
-            iconType={() => <WfoArrowsExpand color={theme.colors.textDisabled} />}
-            onClick={() => setSelectedDataForDetailModal(row)}
-            aria-label={t('showAllColumnsInDetailView')}
-          />
-        </WfoToolTip>
-      ),
+      renderControl: (row) => <WfoViewDetailsButton onClick={() => setSelectedDataForDetailModal(row)} />,
     },
   };
 
