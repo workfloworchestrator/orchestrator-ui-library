@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import ReactSelect, { components } from 'react-select';
 import type { GroupBase, InputProps } from 'react-select';
 
-import { EuiButtonIcon } from '@elastic/eui';
+import { useTranslations } from 'next-intl';
+
+import { EuiButtonIcon, EuiToolTip } from '@elastic/eui';
 
 import { WfoError } from '@/components';
 import { useWithOrchestratorTheme } from '@/hooks';
@@ -33,6 +35,7 @@ export const WfoReactSelect = <ValueType,>({
   hasError = false,
   refetch,
 }: WfoReactSelectProps<ValueType>) => {
+  const t = useTranslations('pydanticForms.userInputForm');
   const initialValue = options.find((option: Option<ValueType>) => option.value === value);
 
   const [selectedValue, setSelectedValue] = useState<Option<ValueType> | null>(initialValue || null);
@@ -59,21 +62,6 @@ export const WfoReactSelect = <ValueType,>({
 
   return (
     <div css={containerStyle}>
-      {refetch && (
-        <EuiButtonIcon
-          className="reload-subscriptions-icon-button"
-          css={refreshButtonStyle}
-          aria-label={`refetch-${id}`}
-          id={`refresh-icon-${id}`}
-          iconType="refresh"
-          iconSize="l"
-          disabled={disabled}
-          onClick={() => {
-            refetch();
-          }}
-          data-testid={`${id}-refresh-button`}
-        />
-      )}
       <ReactSelect<Option<ValueType>, false>
         id={id}
         inputId={`${id}.search`}
@@ -103,6 +91,24 @@ export const WfoReactSelect = <ValueType,>({
           Input,
         }}
       />
+      {refetch && (
+        <EuiToolTip content={t('refreshOptions')}>
+          <EuiButtonIcon
+            css={refreshButtonStyle}
+            aria-label={t('refreshOptions')}
+            id={`refresh-icon-${id}`}
+            iconType="refresh"
+            display="base"
+            color="text"
+            size="m"
+            isDisabled={disabled || isLoading}
+            onClick={() => {
+              refetch();
+            }}
+            data-testid={`${id}-refresh-button`}
+          />
+        </EuiToolTip>
+      )}
     </div>
   );
 };

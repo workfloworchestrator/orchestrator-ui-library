@@ -16,6 +16,9 @@ export type WfoTimelineStepProps = {
   isLastStep?: boolean;
   children?: ReactNode;
   onClick?: () => void;
+  /** Name shown under the marker (used for the current or failed step) */
+  label?: ReactNode;
+  labelColor?: string;
 };
 
 export const WfoTimelineStep = ({
@@ -26,6 +29,8 @@ export const WfoTimelineStep = ({
   isLastStep = false,
   children,
   onClick,
+  label,
+  labelColor,
 }: WfoTimelineStepProps) => {
   const {
     stepStyle,
@@ -34,6 +39,8 @@ export const WfoTimelineStep = ({
     getStepLineStyle,
     getStepOuterCircleStyle,
     getStepInnerCircleStyle,
+    stepLabelAnchorStyle,
+    getStepLabelStyle,
   } = useWithOrchestratorTheme(getTimelineStyles);
 
   return (
@@ -46,8 +53,9 @@ export const WfoTimelineStep = ({
       onClick={() => onClick && onClick()}
     >
       <EuiToolTip position="top" content={tooltipContent}>
-        <div css={getStepOuterCircleStyle(!!children)}>
+        <div css={[getStepOuterCircleStyle(!!children), stepLabelAnchorStyle]}>
           <div css={getStepInnerCircleStyle(stepStatus, !!children)}>{children}</div>
+          {label && <span css={getStepLabelStyle(labelColor)}>{label}</span>}
         </div>
       </EuiToolTip>
     </button>

@@ -9,6 +9,9 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
   const TIMELINE_HEIGHT = theme.base * 2.5;
   const TIMELINE_OUTLINE_WIDTH = theme.base * 0.75;
 
+  // Space under the markers for the label of the current step
+  const STEP_LABEL_HEIGHT = theme.base * 1.5;
+
   const timelineHeightPx = `${TIMELINE_HEIGHT}px`;
   const timelineOutlineWidthPx = `${TIMELINE_OUTLINE_WIDTH}px`;
   const emptyStepOuterDiameter = theme.base;
@@ -67,6 +70,13 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     '& > button:first-child, & > button:last-child': {
       flexGrow: 1,
     },
+  });
+
+  // Extra room under the markers for the label of the current step
+  const labelRoomStyle = css({
+    height: 'auto',
+    minHeight: timelineHeightPx,
+    paddingBottom: theme.font.baseline * 2 + STEP_LABEL_HEIGHT,
   });
 
   const getHorizontalLineStyle = (color: string) =>
@@ -141,6 +151,25 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     });
   };
 
+  // Name under a marker (current or failed step): anchored to the marker, centred under it
+  const stepLabelAnchorStyle = css({
+    position: 'relative',
+  });
+
+  const getStepLabelStyle = (color?: string) =>
+    css({
+      position: 'absolute',
+      top: '100%',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      marginTop: theme.size.xs,
+      whiteSpace: 'nowrap',
+      fontSize: theme.size.m,
+      lineHeight: theme.size.base,
+      fontWeight: theme.font.weight.semiBold,
+      color,
+    });
+
   const stepStyle = css({
     display: 'flex',
     flexDirection: 'row',
@@ -159,11 +188,14 @@ export const getTimelineStyles = ({ theme }: WfoThemeHelpers) => {
     TIMELINE_HEIGHT,
     TIMELINE_OUTLINE_WIDTH,
     timelinePanelStyle,
+    labelRoomStyle,
     stepStyle,
     clickableStyle,
     notClickableStyle,
     getStepLineStyle,
     getStepOuterCircleStyle,
     getStepInnerCircleStyle,
+    stepLabelAnchorStyle,
+    getStepLabelStyle,
   };
 };

@@ -1,5 +1,5 @@
 import { TimelineItem } from '../../components';
-import { Step, StepStatus } from '../../types';
+import { ProcessStatus, Step, StepStatus } from '../../types';
 import { GroupedStep } from './WfoProcessDetailPage';
 
 export const getMostAccurateTimelineStatus = (
@@ -10,6 +10,12 @@ export const getMostAccurateTimelineStatus = (
 export const isNonRetryableState = (status: StepStatus): boolean => {
   return status === StepStatus.COMPLETE || status === StepStatus.SUCCESS || status === StepStatus.SKIPPED;
 };
+
+// Index of the step the failure banner points to, or -1 when there is no banner (process not failed, or no failed step)
+export const getFailedStepIndex = (timelineItems: TimelineItem[], lastStatus?: ProcessStatus): number =>
+  lastStatus === ProcessStatus.FAILED ?
+    timelineItems.findIndex((item) => item.processStepStatus === StepStatus.FAILED)
+  : -1;
 
 export const isFailedStep = (step: Step): boolean => step.status === StepStatus.FAILED;
 

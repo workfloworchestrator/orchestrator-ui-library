@@ -61,6 +61,11 @@
     "softwareVersions": "Software Versies",
     "support": "Support"
   },
+  "layoutPreview": {
+    "classic": "Klassiek",
+    "label": "Weergave",
+    "new": "Nieuw (bèta)"
+  },
   "main": {
     "ariaLabelCurrentPage": "Huidige pagina",
     "ariaLabelToggleSideMenu": "Toon/Verberg menu",
@@ -175,13 +180,17 @@
       "customer": "Customer",
       "delete": "Verwijder",
       "deleteQuestion": "Weet je zeker dat je de {workflowName} taak wilt verwijderen?",
+      "failedAtStep": "Mislukt bij stap {number} van {total}: {name}",
+      "hideTraceback": "Verberg traceback",
       "lastStep": "Huidige stap",
       "lastUpdate": "Laatste update",
       "openWorkflowTaskInfo": "open workflow-/taakinformatie op een nieuw tabblad",
+      "product": "Product",
       "relatedSubscriptions": "Gerelateerde subscriptions",
       "retry": "Probeer opnieuw",
       "retryTaskQuestion": "Weet je zeker dat je de {workflowName} taak opnieuw wilt proberen?",
       "retryWorkflowQuestion": "Weet je zeker dat je de {workflowName} workflow opnieuw wilt proberen?",
+      "showTraceback": "Toon traceback",
       "startedBy": "Gestart door",
       "startedOn": "Gestart op",
       "status": "Status"
@@ -214,6 +223,7 @@
       "detailLevel": "Detail",
       "detailMinimal": "Minimaal",
       "detailStandard": "Standaard",
+      "display": "Weergave",
       "duration": "Looptijd",
       "hideDelta": "Verberg subscription delta",
       "hideMinimalStepNames": "Verberg naam minimale stap",
@@ -231,23 +241,42 @@
   },
   "pydanticForms": {
     "userInputForm": {
+      "back": "Terug",
       "cancel": "Annuleren",
       "forbiddenFallback": "Je hebt geen rechten om deze actie uit te voeren.",
       "forbiddenTitle": "Geen toegang",
+      "help": "Hulp",
       "inputFieldsHaveValidationErrors": "{nrOfValidationErrors} input veld(en) hebben validatiefouten",
+      "lastStep": "Laatste stap",
       "next": "Volgende",
+      "nextSteps": "Volgende stappen",
+      "nextStepsHint": "Verschijnen na deze stap",
+      "nextStepsMaybeHint": "Kunnen verschijnen na deze stap",
       "preconditionFailedFallback": "Aan een voorwaarde voor het starten van deze workflow is niet voldaan.",
       "preconditionFailedTitle": "Deze workflow kan op dit moment niet worden gestart",
       "previous": "Vorige",
       "previousQuestion": "Weet je zeker dat je deze pagina wilt verlaten? Ingevulde velden worden niet opgeslagen",
+      "refreshOptions": "Opties vernieuwen",
       "resumeTask": "Hervat taak",
       "resumeWorkflow": "Hervat workflow",
       "startTask": "Start taak",
-      "startWorkflow": "Start workflow"
+      "startWorkflow": "Start workflow",
+      "stepNumber": "Stap {number}",
+      "steps": "Stappen"
     },
     "widgets": {
       "arrayField": {
         "noItemsAvailable": "Geen items beschikbaar"
+      },
+      "betaArrayField": {
+        "addGroup": "Groep toevoegen",
+        "addItem": "Item toevoegen",
+        "groupNumber": "Groep {number}",
+        "add": "Toevoegen",
+        "itemNumber": "Item {number}",
+        "noItemsAvailable": "Geen items beschikbaar",
+        "remove": "Weghalen",
+        "removeItem": "{item} weghalen"
       },
       "contactPersonName": {
         "placeholder": "Zoek en voeg contactpersonen toe..."
@@ -551,7 +580,8 @@
   "workflowGuide": {
     "hide": "Verberg gebruikershandleiding",
     "noGuideAvailable": "Er is geen gebruikershandleiding beschikbaar voor deze workflow/taak",
-    "show": "Toon gebruikershandleiding"
+    "show": "Toon gebruikershandleiding",
+    "title": "Gebruikershandleiding"
   },
   "workflows": {
     "index": {

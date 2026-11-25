@@ -68,7 +68,8 @@ export const getWfoReactSelectStyles = (wfoTheme: WfoThemeHelpers) => {
     width: '100%',
   });
   const refreshButtonStyle = css({
-    marginRight: theme.base / 2,
+    marginLeft: theme.base / 2,
+    flexShrink: 0,
     cursor: 'pointer',
   });
   return {

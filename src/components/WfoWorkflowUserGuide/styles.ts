@@ -8,6 +8,9 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
   const stripBottomGap = theme.base;
   const stripMinHeight = theme.base * 40;
 
+  // A page with its own sticky header sets --wfo-guide-sticky-top on a parent so the guide sticks below it
+  const stickyTop = `var(--wfo-guide-sticky-top, ${timelineStickyHeight}px)`;
+
   const fullHeightStyle = css({
     height: '100%',
   });
@@ -22,9 +25,9 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     cursor: 'pointer',
     alignSelf: 'stretch',
     position: 'sticky',
-    top: timelineStickyHeight,
+    top: stickyTop,
     minHeight: stripMinHeight,
-    maxHeight: `calc(100vh - ${navigationHeight + timelineStickyHeight + stripBottomGap}px)`,
+    maxHeight: `calc(100vh - ${stickyTop} - ${navigationHeight + stripBottomGap}px)`,
   });
 
   const stripIconStyle = css({
@@ -47,7 +50,7 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     height: theme.base * 4,
     cursor: 'pointer',
     position: 'sticky',
-    top: timelineStickyHeight,
+    top: stickyTop,
     zIndex: 2,
   });
 
@@ -64,9 +67,9 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
   const guideExpandedItemStyle = css({
     alignSelf: 'stretch',
     position: 'sticky',
-    top: timelineStickyHeight,
+    top: stickyTop,
     minHeight: stripMinHeight,
-    maxHeight: `calc(100vh - ${navigationHeight + timelineStickyHeight + stripBottomGap}px)`,
+    maxHeight: `calc(100vh - ${stickyTop} - ${navigationHeight + stripBottomGap}px)`,
   });
 
   const guideExpandedFillStyle = css({
@@ -132,4 +135,101 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     guideExpandedItemStyle,
     guideExpandedFillStyle,
   };
+};
+
+export const EDGE_TAB_WIDTH = 32;
+const EDGE_TAB_MIN_HEIGHT = 120;
+const GUIDE_GAP = 8;
+const SLIDE_TRANSITION = '300ms cubic-bezier(0.2, 0, 0, 1)';
+
+type EdgeTabStyleOptions = { size: 'tall' | 'compact'; attached: boolean; gap: string };
+
+export const getEdgeTabStyles = ({ theme }: WfoThemeHelpers) => {
+  const getEdgeTabStyle = ({ size, attached, gap }: EdgeTabStyleOptions) =>
+    css({
+      width: attached ? '100%' : `calc(100% - ${gap})`,
+      marginInlineStart: attached ? 0 : gap,
+      display: 'grid',
+      alignSelf: 'center',
+      placeItems: 'center',
+      ...(size === 'tall' ?
+        { height: `calc(100% - 2 * ${gap})`, minHeight: EDGE_TAB_MIN_HEIGHT, marginBlock: gap }
+      : { padding: `${theme.size.l} 0` }),
+      background: theme.colors.backgroundBasePrimary,
+      border: `2px solid ${theme.colors.backgroundLightPrimary}`,
+      // Attached: against the panel, no left border, round on the right only
+      borderInlineStart: attached ? 0 : undefined,
+      borderRadius:
+        attached ? `0 ${theme.border.radius.medium} ${theme.border.radius.medium} 0` : theme.border.radius.medium,
+      cursor: 'pointer',
+      transition: 'border-color 100ms ease-in-out, background-color 100ms ease-in-out',
+      '&:hover': {
+        borderColor: theme.colors.borderBasePrimary,
+        backgroundColor: theme.colors.backgroundLightPrimary,
+      },
+    });
+
+  return { getEdgeTabStyle };
+};
+
+type TuckedGuideStyleOptions = { isOpen: boolean; openWidth?: string; stripWidth: number };
+
+export const getTuckedGuideStyles = ({ theme }: WfoThemeHelpers) => {
+  // viewport minus the top navigation (or sticky page header) and a gap below
+  const stickyTop = `var(--wfo-guide-sticky-top, calc(${theme.base * 3}px + ${theme.size.l}))`;
+  const screenHigh = `calc(100vh - ${stickyTop} - ${theme.size.l})`;
+
+  const containerStyle = css({
+    // Same height as the cell: the guide inside is absolute, so a long guide text cannot make the row taller
+    alignSelf: 'stretch',
+    position: 'relative',
+    // clips the guide sideways while it is "under" the panel; not downwards, so it can be taller than the cell
+    overflowX: 'clip',
+  });
+
+  const getSliderStyle = ({ isOpen, openWidth, stripWidth }: TuckedGuideStyleOptions) =>
+    css({
+      display: 'flex',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '100%',
+      width: `calc(${openWidth ?? '100%'} - ${GUIDE_GAP}px)`,
+      // Closed: shifted left by the guide width, so only the strip shows, attached to the panel.
+      // Open: slides out GUIDE_GAP past the panel edge; a small gap, so the guide reads as its own object
+      // that still belongs to the panel (law of proximity).
+      transform: isOpen ? `translateX(${GUIDE_GAP}px)` : `translateX(calc(-100% + ${stripWidth}px))`,
+      transition: `transform ${SLIDE_TRANSITION}`,
+      '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
+    });
+
+  const getGuideSectionStyle = (isOpen: boolean) =>
+    css({
+      flex: 1,
+      minWidth: 0,
+      display: 'flex',
+      // One screen high, also next to a short panel; sticks while a long page scrolls
+      alignSelf: 'flex-start',
+      position: 'sticky',
+      top: stickyTop,
+      height: screenHigh,
+      // Closed it is tucked behind the panel, but it can be taller than the panel: hide it once it has slid in
+      visibility: isOpen ? 'visible' : 'hidden',
+      transition: `visibility 0s linear ${isOpen ? 0 : 300}ms`,
+    });
+
+  const getTabBoxStyle = ({ isOpen, stripWidth }: Omit<TuckedGuideStyleOptions, 'openWidth'>) =>
+    css({
+      alignSelf: 'flex-start',
+      position: 'sticky',
+      top: stickyTop,
+      display: 'grid',
+      // Open: the tab always touches the guide, so it gives back the room of its gap (tabAttached={false})
+      width: isOpen ? EDGE_TAB_WIDTH : stripWidth,
+      transition: `width ${SLIDE_TRANSITION}`,
+      flexShrink: 0,
+      height: isOpen ? screenHigh : `min(100%, ${screenHigh})`,
+    });
+
+  return { containerStyle, getSliderStyle, getGuideSectionStyle, getTabBoxStyle };
 };

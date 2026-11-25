@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 
+import { TextSize } from '@elastic/eui/src/components/text/text';
+
 import { useOrchestratorTheme } from '@/hooks';
 import { ProcessStatus } from '@/types';
 
@@ -7,9 +9,10 @@ import { WfoBadge } from '../WfoBadge';
 
 export type WfoProcessStatusBadgeProps = {
   processStatus: ProcessStatus;
+  size?: TextSize;
 };
 
-export const WfoProcessStatusBadge: FC<WfoProcessStatusBadgeProps> = ({ processStatus }) => {
+export const WfoProcessStatusBadge: FC<WfoProcessStatusBadgeProps> = ({ processStatus, size }) => {
   const { theme, toSecondaryColor } = useOrchestratorTheme();
 
   const getBadgeColorFromProcessStatus = (status: ProcessStatus) => {
@@ -64,7 +67,7 @@ export const WfoProcessStatusBadge: FC<WfoProcessStatusBadgeProps> = ({ processS
   const { badgeColor, textColor } = getBadgeColorFromProcessStatus(processStatus);
 
   return (
-    <WfoBadge textColor={textColor} color={badgeColor}>
+    <WfoBadge textColor={textColor} color={badgeColor} size={size}>
       {processStatus.toLowerCase()}
     </WfoBadge>
   );
