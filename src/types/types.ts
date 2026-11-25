@@ -627,6 +627,8 @@ export type OrchestratorConfig = {
   useThemeToggle: boolean;
   showWorkflowInformationLink: boolean;
   showWorkflowUserGuide: boolean;
+  /** Shows the "Classic | New (beta)" layout switch on the start-workflow and process detail pages. Default: off, classic layout only. */
+  showBetaWorkflowLayoutToggle: boolean;
   expandWorkflowUserGuideOnStart: boolean;
   enableSupportMenuItem: boolean;
   supportMenuItemUrl: string;

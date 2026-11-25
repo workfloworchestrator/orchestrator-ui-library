@@ -4,6 +4,8 @@ import { useTranslations } from 'next-intl';
 
 import { EuiButtonGroup, EuiFlexGroup, EuiFlexItem, EuiText } from '@elastic/eui';
 
+import { useGetOrchestratorConfig } from '@/hooks';
+
 // Opt-in switch between the current and the new (beta) start/process layouts. Kept so users can try the new layout; remove when the new layout becomes the default.
 const STORAGE_KEY = 'wfoNewUiPreview';
 
@@ -14,15 +16,17 @@ const STORAGE_KEY = 'wfoNewUiPreview';
  * The choice is stored in localStorage, so a user sets it once for all workflow pages and visits.
  */
 export const useNewUiPreview = () => {
-  const [isNewUi, setIsNewUi] = useState<boolean | undefined>(undefined);
+  const { showBetaWorkflowLayoutToggle } = useGetOrchestratorConfig();
+  const [storedIsNewUi, setStoredIsNewUi] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
+    if (!showBetaWorkflowLayoutToggle) return;
     try {
-      setIsNewUi(localStorage.getItem(STORAGE_KEY) === '1');
+      setStoredIsNewUi(localStorage.getItem(STORAGE_KEY) === '1');
     } catch {
-      setIsNewUi(false); // storage blocked: current layout
+      setStoredIsNewUi(false); // storage blocked: current layout
     }
-  }, []);
+  }, [showBetaWorkflowLayoutToggle]);
 
   // Full reload on switch, for the same SWR cache reason as above
   const setNewUi = (value: boolean) => {
@@ -34,7 +38,12 @@ export const useNewUiPreview = () => {
     window.location.reload();
   };
 
-  return { isNewUi, setNewUi };
+  // Toggle off: always the classic layout, whatever an earlier choice stored
+  return {
+    isNewUi: showBetaWorkflowLayoutToggle ? storedIsNewUi : false,
+    setNewUi,
+    showToggle: showBetaWorkflowLayoutToggle,
+  };
 };
 
 export const WfoLayoutPreviewToggle = ({

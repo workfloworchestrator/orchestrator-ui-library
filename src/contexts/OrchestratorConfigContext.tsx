@@ -14,6 +14,7 @@ export const emptyOrchestratorConfig: OrchestratorConfig = {
   useThemeToggle: false,
   showWorkflowInformationLink: false,
   showWorkflowUserGuide: false,
+  showBetaWorkflowLayoutToggle: false,
   expandWorkflowUserGuideOnStart: false,
   workflowInformationLinkUrl: '',
   enableSupportMenuItem: false,

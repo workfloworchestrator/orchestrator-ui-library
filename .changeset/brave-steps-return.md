@@ -2,7 +2,7 @@
 "@orchestrator-ui/orchestrator-ui-components": minor
 ---
 
-295 New layouts (beta) for the start-workflow and process detail pages, behind a "Layout: Classic | New (beta)" toggle. The choice is stored in localStorage.
+295 New layouts (beta) for the start-workflow and process detail pages, behind a "Layout: Classic | New (beta)" toggle. The toggle is off by default: set `showBetaWorkflowLayoutToggle` in the `OrchestratorConfig` (the app reads it from its own env var, e.g. `SHOW_BETA_WORKFLOW_LAYOUT_TOGGLE`) to show it. Without it only the classic layout shows. The choice is stored in localStorage.
 
 - Start workflow: vertical step list as a rail that expands on hover or focus, Back link above the step title, Next and Cancel under the form, focus moves to the step title on each step change.
 - Start workflow: the step count stays correct when you go back.

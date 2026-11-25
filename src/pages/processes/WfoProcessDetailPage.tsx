@@ -19,7 +19,7 @@ interface WfoProcessDetailPageProps {
 
 export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) => {
   const stepListRef = useRef<WfoStepListRef>(null);
-  const { isNewUi, setNewUi } = useNewUiPreview();
+  const { isNewUi, setNewUi, showToggle } = useNewUiPreview();
 
   const { data, isLoading, isError } = useGetProcessDetailQuery({
     processId,
@@ -50,7 +50,7 @@ export const WfoProcessDetailPage = ({ processId }: WfoProcessDetailPageProps) =
 
   return (
     <>
-      <WfoLayoutPreviewToggle isNewUi={isNewUi} onChange={setNewUi} />
+      {showToggle && <WfoLayoutPreviewToggle isNewUi={isNewUi} onChange={setNewUi} />}
       <WfoProcessDetail
         layout={isNewUi ? 'new' : 'current'}
         pageTitle={pageTitle}
