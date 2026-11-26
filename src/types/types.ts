@@ -627,14 +627,14 @@ export type OrchestratorConfig = {
   useThemeToggle: boolean;
   showWorkflowInformationLink: boolean;
   showWorkflowUserGuide: boolean;
-  /** Shows the "Classic | New (beta)" layout switch on the start-workflow and process detail pages. Default: off, classic layout only. */
-  showBetaWorkflowLayoutToggle: boolean;
   expandWorkflowUserGuideOnStart: boolean;
   enableSupportMenuItem: boolean;
   supportMenuItemUrl: string;
   enableAoStackStatus: boolean;
   aoStackStatusUrl: string;
   startWorkflowFilters: string[] | undefined;
+  /** Shows the "Classic | New (beta)" layout switch on the start-workflow and process detail pages. Default: off, classic layout only. */
+  showBetaWorkflowLayoutToggle?: boolean;
   /** Product field shown in the "New subscription" dropdown. Defaults to 'name'. */
   startWorkflowLabel?: StartWorkflowLabel;
   /**
