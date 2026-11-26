@@ -188,6 +188,7 @@
       "openWorkflowTaskInfo": "open workflow/task information in a new tab",
       "product": "Product",
       "relatedSubscriptions": "Related subscriptions",
+      "subscription": "Subscription",
       "retry": "Retry",
       "retryTaskQuestion": "Are you sure you want to retry the {workflowName} task?",
       "retryWorkflowQuestion": "Are you sure you want to retry the {workflowName} workflow?",

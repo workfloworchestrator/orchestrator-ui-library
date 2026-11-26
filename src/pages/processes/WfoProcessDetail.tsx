@@ -15,7 +15,6 @@ import {
   EuiPanel,
   EuiPopover,
   EuiPopoverTitle,
-  EuiScreenReaderOnly,
   EuiSpacer,
   EuiText,
   EuiToolTip,
@@ -49,10 +48,14 @@ import {
 import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
+import { InfoItem, InfoLineItem, WfoProcessInfoLine } from './WfoProcessInfoLine';
 import { getFailedStepIndex, getIndexOfCurrentStep } from './timelineUtils';
 
 // Detail page: the steps have no panel, so the tab floats; the strip is a 16px gap + a 32px tab
 const DETAIL_GUIDE_STRIP_WIDTH = 48;
+// Sticky header: the band in the page colour that covers the step cards' shadows (their shadow is 14px blur, 6px down)
+const HEADER_SHADOW_COVER_SIDE = 16;
+const HEADER_SHADOW_COVER_BOTTOM = 20;
 
 interface ProcessHeaderValueProps {
   translationKey: string;
@@ -86,36 +89,6 @@ const ProcessHeaderValue = ({ translationKey, value = '' }: ProcessHeaderValuePr
       </EuiText>
     </EuiFlexGroup>
   );
-};
-
-// Second line of the new header. Icons are decoration; the hover text (and a hidden label) names the value.
-const InfoItem = ({
-  icon,
-  label,
-  tooltip,
-  children,
-}: {
-  icon: string;
-  label: string;
-  tooltip?: React.ReactNode;
-  children: React.ReactNode;
-}) => (
-  <EuiToolTip content={tooltip ?? label}>
-    <span tabIndex={0} css={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
-      <EuiIcon type={icon} size="m" color="subdued" aria-hidden />
-      <EuiScreenReaderOnly>
-        <span>{label}</span>
-      </EuiScreenReaderOnly>
-      <EuiText size="s" color="subdued">
-        {children}
-      </EuiText>
-    </span>
-  </EuiToolTip>
-);
-
-const InfoDivider = () => {
-  const { theme } = useOrchestratorTheme();
-  return <span aria-hidden css={{ width: 1, height: 16, background: theme.colors.borderBaseSubdued }} />;
 };
 
 interface ProcessDetailProps {
@@ -334,7 +307,7 @@ export const WfoProcessDetail = ({
     const showRelated = isAllowed(PolicyResource.PROCESS_RELATED_SUBSCRIPTIONS) && relatedSubscriptions.length > 0;
     const formatDate = (date?: string) => (date ? parseIsoString(parseDateRelativeToToday)(date) : '-');
     const [firstSubscription] = relatedSubscriptions;
-    const infoItems: { key: string; node: React.ReactNode }[] = [
+    const infoItems: InfoLineItem[] = [
       ...(productNames ?
         [
           {
@@ -446,6 +419,7 @@ export const WfoProcessDetail = ({
       : []),
     ];
 
+    const hasWorkflowInformationLink = showWorkflowInformationLink && !!processDetail?.workflowName;
     const failedStepIndex = getFailedStepIndex(timelineItems, processDetail?.lastStatus);
     const hasFailed = failedStepIndex !== -1;
 
@@ -459,24 +433,27 @@ export const WfoProcessDetail = ({
             zIndex: 3,
             background: theme.colors.backgroundBasePlain,
             padding: `${theme.size.s} 0 0`,
+            // A band in the page colour around the header (16px sides, 20px below): the shadow of a step card that
+            // scrolled under the header reaches past the header's edges and would show next to and below it
+            boxShadow: `0 ${HEADER_SHADOW_COVER_BOTTOM - HEADER_SHADOW_COVER_SIDE}px 0 ${HEADER_SHADOW_COVER_SIDE}px ${theme.colors.backgroundBasePlain}`,
           }}
         >
           <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" gutterSize="m" wrap responsive={false}>
             <EuiFlexItem css={{ minWidth: 0 }}>
               <WfoTitleWithWebsocketBadge
                 title={pageTitle}
-                // Same row, same centre line: [bolt badge] [info] | [status tag]. Info sits close to the bolt as a pair.
+                // Same row, same centre line: [bolt badge] [info] | [status tag]. Each keeps its own space (the flex
+                // gap); the bolt badge is a box with its own padding and colour (red while disconnected), never overlap it.
                 extraElement={
-                  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} css={{ marginInlineStart: -20 }}>
-                    {showWorkflowInformationLink && processDetail?.workflowName && (
-                      <EuiToolTip content={t('openWorkflowTaskInfo')}>
+                  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false}>
+                    {hasWorkflowInformationLink && (
+                      // Flex anchor: an inline anchor adds line-height under the button, which puts it off the centre line
+                      <EuiToolTip content={t('openWorkflowTaskInfo')} anchorProps={{ css: { display: 'flex' } }}>
                         <EuiButtonIcon
                           size="s"
                           iconType="info"
                           iconSize="m"
-                          // the bolt badge sits ~2.5px above the centre line, so the info icon follows it
-                          css={{ marginBlockStart: -5 }}
-                          href={workflowInformationLinkUrl + processDetail.workflowName}
+                          href={workflowInformationLinkUrl + (processDetail?.workflowName ?? '')}
                           target="_blank"
                           aria-label={t('openWorkflowTaskInfo')}
                         />
@@ -505,25 +482,8 @@ export const WfoProcessDetail = ({
                   </EuiFlexGroup>
                 }
               />
-              {/* Info line: 12px between items, thin dividers; hover names each value. Dates: one value, both in the tooltip. */}
-              <div
-                css={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                  columnGap: theme.size.m,
-                  rowGap: theme.size.xs,
-                  marginTop: theme.size.xs,
-                  marginBottom: theme.size.s,
-                }}
-              >
-                {infoItems.map((item, index) => (
-                  <React.Fragment key={item.key}>
-                    {index > 0 && <InfoDivider />}
-                    {item.node}
-                  </React.Fragment>
-                ))}
-              </div>
+              {/* Dates: one value, both in the tooltip */}
+              <WfoProcessInfoLine infoItems={infoItems} />
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiFlexGroup gutterSize="s" wrap responsive={false}>
@@ -555,7 +515,8 @@ export const WfoProcessDetail = ({
 
         <div
           css={{
-            '--wfo-guide-sticky-top': `${headerHeight + 8}px`,
+            // Below the header's cover band, else the band hides the top of the guide
+            '--wfo-guide-sticky-top': `${headerHeight + HEADER_SHADOW_COVER_BOTTOM + 4}px`,
             display: 'grid',
             alignItems: 'start',
             // Big screen: the tucked guide column is only the strip while closed, so the content is as wide as it can be.

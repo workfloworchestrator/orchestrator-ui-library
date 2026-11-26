@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
   PydanticComponentMatcher,
@@ -20,6 +21,10 @@ import {
   EuiIcon,
   EuiLink,
   EuiPanel,
+  EuiScreenReaderOnly,
+  EuiSkeletonRectangle,
+  EuiSkeletonText,
+  EuiSkeletonTitle,
   EuiSpacer,
   EuiText,
   EuiTitle,
@@ -36,9 +41,10 @@ import { WfoBetaArrayField } from '@/components/WfoPydanticForm/fields';
 import { TUCKED_GUIDE_MIN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflowUserGuide/WfoTuckedGuide';
 import { ConfirmationDialogContext } from '@/contexts';
 import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
-import { useGetDescriptionForWorkflowNameQuery } from '@/rtk';
+import { useGetDescriptionForWorkflowNameQuery, useGetSubscriptionDetailQuery } from '@/rtk';
 import type { WfoComputedTheme } from '@/theme';
 
+import { InfoItem, InfoLineItem, WfoProcessInfoLine } from './WfoProcessInfoLine';
 import { getInitialProcessPayload } from './WfoStartProcessPage';
 
 /*
@@ -65,6 +71,10 @@ type FormStepsContextValue = {
   goBack: (stepCount?: number) => void;
   onCancel: () => void;
 };
+
+// A summary field ("check the settings") is how workflows end their form; no page follows it
+const isSummaryPage = (fields: PageFields) =>
+  Object.values(fields ?? {}).some((field) => (field.format as string | undefined) === 'summary');
 
 const FormStepsContext = createContext<FormStepsContextValue>({
   steps: { titles: [], keys: [], index: -1 },
@@ -122,6 +132,70 @@ const StepHeader = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
       <EuiSpacer size="l" />
     </div>
   );
+};
+
+// Modify/terminate: which subscription the workflow changes (create has no subscription yet)
+const SubscriptionInfoLine = ({ subscriptionId }: { subscriptionId: string }) => {
+  const t = useTranslations('processes.detail');
+  const { data: subscriptionDetail, isLoading } = useGetSubscriptionDetailQuery({ subscriptionId });
+  const { theme } = useOrchestratorTheme();
+  const subscription = subscriptionDetail?.subscription;
+  // Same height as the info line, so the page does not move down when it comes in
+  if (isLoading) {
+    return (
+      <div css={{ marginTop: theme.size.xs, marginBottom: theme.size.s }}>
+        <EuiSkeletonRectangle width={420} height={20} borderRadius="s" css={{ maxWidth: '100%' }} />
+      </div>
+    );
+  }
+  if (!subscription) return null;
+
+  const infoItems: InfoLineItem[] = [
+    {
+      key: 'product',
+      node: (
+        <InfoItem icon="package" label={t('product')}>
+          {subscription.product.name}
+        </InfoItem>
+      ),
+    },
+    ...(subscription.customer?.fullname ?
+      [
+        {
+          key: 'customer',
+          node: (
+            <InfoItem icon="users" label={t('customer')}>
+              {subscription.customer.fullname}
+            </InfoItem>
+          ),
+        },
+      ]
+    : []),
+    {
+      key: 'subscription',
+      node: (
+        <span css={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+          <EuiIcon type="link" size="m" color="subdued" aria-hidden />
+          <EuiText size="s" css={{ minWidth: 0 }}>
+            <Link
+              href={`/subscriptions/${subscriptionId}`}
+              title={`${t('subscription')}: ${subscription.description}`}
+              css={{
+                display: 'block',
+                maxWidth: 'min(480px, 50vw)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {subscription.description}
+            </Link>
+          </EuiText>
+        </span>
+      ),
+    },
+  ];
+  return <WfoProcessInfoLine infoItems={infoItems} />;
 };
 
 const FORM_INPUT_MAX_WIDTH = 400;
@@ -192,6 +266,41 @@ const StepRow: RowRenderComponent = ({ title, description, error, isInvalid, req
   );
 };
 
+/*
+ * While the backend sends the next page (about a second: it runs the form again with all answers so far):
+ * a skeleton shaped like a step, so the panel keeps about its size instead of collapsing to one line.
+ * The text says it is loading for screen readers.
+ */
+const StepLoading = () => {
+  const t = useTranslations('common');
+  const tForm = useTranslations('pydanticForms.userInputForm');
+  const { steps } = useContext(FormStepsContext);
+  // First load: it is always step 1, so that is real text. Later (next or back) the number follows from the page.
+  const isFirstLoad = steps.index === -1;
+  return (
+    <div role="status" data-testid="pydantic-form-loading">
+      <EuiScreenReaderOnly>
+        <span>{t('loading')}</span>
+      </EuiScreenReaderOnly>
+      {isFirstLoad ?
+        <EuiText size="xs" color="subdued">
+          <strong>{tForm('stepNumber', { number: 1 })}</strong>
+        </EuiText>
+      : <EuiSkeletonText lines={1} size="xs" css={{ width: 64 }} />}
+      <EuiSpacer size="xs" />
+      <EuiSkeletonTitle size="s" css={{ width: 240 }} />
+      <EuiSpacer size="l" />
+      {[0, 1, 2].map((rowIndex) => (
+        <div key={rowIndex} css={{ marginBottom: 24 }}>
+          <EuiSkeletonText lines={2} size="s" css={{ maxWidth: '65ch' }} />
+          <EuiSpacer size="s" />
+          <EuiSkeletonRectangle width="100%" height={40} borderRadius="s" css={{ maxWidth: FORM_INPUT_MAX_WIDTH }} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const StepFooter = ({
   hasNext,
   hasPrevious,
@@ -246,12 +355,21 @@ type StepListProps = {
   steps: FormSteps;
   isTask: boolean;
   hasNext: boolean;
+  isLastPage: boolean;
   canGoBack: boolean;
   goBack: (stepCount: number) => void;
 };
 
-const useStepItems = ({ steps, isTask, hasNext, canGoBack, goBack }: StepListProps): StepItem[] => {
+const useStepItems = ({ steps, isTask, hasNext, isLastPage, canGoBack, goBack }: StepListProps): StepItem[] => {
   const t = useTranslations('pydanticForms.userInputForm');
+  // First load, no page yet: step 1 is the current step (its title follows with the page)
+  if (steps.index === -1) {
+    return [
+      { label: t('stepNumber', { number: 1 }), caption: '', state: 'current' },
+      { label: t('nextSteps'), caption: t('nextStepsMaybeHint'), state: 'unknown' },
+      { label: isTask ? t('startTask') : t('startWorkflow'), caption: t('lastStep'), state: 'final' },
+    ];
+  }
   return [
     ...steps.titles.map((title, i): StepItem => {
       const state =
@@ -267,8 +385,8 @@ const useStepItems = ({ steps, isTask, hasNext, canGoBack, goBack }: StepListPro
       };
     }),
     // The backend sends one page at a time and its hasNext is often false while a page still follows,
-    // so after the last known step always show a placeholder: the form may go on
-    ...(steps.index === steps.titles.length - 1 ?
+    // so after the last known step show a placeholder: the form may go on. Not on a summary page: that is the last.
+    ...(steps.index === steps.titles.length - 1 && !isLastPage ?
       [
         {
           label: t('nextSteps'),
@@ -463,7 +581,11 @@ export const WfoStartProcessPageBeta = ({ processName, isTask = false }: WfoStar
   const [isGuideOpen, setIsGuideOpen] = useState(expandWorkflowUserGuideOnStart);
   const { productId, subscriptionId } = router.query as { productId?: string; subscriptionId?: string };
 
-  const { data: workflowMetadata, isError: isErrorWorkflowDescription } = useGetDescriptionForWorkflowNameQuery({
+  const {
+    data: workflowMetadata,
+    isError: isErrorWorkflowDescription,
+    isLoading: isLoadingWorkflowDescription,
+  } = useGetDescriptionForWorkflowNameQuery({
     workflowName: processName,
   });
   const pageTitle = workflowMetadata?.description || (isErrorWorkflowDescription && processName) || '';
@@ -478,6 +600,8 @@ export const WfoStartProcessPageBeta = ({ processName, isTask = false }: WfoStar
   const [hasPrevious, setHasPrevious] = useState(false);
   const [hasNext, setHasNext] = useState(false);
   const [pageFields, setPageFields] = useState<PageFields>({});
+  // TODO: the backend should say which page is the last; until then a summary page counts as the last one
+  const isLastPage = !hasNext && isSummaryPage(pageFields);
   const shownKey = useRef<string | undefined>(undefined);
   // The page we just left with Back. pydantic-forms renders it once more (stale schema) after the previous
   // page loads but before it swaps the schema; without this that stale render counts as a new step.
@@ -545,17 +669,33 @@ export const WfoStartProcessPageBeta = ({ processName, isTask = false }: WfoStar
     () => ({
       headerRenderer: StepHeader,
       rowRenderer: StepRow,
+      loadingComponent: <StepLoading />,
       footerRenderer: (props: PydanticFormFooterProps) => <StepFooter {...props} isTask={isTask} />,
     }),
     [isTask],
   );
 
-  const stepListProps = { steps, isTask, hasNext, canGoBack: hasPrevious, goBack };
+  const stepListProps = { steps, isTask, hasNext, isLastPage, canGoBack: hasPrevious, goBack };
 
   return (
     <BetaLayoutContext.Provider value={true}>
       <FormStepsContext.Provider value={contextValue}>
-        <WfoContentHeader title={<WfoTitleWithWebsocketBadge title={pageTitle} />} spacerSize="xxl" />
+        <WfoContentHeader
+          title={
+            <div>
+              <WfoTitleWithWebsocketBadge
+                title={
+                  isLoadingWorkflowDescription ?
+                    // A span (inside the h1); the height of the title line, so nothing moves when the name comes in
+                    <EuiSkeletonRectangle width={320} height={36} borderRadius="s" />
+                  : pageTitle
+                }
+              />
+              {subscriptionId && <SubscriptionInfoLine subscriptionId={subscriptionId} />}
+            </div>
+          }
+          spacerSize="xxl"
+        />
         <div
           css={{
             display: 'grid',
