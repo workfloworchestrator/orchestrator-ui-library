@@ -86,6 +86,13 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     borderBottomRightRadius: 0,
   });
 
+  // For a tab that is lower than the panel (tucked guide): without this the panel's side is open above and below it
+  const guidePanelFullBorderStyle = css({
+    borderRightWidth: 2,
+    borderTopRightRadius: theme.border.radius.panel,
+    borderBottomRightRadius: theme.border.radius.panel,
+  });
+
   const guideBodyStyle = css({
     flex: 1,
     minHeight: 0,
@@ -129,6 +136,7 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     noLeftBorderStyle,
     noBottomBorderStyle,
     guidePanelStyle,
+    guidePanelFullBorderStyle,
     guideBodyStyle,
     guideStackedBodyStyle,
     guideStackedPanelStyle,

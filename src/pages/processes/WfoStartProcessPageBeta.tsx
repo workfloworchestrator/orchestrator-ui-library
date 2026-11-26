@@ -35,6 +35,7 @@ import { css } from '@emotion/react';
 
 import { PATH_TASKS, PATH_WORKFLOWS, WfoTitleWithWebsocketBadge } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { WfoInfoItem, WfoProcessInfoLine, WfoProcessInfoLineItem } from '@/components/WfoProcessInfoLine';
 import { BetaLayoutContext, BetaPageFieldsContext, WfoPydanticForm } from '@/components/WfoPydanticForm';
 import { RenderFormErrors } from '@/components/WfoPydanticForm/RenderFormErrors';
 import { WfoBetaArrayField } from '@/components/WfoPydanticForm/fields';
@@ -44,7 +45,6 @@ import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
 import { useGetDescriptionForWorkflowNameQuery, useGetSubscriptionDetailQuery } from '@/rtk';
 import type { WfoComputedTheme } from '@/theme';
 
-import { InfoItem, InfoLineItem, WfoProcessInfoLine } from './WfoProcessInfoLine';
 import { getInitialProcessPayload } from './WfoStartProcessPage';
 
 /*
@@ -150,13 +150,13 @@ const SubscriptionInfoLine = ({ subscriptionId }: { subscriptionId: string }) =>
   }
   if (!subscription) return null;
 
-  const infoItems: InfoLineItem[] = [
+  const infoItems: WfoProcessInfoLineItem[] = [
     {
       key: 'product',
       node: (
-        <InfoItem icon="package" label={t('product')}>
+        <WfoInfoItem icon="package" label={t('product')}>
           {subscription.product.name}
-        </InfoItem>
+        </WfoInfoItem>
       ),
     },
     ...(subscription.customer?.fullname ?
@@ -164,9 +164,9 @@ const SubscriptionInfoLine = ({ subscriptionId }: { subscriptionId: string }) =>
         {
           key: 'customer',
           node: (
-            <InfoItem icon="users" label={t('customer')}>
+            <WfoInfoItem icon="users" label={t('customer')}>
               {subscription.customer.fullname}
-            </InfoItem>
+            </WfoInfoItem>
           ),
         },
       ]

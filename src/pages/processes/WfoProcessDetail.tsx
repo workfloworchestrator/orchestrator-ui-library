@@ -32,6 +32,7 @@ import {
   WfoTitleWithWebsocketBadge,
 } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { WfoInfoItem, WfoProcessInfoLine, WfoProcessInfoLineItem } from '@/components/WfoProcessInfoLine';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback';
 import { TUCKED_GUIDE_OPEN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflowUserGuide/WfoTuckedGuide';
 import { WfoWorkflowGuideExpandablePanel } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
@@ -48,14 +49,10 @@ import {
 import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
-import { InfoItem, InfoLineItem, WfoProcessInfoLine } from './WfoProcessInfoLine';
 import { getFailedStepIndex, getIndexOfCurrentStep } from './timelineUtils';
 
 // Detail page: the steps have no panel, so the tab floats; the strip is a 16px gap + a 32px tab
 const DETAIL_GUIDE_STRIP_WIDTH = 48;
-// Sticky header: the band in the page colour that covers the step cards' shadows (their shadow is 14px blur, 6px down)
-const HEADER_SHADOW_COVER_SIDE = 16;
-const HEADER_SHADOW_COVER_BOTTOM = 20;
 
 interface ProcessHeaderValueProps {
   translationKey: string;
@@ -307,15 +304,15 @@ export const WfoProcessDetail = ({
     const showRelated = isAllowed(PolicyResource.PROCESS_RELATED_SUBSCRIPTIONS) && relatedSubscriptions.length > 0;
     const formatDate = (date?: string) => (date ? parseIsoString(parseDateRelativeToToday)(date) : '-');
     const [firstSubscription] = relatedSubscriptions;
-    const infoItems: InfoLineItem[] = [
+    const infoItems: WfoProcessInfoLineItem[] = [
       ...(productNames ?
         [
           {
             key: 'product',
             node: (
-              <InfoItem icon="package" label={t('product')}>
+              <WfoInfoItem icon="package" label={t('product')}>
                 {productNames}
-              </InfoItem>
+              </WfoInfoItem>
             ),
           },
         ]
@@ -325,9 +322,9 @@ export const WfoProcessDetail = ({
           {
             key: 'customer',
             node: (
-              <InfoItem icon="users" label={t('customer')}>
+              <WfoInfoItem icon="users" label={t('customer')}>
                 {processDetail.customer.fullname}
-              </InfoItem>
+              </WfoInfoItem>
             ),
           },
         ]
@@ -335,15 +332,15 @@ export const WfoProcessDetail = ({
       {
         key: 'startedBy',
         node: (
-          <InfoItem icon="user" label={t('startedBy')}>
+          <WfoInfoItem icon="user" label={t('startedBy')}>
             {processDetail?.createdBy ?? '-'}
-          </InfoItem>
+          </WfoInfoItem>
         ),
       },
       {
         key: 'dates',
         node: (
-          <InfoItem
+          <WfoInfoItem
             icon="clock"
             label={t('lastUpdate')}
             tooltip={
@@ -354,7 +351,7 @@ export const WfoProcessDetail = ({
             }
           >
             {formatDate(processDetail?.lastModifiedAt)}
-          </InfoItem>
+          </WfoInfoItem>
         ),
       },
       ...(showRelated ?
@@ -432,10 +429,11 @@ export const WfoProcessDetail = ({
             top: 0,
             zIndex: 3,
             background: theme.colors.backgroundBasePlain,
-            padding: `${theme.size.s} 0 0`,
-            // A band in the page colour around the header (16px sides, 20px below): the shadow of a step card that
-            // scrolled under the header reaches past the header's edges and would show next to and below it
-            boxShadow: `0 ${HEADER_SHADOW_COVER_BOTTOM - HEADER_SHADOW_COVER_SIDE}px 0 ${HEADER_SHADOW_COVER_SIDE}px ${theme.colors.backgroundBasePlain}`,
+            // The step cards scroll under the header; their shadows (14px to the sides, 20px down) must stay under it
+            // too. So the header is wider than the content (to the page section's edges) and has its own space
+            // at the bottom. A card shadow bigger than this space would show next to or below the header again.
+            marginInline: `-${theme.size.l}`,
+            padding: `${theme.size.s} ${theme.size.l} ${theme.size.l}`,
           }}
         >
           <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" gutterSize="m" wrap responsive={false}>
@@ -510,13 +508,17 @@ export const WfoProcessDetail = ({
           )}
         </div>
 
-        {/* Outside the sticky header, so scrolling content doesn't show through the gap */}
-        <EuiSpacer size="xxl" />
+        {/* With the header's bottom space: the same gap as before under the timeline */}
+        <EuiSpacer size="m" />
 
         <div
           css={{
-            // Below the header's cover band, else the band hides the top of the guide
-            '--wfo-guide-sticky-top': `${headerHeight + HEADER_SHADOW_COVER_BOTTOM + 4}px`,
+            // The user guide sticks right below the sticky header
+            '--wfo-guide-sticky-top': `${headerHeight}px`,
+            // A timeline click scrolls the step to just below the header (navigation + header + a step gap)
+            '--wfo-step-scroll-offset': `${theme.base * 3 + headerHeight + theme.base * 1.5}px`,
+            // Own stacking layer: a z-index inside a step (the code viewer's sticky lines) cannot paint over the header
+            isolation: 'isolate',
             display: 'grid',
             alignItems: 'start',
             // Big screen: the tucked guide column is only the strip while closed, so the content is as wide as it can be.
