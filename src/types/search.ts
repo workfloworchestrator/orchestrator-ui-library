@@ -6,6 +6,7 @@ export enum EntityKind {
   WORKFLOW = 'WORKFLOW',
   PROCESS = 'PROCESS',
   PRODUCT_BLOCK = 'PRODUCT_BLOCK',
+  RESOURCE_TYPE = 'RESOURCE_TYPE',
 }
 
 export enum QueryCombinator {
