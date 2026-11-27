@@ -12,4 +12,5 @@ export * from './rtk';
 export * from './theme';
 export * from './tokens';
 export * from './types';
+export * from './ui';
 export * from './utils';
