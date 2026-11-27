@@ -1,0 +1,13 @@
+/* The lifted copy of the dragged item. */
+.overlay {
+  transform: scale(1.03);
+  border-radius: var(--wfo-radius-100);
+  box-shadow: var(--wfo-shadow-lifted);
+  cursor: grabbing;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    transform: none;
+  }
+}

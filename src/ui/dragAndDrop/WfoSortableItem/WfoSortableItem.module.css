@@ -1,0 +1,84 @@
+.root {
+  /* The anchor for the handle with placement edge. */
+  position: relative;
+  min-width: 0;
+  transform: var(--wfo-sortable-transform);
+  transition: var(--wfo-sortable-transition);
+}
+
+.root[data-handle-placement='inline'] {
+  display: flex;
+  align-items: center;
+  gap: var(--wfo-space-100);
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+/*
+ * An item whose content renders nothing (for example a card without data) takes no slot and no gap.
+ * In a masonry grid it takes no height.
+ */
+.root:has(> .content:empty) {
+  display: none;
+}
+
+/* The empty slot the lifted copy leaves behind. */
+.dragging {
+  opacity: 0.35;
+}
+
+.handle {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--wfo-size-drag-handle-width);
+  height: var(--wfo-size-drag-handle-height);
+  padding: 0;
+  border: 1px solid var(--wfo-color-border-default);
+  border-radius: var(--wfo-radius-100);
+  background-color: var(--wfo-color-background-default);
+  color: var(--wfo-color-text-subdued);
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle:active {
+  cursor: grabbing;
+}
+
+.handle:focus-visible {
+  outline: 2px solid var(--wfo-color-focus);
+  outline-offset: 2px;
+}
+
+.root[data-handle-placement='edge'] .handle {
+  position: absolute;
+  z-index: 1;
+  top: var(--wfo-drag-handle-top, 50%);
+  left: calc(-1 * var(--wfo-size-drag-handle-width) / 2);
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.root[data-handle-placement='edge']:is(:hover, :focus-within) .handle {
+  opacity: 1;
+}
+
+/* Touch screens have no hover, so the handle always shows. */
+@media (hover: none) {
+  .root[data-handle-placement='edge'] .handle {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .handle {
+    transition: none;
+  }
+}
