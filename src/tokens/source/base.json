@@ -1,0 +1,85 @@
+{
+  "space": {
+    "$type": "dimension",
+    "50": {
+      "$value": "4px"
+    },
+    "100": {
+      "$value": "8px"
+    },
+    "150": {
+      "$value": "12px"
+    },
+    "200": {
+      "$value": "16px"
+    },
+    "300": {
+      "$value": "24px"
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "100": {
+      "$value": "4px"
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "base": {
+        "$value": "Inter, system-ui, Helvetica, Arial, sans-serif",
+        "$description": "Same stack as EUI. Set on the page by the host (the app or Storybook); the parts inherit it."
+      }
+    },
+    "lineHeight": {
+      "$type": "number",
+      "base": {
+        "$value": 1.1429,
+        "$description": "16px at 14px, like EUI."
+      }
+    },
+    "size": {
+      "$type": "dimension",
+      "100": {
+        "$value": "14px"
+      },
+      "200": {
+        "$value": "16px"
+      },
+      "300": {
+        "$value": "28px"
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "semiBold": {
+        "$value": 600
+      },
+      "bold": {
+        "$value": 700
+      }
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "iconTile": {
+      "$value": "64px"
+    },
+    "cardHeaderHeight": {
+      "$value": "112px"
+    },
+    "dragHandleWidth": {
+      "$value": "24px"
+    },
+    "dragHandleHeight": {
+      "$value": "36px"
+    },
+    "gridColumnMinWidth": {
+      "$value": "320px",
+      "$description": "WfoGrid never makes a column narrower than this."
+    },
+    "collapsiblePanelMaxHeight": {
+      "$value": "360px"
+    }
+  }
+}

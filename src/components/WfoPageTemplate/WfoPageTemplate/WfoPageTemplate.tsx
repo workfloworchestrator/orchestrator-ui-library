@@ -25,6 +25,8 @@ export const WfoPageTemplate: FC<WfoPageTemplateProps> = (props) => {
 
   useEffect(() => {
     setColorMode(resolvedColorMode);
+    // tokens.css switches the --wfo-* colors on this attribute.
+    document.documentElement.dataset.wfoColorMode = resolvedColorMode === ColorModes.DARK ? 'dark' : 'light';
   }, [resolvedColorMode, setColorMode]);
 
   return (

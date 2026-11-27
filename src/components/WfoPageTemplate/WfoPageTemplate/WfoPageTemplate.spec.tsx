@@ -194,7 +194,9 @@ describe('page theme controls', () => {
 
     changeSystemTheme(true);
     expect(screen.getByTestId('outer-color-mode')).toHaveTextContent('DARK');
+    expect(document.documentElement).toHaveAttribute('data-wfo-color-mode', 'dark');
     changeSystemTheme(false);
+    expect(document.documentElement).toHaveAttribute('data-wfo-color-mode', 'light');
     expect(screen.getByTestId('outer-color-mode')).toHaveTextContent('LIGHT');
 
     selectColorMode('lightMode');

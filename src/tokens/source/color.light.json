@@ -1,0 +1,89 @@
+{
+  "color": {
+    "$type": "color",
+    "text": {
+      "default": {
+        "$value": "#384861"
+      },
+      "heading": {
+        "$value": "#111C2C"
+      },
+      "subdued": {
+        "$value": "#516381"
+      },
+      "link": {
+        "$value": "#1750BA"
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "#CAD3E2"
+      }
+    },
+    "background": {
+      "default": {
+        "$value": "#FFFFFF"
+      },
+      "subdued": {
+        "$value": "#F6F9FC"
+      },
+      "hover": {
+        "$value": "rgba(23, 80, 186, 0.04)"
+      }
+    },
+    "action": {
+      "primary": {
+        "background": { "$value": "#0B64DD" },
+        "backgroundHover": { "$value": "#0A54BC" },
+        "text": { "$value": "#FFFFFF" }
+      },
+      "danger": {
+        "background": { "$value": "#C61E25" },
+        "backgroundHover": { "$value": "#A8191F" },
+        "text": { "$value": "#FFFFFF" }
+      }
+    },
+    "focus": {
+      "$value": "#0B64DD"
+    },
+    "status": {
+      "info": {
+        "icon": {
+          "$value": "#0B64DD"
+        },
+        "surface": {
+          "$value": "#CEE0F8"
+        }
+      },
+      "warning": {
+        "icon": {
+          "$value": "#966B0C"
+        },
+        "surface": {
+          "$value": "#FDF3D8"
+        }
+      },
+      "danger": {
+        "icon": {
+          "$value": "#C61E25"
+        },
+        "surface": {
+          "$value": "#F4D2D3"
+        }
+      },
+      "success": {
+        "icon": {
+          "$value": "#008A5E"
+        },
+        "surface": {
+          "$value": "#CCE8DF"
+        }
+      }
+    }
+  },
+  "shadow": {
+    "lifted": {
+      "$value": "0 12px 28px rgba(17, 28, 44, 0.22)"
+    }
+  }
+}
