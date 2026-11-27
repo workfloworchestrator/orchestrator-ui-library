@@ -1,0 +1,26 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--wfo-size-icon-tile);
+  height: var(--wfo-size-icon-tile);
+  border-radius: var(--wfo-radius-100);
+  color: var(--wfo-color-background-default);
+}
+
+.info {
+  background-color: var(--wfo-color-status-info-icon);
+}
+
+.warning {
+  background-color: var(--wfo-color-status-warning-icon);
+}
+
+.danger {
+  background-color: var(--wfo-color-status-danger-icon);
+}
+
+.success {
+  background-color: var(--wfo-color-status-success-icon);
+}
