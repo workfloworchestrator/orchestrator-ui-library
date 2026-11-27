@@ -1,0 +1,44 @@
+.rows,
+.masonry {
+  display: grid;
+  align-items: start;
+  gap: var(--wfo-grid-gap);
+}
+
+/*
+ * Pure CSS: as many columns as fit, never narrower than the minimum, never more than --wfo-grid-max-columns.
+ * Without a maximum, the large default lets auto-fill decide.
+ */
+.rows {
+  --wfo-grid-max-columns: 100;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(
+      max(
+        min(var(--wfo-size-grid-column-min-width), 100%),
+        calc((100% - (var(--wfo-grid-max-columns) - 1) * var(--wfo-grid-gap)) / var(--wfo-grid-max-columns))
+      ),
+      1fr
+    )
+  );
+}
+
+.masonry {
+  grid-template-columns: repeat(var(--wfo-grid-column-count), minmax(0, 1fr));
+}
+
+/*
+ * After measuring: rows of 1px. Each item spans its own height plus the gap, so the gap is inside the span.
+ * The negative margin takes away the gap below the last item.
+ */
+.measured {
+  grid-auto-rows: 1px;
+  row-gap: 0;
+  margin-bottom: calc(-1 * var(--wfo-grid-gap));
+}
+
+/* As tall as its content, not as tall as its rows. That height is what the grid measures. */
+.item {
+  align-self: start;
+  min-width: 0;
+}

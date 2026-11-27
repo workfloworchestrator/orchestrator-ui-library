@@ -1,0 +1,7 @@
+.root {
+  padding: var(--wfo-panel-padding);
+  border: 1px solid var(--wfo-color-border-default);
+  border-radius: var(--wfo-radius-100);
+  background-color: var(--wfo-color-background-subdued);
+  color: var(--wfo-color-text-default);
+}
