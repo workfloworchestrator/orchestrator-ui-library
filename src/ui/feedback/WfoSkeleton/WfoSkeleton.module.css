@@ -1,0 +1,29 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--wfo-space-100);
+}
+
+.line {
+  height: 1em;
+  border-radius: var(--wfo-radius-100);
+  background-color: var(--wfo-color-background-hover);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* The last line is shorter, like the end of a paragraph. */
+.line:last-child:not(:first-child) {
+  width: 60%;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line {
+    animation: none;
+  }
+}
