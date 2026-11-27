@@ -1,0 +1,93 @@
+/*
+ * The variant, color and size come in as data attributes.
+ * Color sets the colors, variant decides where they go (fill, border or text only).
+ */
+.root {
+  --button-color: var(--wfo-color-action-primary-background);
+  --button-color-hover: var(--wfo-color-action-primary-background-hover);
+  --button-on-color: var(--wfo-color-action-primary-text);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--wfo-space-50);
+  min-height: 36px;
+  padding: 0 var(--wfo-space-150);
+  border: 1px solid transparent;
+  border-radius: var(--wfo-radius-100);
+  background: none;
+  /* Buttons do not inherit the font by default. */
+  font-family: inherit;
+  font-size: var(--wfo-font-size-100);
+  font-weight: var(--wfo-font-weight-semi-bold);
+  line-height: var(--wfo-font-line-height-base);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.root[data-color='danger'] {
+  --button-color: var(--wfo-color-action-danger-background);
+  --button-color-hover: var(--wfo-color-action-danger-background-hover);
+  --button-on-color: var(--wfo-color-action-danger-text);
+}
+
+/* Variants */
+.root[data-variant='primary'] {
+  background-color: var(--button-color);
+  color: var(--button-on-color);
+}
+
+.root[data-variant='primary']:hover:not([data-disabled]) {
+  background-color: var(--button-color-hover);
+}
+
+.root[data-variant='secondary'] {
+  border-color: var(--button-color);
+  color: var(--button-color);
+}
+
+.root[data-variant='ghost'] {
+  font-weight: inherit;
+  color: var(--button-color);
+}
+
+.root[data-variant='secondary']:hover:not([data-disabled]),
+.root[data-variant='ghost']:hover:not([data-disabled]) {
+  background-color: var(--wfo-color-background-hover);
+}
+
+/* Sizes */
+.root[data-size='small'] {
+  min-height: 28px;
+  padding: 0 var(--wfo-space-100);
+}
+
+.root[data-icon-only] {
+  aspect-ratio: 1;
+  padding: 0;
+}
+
+.root[data-full-width] {
+  display: flex;
+  width: 100%;
+}
+
+/* States */
+.root[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.root[aria-busy] {
+  cursor: progress;
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--wfo-color-focus);
+  outline-offset: 2px;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}

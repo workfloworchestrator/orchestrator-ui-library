@@ -1,0 +1,23 @@
+/* Takes the font of what is around it, so it works in running text and in a heading. */
+.root {
+  color: var(--wfo-color-text-link);
+  text-decoration: none;
+}
+
+.root:hover {
+  text-decoration: underline;
+}
+
+/*
+ * Focus (WCAG 2.4.7, 1.4.11), like NL Design System: a 2px ring with a small gap, and an underline.
+ * A link on 2 lines gets one closed ring per line.
+ * The ring is outside the text: a parent with overflow: hidden must leave 4px of room for it.
+ */
+.root:focus-visible {
+  outline: 2px solid var(--wfo-color-focus);
+  outline-offset: 1px;
+  border-radius: 2px;
+  text-decoration: underline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}

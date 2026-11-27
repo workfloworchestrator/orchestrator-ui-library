@@ -4,6 +4,12 @@ import { useTranslations } from 'next-intl';
 
 import { EuiPageHeader } from '@elastic/eui';
 
+import { WfoSummaryCards } from '@/components';
+import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { PolicyResource } from '@/configuration';
+import { usePolicy, useWfoSession } from '@/hooks';
+import { toOptionalArrayEntry } from '@/utils';
+
 import {
   WfoActiveWorkflowsSummaryCard,
   WfoFailedTasksSummaryCard,
@@ -11,13 +17,7 @@ import {
   WfoLatestOutOfSyncSubscriptionSummaryCard,
   WfoMyWorkflowsSummaryCard,
   WfoProductsSummaryCard,
-  WfoSummaryCards,
-} from '@/components';
-import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
-import { PolicyResource } from '@/configuration';
-import { usePolicy, useWfoSession } from '@/hooks';
-import { toOptionalArrayEntry } from '@/utils';
-
+} from './summaryCards';
 import { useStartPageSummaryCardConfigurationOverride } from './useStartPageSummaryCardConfigurationOverride';
 
 export const WfoStartPage = () => {

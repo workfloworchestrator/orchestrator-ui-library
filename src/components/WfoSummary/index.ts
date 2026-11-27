@@ -1,12 +1,4 @@
-export * from './getNumberOfColumns';
-export * from './WfoSummaryCardHeader';
-export * from './WfoSummaryCardList';
-export * from './WfoSummaryCards';
+export * from './types';
 export * from './WfoSummaryCard';
-
-export * from './WfoActiveWorkflowsSummaryCard';
-export * from './WfoFailedTasksSummaryCard';
-export * from './WfoLatestActiveSubscriptionsSummaryCard';
-export * from './WfoLatestOutOfSyncSubscriptionSummaryCard';
-export * from './WfoMyWorkflowsSummaryCard';
-export * from './WfoProductsSummaryCard';
+export * from './WfoSummaryCards';
+export * from './deprecated';

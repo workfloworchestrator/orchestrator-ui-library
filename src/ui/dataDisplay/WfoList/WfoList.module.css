@@ -1,0 +1,29 @@
+.root {
+  display: grid;
+  gap: var(--wfo-space-150);
+}
+
+.title {
+  font-weight: var(--wfo-font-weight-semi-bold);
+  color: var(--wfo-color-text-heading);
+}
+
+/* A line between the items, with the same space above and below it. */
+.list {
+  display: grid;
+  gap: var(--wfo-space-150);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+
+.item + .item {
+  padding-top: var(--wfo-space-150);
+  border-top: 1px solid var(--wfo-color-border-default);
+}
+
+.secondary {
+  margin: 0;
+  color: var(--wfo-color-text-subdued);
+}

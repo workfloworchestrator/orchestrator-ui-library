@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import { WfoIconProps } from './WfoIconProps';
 
 export const WfoExclamationTriangle: FC<WfoIconProps> = ({ width = 24, height = 24, color = '#000000' }) => (
-  <svg width={width} height={height} viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" color={color}>
+  <svg width={width} height={height} viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" color={color}>
     <title>icon/exclamation-circle</title>
     <g id="Symbols" strokeWidth="1.5" fill="currentColor">
       <g id="icon/exclamation-triangle" fill="currentColor">

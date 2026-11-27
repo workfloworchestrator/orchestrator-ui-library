@@ -47,3 +47,6 @@ src/configuration/version.ts
 
 #claude
 .claude/settings.json
+
+# storybook build output
+storybook-static

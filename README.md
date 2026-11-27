@@ -11,6 +11,16 @@ This package contains the frontend components and pages used with an orchestrato
 
 This package is meant to be consumed by an app that connects it to a running workflow orchestrator. For an example setup have a look at the [example orchestrator ui][3].
 
+### Styles
+
+The library imports its own stylesheet (`dist/index.css`), so you do not need to do anything. It holds the design
+tokens (`--wfo-*` CSS variables) and the styles of the components. `WfoPageTemplate` switches the tokens between light
+and dark mode. Without `WfoPageTemplate`, set `data-wfo-color-mode="light"` or `"dark"` on `<html>` yourself; until
+then, the OS setting decides.
+
+Your bundler must support CSS imports from `node_modules`. Next.js, Vite and webpack with a CSS loader do. For Jest,
+map CSS files to a stub; `next/jest` does this for you.
+
 ## Development
 
 This repository only contains the library; it does not run on its own. To develop it, clone it into an app that uses the
@@ -37,8 +47,6 @@ pnpm run prettier
 
 Each PR, which typically addresses an existing ticket from the issue list, should have a reference to the issue (eg use the issue number in the branch name). Furthermore the PR should include a changeset describing the changes of the PR, which will become part of the changelog in NPM.
 
-<<<<<<< HEAD
-
 ## Pull requests
 
 Open PRs as **draft** and click _Ready for review_ once CI passes. That triggers one Greptile review.
@@ -46,10 +54,6 @@ Open PRs as **draft** and click _Ready for review_ once CI passes. That triggers
 - To request another review, add the `greptile-review` label. The number of reviews per PR is limited; admins can exceed it.
 - PRs from authors without write access are not reviewed automatically; a maintainer adds `greptile-review`.
 - Admins can add `greptile-review-trex` for an in-depth review.
-
-# Release and publish
-
-=======
 
 ## Release and publish
 

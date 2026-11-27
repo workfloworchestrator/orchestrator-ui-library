@@ -1,0 +1,11 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--wfo-space-100);
+  margin-bottom: var(--wfo-space-150);
+}
+
+/* The drag handle sits at the middle of the card header, not of the whole card. */
+.card {
+  --wfo-drag-handle-top: calc(var(--wfo-size-card-header-height) / 2);
+}
