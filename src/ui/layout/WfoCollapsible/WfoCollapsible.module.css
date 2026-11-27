@@ -1,0 +1,36 @@
+.trigger {
+  display: inline-flex;
+  padding: var(--wfo-space-50);
+  border: 0;
+  border-radius: var(--wfo-radius-100);
+  background: none;
+  font-family: inherit;
+  color: var(--wfo-color-text-subdued);
+  cursor: pointer;
+}
+
+.trigger svg {
+  transition: transform 200ms ease;
+}
+
+.trigger[data-panel-open] svg {
+  transform: rotate(180deg);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--wfo-color-focus);
+  outline-offset: 2px;
+}
+
+.panel {
+  max-height: var(--wfo-size-collapsible-panel-max-height);
+  padding: var(--wfo-space-200);
+  overflow-y: auto;
+  border-top: 1px solid var(--wfo-color-border-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger svg {
+    transition: none;
+  }
+}
