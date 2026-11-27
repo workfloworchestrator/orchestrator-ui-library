@@ -15,7 +15,6 @@ import {
   EuiPanel,
   EuiPopover,
   EuiPopoverTitle,
-  EuiScreenReaderOnly,
   EuiSpacer,
   EuiText,
   EuiToolTip,
@@ -33,12 +32,19 @@ import {
   WfoTitleWithWebsocketBadge,
 } from '@/components';
 import { WfoContentHeader } from '@/components/WfoContentHeader/WfoContentHeader';
+import { WfoInfoItem, WfoProcessInfoLine, WfoProcessInfoLineItem } from '@/components/WfoProcessInfoLine';
 import { WfoTraceback } from '@/components/WfoWorkflowSteps/WfoTraceback';
 import { TUCKED_GUIDE_OPEN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflowUserGuide/WfoTuckedGuide';
 import { WfoWorkflowGuideExpandablePanel } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
-import { useCheckEngineStatus, useGetOrchestratorConfig, useOrchestratorTheme, usePolicy } from '@/hooks';
+import {
+  useCheckEngineStatus,
+  useGetOrchestratorConfig,
+  useOrchestratorTheme,
+  usePolicy,
+  useWithOrchestratorTheme,
+} from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
 import { RenderDirection, WfoProcessListSubscriptionsCell, WfoProductInformationWithLink } from '@/pages';
 import {
@@ -49,6 +55,7 @@ import {
 import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
+import { getProcessDetailBetaStyles } from './styles';
 import { getFailedStepIndex, getIndexOfCurrentStep } from './timelineUtils';
 
 // Detail page: the steps have no panel, so the tab floats; the strip is a 16px gap + a 32px tab
@@ -86,36 +93,6 @@ const ProcessHeaderValue = ({ translationKey, value = '' }: ProcessHeaderValuePr
       </EuiText>
     </EuiFlexGroup>
   );
-};
-
-// Second line of the new header. Icons are decoration; the hover text (and a hidden label) names the value.
-const InfoItem = ({
-  icon,
-  label,
-  tooltip,
-  children,
-}: {
-  icon: string;
-  label: string;
-  tooltip?: React.ReactNode;
-  children: React.ReactNode;
-}) => (
-  <EuiToolTip content={tooltip ?? label}>
-    <span tabIndex={0} css={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
-      <EuiIcon type={icon} size="m" color="subdued" aria-hidden />
-      <EuiScreenReaderOnly>
-        <span>{label}</span>
-      </EuiScreenReaderOnly>
-      <EuiText size="s" color="subdued">
-        {children}
-      </EuiText>
-    </span>
-  </EuiToolTip>
-);
-
-const InfoDivider = () => {
-  const { theme } = useOrchestratorTheme();
-  return <span aria-hidden css={{ width: 1, height: 16, background: theme.colors.borderBaseSubdued }} />;
 };
 
 interface ProcessDetailProps {
@@ -182,6 +159,8 @@ export const WfoProcessDetail = ({
   }, [layout]);
   const t = useTranslations('processes.detail');
   const { theme } = useOrchestratorTheme();
+  const { stickyHeaderStyle, tooltipAnchorStyle, getContentGridStyle } =
+    useWithOrchestratorTheme(getProcessDetailBetaStyles);
   const { showConfirmDialog } = useContext(ConfirmationDialogContext);
   const [retryProcess] = useRetryProcessMutation();
   const [deleteProcess] = useDeleteProcessMutation();
@@ -334,15 +313,15 @@ export const WfoProcessDetail = ({
     const showRelated = isAllowed(PolicyResource.PROCESS_RELATED_SUBSCRIPTIONS) && relatedSubscriptions.length > 0;
     const formatDate = (date?: string) => (date ? parseIsoString(parseDateRelativeToToday)(date) : '-');
     const [firstSubscription] = relatedSubscriptions;
-    const infoItems: { key: string; node: React.ReactNode }[] = [
+    const infoItems: WfoProcessInfoLineItem[] = [
       ...(productNames ?
         [
           {
             key: 'product',
             node: (
-              <InfoItem icon="package" label={t('product')}>
+              <WfoInfoItem icon="package" label={t('product')}>
                 {productNames}
-              </InfoItem>
+              </WfoInfoItem>
             ),
           },
         ]
@@ -352,9 +331,9 @@ export const WfoProcessDetail = ({
           {
             key: 'customer',
             node: (
-              <InfoItem icon="users" label={t('customer')}>
+              <WfoInfoItem icon="users" label={t('customer')}>
                 {processDetail.customer.fullname}
-              </InfoItem>
+              </WfoInfoItem>
             ),
           },
         ]
@@ -362,15 +341,15 @@ export const WfoProcessDetail = ({
       {
         key: 'startedBy',
         node: (
-          <InfoItem icon="user" label={t('startedBy')}>
+          <WfoInfoItem icon="user" label={t('startedBy')}>
             {processDetail?.createdBy ?? '-'}
-          </InfoItem>
+          </WfoInfoItem>
         ),
       },
       {
         key: 'dates',
         node: (
-          <InfoItem
+          <WfoInfoItem
             icon="clock"
             label={t('lastUpdate')}
             tooltip={
@@ -381,7 +360,7 @@ export const WfoProcessDetail = ({
             }
           >
             {formatDate(processDetail?.lastModifiedAt)}
-          </InfoItem>
+          </WfoInfoItem>
         ),
       },
       ...(showRelated ?
@@ -446,37 +425,35 @@ export const WfoProcessDetail = ({
       : []),
     ];
 
+    const hasWorkflowInformationLink = showWorkflowInformationLink && !!processDetail?.workflowName;
     const failedStepIndex = getFailedStepIndex(timelineItems, processDetail?.lastStatus);
     const hasFailed = failedStepIndex !== -1;
+    // Big screen: the tucked guide column is only the strip while closed, so the content is as wide as it can be.
+    // Below xl the guide stacks on top (see WfoWorkflowGuideExpandablePanel): one column.
+    const guideColumnWidth =
+      !isBigScreen ? undefined
+      : !showWorkflowUserGuide ? '0px'
+      : isGuideOpen ? TUCKED_GUIDE_OPEN_WIDTH
+      : `${DETAIL_GUIDE_STRIP_WIDTH}px`;
 
     return (
       <>
-        <div
-          ref={headerRef}
-          css={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 3,
-            background: theme.colors.backgroundBasePlain,
-            padding: `${theme.size.s} 0 0`,
-          }}
-        >
+        <div ref={headerRef} css={stickyHeaderStyle}>
           <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" gutterSize="m" wrap responsive={false}>
             <EuiFlexItem css={{ minWidth: 0 }}>
               <WfoTitleWithWebsocketBadge
                 title={pageTitle}
-                // Same row, same centre line: [bolt badge] [info] | [status tag]. Info sits close to the bolt as a pair.
+                // Same row, same centre line: [bolt badge] [info] | [status tag]. Each keeps its own space (the flex
+                // gap); the bolt badge is a box with its own padding and colour (red while disconnected), never overlap it.
                 extraElement={
-                  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false} css={{ marginInlineStart: -20 }}>
-                    {showWorkflowInformationLink && processDetail?.workflowName && (
-                      <EuiToolTip content={t('openWorkflowTaskInfo')}>
+                  <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false}>
+                    {hasWorkflowInformationLink && (
+                      <EuiToolTip content={t('openWorkflowTaskInfo')} anchorProps={{ css: tooltipAnchorStyle }}>
                         <EuiButtonIcon
                           size="s"
                           iconType="info"
                           iconSize="m"
-                          // the bolt badge sits ~2.5px above the centre line, so the info icon follows it
-                          css={{ marginBlockStart: -5 }}
-                          href={workflowInformationLinkUrl + processDetail.workflowName}
+                          href={workflowInformationLinkUrl + (processDetail?.workflowName ?? '')}
                           target="_blank"
                           aria-label={t('openWorkflowTaskInfo')}
                         />
@@ -505,25 +482,8 @@ export const WfoProcessDetail = ({
                   </EuiFlexGroup>
                 }
               />
-              {/* Info line: 12px between items, thin dividers; hover names each value. Dates: one value, both in the tooltip. */}
-              <div
-                css={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                  columnGap: theme.size.m,
-                  rowGap: theme.size.xs,
-                  marginTop: theme.size.xs,
-                  marginBottom: theme.size.s,
-                }}
-              >
-                {infoItems.map((item, index) => (
-                  <React.Fragment key={item.key}>
-                    {index > 0 && <InfoDivider />}
-                    {item.node}
-                  </React.Fragment>
-                ))}
-              </div>
+              {/* Dates: one value, both in the tooltip */}
+              <WfoProcessInfoLine infoItems={infoItems} />
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiFlexGroup gutterSize="s" wrap responsive={false}>
@@ -550,29 +510,10 @@ export const WfoProcessDetail = ({
           )}
         </div>
 
-        {/* Outside the sticky header, so scrolling content doesn't show through the gap */}
-        <EuiSpacer size="xxl" />
+        {/* With the header's bottom space: the same gap as before under the timeline */}
+        <EuiSpacer size="m" />
 
-        <div
-          css={{
-            '--wfo-guide-sticky-top': `${headerHeight + 8}px`,
-            display: 'grid',
-            alignItems: 'start',
-            // Big screen: the tucked guide column is only the strip while closed, so the content is as wide as it can be.
-            // The column width is animated (not swapped), so opening the guide slides the content instead of jumping.
-            // Below xl the guide stacks on top (see WfoWorkflowGuideExpandablePanel).
-            gridTemplateColumns:
-              isBigScreen ?
-                `minmax(0, 1fr) ${
-                  !showWorkflowUserGuide ? '0px'
-                  : isGuideOpen ? TUCKED_GUIDE_OPEN_WIDTH
-                  : `${DETAIL_GUIDE_STRIP_WIDTH}px`
-                }`
-              : 'minmax(0, 1fr)',
-            transition: 'grid-template-columns 300ms cubic-bezier(0.2, 0, 0, 1)',
-            '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-          }}
-        >
+        <div css={getContentGridStyle(headerHeight, guideColumnWidth)}>
           <div css={{ minWidth: 0, gridColumn: 1, gridRow: 2 }}>
             {hasFailed && (
               <EuiCallOut

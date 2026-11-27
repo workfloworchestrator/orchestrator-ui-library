@@ -86,6 +86,13 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     borderBottomRightRadius: 0,
   });
 
+  // For a tab that is lower than the panel (tucked guide): without this the panel's side is open above and below it
+  const guidePanelFullBorderStyle = css({
+    borderRightWidth: 2,
+    borderTopRightRadius: theme.border.radius.panel,
+    borderBottomRightRadius: theme.border.radius.panel,
+  });
+
   const guideBodyStyle = css({
     flex: 1,
     minHeight: 0,
@@ -129,6 +136,7 @@ export const getStyles = ({ theme }: WfoThemeHelpers) => {
     noLeftBorderStyle,
     noBottomBorderStyle,
     guidePanelStyle,
+    guidePanelFullBorderStyle,
     guideBodyStyle,
     guideStackedBodyStyle,
     guideStackedPanelStyle,
@@ -175,9 +183,13 @@ export const getEdgeTabStyles = ({ theme }: WfoThemeHelpers) => {
 type TuckedGuideStyleOptions = { isOpen: boolean; openWidth?: string; stripWidth: number };
 
 export const getTuckedGuideStyles = ({ theme }: WfoThemeHelpers) => {
-  // viewport minus the top navigation (or sticky page header) and a gap below
-  const stickyTop = `var(--wfo-guide-sticky-top, calc(${theme.base * 3}px + ${theme.size.l}))`;
-  const screenHigh = `calc(100vh - ${stickyTop} - ${theme.size.l})`;
+  // The page scrolls in a box under the top navigation, so sticky offsets count from there (same top as the
+  // start page's step list). One screen high: the viewport minus the navigation, the sticky top and a gap below.
+  // Without the navigation height the guide is taller than the box: at the bottom of the page it is pushed up
+  // and its top goes under the page header.
+  const navigationHeight = theme.base * 3;
+  const stickyTop = `var(--wfo-guide-sticky-top, ${theme.size.l})`;
+  const screenHigh = `calc(100vh - ${navigationHeight}px - ${stickyTop} - ${theme.size.l})`;
 
   const containerStyle = css({
     // Same height as the cell: the guide inside is absolute, so a long guide text cannot make the row taller

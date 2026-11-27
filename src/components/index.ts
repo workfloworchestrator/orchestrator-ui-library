@@ -33,6 +33,7 @@ export * from './WfoRenderElementOrString';
 export * from './WfoStartButton';
 export * from './WfoSubscriptionsList';
 export * from './WfoSummary';
+export * from './WfoProcessInfoLine';
 export * from './WfoTitleWithWebsocketBadge';
 export * from './WfoRadioDropdown';
 export * from './WfoInlineNoteEdit';

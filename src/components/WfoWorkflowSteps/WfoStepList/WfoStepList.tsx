@@ -63,12 +63,14 @@ export const WfoStepList = React.forwardRef(
             return resolve(onTriggerExpandStepListItem(foundStepListItem));
           });
 
-          const targetRect = stepReferences.current.get(stepId)?.getBoundingClientRect();
+          const target = stepReferences.current.get(stepId);
 
-          if (targetRect) {
-            const { top } = targetRect;
+          if (target) {
+            const { top } = target.getBoundingClientRect();
+            // A page with a taller sticky header sets --wfo-step-scroll-offset (px from the top of the screen)
+            const pageScrollOffset = parseFloat(getComputedStyle(target).getPropertyValue('--wfo-step-scroll-offset'));
             contentRef?.current?.scrollBy({
-              top: top - scrollOffset,
+              top: top - (pageScrollOffset || scrollOffset),
               behavior: 'smooth',
             });
           }

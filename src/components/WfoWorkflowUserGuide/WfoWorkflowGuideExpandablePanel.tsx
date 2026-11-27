@@ -93,12 +93,15 @@ const WfoWorkflowGuideToggleStrip = ({
 export const WfoWorkflowGuideMarkdown = ({
   workflowName,
   isBigScreen,
+  hasFullBorder = false,
 }: {
   workflowName: string;
   isBigScreen: boolean;
+  /** Border on all sides. Default: no border on the side of the toggle strip, which is as high as the panel. */
+  hasFullBorder?: boolean;
 }) => {
   const t = useTranslations('workflowGuide');
-  const { guideBodyStyle, guidePanelStyle, guideStackedBodyStyle, guideStackedPanelStyle } =
+  const { guideBodyStyle, guidePanelStyle, guidePanelFullBorderStyle, guideStackedBodyStyle, guideStackedPanelStyle } =
     useWithOrchestratorTheme(getStyles);
   const { data, isLoading, isError } = useGetWorkflowGuideQuery({ workflowName });
   const content = data?.content ?? '';
@@ -111,7 +114,7 @@ export const WfoWorkflowGuideMarkdown = ({
           hasBorder={false}
           paddingSize="m"
           hasShadow
-          css={isBigScreen ? guidePanelStyle : guideStackedPanelStyle}
+          css={isBigScreen ? [guidePanelStyle, hasFullBorder && guidePanelFullBorderStyle] : guideStackedPanelStyle}
         >
           {((isError || !content) && (
             <EuiText size="m" color="subdued">

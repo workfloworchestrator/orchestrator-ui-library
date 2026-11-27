@@ -59,7 +59,7 @@ export const WfoTuckedGuide = ({
       <div css={getSliderStyle({ isOpen, openWidth, stripWidth })}>
         <section id={guideId} aria-label={t('title')} {...inertWhen(!isOpen)} css={getGuideSectionStyle(isOpen)}>
           {/* Same guide panel as the current layout; mounted while closed so the slide shows content */}
-          <WfoWorkflowGuideMarkdown workflowName={workflowName} isBigScreen />
+          <WfoWorkflowGuideMarkdown workflowName={workflowName} isBigScreen hasFullBorder />
         </section>
         {/*
           The tab sits in an invisible box that is as high as the panel (short panel) or the free screen (long page
