@@ -4,5 +4,6 @@ export * from './feedback/WfoSpinner';
 export * from './layout/WfoCollapsible';
 export * from './layout/WfoGrid';
 export * from './layout/WfoPanel';
+export * from './navigation/WfoLink';
 export type { WfoSpace } from './layout/space';
 export type { WfoStatusColor } from './statusColor';
