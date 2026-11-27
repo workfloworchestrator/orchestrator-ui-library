@@ -1,6 +1,8 @@
 import React, { FC, ReactNode } from 'react';
 
-import { useOrchestratorTheme } from '@/hooks';
+import { useWithOrchestratorTheme } from '@/hooks';
+
+import { getStyles } from './styles';
 
 export type WfoProcessInfoLineItem = { key: string; node: ReactNode };
 
@@ -8,24 +10,14 @@ export type WfoProcessInfoLineProps = {
   infoItems: WfoProcessInfoLineItem[];
 };
 
-// Info line under the title of the new layouts (process detail, start workflow): 12px between items, thin dividers
+// Info line under the title of the new layouts (process detail, start workflow)
 export const WfoProcessInfoLine: FC<WfoProcessInfoLineProps> = ({ infoItems }) => {
-  const { theme } = useOrchestratorTheme();
+  const { infoLineStyle, dividerStyle } = useWithOrchestratorTheme(getStyles);
   return (
-    <div
-      css={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        columnGap: theme.size.m,
-        rowGap: theme.size.xs,
-        marginTop: theme.size.xs,
-        marginBottom: theme.size.s,
-      }}
-    >
+    <div css={infoLineStyle}>
       {infoItems.map((infoItem, index) => (
         <React.Fragment key={infoItem.key}>
-          {index > 0 && <span aria-hidden css={{ width: 1, height: 16, background: theme.colors.borderBaseSubdued }} />}
+          {index > 0 && <span aria-hidden css={dividerStyle} />}
           {infoItem.node}
         </React.Fragment>
       ))}

@@ -41,11 +41,12 @@ import { RenderFormErrors } from '@/components/WfoPydanticForm/RenderFormErrors'
 import { WfoBetaArrayField } from '@/components/WfoPydanticForm/fields';
 import { TUCKED_GUIDE_MIN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflowUserGuide/WfoTuckedGuide';
 import { ConfirmationDialogContext } from '@/contexts';
-import { useGetOrchestratorConfig, useOrchestratorTheme } from '@/hooks';
+import { useGetOrchestratorConfig, useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
 import { useGetDescriptionForWorkflowNameQuery, useGetSubscriptionDetailQuery } from '@/rtk';
 import type { WfoComputedTheme } from '@/theme';
 
 import { getInitialProcessPayload } from './WfoStartProcessPage';
+import { FORM_INPUT_MAX_WIDTH, getStartProcessPageBetaStyles } from './styles';
 
 /*
  * New start-workflow layout (opt-in with the layout toggle, next to the current page):
@@ -73,8 +74,7 @@ type FormStepsContextValue = {
 };
 
 // A summary field ("check the settings") is how workflows end their form; no page follows it
-const isSummaryPage = (fields: PageFields) =>
-  Object.values(fields ?? {}).some((field) => (field.format as string | undefined) === 'summary');
+const isSummaryPage = (fields: PageFields) => Object.values(fields ?? {}).some((field) => field.format === 'summary');
 
 const FormStepsContext = createContext<FormStepsContextValue>({
   steps: { titles: [], keys: [], index: -1 },
@@ -138,13 +138,19 @@ const StepHeader = ({ pydanticFormSchema }: PydanticFormHeaderProps) => {
 const SubscriptionInfoLine = ({ subscriptionId }: { subscriptionId: string }) => {
   const t = useTranslations('processes.detail');
   const { data: subscriptionDetail, isLoading } = useGetSubscriptionDetailQuery({ subscriptionId });
-  const { theme } = useOrchestratorTheme();
+  const {
+    subscriptionLoadingStyle,
+    fullWidthLimitStyle,
+    subscriptionItemStyle,
+    shrinkableStyle,
+    subscriptionLinkStyle,
+  } = useWithOrchestratorTheme(getStartProcessPageBetaStyles);
   const subscription = subscriptionDetail?.subscription;
   // Same height as the info line, so the page does not move down when it comes in
   if (isLoading) {
     return (
-      <div css={{ marginTop: theme.size.xs, marginBottom: theme.size.s }}>
-        <EuiSkeletonRectangle width={420} height={20} borderRadius="s" css={{ maxWidth: '100%' }} />
+      <div css={subscriptionLoadingStyle}>
+        <EuiSkeletonRectangle width={420} height={20} borderRadius="s" css={fullWidthLimitStyle} />
       </div>
     );
   }
@@ -174,19 +180,13 @@ const SubscriptionInfoLine = ({ subscriptionId }: { subscriptionId: string }) =>
     {
       key: 'subscription',
       node: (
-        <span css={{ display: 'inline-flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+        <span css={subscriptionItemStyle}>
           <EuiIcon type="link" size="m" color="subdued" aria-hidden />
-          <EuiText size="s" css={{ minWidth: 0 }}>
+          <EuiText size="s" css={shrinkableStyle}>
             <Link
               href={`/subscriptions/${subscriptionId}`}
               title={`${t('subscription')}: ${subscription.description}`}
-              css={{
-                display: 'block',
-                maxWidth: 'min(480px, 50vw)',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
+              css={subscriptionLinkStyle}
             >
               {subscription.description}
             </Link>
@@ -198,7 +198,6 @@ const SubscriptionInfoLine = ({ subscriptionId }: { subscriptionId: string }) =>
   return <WfoProcessInfoLine infoItems={infoItems} />;
 };
 
-const FORM_INPUT_MAX_WIDTH = 400;
 const RAIL_WIDTH = 56; // collapsed step list: markers only
 const STEP_LIST_EXPANDED_WIDTH = 300; // step list on hover or focus, shown over the page
 // 24px gap + 640px panel: room for one field pair from a backend layout; more width only makes lines longer
@@ -271,10 +270,20 @@ const StepRow: RowRenderComponent = ({ title, description, error, isInvalid, req
  * a skeleton shaped like a step, so the panel keeps about its size instead of collapsing to one line.
  * The text says it is loading for screen readers.
  */
+// About the size of a short step, so the panel does not collapse while the next page loads
+const SKELETON_FIELD_COUNT = 3;
+
 const StepLoading = () => {
   const t = useTranslations('common');
   const tForm = useTranslations('pydanticForms.userInputForm');
   const { steps } = useContext(FormStepsContext);
+  const {
+    stepNumberSkeletonStyle,
+    stepTitleSkeletonStyle,
+    fieldRowSkeletonStyle,
+    fieldDescriptionSkeletonStyle,
+    fieldInputSkeletonStyle,
+  } = useWithOrchestratorTheme(getStartProcessPageBetaStyles);
   // First load: it is always step 1, so that is real text. Later (next or back) the number follows from the page.
   const isFirstLoad = steps.index === -1;
   return (
@@ -286,15 +295,15 @@ const StepLoading = () => {
         <EuiText size="xs" color="subdued">
           <strong>{tForm('stepNumber', { number: 1 })}</strong>
         </EuiText>
-      : <EuiSkeletonText lines={1} size="xs" css={{ width: 64 }} />}
+      : <EuiSkeletonText lines={1} size="xs" css={stepNumberSkeletonStyle} />}
       <EuiSpacer size="xs" />
-      <EuiSkeletonTitle size="s" css={{ width: 240 }} />
+      <EuiSkeletonTitle size="s" css={stepTitleSkeletonStyle} />
       <EuiSpacer size="l" />
-      {[0, 1, 2].map((rowIndex) => (
-        <div key={rowIndex} css={{ marginBottom: 24 }}>
-          <EuiSkeletonText lines={2} size="s" css={{ maxWidth: '65ch' }} />
+      {Array.from({ length: SKELETON_FIELD_COUNT }, (_, rowIndex) => (
+        <div key={rowIndex} css={fieldRowSkeletonStyle}>
+          <EuiSkeletonText lines={2} size="s" css={fieldDescriptionSkeletonStyle} />
           <EuiSpacer size="s" />
-          <EuiSkeletonRectangle width="100%" height={40} borderRadius="s" css={{ maxWidth: FORM_INPUT_MAX_WIDTH }} />
+          <EuiSkeletonRectangle width="100%" height={40} borderRadius="s" css={fieldInputSkeletonStyle} />
         </div>
       ))}
     </div>

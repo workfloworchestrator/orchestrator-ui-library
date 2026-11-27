@@ -38,7 +38,13 @@ import { TUCKED_GUIDE_OPEN_WIDTH, WfoTuckedGuide } from '@/components/WfoWorkflo
 import { WfoWorkflowGuideExpandablePanel } from '@/components/WfoWorkflowUserGuide/WfoWorkflowGuideExpandablePanel';
 import { PolicyResource } from '@/configuration/policy-resources';
 import { ConfirmationDialogContext } from '@/contexts';
-import { useCheckEngineStatus, useGetOrchestratorConfig, useOrchestratorTheme, usePolicy } from '@/hooks';
+import {
+  useCheckEngineStatus,
+  useGetOrchestratorConfig,
+  useOrchestratorTheme,
+  usePolicy,
+  useWithOrchestratorTheme,
+} from '@/hooks';
 import { WfoRefresh, WfoXCircleFill } from '@/icons';
 import { RenderDirection, WfoProcessListSubscriptionsCell, WfoProductInformationWithLink } from '@/pages';
 import {
@@ -49,6 +55,7 @@ import {
 import { ProcessDetail, ProcessRetryableStatuses, ProcessStatus } from '@/types';
 import { listIncludesStatus, parseDateRelativeToToday, parseIsoString } from '@/utils';
 
+import { getProcessDetailBetaStyles } from './styles';
 import { getFailedStepIndex, getIndexOfCurrentStep } from './timelineUtils';
 
 // Detail page: the steps have no panel, so the tab floats; the strip is a 16px gap + a 32px tab
@@ -152,6 +159,8 @@ export const WfoProcessDetail = ({
   }, [layout]);
   const t = useTranslations('processes.detail');
   const { theme } = useOrchestratorTheme();
+  const { stickyHeaderStyle, tooltipAnchorStyle, getContentGridStyle } =
+    useWithOrchestratorTheme(getProcessDetailBetaStyles);
   const { showConfirmDialog } = useContext(ConfirmationDialogContext);
   const [retryProcess] = useRetryProcessMutation();
   const [deleteProcess] = useDeleteProcessMutation();
@@ -419,23 +428,17 @@ export const WfoProcessDetail = ({
     const hasWorkflowInformationLink = showWorkflowInformationLink && !!processDetail?.workflowName;
     const failedStepIndex = getFailedStepIndex(timelineItems, processDetail?.lastStatus);
     const hasFailed = failedStepIndex !== -1;
+    // Big screen: the tucked guide column is only the strip while closed, so the content is as wide as it can be.
+    // Below xl the guide stacks on top (see WfoWorkflowGuideExpandablePanel): one column.
+    const guideColumnWidth =
+      !isBigScreen ? undefined
+      : !showWorkflowUserGuide ? '0px'
+      : isGuideOpen ? TUCKED_GUIDE_OPEN_WIDTH
+      : `${DETAIL_GUIDE_STRIP_WIDTH}px`;
 
     return (
       <>
-        <div
-          ref={headerRef}
-          css={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 3,
-            background: theme.colors.backgroundBasePlain,
-            // The step cards scroll under the header; their shadows (14px to the sides, 20px down) must stay under it
-            // too. So the header is wider than the content (to the page section's edges) and has its own space
-            // at the bottom. A card shadow bigger than this space would show next to or below the header again.
-            marginInline: `-${theme.size.l}`,
-            padding: `${theme.size.s} ${theme.size.l} ${theme.size.l}`,
-          }}
-        >
+        <div ref={headerRef} css={stickyHeaderStyle}>
           <EuiFlexGroup alignItems="center" justifyContent="spaceBetween" gutterSize="m" wrap responsive={false}>
             <EuiFlexItem css={{ minWidth: 0 }}>
               <WfoTitleWithWebsocketBadge
@@ -445,8 +448,7 @@ export const WfoProcessDetail = ({
                 extraElement={
                   <EuiFlexGroup alignItems="center" gutterSize="s" responsive={false}>
                     {hasWorkflowInformationLink && (
-                      // Flex anchor: an inline anchor adds line-height under the button, which puts it off the centre line
-                      <EuiToolTip content={t('openWorkflowTaskInfo')} anchorProps={{ css: { display: 'flex' } }}>
+                      <EuiToolTip content={t('openWorkflowTaskInfo')} anchorProps={{ css: tooltipAnchorStyle }}>
                         <EuiButtonIcon
                           size="s"
                           iconType="info"
@@ -511,31 +513,7 @@ export const WfoProcessDetail = ({
         {/* With the header's bottom space: the same gap as before under the timeline */}
         <EuiSpacer size="m" />
 
-        <div
-          css={{
-            // The user guide sticks right below the sticky header
-            '--wfo-guide-sticky-top': `${headerHeight}px`,
-            // A timeline click scrolls the step to just below the header (navigation + header + a step gap)
-            '--wfo-step-scroll-offset': `${theme.base * 3 + headerHeight + theme.base * 1.5}px`,
-            // Own stacking layer: a z-index inside a step (the code viewer's sticky lines) cannot paint over the header
-            isolation: 'isolate',
-            display: 'grid',
-            alignItems: 'start',
-            // Big screen: the tucked guide column is only the strip while closed, so the content is as wide as it can be.
-            // The column width is animated (not swapped), so opening the guide slides the content instead of jumping.
-            // Below xl the guide stacks on top (see WfoWorkflowGuideExpandablePanel).
-            gridTemplateColumns:
-              isBigScreen ?
-                `minmax(0, 1fr) ${
-                  !showWorkflowUserGuide ? '0px'
-                  : isGuideOpen ? TUCKED_GUIDE_OPEN_WIDTH
-                  : `${DETAIL_GUIDE_STRIP_WIDTH}px`
-                }`
-              : 'minmax(0, 1fr)',
-            transition: 'grid-template-columns 300ms cubic-bezier(0.2, 0, 0, 1)',
-            '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
-          }}
-        >
+        <div css={getContentGridStyle(headerHeight, guideColumnWidth)}>
           <div css={{ minWidth: 0, gridColumn: 1, gridRow: 2 }}>
             {hasFailed && (
               <EuiCallOut
