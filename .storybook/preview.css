@@ -1,0 +1,18 @@
+/*
+ * Storybook is the host page here, like the app is in production. It sets what EUI's global styles set in the app,
+ * from the design tokens, so the parts look the same in both places.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--wfo-font-family-base);
+  font-size: var(--wfo-font-size-100);
+  line-height: var(--wfo-font-line-height-base);
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--wfo-color-background-default);
+  color: var(--wfo-color-text-default);
+}
