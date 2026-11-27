@@ -447,6 +447,20 @@
     "products": {
       "headerTitle": "Totaal aantal producten",
       "listTitle": "Totaal aantal productinstanties"
+    },
+    "summary": {
+      "expandAll": "Alles uitklappen",
+      "collapseAll": "Alles inklappen",
+      "resetLayout": "Indeling herstellen",
+      "reorderCard": "{title} verplaatsen",
+      "reorderInstructions": "Druk op spatie om een kaart op te pakken, verplaats met de pijltjestoetsen en druk nogmaals op spatie om te plaatsen.",
+      "updating": "Bijwerken",
+      "empty": "Niets om te tonen",
+      "summaryDetails": "Details van {title}",
+      "reorderPickedUp": "{title} opgepakt.",
+      "reorderMovedOver": "{title} verplaatst naar de plek van {overTitle}.",
+      "reorderDropped": "{title} neergezet op de plek van {overTitle}.",
+      "reorderCancelled": "Verplaatsen van {title} geannuleerd."
     }
   },
   "subscriptions": {

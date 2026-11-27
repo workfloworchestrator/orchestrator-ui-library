@@ -13,14 +13,11 @@ import {
 } from '@elastic/eui';
 
 import { useWithOrchestratorTheme } from '@/hooks';
+import { warnDeprecated } from '@/utils/warnDeprecated';
 
-import { SummaryCardListItem, WfoSummaryCardListItem } from './WfoSummaryCardListItem';
+import type { SummaryCardButtonConfig, SummaryCardListItem } from '../../types';
+import { WfoSummaryCardListItem } from './WfoSummaryCardListItem';
 import { getWfoSummaryCardListStyles } from './styles';
-
-export type SummaryCardButtonConfig = {
-  name: string;
-  url: string;
-};
 
 export type WfoSummaryCardListProps = {
   title: string;
@@ -29,7 +26,9 @@ export type WfoSummaryCardListProps = {
   isLoading?: boolean;
 };
 
+/** @deprecated Use `WfoList` with `WfoListItem`. Will be removed in the next major version. */
 export const WfoSummaryCardList: FC<WfoSummaryCardListProps> = ({ title, items, button, isLoading = false }) => {
+  warnDeprecated('WfoSummaryCardList', 'Use WfoList with WfoListItem.');
   const router = useRouter();
   const euiScrollBarStyle = useEuiScrollBar();
   const { listContainerStyle, listHeaderStyle, listStyle } = useWithOrchestratorTheme(getWfoSummaryCardListStyles);

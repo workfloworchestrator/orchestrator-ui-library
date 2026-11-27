@@ -2,11 +2,12 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { PATH_WORKFLOWS, SummaryCardStatus, WfoSummaryCard } from '@/components';
-import { mapProcessSummaryToSummaryCardListItem } from '@/pages/startPage/mappers';
-import { activeWorkflowsListSummaryQueryVariables } from '@/pages/startPage/queryVariables';
+import { PATH_WORKFLOWS, WfoSummaryCard } from '@/components';
 import { useGetProcessListSummaryQuery } from '@/rtk';
 import { optionalArrayMapper } from '@/utils';
+
+import { mapProcessSummaryToSummaryCardListItem } from '../mappers';
+import { activeWorkflowsListSummaryQueryVariables } from '../queryVariables';
 
 export const WfoActiveWorkflowsSummaryCard = () => {
   const t = useTranslations('startPage.activeWorkflows');
@@ -21,7 +22,7 @@ export const WfoActiveWorkflowsSummaryCard = () => {
     <WfoSummaryCard
       headerTitle={t('headerTitle')}
       headerValue={activeWorkflowsSummaryResponse?.pageInfo.totalItems ?? '-'}
-      headerStatus={SummaryCardStatus.Success}
+
       listTitle={t('listTitle')}
       listItems={optionalArrayMapper(activeWorkflowsSummaryResponse?.processes, mapProcessSummaryToSummaryCardListItem)}
       button={{ name: t('buttonText'), url: PATH_WORKFLOWS }}

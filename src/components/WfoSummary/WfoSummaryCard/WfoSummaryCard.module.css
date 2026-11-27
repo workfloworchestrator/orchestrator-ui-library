@@ -1,0 +1,55 @@
+/* Every card header has the same height. It may grow when the user makes the text bigger. */
+.header {
+  display: grid;
+  grid-template-columns: var(--wfo-size-icon-tile) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--wfo-space-200);
+  min-height: var(--wfo-size-card-header-height);
+  padding: 0 var(--wfo-space-200);
+  cursor: pointer;
+}
+
+.header:hover {
+  background-color: var(--wfo-color-background-hover);
+}
+
+.text {
+  display: grid;
+  gap: var(--wfo-space-50);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--wfo-font-size-200);
+  font-weight: var(--wfo-font-weight-semi-bold);
+  line-height: 1.25;
+  /* A title with a link gets the link color from WfoLink. */
+  color: var(--wfo-color-text-heading);
+}
+
+/*
+ * At most 2 lines, then "…". On the link itself (not on the heading), so the focus ring of the link
+ * is one box around both lines and the clipping does not cut it.
+ */
+.titleText {
+  display: -webkit-box;
+  width: fit-content;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.valueRow {
+  display: flex;
+  align-items: center;
+  gap: var(--wfo-space-100);
+}
+
+.value {
+  font-size: var(--wfo-font-size-300);
+  font-weight: var(--wfo-font-weight-bold);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--wfo-color-text-heading);
+}

@@ -2,13 +2,15 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { PATH_SUBSCRIPTIONS, SummaryCardStatus, WfoSubscriptionListTab, WfoSummaryCard } from '@/components';
-import { mapSubscriptionSearchResultToSummaryCardListItem } from '@/pages/startPage/mappers';
-import { getSubscriptionSummarySearchPayload } from '@/pages/startPage/searchPayloads';
+import { PATH_SUBSCRIPTIONS, WfoSubscriptionListTab, WfoSummaryCard } from '@/components';
 import { useSearchQuery } from '@/rtk';
 import { Filter } from '@/types';
 import { optionalArrayMapper } from '@/utils';
 import { WfoQueryParams, getUrlWithQueryParams } from '@/utils/getQueryParams';
+
+import { getCountColor } from '../getCountColor';
+import { mapSubscriptionSearchResultToSummaryCardListItem } from '../mappers';
+import { getSubscriptionSummarySearchPayload } from '../searchPayloads';
 
 const OUT_OF_SYNC_CEL =
   'subscription.insync == "false" && (subscription.status == "provisioning" || subscription.status == "active")';
@@ -34,6 +36,7 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
   const t = useTranslations('startPage.outOfSyncSubscriptions');
 
   const { data, isFetching, isLoading } = useSearchQuery(outOfSyncSubscriptionsSearchPayload);
+  const outOfSyncSubscriptionCount = data?.cursor?.total_items ?? '-';
 
   const queryParams = {
     [WfoQueryParams.ACTIVE_TAB]: WfoSubscriptionListTab.ALL,
@@ -43,8 +46,8 @@ export const WfoLatestOutOfSyncSubscriptionSummaryCard = () => {
   return (
     <WfoSummaryCard
       headerTitle={t('headerTitle')}
-      headerValue={data?.cursor?.total_items ?? '-'}
-      headerStatus={SummaryCardStatus.Error}
+      headerValue={outOfSyncSubscriptionCount}
+      color={getCountColor(outOfSyncSubscriptionCount)}
       listTitle={t('listTitle')}
       listItems={optionalArrayMapper(data?.data, mapSubscriptionSearchResultToSummaryCardListItem)}
       button={{

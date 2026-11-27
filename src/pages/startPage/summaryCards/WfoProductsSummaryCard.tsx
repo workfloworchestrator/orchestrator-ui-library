@@ -2,9 +2,10 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { SummaryCardListItem, SummaryCardStatus, WfoSummaryCard } from '@/components';
-import { productsSummaryQueryVariables } from '@/pages/startPage/queryVariables';
+import { SummaryCardListItem, WfoSummaryCard } from '@/components';
 import { useGetProductsSummaryQuery } from '@/rtk';
+
+import { productsSummaryQueryVariables } from '../queryVariables';
 
 export const WfoProductsSummaryCard = () => {
   const t = useTranslations('startPage.products');
@@ -39,7 +40,7 @@ export const WfoProductsSummaryCard = () => {
     <WfoSummaryCard
       headerTitle={t('headerTitle')}
       headerValue={productsSummaryResult?.pageInfo.totalItems ?? '-'}
-      headerStatus={SummaryCardStatus.Neutral}
+
       listTitle={t('listTitle')}
       listItems={listItems}
       isLoading={isLoading}

@@ -2,12 +2,13 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { PATH_SUBSCRIPTIONS, SummaryCardStatus, WfoSummaryCard } from '@/components';
-import { mapSubscriptionSearchResultToSummaryCardListItem } from '@/pages/startPage/mappers';
-import { getSubscriptionSummarySearchPayload } from '@/pages/startPage/searchPayloads';
+import { PATH_SUBSCRIPTIONS, WfoSummaryCard } from '@/components';
 import { useSearchQuery } from '@/rtk';
 import { Filter } from '@/types';
 import { optionalArrayMapper } from '@/utils';
+
+import { mapSubscriptionSearchResultToSummaryCardListItem } from '../mappers';
+import { getSubscriptionSummarySearchPayload } from '../searchPayloads';
 
 // Elasticsearch equivalent of the list page's default Active tab filter
 // (`subscription.status == "active"`), so the count on the card matches the list.
@@ -28,7 +29,7 @@ export const WfoLatestActiveSubscriptionsSummaryCard = () => {
     <WfoSummaryCard
       headerTitle={t('headerTitle')}
       headerValue={data?.cursor?.total_items ?? '-'}
-      headerStatus={SummaryCardStatus.Neutral}
+
       listTitle={t('listTitle')}
       listItems={optionalArrayMapper(data?.data, mapSubscriptionSearchResultToSummaryCardListItem)}
       button={{ name: t('buttonText'), url: PATH_SUBSCRIPTIONS }}

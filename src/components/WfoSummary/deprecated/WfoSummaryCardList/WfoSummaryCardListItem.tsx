@@ -4,14 +4,9 @@ import { EuiFlexGroup, EuiFlexItem, EuiIcon, EuiTextColor } from '@elastic/eui';
 
 import { WfoOptionalLink } from '@/components/WfoOptionalLink';
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { warnDeprecated } from '@/utils/warnDeprecated';
 
 import { getWfoSummaryCardListStyles } from './styles';
-
-export type SummaryCardListItem = {
-  title: string;
-  value: ReactNode;
-  url?: string;
-};
 
 export type WfoSummaryCardListItemProps = {
   title: string;
@@ -19,7 +14,9 @@ export type WfoSummaryCardListItemProps = {
   url?: string;
 };
 
+/** @deprecated Use `WfoListItem` inside a `WfoList`, with a `WfoLink` for a link. Will be removed in the next major version. */
 export const WfoSummaryCardListItem: FC<WfoSummaryCardListItemProps> = ({ title, value, url }) => {
+  warnDeprecated('WfoSummaryCardListItem', 'Use WfoListItem inside a WfoList, with a WfoLink for a link.');
   const { theme } = useOrchestratorTheme();
   const { listItemContainerStyle, listItemTitleStyle, listItemSubtitleStyle, listItemHighlightIconStyle } =
     useWithOrchestratorTheme(getWfoSummaryCardListStyles);

@@ -2,13 +2,13 @@ import React, { FC } from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { PATH_WORKFLOWS } from '@/components';
-import { SummaryCardStatus, WfoSummaryCard } from '@/components/WfoSummary/WfoSummaryCard';
-import { WfoWorkflowsListTabType } from '@/pages';
-import { mapProcessSummaryToSummaryCardListItem } from '@/pages/startPage/mappers';
-import { getMyWorkflowListSummaryQueryVariables } from '@/pages/startPage/queryVariables';
+import { PATH_WORKFLOWS, WfoSummaryCard } from '@/components';
 import { useGetProcessListSummaryQuery } from '@/rtk';
 import { WfoQueryParams, getUrlWithQueryParams, optionalArrayMapper } from '@/utils';
+
+import { WfoWorkflowsListTabType } from '../../workflows/tabConfig';
+import { mapProcessSummaryToSummaryCardListItem } from '../mappers';
+import { getMyWorkflowListSummaryQueryVariables } from '../queryVariables';
 
 export type WfoMyWorkflowsSummaryCardProps = {
   username: string;
@@ -33,7 +33,7 @@ export const WfoMyWorkflowsSummaryCard: FC<WfoMyWorkflowsSummaryCardProps> = ({ 
     <WfoSummaryCard
       headerTitle={t('headerTitle')}
       headerValue={myWorkflowsSummaryResponse?.pageInfo.totalItems ?? '-'}
-      headerStatus={SummaryCardStatus.Success}
+
       listTitle={t('listTitle')}
       listItems={optionalArrayMapper(myWorkflowsSummaryResponse?.processes, mapProcessSummaryToSummaryCardListItem)}
       button={{

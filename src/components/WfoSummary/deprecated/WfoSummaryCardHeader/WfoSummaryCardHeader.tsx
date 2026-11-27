@@ -4,6 +4,7 @@ import { EuiAvatar, EuiFlexGroup, EuiFlexItem, EuiLoadingSpinner, EuiPanel, EuiT
 import { IconType } from '@elastic/eui/src/components/icon';
 
 import { useOrchestratorTheme, useWithOrchestratorTheme } from '@/hooks';
+import { warnDeprecated } from '@/utils/warnDeprecated';
 
 import { getWfoSummaryCardHeaderStyles } from './styles';
 
@@ -15,6 +16,7 @@ export type WfoSummaryCardHeaderProps = {
   isFetching?: boolean;
 };
 
+/** @deprecated Use `WfoSummaryCard` (props `color` and `icon`), or `WfoIconTile` in your own layout. Will be removed in the next major version. */
 export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
   text,
   value,
@@ -22,6 +24,10 @@ export const WfoSummaryCardHeader: FC<WfoSummaryCardHeaderProps> = ({
   iconColor,
   isFetching,
 }) => {
+  warnDeprecated(
+    'WfoSummaryCardHeader',
+    'Use WfoSummaryCard (props color and icon), or WfoIconTile in your own layout.',
+  );
   const { theme } = useOrchestratorTheme();
   const { avatarStyle, totalSectionStyle, valueStyle } = useWithOrchestratorTheme(getWfoSummaryCardHeaderStyles);
 

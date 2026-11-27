@@ -2,11 +2,13 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { PATH_TASKS, SummaryCardStatus, WfoSummaryCard } from '@/components';
-import { mapProcessSummaryToSummaryCardListItem } from '@/pages/startPage/mappers';
-import { taskListSummaryQueryVariables } from '@/pages/startPage/queryVariables';
+import { PATH_TASKS, WfoSummaryCard } from '@/components';
 import { useGetProcessListSummaryQuery } from '@/rtk';
 import { optionalArrayMapper } from '@/utils';
+
+import { getCountColor } from '../getCountColor';
+import { mapProcessSummaryToSummaryCardListItem } from '../mappers';
+import { taskListSummaryQueryVariables } from '../queryVariables';
 
 export const WfoFailedTasksSummaryCard = () => {
   const t = useTranslations('startPage.failedTasks');
@@ -16,12 +18,13 @@ export const WfoFailedTasksSummaryCard = () => {
     isFetching,
     isLoading,
   } = useGetProcessListSummaryQuery(taskListSummaryQueryVariables);
+  const failedTaskCount = failedTasksSummaryResponse?.pageInfo.totalItems ?? '-';
 
   return (
     <WfoSummaryCard
       headerTitle={t('headerTitle')}
-      headerValue={failedTasksSummaryResponse?.pageInfo.totalItems ?? '-'}
-      headerStatus={SummaryCardStatus.Error}
+      headerValue={failedTaskCount}
+      color={getCountColor(failedTaskCount)}
       listTitle={t('listTitle')}
       listItems={optionalArrayMapper(failedTasksSummaryResponse?.processes, mapProcessSummaryToSummaryCardListItem)}
       button={{ name: t('buttonText'), url: PATH_TASKS }}

@@ -447,6 +447,20 @@
     "products": {
       "headerTitle": "Total number of products",
       "listTitle": "Total number of product instances"
+    },
+    "summary": {
+      "expandAll": "Expand all",
+      "collapseAll": "Collapse all",
+      "resetLayout": "Reset layout",
+      "reorderCard": "Reorder {title}",
+      "reorderInstructions": "Press space to pick up a card, use the arrow keys to move it, press space again to drop it.",
+      "updating": "Updating",
+      "empty": "Nothing to show",
+      "summaryDetails": "Details of {title}",
+      "reorderPickedUp": "Picked up {title}.",
+      "reorderMovedOver": "{title} moved to the place of {overTitle}.",
+      "reorderDropped": "{title} dropped at the place of {overTitle}.",
+      "reorderCancelled": "Moving {title} cancelled."
     }
   },
   "subscriptions": {
